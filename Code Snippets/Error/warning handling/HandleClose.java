@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+// Example class with window to show functionality
 public class HandleClose extends Application {
     public static void main(String[] args) {
         launch(args);
@@ -18,20 +19,25 @@ public class HandleClose extends Application {
         Label text = new Label("Try closing this window");
         Scene scene = new Scene(text);
 
-        // Setting title and scene
+        // Setting up stage
         primaryStage.setTitle("Handle closing");
         primaryStage.setWidth(400);
         primaryStage.setHeight(200);
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        // Handle window closing
+        /*
+            Method used to handle window closing.
+            Notice e.consume, important!
+        */
+        
         primaryStage.setOnCloseRequest(e -> {
             e.consume(); // Override default closing of window
             closeProgram(primaryStage); // Run closing method
         });
     }
 
+    // Method for closing logic
     private void closeProgram(Stage stage) {
         // If answer is yes, close the windows, else don't.
         Boolean answer = ConfirmDialogBox.display("Warning", "Are you sure you want to leave?");
@@ -39,6 +45,8 @@ public class HandleClose extends Application {
     }
 }
 
+// GUI can be made nicer in a scene builder with a FXML file
+// this class could handle logic
 class ConfirmDialogBox {
     static boolean answer;
 
