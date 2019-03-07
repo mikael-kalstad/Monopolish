@@ -27,7 +27,7 @@ CREATE TABLES
 -- User
 CREATE TABLE account
 (
-  userid INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  user_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   username VARCHAR(30) NOT NULL,
   email VARCHAR(50) NOT NULL,
   password BINARY(32) NOT NULL,
@@ -39,33 +39,69 @@ CREATE TABLE account
 -- Lobby
 CREATE TABLE lobby
 (
-  roomid INT NOT NULL AUTO_INCREMENT,
-  userid INT NOT NULL,
+  room_id INT NOT NULL AUTO_INCREMENT,
+  user_id INT NOT NULL,
   ready BIT NOT NULL DEFAULT 0,
-  CONSTRAINT pk_lobby PRIMARY KEY (roomid, userid)
+  CONSTRAINT pk_lobby PRIMARY KEY (room_id, user_id)
 )
 
 -- Player
 CREATE TABLE player
 (
-  userid INT NOT NULL,
-  gameid INT NOT NULL,
+  user_id INT NOT NULL,
+  game_id INT NOT NULL,
   money INT NOT NULL DEFAULT 0,
   currentpos INT NOT NULL DEFAULT 0,
   injail BIT NOT NULL DEFAULT 0,
   bankrupt BIT NOT NULL DEFAULT 0,
-  CONSTRAINT pk_player PRIMARY KEY (userid, gameid)
+  CONSTRAINT pk_player PRIMARY KEY (user_id, game_id)
 )
+
+create table property(
+  property_id INTEGER NOT NULL,
+  name VARCHAR(30) NOT NULL,
+  price REAL,
+  categorycolor varchar(12),
+  primary key(property_id)
+);
+
+create table game(
+  game_id integer not null,
+  starttid datetime not null,
+  endtime datetime,
+  currentplayer integer NOT NULL,
+  winner integer,
+  primary key(game_id)
+);
+
+create table gameproperty(
+  game_id integer not null,
+  property_id integer not null,
+  position int not null,
+  pawned bit default 0,
+  user_id integer,
+  constraint pk_gameproperty PRIMARY KEY (game_id, property_id)
+);
 
 /*
 ADD FOREIGN KEYS
  */
 
+ALTER TABLE game
+ADD foreign key(winner) references account(user_id);
+ALTER TABLE game
+foreign key (currentplayer) references player(user_id);
 ALTER TABLE lobby
-ADD FOREIGN KEY (userid) REFERENCES account(userid);
+ADD FOREIGN KEY (user_id) REFERENCES account(user_id);
 
 ALTER TABLE player
-ADD FOREIGN KEY (userid) REFERENCES account(userid);
+ADD FOREIGN KEY (user_id) REFERENCES account(user_id);
 ALTER TABLE player
-ADD FOREIGN KEY (gameid) REFERENCES game(gameid);
+ADD FOREIGN KEY (game_id) REFERENCES game(game_id);
 
+ALTER TABLE gameproperty
+ADD foreign key (game_id) references game(game_id);
+ALTER TABLE gameproperty
+ADD foreign key (property_id) references property(property_id);
+ALTER TABLE gameproperty
+ADD foreign key (user_id) references player(user_id);
