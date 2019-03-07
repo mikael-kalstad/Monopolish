@@ -34,7 +34,7 @@ CREATE TABLE account
   salt BINARY(32) NOT NULL,
   regdate DATETIME NOT NULL,
   highscore INT NOT NULL DEFAULT 0
-)
+);
 
 -- Lobby
 CREATE TABLE lobby
@@ -43,19 +43,19 @@ CREATE TABLE lobby
   user_id INT NOT NULL,
   ready BIT NOT NULL DEFAULT 0,
   CONSTRAINT pk_lobby PRIMARY KEY (room_id, user_id)
-)
+);
 
 -- Player
 CREATE TABLE player
 (
+  player_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   user_id INT NOT NULL,
   game_id INT NOT NULL,
   money INT NOT NULL DEFAULT 0,
   currentpos INT NOT NULL DEFAULT 0,
   injail BIT NOT NULL DEFAULT 0,
-  bankrupt BIT NOT NULL DEFAULT 0,
-  CONSTRAINT pk_player PRIMARY KEY (user_id, game_id)
-)
+  bankrupt BIT NOT NULL DEFAULT 0
+);
 
 create table property(
   property_id INTEGER NOT NULL,
@@ -67,7 +67,7 @@ create table property(
 
 create table game(
   game_id integer not null,
-  starttid datetime not null,
+  starttime datetime not null,
   endtime datetime,
   currentplayer integer NOT NULL,
   winner integer,
@@ -90,18 +90,18 @@ ADD FOREIGN KEYS
 ALTER TABLE game
 ADD foreign key(winner) references account(user_id);
 ALTER TABLE game
-foreign key (currentplayer) references player(user_id);
+ADD foreign key (currentplayer) references player(player_id);
 ALTER TABLE lobby
 ADD FOREIGN KEY (user_id) REFERENCES account(user_id);
 
 ALTER TABLE player
-ADD FOREIGN KEY (user_id) REFERENCES account(user_id);
+  ADD FOREIGN KEY (user_id) REFERENCES account(user_id);
 ALTER TABLE player
-ADD FOREIGN KEY (game_id) REFERENCES game(game_id);
+  ADD FOREIGN KEY (game_id) REFERENCES game(game_id);
 
 ALTER TABLE gameproperty
-ADD foreign key (game_id) references game(game_id);
+  ADD foreign key (game_id) references game(game_id);
 ALTER TABLE gameproperty
-ADD foreign key (property_id) references property(property_id);
+  ADD foreign key (property_id) references property(property_id);
 ALTER TABLE gameproperty
-ADD foreign key (user_id) references player(user_id);
+  ADD foreign key (user_id) references player(user_id);
