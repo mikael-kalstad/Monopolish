@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="952.0" prefWidth="1693.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LoginController">
+   <children>
+      <Pane layoutX="1111.0" layoutY="135.0" prefHeight="672.0" prefWidth="503.0" style="-fx-background-color: #212121; -fx-background-radius: 10px;" AnchorPane.bottomAnchor="145.0" AnchorPane.rightAnchor="72.0" AnchorPane.topAnchor="135.0">
+         <children>
+            <Text fill="WHITE" layoutX="166.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sign in">
+               <font>
+                  <Font size="68.0" />
+               </font>
+            </Text>
+            <TextField id="usernameInput" fx:id="usernameInput" layoutX="109.0" layoutY="203.0" prefHeight="52.0" prefWidth="334.0" promptText="Username or email" style="-fx-border-color: #ffffff; -fx-border-width: 0 0 2 0; -fx-background-color: #212121; -fx-text-inner-color: #ffffff;">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </TextField>
+            <Button fx:id="loginBtn" layoutX="146.0" layoutY="463.0" mnemonicParsing="false" onAction="#login" prefHeight="55.0" prefWidth="245.0" style="-fx-background-color: #FF9800; -fx-background-radius: 0;" text="Sign in" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font size="21.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="CLOSED_HAND" />
+               </cursor>
+            </Button>
+            <PasswordField fx:id="passwordInput" layoutX="109.0" layoutY="310.0" prefHeight="52.0" prefWidth="334.0" promptText="Password" style="-fx-border-width: 0 0 2 0; -fx-border-color: #ffffff; -fx-background-color: #212121; -fx-text-inner-color: white;">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </PasswordField>
+            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="56.0" layoutY="215.0">
+               <image>
+                  <Image url="@Images/user.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="56.0" layoutY="322.0">
+               <image>
+                  <Image url="@Images/lock.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Button fx:id="registerBtn" layoutX="201.0" layoutY="811.0" mnemonicParsing="false" prefHeight="77.0" prefWidth="375.0" style="-fx-background-color: #FF9800; -fx-background-radius: 0;" text="Sign up" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font size="28.0" />
+         </font>
+      </Button>
+      <Text layoutX="167.0" layoutY="262.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" Welcome Back!">
+         <font>
+            <Font name="System Bold" size="82.0" />
+         </font>
+      </Text>
+      <Text layoutX="224.0" layoutY="775.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Not registered?">
+         <font>
+            <Font name="System Bold" size="32.0" />
+         </font>
+      </Text>
+      <Text layoutX="202.0" layoutY="420.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Play monopoly with your friends! Nothing can stop you from winning!" wrappingWidth="655.3333435058594">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Text>
+      <ImageView fitHeight="276.0" fitWidth="219.0" layoutX="737.0" layoutY="550.0">
+         <image>
+            <Image url="@Images/man.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
