@@ -1,0 +1,13 @@
+.login-warning {
+    -fx-border-color: red;
+    -fx-border-width: 0 0 2 0;
+    -fx-background-color: #212121;
+    -fx-text-inner-color: white;
+}
+
+.login {
+    -fx-border-color: white;
+    -fx-border-width: 0 0 2 0;
+    -fx-background-color: #212121;
+    -fx-text-inner-color: white;
+}
