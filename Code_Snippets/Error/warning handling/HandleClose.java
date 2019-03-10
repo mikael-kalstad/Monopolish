@@ -45,7 +45,7 @@ public class HandleClose extends Application {
     }
 }
 
-// com.teamfour.monopolish.gui can be made nicer in a scene builder with a fxml file
+// com.teamfour.monopolish.gui can be made nicer in a scene builder with a View file
 // this class could handle logic
 class ConfirmDialogBox {
     static boolean answer;
