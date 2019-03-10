@@ -3,11 +3,16 @@ package com.teamfour.monopolish.gui.Controllers;
 import com.teamfour.monopolish.gui.View.ViewConstants;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Text;
 
 public class LoginController {
     @FXML private TextField usernameInput;
     @FXML private TextField passwordInput;
+    @FXML private Text text_warning;
+    @FXML private Button loginBtn;
 
     private final String STYLE_NORMAL = "login";
     private final String STYLE_WARNING = "login-warning";
@@ -17,6 +22,14 @@ public class LoginController {
     }
     private void addStyle(Node element, String css_class) {
         element.getStyleClass().add(css_class);
+    }
+
+    public void handleInputChange() {
+        if (!usernameInput.getText().isEmpty() && !passwordInput.getText().isEmpty()) {
+            loginBtn.setDisable(false); // Enable button
+        } else {
+            loginBtn.setDisable(true);
+        }
     }
 
     public void login() {
@@ -36,14 +49,14 @@ public class LoginController {
 
         // If username/email and password is okay.
         if (res) {
-            // Switch to dashboard screen
-
-
+            // Revert styling back to normal if warning is applied
             removeStyle(usernameInput, STYLE_WARNING);
             removeStyle(passwordInput, STYLE_WARNING);
             addStyle(usernameInput, STYLE_NORMAL);
             addStyle(passwordInput, STYLE_NORMAL);
+            text_warning.setVisible(false); // Hide warning text
 
+            // Switch to dashboard screen
             System.out.println(usernameInput.getText() + " you are logged in");
             System.out.println("Switching to dashboard...");
             Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
@@ -53,6 +66,8 @@ public class LoginController {
             removeStyle(passwordInput, STYLE_NORMAL);
             addStyle(usernameInput, STYLE_WARNING);
             addStyle(passwordInput, STYLE_WARNING);
+            text_warning.setVisible(true); // Show warning text
+            loginBtn.setDisable(true);
 
             System.out.println("Login failed, username/email or password is wrong");
         }
