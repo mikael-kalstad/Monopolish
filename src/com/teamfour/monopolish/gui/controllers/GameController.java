@@ -1,3 +1,5 @@
+package com.teamfour.monopolish.gui.controllers;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
