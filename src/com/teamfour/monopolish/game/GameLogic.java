@@ -14,6 +14,7 @@ public class GameLogic {
 
     public GameLogic(int gameId /* ArrayList<Player> players*/) {
 
+
     }
 
     public void startGame() {
