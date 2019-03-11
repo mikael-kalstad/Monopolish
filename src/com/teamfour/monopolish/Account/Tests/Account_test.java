@@ -1,4 +1,4 @@
-package com.teamfour.monopolish.accounts.Tests;
+package com.teamfour.monopolish.Account.Tests;
 
 import com.teamfour.monopolish.accounts.Account;
 import org.junit.jupiter.api.AfterAll;
