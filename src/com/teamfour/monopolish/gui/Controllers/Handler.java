@@ -1,6 +1,6 @@
-package com.teamfour.monopolish.gui.controllers;
+package com.teamfour.monopolish.gui.Controllers;
 
-import com.teamfour.monopolish.gui.view.ViewConstants;
+import com.teamfour.monopolish.gui.Views.ViewConstants;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -17,5 +17,9 @@ public class Handler extends Application {
         // Initial view is login
         sceneManager = new SceneManager(primaryStage, ViewConstants.LOGIN.getValue());
         primaryStage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 }

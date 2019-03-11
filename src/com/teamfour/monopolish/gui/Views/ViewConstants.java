@@ -1,4 +1,4 @@
-package com.teamfour.monopolish.gui.view;
+package com.teamfour.monopolish.gui.Views;
 
 /**
  * view constants that contain filenames for .fxml files.

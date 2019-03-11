@@ -1,4 +1,4 @@
-package com.teamfour.monopolish.gui.controllers;
+package com.teamfour.monopolish.gui.Controllers;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,7 +8,7 @@ import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import com.teamfour.monopolish.gui.view.ViewConstants;
+import com.teamfour.monopolish.gui.Views.ViewConstants;
 
 /**
  * This class will handle scene changes to a specific stage.
