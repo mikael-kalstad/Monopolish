@@ -1,7 +1,7 @@
-package com.teamfour.monopolish.gui.View;
+package com.teamfour.monopolish.gui.view;
 
 /**
- * View constants that contain filenames for .fxml files.
+ * view constants that contain filenames for .fxml files.
  * References to .fxml files should use an enum from this class,
  * to prevent inconsistency in filenames within the application
  *
@@ -12,7 +12,7 @@ public enum ViewConstants {
     /**
      * Reference to the file location of the .fxml view files
      */
-    FILE_PATH("../View/"),
+    FILE_PATH("../view/"),
 
     /**
      * References to the .fxml view files

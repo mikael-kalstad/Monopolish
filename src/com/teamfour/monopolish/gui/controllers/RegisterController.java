@@ -1,6 +1,6 @@
-package com.teamfour.monopolish.gui.Controllers;
+package com.teamfour.monopolish.gui.controllers;
 
-import com.teamfour.monopolish.gui.View.ViewConstants;
+import com.teamfour.monopolish.gui.view.ViewConstants;
 
 public class RegisterController {
     public void register() {

@@ -1,6 +1,6 @@
-package com.teamfour.monopolish.gui.Controllers;
+package com.teamfour.monopolish.gui.controllers;
 
-import com.teamfour.monopolish.gui.View.ViewConstants;
+import com.teamfour.monopolish.gui.view.ViewConstants;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
