@@ -20,7 +20,7 @@
                   <Font size="68.0" />
                </font>
             </Text>
-            <TextField id="usernameInput" fx:id="usernameInput" layoutX="109.0" layoutY="203.0" onAction="#login" onKeyTyped="#handleInputChange" prefHeight="52.0" prefWidth="334.0" promptText="Username or email" styleClass="login" stylesheets="@../Controllers/login.css">
+            <TextField fx:id="usernameInput" layoutX="109.0" layoutY="203.0" onAction="#login" onKeyTyped="#handleInputChange" prefHeight="52.0" prefWidth="334.0" promptText="Username or email" styleClass="login-input" stylesheets="@../Controllers/login.css">
                <font>
                   <Font size="19.0" />
                </font>
@@ -33,7 +33,7 @@
                   <Cursor fx:constant="CLOSED_HAND" />
                </cursor>
             </Button>
-            <PasswordField fx:id="passwordInput" layoutX="109.0" layoutY="310.0" onAction="#login" onKeyTyped="#handleInputChange" prefHeight="52.0" prefWidth="334.0" promptText="Password" styleClass="login" stylesheets="@../Controllers/login.css">
+            <PasswordField fx:id="passwordInput" layoutX="109.0" layoutY="310.0" onAction="#login" onKeyTyped="#handleInputChange" prefHeight="52.0" prefWidth="334.0" promptText="Password" styleClass="login-input" stylesheets="@../Controllers/login.css">
                <font>
                   <Font size="19.0" />
                </font>

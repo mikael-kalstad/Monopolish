@@ -14,7 +14,7 @@ public class Handler extends Application {
     // Testing purposes
     @Override
     public void start(Stage primaryStage) throws Exception {
-        // Inital view is login
+        // Initial view is login
         sceneManager = new SceneManager(primaryStage, ViewConstants.LOGIN.getValue());
         primaryStage.show();
     }

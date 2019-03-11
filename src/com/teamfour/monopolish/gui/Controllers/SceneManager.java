@@ -23,8 +23,8 @@ public class SceneManager {
      * Instantiates a new Scene manager.
      *
      *
-     * @param stage         the stage/window of the application
-     * @param initial_view the initial view that will render on the stage/window
+     * @param stage         the stage of the application
+     * @param initial_view the initial view that will render on the stage
      */
     SceneManager(Stage stage, String initial_view) {
        this.window = stage;

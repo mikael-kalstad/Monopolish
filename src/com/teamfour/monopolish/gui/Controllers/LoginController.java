@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 
 public class LoginController {
@@ -14,14 +13,11 @@ public class LoginController {
     @FXML private Text text_warning;
     @FXML private Button loginBtn;
 
-    private final String STYLE_NORMAL = "login";
-    private final String STYLE_WARNING = "login-warning";
+    private final String COLOR_NORMAL = "white";
+    private final String COLOR_WARNING = "red";
 
-    private void removeStyle(Node element, String css_class) {
-        element.getStyleClass().remove(css_class);
-    }
-    private void addStyle(Node element, String css_class) {
-        element.getStyleClass().add(css_class);
+    private void newBorderStyle(Node element, String color) {
+        element.setStyle("-fx-border-color: " + color);
     }
 
     public void handleInputChange() {
@@ -37,7 +33,8 @@ public class LoginController {
         boolean res = false;
 
         // Testing purposes
-        if (usernameInput.getText().trim().equals("Mikael") && passwordInput.getText().trim().equals("1234")) {
+        if (usernameInput.getText().trim().equals("Mikael")
+                && passwordInput.getText().trim().equals("1234")) {
             res = true;
         }
 
@@ -47,34 +44,26 @@ public class LoginController {
             "password: " + passwordInput.getText()
         );
 
-        // If username/email and password is okay.
+        // If username/email and password is correct, from the request to the database.
         if (res) {
-            // Revert styling back to normal if warning is applied
-            removeStyle(usernameInput, STYLE_WARNING);
-            removeStyle(passwordInput, STYLE_WARNING);
-            addStyle(usernameInput, STYLE_NORMAL);
-            addStyle(passwordInput, STYLE_NORMAL);
+            // Change styling to normal
+            newBorderStyle(usernameInput, COLOR_NORMAL);
+            newBorderStyle(passwordInput, COLOR_NORMAL);
             text_warning.setVisible(false); // Hide warning text
 
             // Switch to dashboard screen
             System.out.println(usernameInput.getText() + " you are logged in");
-            System.out.println("Switching to dashboard...");
             Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
         } else {
-            // Remove normal styling and add warning style
-            removeStyle(usernameInput, STYLE_NORMAL);
-            removeStyle(passwordInput, STYLE_NORMAL);
-            addStyle(usernameInput, STYLE_WARNING);
-            addStyle(passwordInput, STYLE_WARNING);
+            // Change styling to warning
+            newBorderStyle(usernameInput, COLOR_WARNING);
+            newBorderStyle(passwordInput, COLOR_WARNING);
             text_warning.setVisible(true); // Show warning text
-            loginBtn.setDisable(true);
-
-            System.out.println("Login failed, username/email or password is wrong");
         }
     }
 
     public void register() {
-        // Go to register
+        // Go to register view
         Handler.getSceneManager().setScene(ViewConstants.REGISTER.getValue());
     }
 }
