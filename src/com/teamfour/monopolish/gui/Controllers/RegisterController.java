@@ -1,7 +1,6 @@
 package com.teamfour.monopolish.gui.Controllers;
 
 import com.teamfour.monopolish.gui.Views.ViewConstants;
-
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
