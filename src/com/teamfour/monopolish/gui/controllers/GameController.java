@@ -83,7 +83,4 @@ public class GameController {
         return null;
     }
 
-    public void setGamegrid(){
-        gamegrid.getChildren().addAll(Firkant.lagGater());
-    }
 }
