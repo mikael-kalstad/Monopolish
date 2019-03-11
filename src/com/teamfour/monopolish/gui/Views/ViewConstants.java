@@ -12,7 +12,7 @@ public enum ViewConstants {
     /**
      * Reference to the file location of the .fxml view files
      */
-    FILE_PATH("../view/"),
+    FILE_PATH("../Views/"),
 
     /**
      * References to the .fxml view files
