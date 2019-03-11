@@ -16,9 +16,7 @@ public class AccountDAO {
     Connection connection;
     CallableStatement cStmt;
 
-    public AccountDAO() {
-
-    }
+    public AccountDAO() {}
 
     /**
      * Inserts an account object into the account table

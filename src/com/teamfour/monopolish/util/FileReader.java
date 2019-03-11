@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -50,10 +51,12 @@ public class FileReader {
     }
 
     @Test
-    public void TestSomething() {
-        System.out.println("Yes");
+    public void TestReadFile() {
         try {
-            assertTrue(readFile("game.properties")[0].equals(""));
+            assertEquals(3, readFile("game.properties").length);
+            assertTrue(readFile("game.properties")[0].equals("db_url=jdbc:mysql://mysql.stud.iie.ntnu.no:3306/eirikhem"));
+            assertTrue(readFile("game.properties")[1].equals("db_user="));
+            assertTrue(readFile("game.properties")[2].equals("db_pass="));
         } catch (IOException e) {
             System.out.println("Oh no");
         }
