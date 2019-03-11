@@ -1,4 +1,4 @@
-package com.teamfour.monopolish.accounts;
+package com.teamfour.monopolish.account;
 
 import java.sql.Connection;
 
@@ -11,6 +11,8 @@ import java.sql.Connection;
 
 public class AccountDAO {
     // Attributes
-    private Connection connection;
+
+    public AccountDAO() {
+    }
 
 }
