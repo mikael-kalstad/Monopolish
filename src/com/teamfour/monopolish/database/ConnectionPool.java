@@ -97,6 +97,19 @@ public class ConnectionPool {
         return usedConnections.remove(connection);
     }
 
+    /**
+     * Shutdowns the entire connection pool and closes every connection
+     * @throws SQLException
+     */
+    public void shutdown() throws SQLException {
+        usedConnections.forEach(this::releaseConnection);
+        for(Connection c : connectionPool) {
+            c.close();
+        }
+
+        connectionPool.clear();
+    }
+
     // GETTERS & SETTERS
 
     public int getSize() {
