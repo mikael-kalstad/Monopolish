@@ -25,12 +25,14 @@ public class ConnectionPool {
     private static int INITIAL_POOL_SIZE = 10;
     private static int MAX_POOL_SIZE = 20;
 
+    private static ConnectionPool mainConnectionPool;
+
     /**
      * Creates a new connection pool
      * @return Creates the connection pool
      * @throws SQLException
      */
-    public static ConnectionPool create() throws SQLException {
+    public static void create() throws SQLException {
         String url;
         String username;
         String password;
@@ -39,14 +41,14 @@ public class ConnectionPool {
             username = Properties.getDatabaseUser();
             password = Properties.getDatabasePassword();
         } catch (IOException e) {
-            return null;
+            return;
         }
 
         List<Connection> pool = new ArrayList<>(INITIAL_POOL_SIZE);
         for (int i = 0; i < INITIAL_POOL_SIZE; i++) {
             pool.add(createConnection(url, username, password));
         }
-        return new ConnectionPool(url, username, password, pool);
+        mainConnectionPool = new ConnectionPool(url, username, password, pool);
     }
 
     /**
@@ -127,4 +129,6 @@ public class ConnectionPool {
     public String getPassword() {
         return password;
     }
+
+    public static ConnectionPool getMainConnectionPool() { return mainConnectionPool; }
 }

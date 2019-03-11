@@ -1,12 +1,11 @@
-package com.teamfour.monopolish.Account.Tests;
+package com.teamfour.monopolish.account.Tests;
 
-import com.teamfour.monopolish.accounts.Account;
+import com.teamfour.monopolish.account.Account;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 
 import java.time.LocalDate;
 import java.time.Month;

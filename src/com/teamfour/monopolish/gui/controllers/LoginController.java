@@ -1,4 +1,4 @@
-package com.teamfour.monopolish.gui.Controllers;
+package com.teamfour.monopolish.gui.controllers;
 
 import com.teamfour.monopolish.gui.Views.ViewConstants;
 import javafx.fxml.FXML;
