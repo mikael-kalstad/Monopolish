@@ -4,6 +4,7 @@ import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 
 /**
@@ -42,7 +43,8 @@ public class RegisterController {
     }
 
     private void setTextColor(Text element, String color) {
-        element.setStyle("-fx-text-inner-color: yellow");
+        //element.setStyle("-fx-text-inner-color: color");
+        element.setFill(Paint.valueOf(color));
     }
 
     public void logout() {
@@ -166,7 +168,7 @@ public class RegisterController {
         checkField(emailInput, emailMsg, MSG_EMAIL_WARNING, emailTaken);
 
         // Password check
-        checkField(passwordInput, passwordMsg, MSG_PASSWORD_WARNING, passwordRequirements);
+        checkField(passwordInput, passwordMsg, MSG_PASSWORD_WARNING, !passwordRequirements);
         checkField(passwordRepeatInput, passwordRepeatMsg, MSG_PASSWORDREPEAT_WARNING, !passwordMatch);
 
         // Check requirements (details in javadoc above method)

@@ -83,7 +83,7 @@
                   <Font size="27.0" />
                </font>
             </TextField>
-            <Text fx:id="usernameMsg" fill="#ff000000" layoutX="65.0" layoutY="118.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*Username is taken, choose a different one " visible="false">
+            <Text fx:id="usernameMsg" fill="RED" layoutX="65.0" layoutY="118.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*Username is taken, choose a different one " visible="false">
                <font>
                   <Font size="13.0" />
                </font>
