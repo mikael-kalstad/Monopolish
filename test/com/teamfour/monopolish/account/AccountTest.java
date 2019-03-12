@@ -1,4 +1,4 @@
-package com.teamfour.monopolish.account.Tests;
+package com.teamfour.monopolish.account;
 
 import com.teamfour.monopolish.account.Account;
 import org.junit.jupiter.api.AfterAll;
@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.time.LocalDate;
 import java.time.Month;
 
-public class Account_test {
+public class AccountTest {
     private Account instance = null;
 
     @BeforeAll

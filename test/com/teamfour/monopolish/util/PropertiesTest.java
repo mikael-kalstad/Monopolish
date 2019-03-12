@@ -8,7 +8,7 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
-public class TestProperties {
+public class PropertiesTest {
 
     @Test
     public void TestGetDatabaseUrl() {

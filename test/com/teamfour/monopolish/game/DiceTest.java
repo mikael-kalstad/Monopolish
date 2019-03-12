@@ -1,4 +1,4 @@
-package com.teamfour.monopolish.game.Tests;
+package com.teamfour.monopolish.game;
 
 import com.teamfour.monopolish.game.Dice;
 import org.junit.jupiter.api.AfterAll;
@@ -7,7 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class Dice_test {
+public class DiceTest {
     private static Dice instance = null;
     private static Dice instance2 = null;
 
