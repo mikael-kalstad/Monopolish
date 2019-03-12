@@ -22,13 +22,28 @@ CREATE PROCEDURE account_insert_user(
     DECLARE hashed_pwd VARCHAR(64);
     DECLARE test_username VARCHAR(30);
     DECLARE test_email VARCHAR(50);
+    DECLARE user_error INT;
     -- error_code
-    DECLARE EXIT HANDLER FOR 1062 SELECT 1 AS error_code;
+    -- DECLARE EXIT HANDLER FOR 1062 SELECT 1 AS error_code;
+
+    DECLARE EXIT HANDLER FOR 1062
+      BEGIN
+        SELECT LOWER(username) FROM account WHERE LOWER(username = uname) INTO test_username;
+        SET error_code = 1;
+      END;
+
+    /*
+    DECLARE EXIT HANDLER FOR 1062
+      BEGIN
+        SELECT LOWER(email) FROM account WHERE LOWER(email = mail) INTO test_email;
+        SET error_code = 2;
+      END;
+      */
 
     SET salt_pw = RANDOM_BYTES(32);
     SET hashed_pwd = SHA2(CONCAT(password, salt_pw), 256);
 
-
+    /*
     SELECT LOWER(username) FROM account WHERE LOWER(username = uname) INTO test_username;
     SELECT LOWER(email) FROM account WHERE LOWER(email = mail) INTO test_email;
 
@@ -40,6 +55,7 @@ CREATE PROCEDURE account_insert_user(
     ELSE
       SET error_code = 0;
     END IF;
+    */
 
     SELECT @error_code;
     INSERT INTO account VALUES(DEFAULT, uname, mail, hashed_pwd, salt_pw, reg_date, DEFAULT);
