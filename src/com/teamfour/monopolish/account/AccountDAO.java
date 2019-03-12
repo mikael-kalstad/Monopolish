@@ -20,7 +20,7 @@ public class AccountDAO extends DataAccessObject {
      * @return True if the operation was successful, false if this user already exists
      * @throws SQLException
      */
-    public boolean insertAccount(Account account, String password) throws SQLException {
+    public boolean insertAccount(Account account, String password) {
         int count = 0;
         try {
             getConnection();
@@ -33,7 +33,7 @@ public class AccountDAO extends DataAccessObject {
 
             count = cStmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            return false;
         } finally {
             releaseConnection();
         }
@@ -77,7 +77,7 @@ public class AccountDAO extends DataAccessObject {
      * @param password Password of the acount
      * @return Null if credentials are wrong
      */
-    public Account getAccountByCredentials(String username, String password) throws SQLException {
+    public Account getAccountByCredentials(String username, String password) {
         ResultSet rs = null;
         Account account = null;
         try {
