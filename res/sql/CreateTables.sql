@@ -30,7 +30,7 @@ CREATE TABLE account
   user_id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   username VARCHAR(30) NOT NULL,
   email VARCHAR(50) NOT NULL,
-  password BINARY(32) NOT NULL,
+  hashed_password VARCHAR(64) NOT NULL,
   salt BINARY(32) NOT NULL,
   regdate DATETIME NOT NULL,
   highscore INT NOT NULL DEFAULT 0
