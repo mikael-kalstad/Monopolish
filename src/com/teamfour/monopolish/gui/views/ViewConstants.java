@@ -18,8 +18,9 @@ public enum ViewConstants {
      * References to the .fxml view files
      */
     LOGIN("login.fxml"),
+    REGISTER("register.fxml"),
     DASHBOARD("dashboard.fxml"),
-    REGISTER("register.fxml");
+    GAME("game.fxml");
 
     private String value;
 

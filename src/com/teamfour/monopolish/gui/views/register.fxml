@@ -34,7 +34,7 @@
                   <Font size="25.0" />
                </font>
             </Text>
-            <Button fx:id="registerBtn" layoutX="204.0" layoutY="688.0" mnemonicParsing="false" onAction="#logout" prefHeight="77.0" prefWidth="375.0" style="-fx-background-color: #FF9800; -fx-background-radius: 0;" text="Log in" textAlignment="CENTER" textFill="WHITE">
+            <Button layoutX="204.0" layoutY="688.0" mnemonicParsing="false" onAction="#login" prefHeight="77.0" prefWidth="375.0" style="-fx-background-color: #FF9800; -fx-background-radius: 0;" text="Log in" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="28.0" />
                </font>
