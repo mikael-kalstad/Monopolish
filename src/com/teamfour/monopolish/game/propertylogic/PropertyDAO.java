@@ -1,6 +1,5 @@
-package com.teamfour.monopolish.game.PropertyLogic;
+package com.teamfour.monopolish.game.propertylogic;
 
-import com.teamfour.monopolish.account.Account;
 import com.teamfour.monopolish.database.ConnectionPool;
 
 import java.sql.*;

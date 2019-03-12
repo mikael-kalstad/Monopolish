@@ -1,4 +1,4 @@
-package com.teamfour.monopolish.game.PropertyLogic;
+package com.teamfour.monopolish.game.propertylogic;
 
 public class Property {
     private int p_id;
