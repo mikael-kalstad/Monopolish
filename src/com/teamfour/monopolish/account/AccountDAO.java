@@ -20,7 +20,7 @@ public class AccountDAO extends DataAccessObject {
      * @return True if the operation was successful, false if this user already exists
      * @throws SQLException
      */
-    public int insertAccount(Account account, String password) {
+    public int insertAccount(Account account, String password) throws SQLException {
         int status = 0;
         try {
             getConnection();
@@ -80,7 +80,7 @@ public class AccountDAO extends DataAccessObject {
      * @param password Password of the acount
      * @return Null if credentials are wrong
      */
-    public Account getAccountByCredentials(String username, String password) {
+    public Account getAccountByCredentials(String username, String password) throws SQLException {
         ResultSet rs = null;
         Account account = null;
         try {

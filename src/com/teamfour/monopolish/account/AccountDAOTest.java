@@ -29,7 +29,9 @@ public class AccountDAOTest {
         Account user = new Account("eirikhem", "eirik@eirik.eirik", LocalDate.now(), 0);
         String password = "Hahahaha";
         try {
-            assertFalse(instance.insertAccount(user, password));
+            int result = instance.insertAccount(user, password);
+            int expected = 0;
+            assertEquals(result, expected);
         }
         catch (SQLException e) { e.printStackTrace(); }
     }

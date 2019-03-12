@@ -149,12 +149,12 @@ public class RegisterController {
             int res = 0;
             Account user = new Account(usernameInput.getText().trim(), emailInput.getText().trim(), LocalDate.now(), 0);
 
-//            try {
-//                res = Handler.getAccountDAO().insertAccount(user, passwordInput.getText().trim());
-//                if (res == 1) usernameTaken = true;
-//                else if (res == 2) emailTaken = true;
-//            }
-//            catch (SQLException e) { }
+            try {
+                res = Handler.getAccountDAO().insertAccount(user, passwordInput.getText().trim());
+                if (res == 1) usernameTaken = true;
+                else if (res == 2) emailTaken = true;
+            }
+            catch (SQLException e) { }
 
             if (res == 0) {
                 Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
