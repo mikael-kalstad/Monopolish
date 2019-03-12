@@ -9,6 +9,7 @@ public class PropertyManager {
     public PropertyManager(int game_id){
         properties = dao.getAllProperties(game_id);
     }
+
     public ArrayList<Property> getAvailableProteries(){
         ArrayList<Property> available = getPlayerProperties(0);
         return (available);

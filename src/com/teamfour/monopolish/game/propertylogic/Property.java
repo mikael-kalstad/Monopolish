@@ -33,6 +33,10 @@ public class Property {
         return price;
     }
 
+    public String getCategorycolor(){
+        return categorycolor;
+    }
+
     public boolean isPawned() {
         return pawned;
     }
@@ -49,6 +53,7 @@ public class Property {
         this.owner = owner;
     }
 
+
     public int compareTo(Property otherP){
         if(otherP == null){
             return(-2);
@@ -63,9 +68,7 @@ public class Property {
             return(0);
         }
     }
-    public String getCategorycolor(){
-        return categorycolor;
-    }
+
     public boolean equals(Property otherP){
         if(otherP == null){
             return(false);
