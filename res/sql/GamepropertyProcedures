@@ -1,16 +1,17 @@
-drop procedure if exists create_property;
-drop procedure if exists update_property;
+drop procedure if exists property_create;
+drop procedure if exists property_update;
 drop procedure if exists player_property;
 drop procedure if exists available_property;
 drop procedure if exists position_property;
+drop procedure if exists property_clean;
 
 delimiter $$
-create procedure create_property(
-    in spill_id int,
+create procedure property_create(
+    in g_id int,
     in prop_id int
   )
   begin
-    insert into gameproperty(game_id, property_id) values (spill_id, prop_id);
+    insert into gameproperty(game_id, property_id) values (g_id, prop_id);
 
     select gameproperty.*, property.position, property.price, property.categorycolor
       from gameproperty join property p
@@ -23,22 +24,36 @@ delimiter ;
 
 
 delimiter $$
-create procedure update_property(
+create procedure property_update(
     in prop_id int,
+    in g_id int,
     in pawn bit,
     in u_id int
   )
   begin
    update gameproperty set pawned = pawn
-      where property_id = prop_id;
+      where property_id = prop_id and game_id = g_id;
 
    update gameproperty set user_id = u_id
-      where property_id = prop_id;;
+      where property_id = prop_id and game_id = g_id;
 
 end $$
 delimiter ;
 
 
+delimiter $$
+create procedure property_clean(
+  in g_id int
+)
+begin
+  delete from gameproperty where game_id = g_id;
+commit;
+
+end $$
+delimiter ;
+
+
+/*
 delimiter $$
 create procedure available_property(
 )
@@ -51,6 +66,7 @@ begin
 
 end $$
 delimiter ;
+
 
 
 delimiter $$
@@ -81,3 +97,5 @@ begin
 
 end $$
 delimiter ;
+*/
+
