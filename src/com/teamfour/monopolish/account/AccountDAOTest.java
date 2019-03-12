@@ -28,7 +28,7 @@ public class AccountDAOTest {
     public void testInsertAccount() {
         Account user = new Account("eirikhem", "eirik@eirik.eirik", LocalDate.now(), 0);
         String password = "Hahahaha";
-        assertFalse(instance.insertAccount(user, password));
+        assertEquals(1, instance.insertAccount(user, password));
     }
 
     @Test

@@ -16,7 +16,7 @@ public class PropertyManager {
     }
 
     public ArrayList<Property> getPlayerProperties(int o_id){
-        ArrayList<Property> available =null;
+        ArrayList<Property> available = new ArrayList<>();
         for(int i = 0; i<properties.size(); i++){
             if(properties.get(i).getOwner() == o_id){
                 available.add(properties.get(i));
@@ -26,7 +26,6 @@ public class PropertyManager {
     }
 
     public Property getPropertyAt(int pos){
-
         for(int i = 0; i<properties.size(); i++){
             if(properties.get(i).getPosition() == pos){
                 return(properties.get(i));
@@ -44,8 +43,13 @@ public class PropertyManager {
         return(null);
     }
 
-    public void setOwner(int p_id, int owner){
-        Property prop = getPropertyById(p_id);
+    public int getPropertyPriceByPos(int pos){
+        Property temp = getPropertyAt(pos);
+        return(temp.getPrice());
+    }
+
+    public void setOwner(int pos, int owner){
+        Property prop = getPropertyAt(pos);
         prop.setOwner(owner);
         dao.updateProperty(prop);
     }
