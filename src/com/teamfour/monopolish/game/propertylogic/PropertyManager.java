@@ -35,7 +35,7 @@ public class PropertyManager {
         return (null);
     }
 
-    public Property getPropertById(int p_id){
+    public Property getPropertyById(int p_id){
         for(int i = 0; i<properties.size(); i++){
             if(p_id == properties.get(i).getId()){
                 return(properties.get(i));
@@ -45,19 +45,19 @@ public class PropertyManager {
     }
 
     public void setOwner(int p_id, int owner){
-        Property prop = getPropertById(p_id);
+        Property prop = getPropertyById(p_id);
         prop.setOwner(owner);
         dao.updateProperty(prop);
     }
 
     public void pawn(int p_id){
-        Property prop = getPropertById(p_id);
+        Property prop = getPropertyById(p_id);
         prop.setPawned(true);
         dao.updateProperty(prop);
     }
 
     public void unPawn(int p_id){
-        Property prop = getPropertById(p_id);
+        Property prop = getPropertyById(p_id);
         prop.setPawned(false);
         dao.updateProperty(prop);
     }
