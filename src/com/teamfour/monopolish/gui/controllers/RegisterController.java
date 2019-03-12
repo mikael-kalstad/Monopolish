@@ -15,7 +15,7 @@ import java.time.LocalDate;
  * Controller class for registration view
  *
  * @author Mikael Kalstad
- * @version 1.4
+ * @version 1.5
  */
 
 public class RegisterController {
@@ -125,18 +125,20 @@ public class RegisterController {
      * <b>Requirements for a registration to succeed:</b>
      * <ul>
      *     <li>1. All inputs are not empty</li>
-     *     <li>2. Username and email is not already taken (res from db under)</li>
-     *          <ul>
-     *              <li>0 = user registered</li>
-     *              <li>1= username taken</li>
-     *              <li>2= email taken</li>
-     *          </ul>
+     *     <li>2. Username and email is not already taken</li>
      *     <li>3. Passwords match</li>
      * </ul>
      *
      * <br/>
+     * <b>Response from database trying to register user</b>
+     * <ul>
+     *      <li>0 = user registered</li>
+     *      <li>1= username taken</li>
+     *      <li>2= email taken</li>
+     *      <li>3 = username and email taken</li>
+     * </ul>
      *
-     * Also make sure the database registration is successful before switching to dashboard view
+     * If the registration is successful, it will switch to the dashboard view
      */
     public void register() {
         boolean usernameTaken = false;
@@ -151,7 +153,8 @@ public class RegisterController {
 
             try {
                 res = Handler.getAccountDAO().insertAccount(user, passwordInput.getText().trim());
-                if (res == 1) usernameTaken = true;
+                if (res == 3) usernameTaken = emailTaken = true;
+                else if (res == 1) usernameTaken = true;
                 else if (res == 2) emailTaken = true;
             }
             catch (SQLException e) { }
