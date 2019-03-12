@@ -6,8 +6,8 @@ public class PropertyManager {
     private ArrayList<Property> properties;
     private PropertyDAO dao = new PropertyDAO();
 
-    public PropertyManager(){
-        properties = dao.getAllProperties(0);
+    public PropertyManager(int game_id){
+        properties = dao.getAllProperties(game_id);
     }
     public ArrayList<Property> getAvailableProteries(){
         ArrayList<Property> available = getPlayerProperties(0);
@@ -36,7 +36,7 @@ public class PropertyManager {
 
     public Property getPropertById(int p_id){
         for(int i = 0; i<properties.size(); i++){
-            if(p_id == properties.get(i).getP_id()){
+            if(p_id == properties.get(i).getId()){
                 return(properties.get(i));
             }
         }

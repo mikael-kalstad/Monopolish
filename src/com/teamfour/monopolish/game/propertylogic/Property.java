@@ -1,22 +1,24 @@
 package com.teamfour.monopolish.game.propertylogic;
 
 public class Property {
-    private int p_id;
+    private int id;
     private String name;
     private int price;
     private int position;
     private boolean pawned = false;
     private int owner = 0;
+    private String categorycolor;
 
-    public Property(int p_id, String name, int price, int position){
-        this.p_id = p_id;
+    public Property(int p_id, String name, int price, int position, String categorycolor){
+        this.id = p_id;
         this.name = name;
         this.price = price;
         this.position = position;
+        this.categorycolor = categorycolor;
     }
 
-    public int getP_id() {
-        return p_id;
+    public int getId() {
+        return id;
     }
 
     public int getPosition() {
@@ -61,7 +63,9 @@ public class Property {
             return(0);
         }
     }
-
+    public String getCategorycolor(){
+        return categorycolor;
+    }
     public boolean equals(Property otherP){
         if(otherP == null){
             return(false);
@@ -69,6 +73,6 @@ public class Property {
         if(this == otherP){
             return (true);
         }
-        return(otherP.getP_id() == this.p_id);
+        return(otherP.getId() == this.id);
     }
 }
