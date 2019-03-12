@@ -28,12 +28,18 @@ public class AccountDAOTest {
     public void testInsertAccount() {
         Account user = new Account("eirikhem", "eirik@eirik.eirik", LocalDate.now(), 0);
         String password = "Hahahaha";
-        assertEquals(1, instance.insertAccount(user, password));
+        try {
+            assertFalse(instance.insertAccount(user, password));
+        }
+        catch (SQLException e) { e.printStackTrace(); }
     }
 
     @Test
     public void testLogin() {
-        assertNotNull(instance.getAccountByCredentials("eirikhem", "Hahahaha"));
-        assertNull(instance.getAccountByCredentials("eirikhem", "hahahaha"));
+        try {
+            assertNotNull(instance.getAccountByCredentials("eirikhem", "Hahahaha"));
+            assertNull(instance.getAccountByCredentials("eirikhem", "hahahaha"));
+        }
+        catch (SQLException e) { e.printStackTrace(); }
     }
 }

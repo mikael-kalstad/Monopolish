@@ -113,7 +113,11 @@ public class LoginController {
      *
      * <br/>
      *
-     * If login is successful, switch to dashboard view
+     * <b>If login is successful:</b>
+     * <ul>
+     *     <li>1. Update/save account obj in Handler</li>
+     *     <li>2. Switch to dashboard view</li>
+     * </ul>
      */
     public void login() {
         Account res = null;
