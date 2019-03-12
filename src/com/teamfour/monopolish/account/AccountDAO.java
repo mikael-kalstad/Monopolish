@@ -5,21 +5,23 @@ import com.teamfour.monopolish.database.DataAccessObject;
 import java.sql.*;
 
 /**
- * Handles database communication towards the 'Account' table in the database.
+ * Handles database communication towards the 'account' table in the database.
  *
  * @author      Eirik Hemstad
- * @version     1.0
+ * @version     1.1
  */
 
 public class AccountDAO extends DataAccessObject {
+
+
     /**
      * Inserts an account object into the account table
      * @param account Object to insert
      * @return True if the operation was successful, false if this user already exists
      * @throws SQLException
      */
-    public boolean insertAccount(Account account, String password) throws SQLException {
-        int count = 0;
+    public int insertAccount(Account account, String password) throws SQLException {
+        int status = 0;
         try {
             getConnection();
             cStmt = connection.prepareCall("{call account_insert_user(?, ?, ?, ?)}");
@@ -28,15 +30,18 @@ public class AccountDAO extends DataAccessObject {
             cStmt.setString(2, account.getEmail());
             cStmt.setString(3, password);
             cStmt.setDate(4, Date.valueOf(account.getRegDate()));
+            cStmt.registerOutParameter(5, Types.INTEGER);
 
-            count = cStmt.executeUpdate();
+            if(cStmt.execute())
+                status = cStmt.getInt(5);
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            return 1;
         } finally {
             releaseConnection();
         }
 
-        return (count > 0);
+        return status;
     }
 
     /**

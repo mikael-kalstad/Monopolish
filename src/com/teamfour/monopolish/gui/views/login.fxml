@@ -20,7 +20,7 @@
                   <Font size="68.0" />
                </font>
             </Text>
-            <TextField fx:id="usernameInput" layoutX="109.0" layoutY="203.0" onAction="#login" onKeyTyped="#handleInputChange" prefHeight="52.0" prefWidth="334.0" promptText="Username or email" style="-fx-background-color: transparent; -fx-border-width: 0 0 2 0; -fx-border-color: white;">
+            <TextField fx:id="usernameInput" layoutX="109.0" layoutY="203.0" onAction="#login" prefHeight="52.0" prefWidth="334.0" promptText="Username or email" style="-fx-background-color: transparent; -fx-border-width: 0 0 2 0; -fx-border-color: white; -fx-text-inner-color: white;">
                <font>
                   <Font size="19.0" />
                </font>
@@ -33,7 +33,7 @@
                   <Cursor fx:constant="CLOSED_HAND" />
                </cursor>
             </Button>
-            <PasswordField fx:id="passwordInput" layoutX="109.0" layoutY="310.0" onAction="#login" onKeyTyped="#handleInputChange" prefHeight="52.0" prefWidth="334.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-width: 0 0 2 0; -fx-border-color: white;">
+            <PasswordField fx:id="passwordInput" layoutX="109.0" layoutY="310.0" onAction="#login" prefHeight="52.0" prefWidth="334.0" promptText="Password" style="-fx-background-color: transparent; -fx-border-width: 0 0 2 0; -fx-border-color: white; -fx-text-inner-color: white;">
                <font>
                   <Font size="19.0" />
                </font>
@@ -48,7 +48,7 @@
                   <Image url="@../../../../../../res/gui/lock.png" />
                </image>
             </ImageView>
-            <Text fx:id="text_warning" layoutX="130.0" layoutY="417.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: red;" text="Username/email or passord is wrong" visible="false">
+            <Text fx:id="msg" fill="RED" layoutX="130.0" layoutY="417.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username/email or passord is wrong" visible="false">
                <font>
                   <Font size="15.0" />
                </font>

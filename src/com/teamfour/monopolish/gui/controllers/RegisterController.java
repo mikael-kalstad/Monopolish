@@ -1,5 +1,6 @@
 package com.teamfour.monopolish.gui.controllers;
 
+import com.teamfour.monopolish.account.Account;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -7,11 +8,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 
+import java.sql.SQLException;
+import java.time.LocalDate;
+
 /**
  * Controller class for registration view
  *
  * @author Mikael Kalstad
- * @version 1.3
+ * @version 1.4
  */
 
 public class RegisterController {
@@ -36,6 +40,7 @@ public class RegisterController {
     private final String MSG_USERNAME_WARNING = "*Username is taken, choose a different one";
     private final String MSG_EMAIL_WARNING = "*Email is already registered";
 
+    // Password requirements constants
     private final int MIN_PASSWORD_LENGTH = 6;
 
     private void setBorderStyle(Node element, String color) {
@@ -43,12 +48,7 @@ public class RegisterController {
     }
 
     private void setTextColor(Text element, String color) {
-        //element.setStyle("-fx-text-inner-color: color");
         element.setFill(Paint.valueOf(color));
-    }
-
-    public void logout() {
-        com.teamfour.monopolish.gui.controllers.Handler.getSceneManager().setScene(ViewConstants.LOGIN.getValue());
     }
 
     /**
@@ -95,28 +95,6 @@ public class RegisterController {
     }
 
     /**
-     * This method will check if a username is already taken,
-     * with a call to the database.
-     *
-     * @return username taken or not
-     */
-    private boolean usernameTaken() {
-        // Database request here
-        return usernameInput.getText().equals("Mikael"); // Testing purposes
-    }
-
-    /**
-     * This method will check if an email is already registered,
-     * with a call to the database.
-     *
-     * @return email already registered or not
-     */
-    private boolean emailTaken() {
-        // Database request here
-        return emailInput.getText().equals("mikaelk@live.no"); // Testing purposes
-    }
-
-    /**
      * Check if password meets all requirements required.
      * <br/><br/>
      *      <b>Password requirements:</b>
@@ -147,7 +125,12 @@ public class RegisterController {
      * <b>Requirements for a registration to succeed:</b>
      * <ul>
      *     <li>1. All inputs are not empty</li>
-     *     <li>2. Username and email is not already taken (db check)</li>
+     *     <li>2. Username and email is not already taken (res from db under)</li>
+     *          <ul>
+     *              <li>0 = user registered</li>
+     *              <li>1= username taken</li>
+     *              <li>2= email taken</li>
+     *          </ul>
      *     <li>3. Passwords match</li>
      * </ul>
      *
@@ -156,10 +139,27 @@ public class RegisterController {
      * Also make sure the database registration is successful before switching to dashboard view
      */
     public void register() {
-        boolean usernameTaken = usernameTaken();
-        boolean emailTaken = emailTaken();
+        boolean usernameTaken = false;
+        boolean emailTaken = false;
         boolean passwordRequirements = checkPasswordRequirements();
         boolean passwordMatch = passwordMatch();
+
+        // Check requirements (details in javadoc above method)
+        if (!inputsEmpty() && passwordMatch) {
+            int res = 0;
+            Account user = new Account(usernameInput.getText().trim(), emailInput.getText().trim(), LocalDate.now(), 0);
+
+            try {
+                res = Handler.getAccountDAO().insertAccount(user, passwordInput.getText().trim());
+                if (res == 1) usernameTaken = true;
+                else if (res == 2) emailTaken = true;
+            }
+            catch (SQLException e) { }
+
+            if (res == 0) {
+                Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
+            }
+        }
 
         // Username check
         checkField(usernameInput, usernameMsg, MSG_USERNAME_WARNING, usernameTaken);
@@ -170,14 +170,13 @@ public class RegisterController {
         // Password check
         checkField(passwordInput, passwordMsg, MSG_PASSWORD_WARNING, !passwordRequirements);
         checkField(passwordRepeatInput, passwordRepeatMsg, MSG_PASSWORDREPEAT_WARNING, !passwordMatch);
+    }
 
-        // Check requirements (details in javadoc above method)
-        if (!inputsEmpty() && !usernameTaken && !emailTaken && passwordMatch) {
-            boolean res = true; // Some database call
-            if (res) {
-                Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
-            }
-            // Show some error msg...
-        }
+    /**
+     * Method that will be called when the login button in the register view is clicked.
+     * Will go back to the login view
+     */
+    public void login() {
+        com.teamfour.monopolish.gui.controllers.Handler.getSceneManager().setScene(ViewConstants.LOGIN.getValue());
     }
 }
