@@ -1,4 +1,4 @@
-package com.teamfour.monopolish.game.PropertyLogic;
+package com.teamfour.monopolish.game.propertylogic;
 
 import java.util.ArrayList;
 
