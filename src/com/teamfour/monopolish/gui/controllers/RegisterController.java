@@ -1,5 +1,6 @@
 package com.teamfour.monopolish.gui.controllers;
 
+import com.teamfour.monopolish.account.Account;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -7,11 +8,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 
+import java.sql.SQLException;
+import java.time.LocalDate;
+
 /**
  * Controller class for registration view
  *
  * @author Mikael Kalstad
- * @version 1.3
+ * @version 1.4
  */
 
 public class RegisterController {
@@ -173,7 +177,14 @@ public class RegisterController {
 
         // Check requirements (details in javadoc above method)
         if (!inputsEmpty() && !usernameTaken && !emailTaken && passwordMatch) {
-            boolean res = true; // Some database call
+            boolean res = false;
+            Account user = new Account(usernameInput.getText().trim(), emailInput.getText().trim(), LocalDate.now(), 0);
+
+            try {
+                res = Handler.getAccountDAO().insertAccount(user, passwordInput.getText().trim());
+            }
+            catch (SQLException e) { }
+
             if (res) {
                 Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
             }

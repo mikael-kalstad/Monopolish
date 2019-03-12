@@ -5,13 +5,15 @@ import com.teamfour.monopolish.database.DataAccessObject;
 import java.sql.*;
 
 /**
- * Handles database communication towards the 'Account' table in the database.
+ * Handles database communication towards the 'account' table in the database.
  *
  * @author      Eirik Hemstad
  * @version     1.0
  */
 
 public class AccountDAO extends DataAccessObject {
+
+
     /**
      * Inserts an account object into the account table
      * @param account Object to insert

@@ -1,64 +1,155 @@
 package com.teamfour.monopolish.gui.controllers;
 
+import com.teamfour.monopolish.account.Account;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 
+import java.sql.SQLException;
+
+
+/**
+ * Controller class for registration view
+ *
+ * @author Mikael Kalstad
+ * @version 1.5
+ */
 public class LoginController {
     @FXML private TextField usernameInput;
     @FXML private TextField passwordInput;
-    @FXML private Text text_warning;
-    @FXML private Button loginBtn;
+    @FXML private Text msg;
 
+    // Color constants
     private final String COLOR_NORMAL = "white";
+    private final String COLOR_REQUIRED = "orange";
     private final String COLOR_WARNING = "red";
 
-    private void newBorderStyle(Node element, String color) {
-        element.setStyle("-fx-border-color: " + color);
+    // Msg constants
+    private final String MSG_REQUIRED = "*Field is required";
+    private final String MSG_WARNING = "*Username/email or password is wrong";
+    private final String MSG_DATABASE_ERROR = "*Database error, try again";
+
+    /**
+     * Method to change styling to an input
+     *
+     * @param element Input target element
+     * @param color New color
+     */
+    private void setBorderStyle(TextField element, String color) {
+        element.setStyle(
+            "-fx-border-color: " + color + ";" +
+            "-fx-border-width: 0 0 2 0;" +
+            "-fx-background-color: transparent;" +
+            "-fx-text-inner-color: " + COLOR_NORMAL + ";");
     }
 
-    public void handleInputChange() {
-        if (!usernameInput.getText().isEmpty() && !passwordInput.getText().isEmpty()) {
-            loginBtn.setDisable(false); // Enable button
-        } else {
-            loginBtn.setDisable(true);
+    /**
+     * Method to change color of a Text element
+     *
+     * @param element Text target element
+     * @param color New color
+     */
+    private void setTextColor(Text element, String color) {
+        element.setFill(Paint.valueOf(color));
+    }
+
+    /**
+     * Check if any inputs are empty
+     *
+     * @return true if any inputs are empty, false if all inputs are not empty
+     */
+    private boolean inputsEmpty() {
+        return (usernameInput.getText().trim().isEmpty() || passwordInput.getText().trim().isEmpty());
+    }
+
+    /**
+     * Check a input for requirements (not empty) and warnings (specified in parameters),
+     * and change styling accordingly.
+     *
+     * @param input A Textfield that will be checked
+     * @param textElement A Text that will have styling applied
+     * @param warning If true show warning msg
+     */
+    private void checkInput(TextField input, Text textElement, boolean warning, boolean dbError) {
+        // Required styling
+        if (input.getText().trim().isEmpty()) {
+            setBorderStyle(input, COLOR_REQUIRED);
+            textElement.setText(MSG_REQUIRED);
+            setTextColor(textElement, COLOR_REQUIRED);
+            textElement.setVisible(true);
+        }
+        // Database error
+        else if (dbError) {
+            setBorderStyle(input, COLOR_WARNING);
+            textElement.setText(MSG_DATABASE_ERROR);
+            setTextColor(textElement, COLOR_WARNING);
+            textElement.setVisible(true);
+        }
+        // Warning styling
+        else if (warning && !inputsEmpty()) {
+            setBorderStyle(input, COLOR_WARNING);
+            textElement.setText(MSG_WARNING);
+            setTextColor(textElement, COLOR_WARNING);
+            textElement.setVisible(true);
+        }
+        // Normal styling
+        else {
+            setBorderStyle(input, COLOR_NORMAL);
+            if (!inputsEmpty()) textElement.setVisible(false);
         }
     }
 
+    /**
+     * Method that will be called when the login button in the login view is clicked.
+     * It will performs checks to make sure all requirements are met before logging in.
+     * <br/><br/>
+     * <b>Requirements for a login to succeed:</b>
+     * <ul>
+     *     <li>1. All inputs are not empty</li>
+     *     <li>2. Username/email and password is correct (db check)</li>
+     * </ul>
+     *
+     * <br/>
+     *
+     * If login is successful, switch to dashboard view
+     */
     public void login() {
+        Account res = null;
+        boolean canLogin = false;
+        boolean dbError = false;
+
+        // If inputs are not empty
         // Database query for checking username/email and password combination
-        boolean res = false;
+        if (!inputsEmpty()) {
+            try {
+                res = Handler.getAccountDAO().getAccountByCredentials(usernameInput.getText(), passwordInput.getText());
+                if (res != null) {
+                    Handler.setAccount(res);
+                    canLogin = true;
+                    dbError = false;
+                }
+            }
+            catch (SQLException e) {
+                dbError = true;
+            }
+        }
 
         // Testing purposes
-        if (usernameInput.getText().trim().equals("Mikael")
-                && passwordInput.getText().trim().equals("1234")) {
-            res = true;
-        }
-
         System.out.println(
             "logging in... \n" +
             "username: " + usernameInput.getText() + "\n" +
             "password: " + passwordInput.getText()
         );
 
-        // If username/email and password is correct, from the request to the database.
-        if (res) {
-            // Change styling to normal
-            newBorderStyle(usernameInput, COLOR_NORMAL);
-            newBorderStyle(passwordInput, COLOR_NORMAL);
-            text_warning.setVisible(false); // Hide warning text
+        // Check inputs
+        checkInput(usernameInput, msg, !canLogin, dbError);
+        checkInput(passwordInput, msg, !canLogin, dbError);
 
-            // Switch to dashboard screen
-            System.out.println(usernameInput.getText() + " you are logged in");
+        // If response from database is okay, go to dashboard view
+        if (canLogin) {
             Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
-        } else {
-            // Change styling to warning
-            newBorderStyle(usernameInput, COLOR_WARNING);
-            newBorderStyle(passwordInput, COLOR_WARNING);
-            text_warning.setVisible(true); // Show warning text
         }
     }
 

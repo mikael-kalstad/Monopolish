@@ -38,7 +38,7 @@ public class LobbyDAO extends DataAccessObject {
     /**
      * Sets the specified users 'ready' status
      * @param roomId Lobby id
-     * @param userId Account id
+     * @param userId account id
      * @param ready Ready or not?
      * @return True if successful
      * @throws SQLException
@@ -76,7 +76,7 @@ public class LobbyDAO extends DataAccessObject {
     /**
      * Deletes the specified user from the specified lobby
      * @param roomId Lobby id
-     * @param userId Account id
+     * @param userId account id
      * @return True if successful
      * @throws SQLException
      */
