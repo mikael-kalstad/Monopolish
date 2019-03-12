@@ -3,7 +3,7 @@ package com.teamfour.monopolish.gui.controllers;
 import com.teamfour.monopolish.account.Account;
 import com.teamfour.monopolish.account.AccountDAO;
 import com.teamfour.monopolish.database.ConnectionPool;
-import com.teamfour.monopolish.gui.views.*;
+import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
