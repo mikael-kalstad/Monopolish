@@ -1,6 +1,5 @@
-package com.teamfour.monopolish.game.PropertyLogic;
+package com.teamfour.monopolish.game.propertylogic;
 
-import com.teamfour.monopolish.account.Account;
 import com.teamfour.monopolish.database.ConnectionPool;
 
 import java.sql.*;
@@ -24,7 +23,7 @@ public class PropertyDAO {
                 cStmt.setInt(2, prop_id);
 
                 rs =  cStmt.executeQuery();
-                props.add(new Property(rs.getInt("property_id"), rs.getString("name"), rs.getInt("price"), rs.getInt("position"), rs.getString("categorycolor")));
+                //props.add(new Property(rs.getInt("property_id"), rs.getString("name"), rs.getInt("price"), rs.getInt("position"), rs.getString("categorycolor")));
 
                 //ikke helt ideelt?
                 rs.close();
@@ -54,7 +53,7 @@ public class PropertyDAO {
             //works with property id's being 10000 inkremented and 10 properties
             int prop_id = 10000;
             for(int i = 0; i<10; i++) {
-                cStmt.setInt(1, prop.getId());
+                //cStmt.setInt(1, prop.getId());
                 cStmt.setBoolean(2, prop.isPawned());
                 cStmt.setInt(3, prop.getOwner());
                 cStmt.executeUpdate();
