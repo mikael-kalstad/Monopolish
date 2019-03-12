@@ -55,7 +55,7 @@ public class AccountDAO extends DataAccessObject {
         int status = 0;
         try {
             getConnection();
-            cStmt = connection.prepareCall("{call reset_password(?, ?, ?, ?)}");
+            cStmt = connection.prepareCall("{call account_reset_password(?, ?, ?, ?)}");
 
             cStmt.setString(1, username);
             cStmt.setString(2, currentPassword);

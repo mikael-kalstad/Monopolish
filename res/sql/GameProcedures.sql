@@ -18,6 +18,71 @@ CREATE PROCEDURE game_insert(IN lobby_id int, OUT game_id INT)
     SELECT game_id, l.user_id FROM lobby l WHERE l.room_id=lobby_id;
 
     -- Delete all players from the lobby when the game is started
-    DELETE FROM lobby l WHERE l.room_id=lobby_id;
+    DELETE FROM lobby WHERE room_id=lobby_id;
+  END;
+-- END$$
+
+/**
+Procedure to retrieve the current player
+ */
+
+-- DELIMITER $$
+DROP PROCEDURE game_get_current_player;
+
+CREATE PROCEDURE game_get_current_player(IN game_id int, OUT current_player_id INT)
+  BEGIN
+    SELECT current_player_id=IFNULL(g.currentplayer, 0) FROM game g
+    WHERE g.game_id=game_id;
+  END;
+-- END$$
+
+/**
+Procedure to retrieve the current player
+ */
+
+-- DELIMITER $$
+DROP PROCEDURE game_set_current_player;
+
+CREATE PROCEDURE game_set_current_player(IN game_id INT, IN current_player_id INT)
+  BEGIN
+    UPDATE game g
+    SET g.currentplayer=current_player_id
+    WHERE g.game_id=game_id;
+  END;
+-- END$$
+
+/**
+Procedure to retrieve the current player
+ */
+
+-- DELIMITER $$
+DROP PROCEDURE game_close;
+
+CREATE PROCEDURE game_close(IN game_id INT, IN winner_id INT)
+  BEGIN
+    IF (winner_id = 0) THEN
+      SET winner_id = NULL;
+    END IF;
+
+    UPDATE game g
+    SET g.currentplayer=NULL,
+        g.endtime=NOW(),
+        g.winner=winner_id
+    WHERE g.game_id=game_id;
+  END;
+-- END$$
+
+/**
+Procedure to retrieve the current player
+ */
+
+-- DELIMITER $$
+DROP PROCEDURE game_get_winner;
+
+CREATE PROCEDURE game_get_winner(IN game_id INT, OUT winner_id INT)
+  BEGIN
+    SET winner_id=(SELECT IFNULL(g.winner, 0)
+    FROM game g
+    WHERE g.game_id=game_id LIMIT 1);
   END;
 -- END$$
