@@ -1,6 +1,6 @@
-package com.teamfour.monopolish.gui.Controllers;
+package com.teamfour.monopolish.gui.controllers;
 
-import com.teamfour.monopolish.gui.Views.ViewConstants;
+import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
@@ -46,9 +46,14 @@ public class RegisterController {
     }
 
     public void logout() {
-        com.teamfour.monopolish.gui.Controllers.Handler.getSceneManager().setScene(ViewConstants.LOGIN.getValue());
+        com.teamfour.monopolish.gui.controllers.Handler.getSceneManager().setScene(ViewConstants.LOGIN.getValue());
     }
 
+    /**
+     * Check if any inputs are empty
+     *
+     * @return true if any inputs are empty, false if all inputs are not empty
+     */
     private boolean inputsEmpty() {
         return (usernameInput.getText().trim().isEmpty() ||
                 emailInput.getText().trim().isEmpty() ||

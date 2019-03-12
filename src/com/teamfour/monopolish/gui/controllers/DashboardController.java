@@ -1,6 +1,6 @@
-package com.teamfour.monopolish.gui.Controllers;
+package com.teamfour.monopolish.gui.controllers;
 
-import com.teamfour.monopolish.gui.Views.ViewConstants;
+import com.teamfour.monopolish.gui.views.ViewConstants;
 
 public class DashboardController {
     public void logout() {

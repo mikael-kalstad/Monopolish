@@ -1,4 +1,4 @@
-package com.teamfour.monopolish.gui.Controllers;
+package com.teamfour.monopolish.gui.controllers;
 
 import javafx.scene.control.Alert;
 
