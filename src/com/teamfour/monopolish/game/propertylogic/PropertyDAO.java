@@ -53,7 +53,7 @@ public class PropertyDAO {
             //works with property id's being 10000 inkremented and 10 properties
             int prop_id = 10000;
             for(int i = 0; i<10; i++) {
-                //cStmt.setInt(1, prop.getId());
+                cStmt.setInt(1, prop.getId());
                 cStmt.setBoolean(2, prop.isPawned());
                 cStmt.setInt(3, prop.getOwner());
                 cStmt.executeUpdate();
