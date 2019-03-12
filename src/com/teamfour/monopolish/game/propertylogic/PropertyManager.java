@@ -43,8 +43,13 @@ public class PropertyManager {
         return(null);
     }
 
-    public void setOwner(int p_id, int owner){
-        Property prop = getPropertyById(p_id);
+    public int getPropertyPriceByPos(int pos){
+        Property temp = getPropertyAt(pos);
+        return(temp.getPrice());
+    }
+
+    public void setOwner(int pos, int owner){
+        Property prop = getPropertyAt(pos);
         prop.setOwner(owner);
         dao.updateProperty(prop);
     }
