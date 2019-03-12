@@ -1,0 +1,12 @@
+delimiter $$
+create procedure player_remove(
+
+  )
+  begin
+
+  commit;
+
+end $$
+delimiter ;
+
+
