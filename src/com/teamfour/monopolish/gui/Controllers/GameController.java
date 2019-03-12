@@ -1,4 +1,4 @@
-package com.teamfour.monopolish.gui.controllers;
+package com.teamfour.monopolish.gui.Controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

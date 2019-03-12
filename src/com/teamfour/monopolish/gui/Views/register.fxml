@@ -6,8 +6,22 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.monopolish.gui.controllers.RegisterController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.monopolish.gui.Controllers.RegisterController">
    <children>
+      <Pane layoutX="826.0" layoutY="522.0" prefHeight="121.0" prefWidth="268.0" style="-fx-background-color: e8e8e8;">
+         <children>
+            <Text fill="#ff7676" layoutX="13.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password requirements">
+               <font>
+                  <Font name="System Bold" size="22.0" />
+               </font>
+            </Text>
+            <Text layoutX="13.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Length: Min 6 characters" wrappingWidth="242.2470760345459">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
       <Pane prefHeight="1080.0" prefWidth="783.0" style="-fx-background-color: #212121;">
          <children>
             <Text fill="WHITE" layoutX="127.0" layoutY="338.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Play monopoly with your friends! Nothing can stop you from winning!" wrappingWidth="528.5414428710938">
@@ -32,35 +46,64 @@
             </Text>
          </children>
       </Pane>
-      <Button fx:id="signupBtn" layoutX="1125.0" layoutY="809.0" mnemonicParsing="false" onAction="#register" prefHeight="77.0" prefWidth="375.0" style="-fx-background-color: #FF9800; -fx-background-radius: 0;" text="Sign up" textAlignment="CENTER" textFill="WHITE">
+      <Button fx:id="signupBtn" layoutX="1180.0" layoutY="811.0" mnemonicParsing="false" onAction="#register" prefHeight="77.0" prefWidth="375.0" style="-fx-background-color: #FF9800; -fx-background-radius: 0;" text="Sign up" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font size="28.0" />
          </font>
       </Button>
-      <TextField fx:id="usernameInput" layoutX="1061.0" layoutY="275.0" onAction="#handleInputChange" prefHeight="77.0" prefWidth="504.0" promptText="Username">
+      <Text fx:id="title" layoutX="1157.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create account">
          <font>
-            <Font size="27.0" />
-         </font>
-      </TextField>
-      <Text layoutX="1127.0" layoutY="147.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create account">
-         <font>
-            <Font name="System Bold" size="56.0" />
+            <Font name="System Bold" size="60.0" />
          </font>
       </Text>
-      <Text fill="#939292" layoutX="1093.0" layoutY="221.0" strokeType="OUTSIDE" strokeWidth="0.0" text="We need some information before you can rule the board!">
+      <Text fill="#939292" layoutX="1149.0" layoutY="210.0" strokeType="OUTSIDE" strokeWidth="0.0" text="We need some information before you can rule the board!">
          <font>
             <Font size="17.0" />
          </font>
       </Text>
-      <TextField fx:id="emailInput" layoutX="1061.0" layoutY="387.0" onAction="#handleInputChange" prefHeight="77.0" prefWidth="504.0" promptText="Email">
-         <font>
-            <Font size="27.0" />
-         </font>
-      </TextField>
-      <TextField fx:id="passwordInput" layoutX="1061.0" layoutY="502.0" onAction="#handleInputChange" prefHeight="77.0" prefWidth="504.0" promptText="Password">
-         <font>
-            <Font size="27.0" />
-         </font>
-      </TextField>
+      <Pane layoutX="1070.0" layoutY="257.0" prefHeight="499.0" prefWidth="594.0">
+         <children>
+            <TextField fx:id="usernameInput" layoutX="65.0" layoutY="23.0" onAction="#register" prefHeight="70.0" prefWidth="464.0" promptText="Username">
+               <font>
+                  <Font size="27.0" />
+               </font>
+            </TextField>
+            <TextField fx:id="emailInput" layoutX="65.0" layoutY="133.0" onAction="#register" prefHeight="70.0" prefWidth="464.0" promptText="Email">
+               <font>
+                  <Font size="27.0" />
+               </font>
+            </TextField>
+            <TextField fx:id="passwordInput" layoutX="65.0" layoutY="239.0" onAction="#register" prefHeight="70.0" prefWidth="464.0" promptText="Password">
+               <font>
+                  <Font size="27.0" />
+               </font>
+            </TextField>
+            <TextField fx:id="passwordRepeatInput" layoutX="65.0" layoutY="342.0" onAction="#register" prefHeight="70.0" prefWidth="464.0" promptText="Reapeat password">
+               <font>
+                  <Font size="27.0" />
+               </font>
+            </TextField>
+            <Text fx:id="usernameMsg" fill="RED" layoutX="65.0" layoutY="118.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*Username is taken, choose a different one " visible="false">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Text>
+            <Text fx:id="emailMsg" fill="RED" layoutX="65.0" layoutY="224.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*Email is already registered" visible="false">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Text>
+            <Text fx:id="passwordRepeatMsg" fill="RED" layoutX="65.0" layoutY="434.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-fill: red;" text="*Passwords doesn't match" visible="false" wrappingWidth="193.0">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Text>
+            <Text fx:id="passwordMsg" fill="RED" layoutX="65.0" layoutY="330.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-text-fill: red;" text="*Check password requirements" visible="false" wrappingWidth="193.0">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
    </children>
 </Pane>

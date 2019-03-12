@@ -7,7 +7,7 @@ public class PropertyManager {
     private PropertyDAO dao = new PropertyDAO();
 
     public PropertyManager(){
-        properties = dao.getAllProperties();
+        properties = dao.getAllProperties(0);
     }
     public ArrayList<Property> getAvailableProteries(){
         ArrayList<Property> available = getPlayerProperties(0);

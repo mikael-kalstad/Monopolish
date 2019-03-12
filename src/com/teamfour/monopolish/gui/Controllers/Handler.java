@@ -1,4 +1,4 @@
-package com.teamfour.monopolish.gui.controllers;
+package com.teamfour.monopolish.gui.Controllers;
 
 import com.teamfour.monopolish.gui.Views.ViewConstants;
 import javafx.application.Application;
@@ -14,6 +14,8 @@ public class Handler extends Application {
     // Testing purposes
     @Override
     public void start(Stage primaryStage) throws Exception {
+        primaryStage.setMinWidth(1000);
+        primaryStage.setMinHeight(800);
         // Initial view is login
         sceneManager = new SceneManager(primaryStage, ViewConstants.LOGIN.getValue());
         primaryStage.show();
