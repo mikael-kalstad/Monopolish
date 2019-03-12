@@ -7,11 +7,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.monopolish.gui.controllers.DashboardController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1707.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.monopolish.gui.controllers.DashboardController">
    <children>
-      <Pane layoutY="-2.0" prefHeight="1080.0" prefWidth="510.0" style="-fx-background-color: #212121;">
+      <Pane layoutY="-2.0" prefHeight="909.0" prefWidth="510.0" style="-fx-background-color: #212121;">
          <children>
-            <Button layoutX="109.0" layoutY="894.0" mnemonicParsing="false" onAction="#logout" prefHeight="64.0" prefWidth="293.0" style="-fx-background-color: #FF9800; -fx-background-radius: 0;" text="Log out" textAlignment="CENTER" textFill="WHITE">
+            <Button layoutX="99.0" layoutY="750.0" mnemonicParsing="false" onAction="#logout" prefHeight="64.0" prefWidth="293.0" style="-fx-background-color: #FF9800; -fx-background-radius: 0;" text="Log out" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="21.0" />
                </font>
@@ -24,47 +24,47 @@
                   <Font name="System Bold" size="49.0" />
                </font>
             </Text>
-            <Text fill="#dad9d9" layoutX="52.0" layoutY="286.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" wrappingWidth="108.66666173934942">
+            <Text fill="#dad9d9" layoutX="53.0" layoutY="241.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" wrappingWidth="108.66666173934942">
                <font>
                   <Font size="19.0" />
                </font>
             </Text>
-            <Text fill="WHITE" layoutX="214.0" layoutY="289.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Baard" wrappingWidth="124.66666173934942">
+            <Text fx:id="username" fill="WHITE" layoutX="215.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Baard" wrappingWidth="124.66666173934942">
                <font>
                   <Font size="29.0" />
                </font>
             </Text>
-            <Text fill="#dad9d9" layoutX="59.0" layoutY="554.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Personal Highscore" wrappingWidth="236.00002050399786">
+            <Text fill="#dad9d9" layoutX="49.0" layoutY="452.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Personal Highscore" wrappingWidth="236.00002050399786">
                <font>
                   <Font size="27.0" />
                </font>
             </Text>
-            <Text fill="#f75050" layoutX="59.0" layoutY="634.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10.000" wrappingWidth="196.00002050399786">
+            <Text fx:id="highscore" fill="#f75050" layoutX="49.0" layoutY="543.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10.000" wrappingWidth="196.00002050399786">
                <font>
                   <Font name="System Bold" size="53.0" />
                </font>
             </Text>
-            <Text fill="#dad9d9" layoutX="52.0" layoutY="374.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Games played" wrappingWidth="124.66667175292974">
+            <Text fill="#dad9d9" layoutX="53.0" layoutY="329.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Games played" wrappingWidth="124.66667175292974">
                <font>
                   <Font size="19.0" />
                </font>
             </Text>
-            <Text fill="WHITE" layoutX="214.0" layoutY="377.0" strokeType="OUTSIDE" strokeWidth="0.0" text="6" wrappingWidth="124.66666173934942">
+            <Text fill="WHITE" layoutX="215.0" layoutY="332.0" strokeType="OUTSIDE" strokeWidth="0.0" text="6" wrappingWidth="124.66666173934942">
                <font>
                   <Font size="29.0" />
                </font>
             </Text>
-            <Line endX="304.0000305175781" layoutX="153.0" layoutY="205.0" startX="-100.0" stroke="WHITE" />
-            <Line endX="304.0000305175781" layoutX="153.0" layoutY="466.0" startX="-100.0" stroke="WHITE" />
-            <Line endX="304.0000305175781" layoutX="153.0" layoutY="728.0" startX="-100.0" stroke="WHITE" />
-            <Text fill="WHITE" layoutX="109.0" layoutY="819.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome back!" wrappingWidth="292.9999923706055">
+            <Line endX="304.0000305175781" layoutX="153.0" layoutY="169.0" startX="-100.0" stroke="WHITE" />
+            <Line endX="304.0000305175781" layoutX="153.0" layoutY="391.0" startX="-100.0" stroke="WHITE" />
+            <Line endX="304.0000305175781" layoutX="153.0" layoutY="612.0" startX="-100.0" stroke="WHITE" />
+            <Text fill="WHITE" layoutX="123.0" layoutY="698.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Want to leave?" wrappingWidth="264.9999923706055">
                <font>
-                  <Font name="System Bold" size="36.0" />
+                  <Font name="System Bold" size="28.0" />
                </font>
             </Text>
          </children>
       </Pane>
-      <Button layoutX="994.0" layoutY="868.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="293.0" style="-fx-background-color: #FF9800; -fx-background-radius: 0;" text="Play" textAlignment="CENTER" textFill="WHITE">
+      <Button layoutX="814.0" layoutY="659.0" mnemonicParsing="false" onAction="#play" prefHeight="64.0" prefWidth="293.0" style="-fx-background-color: #FF9800; -fx-background-radius: 0;" text="Play" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font size="21.0" />
          </font>
@@ -72,10 +72,18 @@
             <Cursor fx:constant="CLOSED_HAND" />
          </cursor>
       </Button>
-      <Text fill="#250000" layoutX="799.0" layoutY="553.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Users online " wrappingWidth="292.9999923706055">
+      <Text fill="#250000" layoutX="799.0" layoutY="418.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Users online " wrappingWidth="292.9999923706055">
          <font>
             <Font name="System Bold" size="36.0" />
          </font>
       </Text>
+      <Button layoutX="1414.0" layoutY="836.0" mnemonicParsing="false" onAction="#play" prefHeight="64.0" prefWidth="293.0" style="-fx-background-color: #FF9800; -fx-background-radius: 0;" text="Play" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font size="21.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="CLOSED_HAND" />
+         </cursor>
+      </Button>
    </children>
 </Pane>

@@ -11,9 +11,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="952.0" prefWidth="1693.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.monopolish.gui.controllers.LoginController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1707.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.monopolish.gui.controllers.LoginController">
    <children>
-      <Pane layoutX="1111.0" layoutY="135.0" prefHeight="672.0" prefWidth="503.0" style="-fx-background-color: #212121; -fx-background-radius: 10px;" AnchorPane.bottomAnchor="145.0" AnchorPane.rightAnchor="72.0" AnchorPane.topAnchor="135.0">
+      <Pane layoutX="1111.0" layoutY="135.0" prefHeight="672.0" prefWidth="503.0" style="-fx-background-color: #212121; -fx-background-radius: 10px;">
          <children>
             <Text fill="WHITE" layoutX="166.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sign in">
                <font>
@@ -55,27 +55,27 @@
             </Text>
          </children>
       </Pane>
-      <Button fx:id="registerBtn" layoutX="201.0" layoutY="811.0" mnemonicParsing="false" onAction="#register" prefHeight="77.0" prefWidth="375.0" style="-fx-background-color: #FF9800; -fx-background-radius: 0;" text="Sign up" textAlignment="CENTER" textFill="WHITE">
+      <Button fx:id="registerBtn" layoutY="822.0" mnemonicParsing="false" onAction="#register" prefHeight="77.0" prefWidth="375.0" style="-fx-background-color: #FF9800; -fx-background-radius: 0;" text="Sign up" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font size="28.0" />
          </font>
       </Button>
-      <Text layoutX="167.0" layoutY="262.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" Welcome Back!">
+      <Text layoutX="195.0" layoutY="201.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome Back!" wrappingWidth="612.998046875">
          <font>
             <Font name="System Bold" size="82.0" />
          </font>
       </Text>
-      <Text layoutX="224.0" layoutY="775.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Not registered?">
+      <Text layoutX="195.0" layoutY="672.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Not registered?">
          <font>
             <Font name="System Bold" size="32.0" />
          </font>
       </Text>
-      <Text layoutX="202.0" layoutY="420.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Play monopoly with your friends! Nothing can stop you from winning!" wrappingWidth="655.3333435058594">
+      <Text layoutX="195.0" layoutY="348.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Play monopoly with your friends! Nothing can stop you from winning!" wrappingWidth="655.3333435058594">
          <font>
             <Font size="30.0" />
          </font>
       </Text>
-      <ImageView fitHeight="276.0" fitWidth="219.0" layoutX="737.0" layoutY="550.0">
+      <ImageView fitHeight="276.0" fitWidth="219.0" layoutX="860.0" layoutY="491.0">
          <image>
             <Image url="@../../../../../../res/gui/man.png" />
          </image>
