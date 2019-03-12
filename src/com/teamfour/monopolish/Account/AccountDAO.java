@@ -1,4 +1,4 @@
-package com.teamfour.monopolish.account;
+package com.teamfour.monopolish.Account;
 
 import com.teamfour.monopolish.database.ConnectionPool;
 import com.teamfour.monopolish.database.DataAccessObject;
@@ -19,16 +19,17 @@ public class AccountDAO extends DataAccessObject {
      * @return True if the operation was successful, false if this user already exists
      * @throws SQLException
      */
-    public boolean insertAccount(Account account) throws SQLException {
+    public boolean insertAccount(Account account, String password) throws SQLException {
         int count = 0;
         try {
             getConnection();
-            cStmt = connection.prepareCall("{call insert_account(?, ?, ?)}");
+            cStmt = connection.prepareCall("{call account_insert_user(?, ?, ?)}");
 
             cStmt.setString(1, account.getUsername());
             cStmt.setString(2, account.getEmail());
-            cStmt.setDate(3, Date.valueOf(account.getRegDate()));
-            cStmt.setInt(4, account.getHighscore());
+            cStmt.setString(3, password);
+            cStmt.setDate(4, Date.valueOf(account.getRegDate()));
+            //cStmt.setInt(4, account.getHighscore());
 
             count = cStmt.executeUpdate();
         } catch (SQLException e) {
@@ -80,7 +81,7 @@ public class AccountDAO extends DataAccessObject {
         ResultSet rs = null;
         try {
             getConnection();
-            cStmt = connection.prepareCall("{call get_account_by_credentials(?, ?)}");
+            cStmt = connection.prepareCall("{call account_validate_user(?, ?)}");
 
             cStmt.setString(1, username);
             cStmt.setString(2, password);
