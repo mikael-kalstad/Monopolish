@@ -36,15 +36,6 @@ public class PropertyDAO {
         return (props);
     }
 
-/*
-    public ArrayList<Property> getAvailableProperties(){
-        return null;
-    }
-
-    public ArrayList<Property> getPlayerProperties(){
-        return null;
-    }
-*/
 
     public void updateProperty(Property prop){
         try {
@@ -76,6 +67,17 @@ public class PropertyDAO {
 
         connection = null;
     }
+
+
+/*
+    public ArrayList<Property> getAvailableProperties(){
+        return null;
+    }
+
+    public ArrayList<Property> getPlayerProperties(){
+        return null;
+    }
+*/
 }
 
 
