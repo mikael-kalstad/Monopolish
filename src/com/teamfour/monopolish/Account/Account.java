@@ -1,4 +1,4 @@
-package com.teamfour.monopolish.Account;
+package com.teamfour.monopolish.account;
 
 import java.time.LocalDate;
 

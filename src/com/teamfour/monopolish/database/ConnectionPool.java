@@ -33,6 +33,12 @@ public class ConnectionPool {
      * @throws SQLException
      */
     public static void create() throws SQLException {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
         String url;
         String username;
         String password;
