@@ -61,4 +61,17 @@ public class PropertyManager {
         prop.setPawned(false);
         dao.updateProperty(prop);
     }
+
+    public int getPropertyValueByPlayer(int player_id){
+        ArrayList<Property> player_prop = getPlayerProperties(player_id);
+        int money = 0;
+        for(int i = 0; i<player_prop.size(); i++){
+            money += player_prop.get(i).getPrice();
+        }
+        return(money);
+    }
+
+    public void terminateGame(){
+        dao.endGame();
+    }
 }

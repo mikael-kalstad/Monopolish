@@ -74,6 +74,7 @@ public class PropertyDAO {
         }
     }
 
+
     private void releaseConnection() {
         ConnectionPool.getMainConnectionPool().releaseConnection(connection);
         try {
