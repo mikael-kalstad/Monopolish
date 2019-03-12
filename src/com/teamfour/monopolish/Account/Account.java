@@ -38,7 +38,6 @@ public class Account {
         return highscore;
     }
 
-
     public void setHighscore(int newHighscore) {
         this.highscore = newHighscore;
     }

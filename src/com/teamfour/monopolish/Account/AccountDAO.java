@@ -1,6 +1,7 @@
 package com.teamfour.monopolish.account;
 
 import com.teamfour.monopolish.database.ConnectionPool;
+import com.teamfour.monopolish.database.DataAccessObject;
 
 import java.sql.*;
 
@@ -11,13 +12,7 @@ import java.sql.*;
  * @version     1.0
  */
 
-public class AccountDAO {
-    // Attributes
-    Connection connection;
-    CallableStatement cStmt;
-
-    public AccountDAO() {}
-
+public class AccountDAO extends DataAccessObject {
     /**
      * Inserts an account object into the account table
      * @param account Object to insert
@@ -27,7 +22,7 @@ public class AccountDAO {
     public boolean insertAccount(Account account) throws SQLException {
         int count = 0;
         try {
-            connection = ConnectionPool.getMainConnectionPool().getConnection();
+            getConnection();
             cStmt = connection.prepareCall("{call insert_account(?, ?, ?)}");
 
             cStmt.setString(1, account.getUsername());
@@ -55,7 +50,7 @@ public class AccountDAO {
     public int resetPassword(String username, String currentPassword, String newPassword) {
         int status = 0;
         try {
-            connection = ConnectionPool.getMainConnectionPool().getConnection();
+            getConnection();
             cStmt = connection.prepareCall("{call reset_password(?, ?, ?, ?)}");
 
             cStmt.setString(1, username);
@@ -84,7 +79,7 @@ public class AccountDAO {
     public Account getAccountByCredentials(String username, String password) throws SQLException {
         ResultSet rs = null;
         try {
-            connection = ConnectionPool.getMainConnectionPool().getConnection();
+            getConnection();
             cStmt = connection.prepareCall("{call get_account_by_credentials(?, ?)}");
 
             cStmt.setString(1, username);
@@ -104,16 +99,5 @@ public class AccountDAO {
 
         return new Account(rs.getString(1), rs.getString(2), rs.getDate(3).toLocalDate(),
                             rs.getInt(4));
-    }
-
-    private void releaseConnection() {
-        ConnectionPool.getMainConnectionPool().releaseConnection(connection);
-        try {
-            cStmt.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        connection = null;
     }
 }
