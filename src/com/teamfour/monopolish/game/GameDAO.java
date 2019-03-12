@@ -21,9 +21,9 @@ public class GameDAO extends DataAccessObject {
      * @return The Id of the new game
      * @throws SQLException
      */
-    public int generateGame(int lobbyId) throws SQLException {
+    public int insertGame(int lobbyId) throws SQLException {
         getConnection();
-        cStmt = connection.prepareCall("{call generate_game(?, ?)}");
+        cStmt = connection.prepareCall("{call game_insert(?, ?)}");
 
         cStmt.setInt(1, lobbyId);
         cStmt.registerOutParameter(2, Types.INTEGER);
@@ -43,7 +43,7 @@ public class GameDAO extends DataAccessObject {
      */
     public int getCurrentPlayer(int gameId) throws SQLException {
         getConnection();
-        cStmt = connection.prepareCall("{call get_current_player(?, ?)}");
+        cStmt = connection.prepareCall("{call game_get_current_player(?, ?)}");
 
         cStmt.setInt(1, gameId);
         cStmt.registerOutParameter(2, Types.INTEGER);
@@ -64,7 +64,7 @@ public class GameDAO extends DataAccessObject {
      */
     public boolean setCurrentPlayer(int gameId, int currentPlayer) throws SQLException {
         getConnection();
-        cStmt = connection.prepareCall("{call set_current_player(?, ?)}");
+        cStmt = connection.prepareCall("{call game_set_current_player(?, ?)}");
 
         cStmt.setInt(1, gameId);
         cStmt.setInt(2, currentPlayer);
@@ -77,21 +77,18 @@ public class GameDAO extends DataAccessObject {
     /**
      * Finish the game and ties up loose ends in the table
      * @param gameId Session id
-     * @param finishDate Date the game was finished
      * @param winnerId Userid of the winner. 0 if no winner
      * @return True if operation was successful
      * @throws SQLException
      */
-    public boolean closeGame(int gameId, LocalDate finishDate, int winnerId) throws SQLException {
+    public boolean closeGame(int gameId, int winnerId) throws SQLException {
         getConnection();
-        cStmt = connection.prepareCall("{call close_game(?, ?, ?)}");
+        cStmt = connection.prepareCall("{call game_close(?, ?)}");
 
         cStmt.setInt(1, gameId);
-        cStmt.setDate(2, Date.valueOf(finishDate));
-        cStmt.setInt(3, winnerId);
+        cStmt.setInt(2, winnerId);
 
         int count = cStmt.executeUpdate();
-
         return (count > 0);
     }
 
@@ -103,7 +100,7 @@ public class GameDAO extends DataAccessObject {
      */
     public int getWinner(int gameId) throws SQLException {
         getConnection();
-        cStmt = connection.prepareCall("{call getWinner(?, ?)}");
+        cStmt = connection.prepareCall("{call game_get_winner(?, ?)}");
 
         cStmt.setInt(1, gameId);
         cStmt.registerOutParameter(2, Types.INTEGER);

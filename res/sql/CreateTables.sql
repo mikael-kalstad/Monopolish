@@ -39,7 +39,7 @@ CREATE TABLE account
 -- Lobby
 CREATE TABLE lobby
 (
-  room_id INT NOT NULL AUTO_INCREMENT,
+  room_id INT NOT NULL,
   user_id INT NOT NULL,
   ready BIT NOT NULL DEFAULT 0,
   CONSTRAINT pk_lobby PRIMARY KEY (room_id, user_id)
@@ -66,10 +66,10 @@ create table property(
 );
 
 create table game(
-  game_id integer not null,
+  game_id integer not null AUTO_INCREMENT,
   starttime datetime not null,
   endtime datetime,
-  currentplayer integer NOT NULL,
+  currentplayer integer,
   winner integer,
   primary key(game_id)
 );

@@ -24,7 +24,7 @@ public class AccountDAO extends DataAccessObject {
         int status = 0;
         try {
             getConnection();
-            cStmt = connection.prepareCall("{call account_insert_user(?, ?, ?, ?)}");
+            cStmt = connection.prepareCall("{call account_insert_user(?, ?, ?, ?, ?)}");
 
             cStmt.setString(1, account.getUsername());
             cStmt.setString(2, account.getEmail());

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
@@ -34,7 +35,7 @@
                   <Font size="25.0" />
                </font>
             </Text>
-            <Button layoutX="204.0" layoutY="688.0" mnemonicParsing="false" onAction="#login" prefHeight="77.0" prefWidth="375.0" style="-fx-background-color: #FF9800; -fx-background-radius: 0;" text="Log in" textAlignment="CENTER" textFill="WHITE">
+            <Button fx:id="registerBtn" layoutX="204.0" layoutY="688.0" mnemonicParsing="false" onAction="#login" prefHeight="77.0" prefWidth="375.0" style="-fx-background-color: #FF9800; -fx-background-radius: 0;" text="Log in" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="28.0" />
                </font>
@@ -73,16 +74,6 @@
                   <Font size="27.0" />
                </font>
             </TextField>
-            <TextField fx:id="passwordInput" layoutX="65.0" layoutY="239.0" onAction="#register" prefHeight="70.0" prefWidth="464.0" promptText="Password">
-               <font>
-                  <Font size="27.0" />
-               </font>
-            </TextField>
-            <TextField fx:id="passwordRepeatInput" layoutX="65.0" layoutY="342.0" onAction="#register" prefHeight="70.0" prefWidth="464.0" promptText="Reapeat password">
-               <font>
-                  <Font size="27.0" />
-               </font>
-            </TextField>
             <Text fx:id="usernameMsg" fill="RED" layoutX="65.0" layoutY="118.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*Username is taken, choose a different one " visible="false">
                <font>
                   <Font size="13.0" />
@@ -103,6 +94,16 @@
                   <Font size="13.0" />
                </font>
             </Text>
+            <PasswordField fx:id="passwordInput" layoutX="65.0" layoutY="235.0" onAction="#register" prefHeight="70.0" prefWidth="464.0" promptText="Password">
+               <font>
+                  <Font size="27.0" />
+               </font>
+            </PasswordField>
+            <PasswordField fx:id="passwordRepeatInput" layoutX="65.0" layoutY="333.0" onAction="#register" prefHeight="70.0" prefWidth="464.0" promptText="Repeat password">
+               <font>
+                  <Font size="27.0" />
+               </font>
+            </PasswordField>
          </children>
       </Pane>
    </children>
