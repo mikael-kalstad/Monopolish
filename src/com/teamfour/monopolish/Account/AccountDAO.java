@@ -1,6 +1,5 @@
-package com.teamfour.monopolish.Account;
+package com.teamfour.monopolish.account;
 
-import com.teamfour.monopolish.database.ConnectionPool;
 import com.teamfour.monopolish.database.DataAccessObject;
 
 import java.sql.*;
@@ -23,13 +22,12 @@ public class AccountDAO extends DataAccessObject {
         int count = 0;
         try {
             getConnection();
-            cStmt = connection.prepareCall("{call account_insert_user(?, ?, ?)}");
+            cStmt = connection.prepareCall("{call account_insert_user(?, ?, ?, ?)}");
 
             cStmt.setString(1, account.getUsername());
             cStmt.setString(2, account.getEmail());
             cStmt.setString(3, password);
             cStmt.setDate(4, Date.valueOf(account.getRegDate()));
-            //cStmt.setInt(4, account.getHighscore());
 
             count = cStmt.executeUpdate();
         } catch (SQLException e) {
@@ -79,6 +77,7 @@ public class AccountDAO extends DataAccessObject {
      */
     public Account getAccountByCredentials(String username, String password) throws SQLException {
         ResultSet rs = null;
+        Account account = null;
         try {
             getConnection();
             cStmt = connection.prepareCall("{call account_validate_user(?, ?)}");
@@ -88,17 +87,19 @@ public class AccountDAO extends DataAccessObject {
 
             rs = cStmt.executeQuery();
 
+            if (rs.next() == false) {
+                return null;
+            }
+
+            account = new Account(rs.getString(1), rs.getString(2), rs.getDate(3).toLocalDate(),
+                    rs.getInt(4));
+
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             releaseConnection();
         }
 
-        if (rs == null && rs.next() == false) {
-            return null;
-        }
-
-        return new Account(rs.getString(1), rs.getString(2), rs.getDate(3).toLocalDate(),
-                            rs.getInt(4));
+        return account;
     }
 }
