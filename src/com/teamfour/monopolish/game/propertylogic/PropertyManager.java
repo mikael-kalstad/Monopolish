@@ -16,7 +16,7 @@ public class PropertyManager {
     }
 
     public ArrayList<Property> getPlayerProperties(int o_id){
-        ArrayList<Property> available =null;
+        ArrayList<Property> available = new ArrayList<>();
         for(int i = 0; i<properties.size(); i++){
             if(properties.get(i).getOwner() == o_id){
                 available.add(properties.get(i));
@@ -26,7 +26,6 @@ public class PropertyManager {
     }
 
     public Property getPropertyAt(int pos){
-
         for(int i = 0; i<properties.size(); i++){
             if(properties.get(i).getPosition() == pos){
                 return(properties.get(i));

@@ -1,14 +1,16 @@
 package com.teamfour.monopolish.game.propertylogic;
 
 import com.teamfour.monopolish.database.ConnectionPool;
+import com.teamfour.monopolish.database.DataAccessObject;
 
 import java.sql.*;
 import java.util.ArrayList;
 
-public class PropertyDAO {
+public class PropertyDAO extends DataAccessObject {
     Connection connection;
     CallableStatement cStmt;
     private int game_id;
+
     public ArrayList<Property> getAllProperties(int game_id){
         this.game_id = game_id;
         ArrayList<Property> props = null;
@@ -73,19 +75,6 @@ public class PropertyDAO {
             releaseConnection();
         }
     }
-
-
-    private void releaseConnection() {
-        ConnectionPool.getMainConnectionPool().releaseConnection(connection);
-        try {
-            cStmt.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        connection = null;
-    }
-
 
 /*
     public ArrayList<Property> getAvailableProperties(){
