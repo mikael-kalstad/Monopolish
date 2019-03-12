@@ -45,7 +45,7 @@ public class LobbyDAO extends DataAccessObject {
      */
     public boolean setReady(int roomId, int userId, boolean ready) throws SQLException {
         getConnection();
-        cStmt = connection.prepareCall("{call lobby_set_ready(?, ?, ?)}");
+        cStmt = connection.prepareCall("{call lobby_set_player_ready(?, ?, ?)}");
 
         cStmt.setInt(1, roomId);
         cStmt.setInt(2, userId);
