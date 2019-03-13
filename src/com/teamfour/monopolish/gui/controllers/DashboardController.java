@@ -8,7 +8,10 @@ public class DashboardController {
     @FXML Text username;
 
     @FXML public void initialize() {
-        username.setText(Handler.getAccount().getUsername());
+        // Prevent exception
+        if (Handler.getAccount() != null) {
+            username.setText(Handler.getAccount().getUsername());
+        }
     }
 
     public void logout() {
