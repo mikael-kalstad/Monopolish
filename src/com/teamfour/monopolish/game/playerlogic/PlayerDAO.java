@@ -2,16 +2,10 @@ package com.teamfour.monopolish.game.playerlogic;
 
 import com.teamfour.monopolish.database.ConnectionPool;
 import com.teamfour.monopolish.database.DataAccessObject;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class PlayerDAO extends DataAccessObject{
-    Connection connection;
-    CallableStatement cStmt;
-    int game_id;
+public class PlayerDAO extends DataAccessObject {
 
     public ArrayList<Player> createPlayers(int game_id, String[] usernames){
         ArrayList<Player> players = null;
@@ -33,7 +27,6 @@ public class PlayerDAO extends DataAccessObject{
     }
 
     public void removePlayer(String username){
-
         try {
             connection = ConnectionPool.getMainConnectionPool().getConnection();
             cStmt = connection.prepareCall("{call player_remove(?, ?, ?)}");
@@ -47,28 +40,25 @@ public class PlayerDAO extends DataAccessObject{
         } finally {
             releaseConnection();
         }
-
     }
 
     public void updatePlayer(Player player){
+        try {
+            connection = ConnectionPool.getMainConnectionPool().getConnection();
+            cStmt = connection.prepareCall("{call player_update(?, ?, ?)}");
 
-            try {
-                connection = ConnectionPool.getMainConnectionPool().getConnection();
-                cStmt = connection.prepareCall("{call player_update(?, ?, ?)}");
+            for(int i = 0; i<10; i++) {
+                cStmt.setString(1, player.getUsername());
+                //cStmt.setInt(2, game_id);
+                cStmt.setInt(2, player.getPosition());
+                cStmt.setInt(3, player.getMoney());
 
-                for(int i = 0; i<10; i++) {
-                    cStmt.setString(1, player.getUsername());
-                    //cStmt.setInt(2, game_id);
-                    cStmt.setInt(2, player.getPosition());
-                    cStmt.setInt(3, player.getMoney());
-
-                    cStmt.executeUpdate();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } finally {
-                releaseConnection();
+                cStmt.executeUpdate();
             }
-
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            releaseConnection();
+        }
     }
 }

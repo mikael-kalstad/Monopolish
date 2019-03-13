@@ -6,6 +6,14 @@ import com.teamfour.monopolish.game.propertylogic.PropertyManager;
 
 import java.util.ArrayList;
 
+/**
+ * Represents the board object in the game. Manages things like players and properties,
+ * as well as the layout of the tiles
+ *
+ * @author      eirikhem
+ * @version     1.0
+ */
+
 public class Board {
     // Attributes
     private int gameId;
