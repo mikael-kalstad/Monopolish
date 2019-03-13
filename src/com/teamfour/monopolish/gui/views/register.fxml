@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1707.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.monopolish.gui.controllers.RegisterController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1040.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.monopolish.gui.controllers.RegisterController">
    <children>
       <Pane layoutX="763.0" layoutY="507.0" prefHeight="121.0" prefWidth="268.0" style="-fx-background-color: e8e8e8;">
          <children>
@@ -24,7 +24,7 @@
             </Text>
          </children>
       </Pane>
-      <Pane prefHeight="900.0" prefWidth="672.0" style="-fx-background-color: #212121;">
+      <Pane prefHeight="1040.0" prefWidth="672.0" style="-fx-background-color: #212121;">
          <children>
             <Text fill="WHITE" layoutX="70.0" layoutY="286.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Play monopoly with your friends! Nothing can stop you from winning!" wrappingWidth="528.5414428710938">
                <font>
@@ -49,7 +49,7 @@
             <Line endX="418.0" endY="-3.0517578125E-5" layoutX="175.0" layoutY="450.0" startX="-100.0" stroke="WHITE" />
          </children>
       </Pane>
-      <Button fx:id="signupBtn" layoutX="1332.0" layoutY="823.0" mnemonicParsing="false" onAction="#register" prefHeight="77.0" prefWidth="375.0" style="-fx-background-color: #FF9800; -fx-background-radius: 0;" text="Sign up" textAlignment="CENTER" textFill="WHITE">
+      <Button fx:id="signupBtn" layoutX="1180.0" layoutY="726.0" mnemonicParsing="false" onAction="#register" prefHeight="77.0" prefWidth="375.0" style="-fx-background-color: #FF9800; -fx-background-radius: 0;" text="Sign up" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font size="28.0" />
          </font>
