@@ -36,9 +36,9 @@ public class Handler extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         ConnectionPool.create();
-        primaryStage.setWidth(1920);
-        primaryStage.setHeight(1080);
-        primaryStage.sizeToScene();
+        primaryStage.setWidth(1536);
+        primaryStage.setHeight(864);
+        //primaryStage.sizeToScene();
 
         // Initial view is login
         sceneManager = new SceneManager(primaryStage, ViewConstants.LOGIN.getValue());
