@@ -14,7 +14,8 @@ public class DashboardController {
     public void logout() {
         Handler.getSceneManager().setScene(ViewConstants.LOGIN.getValue());
     }
-    public void play() {
 
+    public void play() {
+        Handler.getSceneManager().setScene(ViewConstants.GAME.getValue());
     }
 }

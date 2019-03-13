@@ -68,7 +68,7 @@ public class GameController {
         Draw spiller = new Draw();
 
         spillere.add(spiller);
-        GridPane.setConstraints(spiller, 0, 5);
+        GridPane.setConstraints(spiller, 9, 9);
 
         gamegrid.getChildren().clear();
         gamegrid.getChildren().addAll(spillere);
