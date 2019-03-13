@@ -39,7 +39,7 @@
                      <children>
                         <HBox alignment="CENTER" layoutX="14.0" layoutY="24.0" prefHeight="67.0" prefWidth="340.0" spacing="50.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#tegnspiller" prefHeight="26.0" prefWidth="90.0" style="-fx-background-color: #FF9800;" text="Button" textFill="#fafafa" />
+                              <Button mnemonicParsing="false" onAction="#drawplayer" prefHeight="26.0" prefWidth="90.0" style="-fx-background-color: #FF9800;" text="Button" textFill="#fafafa" />
                               <Label text="Status" textFill="#fafafa" />
                               <Label text="[Status]" textFill="#fafafa" />
                            </children>
