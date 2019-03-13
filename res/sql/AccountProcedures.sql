@@ -43,15 +43,18 @@ CREATE PROCEDURE account_insert_user(
     SET salt_pw = RANDOM_BYTES(32);
     SET hashed_pwd = SHA2(CONCAT(password, salt_pw), 256);
 
-    /*
-    SELECT LOWER(username) FROM account WHERE LOWER(username = uname) INTO test_username;
-    SELECT LOWER(email) FROM account WHERE LOWER(email = mail) INTO test_email;
 
+    SELECT LOWER(username) FROM account WHERE LOWER(username = uname) INTO test_username;
+    SELECT COUNT(*) FROM account WHERE LOWER(username = 'testman3') INTO;
+    SELECT LOWER(email) FROM account WHERE LOWER(email = mail) INTO test_email;
+    SELECT LOWER()
+    /*
 
     IF LOWER(test_username = uname) THEN
       SET error_code = 1;
     ELSEIF LOWER(test_email = mail) THEN
       SET error_code = 2;
+    ELSEIF LOWER()
     ELSE
       SET error_code = 0;
     END IF;
