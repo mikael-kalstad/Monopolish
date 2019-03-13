@@ -34,6 +34,9 @@ public class Player {
     }
 
     public void move(int steps){
+        if(position + steps >31){
+            position = position + steps - 31;
+        }
         position+=steps;
     }
 }

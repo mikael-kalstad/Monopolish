@@ -9,10 +9,11 @@ public class PlayerManager {
 
     /**
      * Constructor
-     * @param players
+  //   * @param players
      */
-    public PlayerManager(ArrayList<Player> players) {
-        this.players = players;
+    public PlayerManager(int game_id, String[] usernames) {
+        this.players = playerDAO.createPlayers(game_id, usernames);
+
     }
 
     public ArrayList<Player> getPlayers() {

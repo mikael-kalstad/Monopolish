@@ -30,6 +30,7 @@ public class PropertyDAO extends DataAccessObject {
 
                 //ikke helt ideelt?
                 rs.close();
+                prop_id++;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -45,7 +46,6 @@ public class PropertyDAO extends DataAccessObject {
             connection = ConnectionPool.getMainConnectionPool().getConnection();
             cStmt = connection.prepareCall("{call property_update(?, ?, ?, ?)}");
             //works with property id's being 10000 inkremented and 10 properties
-            int prop_id = 10000;
             for(int i = 0; i<10; i++) {
                 cStmt.setInt(1, prop.getId());
                 cStmt.setInt(2, game_id);
