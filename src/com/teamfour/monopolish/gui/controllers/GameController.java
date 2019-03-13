@@ -20,12 +20,12 @@ import java.util.Random;
 
 public class GameController {
 
-    @FXML private Button rolldice;
-    @FXML private Button next;
-    @FXML private Circle player1;
+    @FXML private Button rolldice, next;
     @FXML private GridPane gamegrid;
-    @FXML private ListView playerinfo; //TextFlow playerinfo må ha en tabell eller en annen løsning som gjør at den ikke overfylles
+    @FXML private ListView playerinfo;
+
     ArrayList<Text> textList = new ArrayList<>();
+    ArrayList<Draw> spillere = new ArrayList<>();
 
     @FXML
     private void ifRollDice(){ //testmetode
@@ -38,11 +38,6 @@ public class GameController {
         next.setOnAction(e -> System.out.println("Nei"));
     }
 
-    /*
-    testmetode, kan tydeligvis bare lage metodene her uten å vise til knapper el.
-    og så velge riktig metode til riktig knapp i scene builder. Metoden over viser en
-    annen måte å gjøre det på, men denne måten ser ut til å være enklere, da man ikke må
-    hente knappen inn i kontrolleren. */
     @FXML
     private void addToPlayerinfo(){
         textList.add(new Text("hallo\n")); //denne kan/burde ligge i egen metode som kaller denne metoden, gadd ikke akk nå
@@ -53,9 +48,6 @@ public class GameController {
         playerinfo.scrollTo(focus);
     }
 
-    /*
-    kan hende vi må finne en annen måte å løse denne metoden på,
-    denne måten instansierer scenen på nytt hver gang den kjøres: */
     public void openLoginScene(ActionEvent e) throws IOException {
         Parent login = FXMLLoader.load(getClass().getResource("LoginFXML.fxml"));
         Scene newScene = new Scene(login);
@@ -72,17 +64,25 @@ public class GameController {
                 Alert.AlertType.WARNING, "Ikke faen", "Whoops", "You're not even on the bård, how can you pay rent?");
     }
 
-    @FXML public void moveplayer(){
+    public void lagspiller(){
+        Draw spiller = new Draw();
 
+        spillere.add(spiller);
+        GridPane.setConstraints(spiller, 0, 5);
+
+        gamegrid.getChildren().clear();
+        gamegrid.getChildren().addAll(spillere);
     }
 
-    public Node getPlayerPosition(int col, int row) {
-        for (Node node : gamegrid.getChildren()) {
-            if (GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
-                return node;
-            }
-        }
-        return null;
-    }
+    public void flyttSpillerXY(int spillernr, int posX, int posY) {
+        Draw spiller = new Draw();
 
+        spillere.remove(spillernr);
+        spillere.add(spillernr, spiller);
+
+        GridPane.setConstraints(spiller, posX,posY);
+
+        gamegrid.getChildren().clear();
+        gamegrid.getChildren().addAll(spillere);
+    }
 }

@@ -99,7 +99,7 @@
       </Pane>
       <Pane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="360.0" AnchorPane.topAnchor="0.0">
          <children>
-            <GridPane fx:id="gamegrid" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="720.0" snapToPixel="false">
+            <GridPane fx:id="board" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="720.0" snapToPixel="false">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="65.0" />
@@ -172,6 +172,32 @@
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="5" />
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="4" />
                </children>
+            </GridPane>
+            <GridPane fx:id="gamegrid" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="720.0" snapToPixel="false">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="65.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="65.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="65.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="65.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="65.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="65.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="65.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="65.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0" vgrow="SOMETIMES" />
+               </rowConstraints>
             </GridPane>
          </children>
       </Pane>
