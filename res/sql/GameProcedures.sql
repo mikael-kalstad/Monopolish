@@ -63,7 +63,7 @@ Procedure to retrieve the current player
 -- DELIMITER $$
 DROP PROCEDURE game_close;
 
-CREATE PROCEDURE game_close(IN game_id INT, IN winner_id INT)
+CREATE PROCEDURE game_close(IN gameid INT, IN winner_id INT)
   BEGIN
     IF (winner_id = 0) THEN
       SET winner_id = NULL;
@@ -73,7 +73,7 @@ CREATE PROCEDURE game_close(IN game_id INT, IN winner_id INT)
     SET g.currentplayer=NULL,
         g.endtime=NOW(),
         g.winner=winner_id
-    WHERE g.game_id=game_id;
+    WHERE g.game_id=gameid;
   END;
 -- END$$
 

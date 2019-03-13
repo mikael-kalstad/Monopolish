@@ -1,5 +1,13 @@
 package com.teamfour.monopolish.game.board;
 
+/**
+ * Represents the tile data in the board. Each tile on the board is represented by
+ * an Id to tell what kind of tile it is.
+ *
+ * @author      eirikhem
+ * @version     1.0
+ */
+
 public class Layout {
     // Static variables
     public static final int START = 0;

@@ -49,4 +49,12 @@ public class PlayerManager {
         Player temp = getPlayer(username);
         players.remove(temp);
     }
+
+    /**
+     * Retrieves all player data from the database, to update the current game
+     * after an opponent's round
+     */
+    public void update() {
+        // TODO: Call DAO
+    }
 }

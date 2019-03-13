@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.transform.Scale;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -48,7 +49,8 @@ public class SceneManager {
         try {
             Parent fxml = FXMLLoader.load(getClass().getResource(ViewConstants.FILE_PATH.getValue() + filename));
             Scene scene = new Scene(fxml);
-            window.setScene(scene);
+            window.setScene(scene); // Setting new scene to stage
+            setSceneScale(window); // Fixing scaling issues
         }
         catch (IOException e) { e.printStackTrace(); }
     }
@@ -70,5 +72,20 @@ public class SceneManager {
         alert.showAndWait().ifPresent(type -> {
             if (type == okBtn) stage.close();
         });
+    }
+
+    /**
+     * This method will scale the scene to fit within a stage
+     * Note: also used in Handler (when resizing)
+     *
+     * @param window Stage target
+     */
+    public void setSceneScale(Stage window) {
+        Rectangle2D screen = Screen.getPrimary().getVisualBounds();
+        double sw = window.getWidth();
+        double sh = window.getHeight();
+
+        Scale scale = new Scale(sw/screen.getWidth() * 0.95, sh/screen.getHeight() * 0.95, 0, 0);
+        window.getScene().getRoot().getTransforms().setAll(scale);
     }
 }
