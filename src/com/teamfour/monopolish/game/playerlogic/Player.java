@@ -36,5 +36,4 @@ public class Player {
     public void move(int steps){
         position+=steps;
     }
-
 }

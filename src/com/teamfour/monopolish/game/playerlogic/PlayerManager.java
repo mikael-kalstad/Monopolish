@@ -1,10 +1,19 @@
 package com.teamfour.monopolish.game.playerlogic;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class PlayerManager {
     ArrayList<Player> players;
     PlayerDAO playerDAO = new PlayerDAO();
+
+    /**
+     * Constructor
+     * @param players
+     */
+    public PlayerManager(ArrayList<Player> players) {
+        this.players = players;
+    }
 
     public ArrayList<Player> getPlayers() {
         //kanskje like lurt?
@@ -39,5 +48,4 @@ public class PlayerManager {
         Player temp = getPlayer(username);
         players.remove(temp);
     }
-
 }

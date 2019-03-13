@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1707.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.monopolish.gui.controllers.LoginController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="824.0" prefWidth="1536.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.monopolish.gui.controllers.LoginController">
    <children>
       <Pane layoutX="1111.0" layoutY="135.0" prefHeight="672.0" prefWidth="503.0" style="-fx-background-color: #212121; -fx-background-radius: 10px;">
          <children>
@@ -55,7 +55,7 @@
             </Text>
          </children>
       </Pane>
-      <Button fx:id="registerBtn" layoutY="822.0" mnemonicParsing="false" onAction="#register" prefHeight="77.0" prefWidth="375.0" style="-fx-background-color: #FF9800; -fx-background-radius: 0;" text="Sign up" textAlignment="CENTER" textFill="WHITE">
+      <Button fx:id="registerBtn" layoutY="786.0" mnemonicParsing="false" onAction="#register" prefHeight="77.0" prefWidth="375.0" style="-fx-background-color: #FF9800; -fx-background-radius: 0;" text="Sign up" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font size="28.0" />
          </font>
@@ -80,5 +80,10 @@
             <Image url="@../../../../../../res/gui/man.png" />
          </image>
       </ImageView>
+      <Button fx:id="registerBtn1" layoutX="1160.0" mnemonicParsing="false" onAction="#register" prefHeight="77.0" prefWidth="375.0" style="-fx-background-color: #FF9800; -fx-background-radius: 0;" text="Sign up" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font size="28.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

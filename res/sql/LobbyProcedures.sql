@@ -70,3 +70,19 @@ CREATE PROCEDURE lobby_delete(IN room_id INT, IN user_id INT)
     DELETE FROM lobby WHERE lobby.room_id=room_id AND lobby.user_id=user_id;
   END;
 -- END$$
+
+/**
+Procedure to get all users from a lobby
+ */
+
+-- DELIMITER $$
+DROP PROCEDURE lobby_get_users_in_lobby;
+
+CREATE PROCEDURE lobby_get_users_in_lobby(IN room_id INT)
+  BEGIN
+    SELECT a.username
+    FROM lobby l
+    JOIN account a ON a.user_id=l.user_id
+    WHERE l.room_id=room_id;
+  END;
+-- END$$

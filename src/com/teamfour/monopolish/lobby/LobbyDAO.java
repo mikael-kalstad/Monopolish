@@ -2,14 +2,16 @@ package com.teamfour.monopolish.lobby;
 
 import com.teamfour.monopolish.database.DataAccessObject;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
 
 /**
  * Handles all database communication to the Lobby table in the database
  *
  * @author      Eirik Hemstad
- * @version     1.0
+ * @version     1.1
  */
 
 public class LobbyDAO extends DataAccessObject {
@@ -29,7 +31,7 @@ public class LobbyDAO extends DataAccessObject {
         cStmt.registerOutParameter(2, Types.INTEGER);
 
         int roomId = -1;
-        if (cStmt.execute())
+        if (cStmt.executeUpdate() > 0)
             roomId = cStmt.getInt(2);
 
         return roomId;
@@ -71,6 +73,30 @@ public class LobbyDAO extends DataAccessObject {
         int count = cStmt.executeUpdate();
 
         return (count > 0);
+    }
+
+    /**
+     * Retrieves all the active users in this lobby
+     * @param roomId
+     * @return
+     */
+    public ArrayList<String> getUsersInLobby(int roomId) throws SQLException {
+        ArrayList<String> users = new ArrayList<>();
+
+        getConnection();
+        cStmt = connection.prepareCall("{CALL lobby_get_users_in_lobby(?)}");
+
+        cStmt.setInt(1, roomId);
+
+        ResultSet rs = cStmt.executeQuery();
+
+        while (rs.next()) {
+            users.add(rs.getString(1));
+        }
+
+        releaseConnection();
+
+        return users;
     }
 
     /**
