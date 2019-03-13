@@ -2,6 +2,7 @@ package com.teamfour.monopolish.game;
 
 import com.teamfour.monopolish.database.DataAccessObject;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
@@ -27,7 +28,7 @@ public class GameDAO extends DataAccessObject {
         cStmt.registerOutParameter(2, Types.INTEGER);
 
         int gameId = -1;
-        if (cStmt.execute())
+        if (cStmt.executeUpdate() > 0)
             gameId = cStmt.getInt(2);
 
         return gameId;
@@ -41,16 +42,16 @@ public class GameDAO extends DataAccessObject {
      */
     public int getCurrentPlayer(int gameId) throws SQLException {
         getConnection();
-        cStmt = connection.prepareCall("{call game_get_current_player(?, ?)}");
+        cStmt = connection.prepareCall("{call game_get_current_player(?)}");
 
         cStmt.setInt(1, gameId);
-        cStmt.registerOutParameter(2, Types.INTEGER);
 
-        int currentPlayer = -1;
-        if (cStmt.execute())
-            currentPlayer = cStmt.getInt(2);
+        ResultSet rs = cStmt.executeQuery();
 
-        return currentPlayer;
+        if (rs.next())
+            return rs.getInt(1);
+
+        return -1;
     }
 
     /**

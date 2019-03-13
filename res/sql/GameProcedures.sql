@@ -6,7 +6,12 @@ Procedure to generate a new game
 DROP PROCEDURE game_insert;
 
 CREATE PROCEDURE game_insert(IN lobby_id int, OUT game_id INT)
-  BEGIN
+  proc_label:BEGIN
+    -- If no lobby with this ID exists, abort
+    IF (lobby_id NOT IN (SELECT room_id FROM lobby)) THEN
+      LEAVE proc_label;
+    end if;
+
     -- Create a new game
     INSERT INTO game (starttime)
     VALUES (NOW());
@@ -29,9 +34,9 @@ Procedure to retrieve the current player
 -- DELIMITER $$
 DROP PROCEDURE game_get_current_player;
 
-CREATE PROCEDURE game_get_current_player(IN game_id int, OUT current_player_id INT)
+CREATE PROCEDURE game_get_current_player(IN game_id int)
   BEGIN
-    SELECT current_player_id=IFNULL(g.currentplayer, 0) FROM game g
+    SELECT IFNULL(g.currentplayer, -1) FROM game g
     WHERE g.game_id=game_id;
   END;
 -- END$$
