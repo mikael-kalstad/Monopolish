@@ -2,10 +2,8 @@ package com.teamfour.monopolish.game;
 
 import com.teamfour.monopolish.database.DataAccessObject;
 
-import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.time.LocalDate;
 
 /**
  * This class handles all database communication towards the 'Game' table in database
