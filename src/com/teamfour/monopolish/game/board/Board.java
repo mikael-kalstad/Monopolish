@@ -20,6 +20,17 @@ public class Board {
      */
     public Board(int gameId, ArrayList<Player> players) {
         this.gameId = gameId;
-        playerManager = new PlayerManager(players);
+        //playerManager = new PlayerManager(players);
+        layout = new Layout();
     }
+
+    /**
+     * Called at the start of the game
+     */
+    public void init() {}
+
+    /**
+     * Called each turn of the game
+     */
+    public void update() {}
 }

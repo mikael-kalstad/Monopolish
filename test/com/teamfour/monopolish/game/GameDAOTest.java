@@ -67,8 +67,8 @@ public class GameDAOTest {
     @Test
     public void testFinishGame() {
         try {
-            assertTrue(instance.closeGame(4, 13));
-            assertTrue(instance.closeGame(5, 0));
+            assertTrue(instance.finishGame(4, 13));
+            assertTrue(instance.finishGame(5, 0));
         } catch (SQLException e){
         }
     }

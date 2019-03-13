@@ -80,7 +80,7 @@ public class GameDAO extends DataAccessObject {
      * @return True if operation was successful
      * @throws SQLException
      */
-    public boolean closeGame(int gameId, int winnerId) throws SQLException {
+    public boolean finishGame(int gameId, int winnerId) throws SQLException {
         getConnection();
         cStmt = connection.prepareCall("{call game_close(?, ?)}");
 
