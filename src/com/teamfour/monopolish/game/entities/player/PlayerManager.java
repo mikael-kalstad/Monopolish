@@ -1,6 +1,5 @@
-package com.teamfour.monopolish.game.playerlogic;
+package com.teamfour.monopolish.game.entities.player;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class PlayerManager {

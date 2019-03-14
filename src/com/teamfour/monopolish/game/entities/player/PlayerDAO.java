@@ -1,4 +1,4 @@
-package com.teamfour.monopolish.game.playerlogic;
+package com.teamfour.monopolish.game.entities.player;
 
 import com.teamfour.monopolish.database.ConnectionPool;
 import com.teamfour.monopolish.database.DataAccessObject;

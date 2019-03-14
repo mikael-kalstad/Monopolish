@@ -17,6 +17,11 @@ public class Property {
         this.categorycolor = categorycolor;
     }
 
+    public String toString() {
+        String result = "Name: " + name + "; Price: " + price + "; Position: " + position;
+        return result;
+    }
+
     public int getId() {
         return id;
     }
