@@ -64,7 +64,6 @@ public class GameController {
                 Alert.AlertType.WARNING, "Ikke faen", "Whoops", "You're not even on the bård, how can you pay rent?");
     }
 
-    @FXML
     public void drawplayer() throws Exception{
         for(FxPlayer player : players) {
             if (player == FXPlayer){
@@ -87,8 +86,6 @@ public class GameController {
         gamegrid.getChildren().addAll(players);
     }
 
-    @FXML
-    public void move1(){
-        movePlayer(1);
+    public void move1(){ movePlayer(1);
     }
 }

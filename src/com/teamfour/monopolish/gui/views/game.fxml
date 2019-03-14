@@ -58,7 +58,7 @@
                         <Label layoutX="14.0" layoutY="14.0" text="Opponents" textFill="#fafafa">
                            <font>
                               <Font size="16.0" />
-                           </font>
+                              </font>
                         </Label>
                         <VBox layoutX="10.0" layoutY="47.0" spacing="5.0">
                            <children>
@@ -93,7 +93,7 @@
                         <Insets />
                      </VBox.margin>
                   </AnchorPane>
-               </children>
+                  </children>
             </VBox>
          </children>
       </Pane>
@@ -215,7 +215,7 @@
                      <children>
                         <VBox layoutX="15.0" layoutY="20.0" prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #81c784;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children></AnchorPane>
-                  <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="9" GridPane.rowIndex="1">
+                     <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="9" GridPane.rowIndex="1">
                      <children>
                         <VBox layoutX="6.0" layoutY="-7.0" prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #81c784;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children></AnchorPane>
