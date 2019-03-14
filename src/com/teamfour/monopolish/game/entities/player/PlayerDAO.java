@@ -79,6 +79,5 @@ public class PlayerDAO extends DataAccessObject {
         } finally {
             releaseConnection();
         }
-
     }
 }
