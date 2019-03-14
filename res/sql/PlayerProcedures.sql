@@ -74,3 +74,17 @@ end $$
 delimiter ;
 
 
+delimiter $$
+create procedure player_getByGameId(
+  in game_id int
+)
+begin
+  select * from player where game_id = player.game_id;
+  commit;
+
+end $$
+delimiter ;
+
+
+
+

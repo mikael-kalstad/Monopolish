@@ -6,7 +6,6 @@ public class Property {
     private int price;
     private int position;
     private boolean pawned = false;
-    private int owner = 0;
     private String categorycolor;
 
     public Property(int p_id, String name, int price, int position, String categorycolor){
@@ -46,18 +45,9 @@ public class Property {
         return pawned;
     }
 
-    public int getOwner() {
-        return owner;
-    }
-
     public void setPawned(boolean pawned) {
         this.pawned = pawned;
     }
-
-    public void setOwner(int owner) {
-        this.owner = owner;
-    }
-
 
     public int compareTo(Property otherP){
         if(otherP == null){
