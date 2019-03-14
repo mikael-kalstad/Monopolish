@@ -1,18 +1,22 @@
-package com.teamfour.monopolish.game.entities.player;
+package com.teamfour.monopolish.game.entities;
+
+import com.teamfour.monopolish.game.entities.player.*;
 
 import java.util.ArrayList;
 
-public class PlayerManager {
+public class EntityManager {
     ArrayList<Player> players;
-    PlayerDAO playerDAO = new PlayerDAO();
+    PlayerDAO playerDAO;
+    Bank bank;
 
     /**
      * Constructor
-  //   * @param players
+     * @param gameId
      */
-    public PlayerManager(int game_id, String[] usernames) {
-        this.players = playerDAO.createPlayers(game_id, usernames);
-
+    public EntityManager(int gameId) {
+        //this.players = playerDAO.getPlayersInGame(gameId);
+        this.playerDAO = new PlayerDAO();
+        this.bank = new Bank();
     }
 
     public ArrayList<Player> getPlayers() {
@@ -44,9 +48,37 @@ public class PlayerManager {
     }
 
     public void removePlayer(String username){
-        playerDAO.removePlayer(username);
+        playerDAO.removePlayer(1, username);
         Player temp = getPlayer(username);
         players.remove(temp);
+    }
+
+    public boolean transferMoneyFromBank(String username, int amount) {
+        Player player = getPlayer(username);
+        if (player == null) {
+            return false;
+        }
+
+        return bank.transferMoney(player, amount);
+    }
+
+    public boolean distributeMoneyFromBank(int amount) {
+        for (Player p : players) {
+            bank.transferMoney(p, amount);
+        }
+
+        return true;
+    }
+
+    public boolean transferMoneyFromTo(String from, String to, int amount) {
+        Player fromPlayer = getPlayer(from);
+        Player toPlayer = getPlayer(to);
+
+        if (fromPlayer == null || toPlayer == null)
+            return false;
+
+        return fromPlayer.transferMoney(toPlayer, amount);
+
     }
 
     /**

@@ -1,42 +1,29 @@
 package com.teamfour.monopolish.game.board;
 
-import com.teamfour.monopolish.game.entities.player.Player;
-import com.teamfour.monopolish.game.entities.player.PlayerManager;
-
-import java.util.ArrayList;
-
 /**
- * Represents the board object in the game. Manages things like players and properties,
- * as well as the layout of the tiles
+ * Represents the tile data in the board. Each tile on the board is represented by
+ * an Id to tell what kind of tile it is.
  *
  * @author      eirikhem
  * @version     1.0
  */
 
 public class Board {
+    // Static variables
+    public static final int START = 0;
+    public static final int PROPERTY = 1;
+    public static final int GOTOJAIL = 2;
+    public static final int FREEPARKING = 3;
+
     // Attributes
-    private int gameId;
-    private PlayerManager playerManager;
-    private Layout layout;
+    private int[] tiles;
 
     /**
-     * Constructor
-     * @param gameId Game Id
-     * @param players Players in this game
+     * Returns the tile type at the specified position
+     * @param position Position integer
+     * @return Tile type ID at this position
      */
-    public Board(int gameId, ArrayList<Player> players) {
-        this.gameId = gameId;
-        //playerManager = new PlayerManager(players);
-        layout = new Layout();
+    public int getTileType(int position) {
+        return tiles[position];
     }
-
-    /**
-     * Called at the start of the game
-     */
-    public void init() {}
-
-    /**
-     * Called each turn of the game
-     */
-    public void update() {}
 }

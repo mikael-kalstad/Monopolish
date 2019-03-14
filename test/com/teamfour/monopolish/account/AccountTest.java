@@ -1,5 +1,6 @@
 package com.teamfour.monopolish.account;
 
+import com.teamfour.monopolish.account.Account;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;

@@ -1,30 +1,41 @@
 package com.teamfour.monopolish.game;
 
 import com.teamfour.monopolish.game.board.Board;
-import com.teamfour.monopolish.game.entities.player.Player;
-
-import java.util.ArrayList;
 
 public class GameLogic {
-    private GameDAO gameDAO;
-    private int gameId;
-    private Dice dice = new Dice(2,6);
-    private int turn;
-    private int roundNumber;
-    private boolean finished;
-    private boolean yourTurn;
-    private Board board;
+    // Attributes
+    private GameDAO gameDAO;        // Database connection
+    private int gameId;             // The current's session global game id
+    private Dice dice = new Dice(2,6); // Dice object
+    private String[] turn;          // Turn order. Each row's int value represents the player username
+    private int turnNumber;         // Which total turn it is
+    private boolean finished = false;       // Is the game finished?
+    private boolean yourTurn;       // Is it your turn?
+    private Board board;            // Bård object
 
-    public GameLogic(int gameId, ArrayList<Player> players) {
-
+    /**
+     * Constructor
+     * @param gameId
+     */
+    public GameLogic(int gameId) {
+        gameDAO = new GameDAO();
+        this.gameId = gameId;
+        turnNumber = 0;
 
     }
 
     public void run() {
         // Load board, graphics, etc.
 
-        // Initiate variables, set defaults, get data from database
-        // Write to database??
+        // 1. Load players from database by gameid
+        // 2. Load all properties from database into bank's properties
+        // Initialize board with players by gameId
+        board = new Board();
+
+        // 3. Transfer money from bank to players
+        // 4. Generate random turn order
+        // 5. Write current player and money amounts to database
+        // 6. Start!
 
         /*
             while (!finished) {

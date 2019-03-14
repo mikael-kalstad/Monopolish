@@ -1,5 +1,7 @@
 package com.teamfour.monopolish.account;
 
+import com.teamfour.monopolish.account.Account;
+import com.teamfour.monopolish.account.AccountDAO;
 import com.teamfour.monopolish.database.ConnectionPool;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
