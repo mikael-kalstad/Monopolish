@@ -39,21 +39,21 @@
                   <Font size="19.0" />
                </font>
             </PasswordField>
-            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="56.0" layoutY="215.0">
-               <image>
-                  <Image url="@../../../../../../res/gui/user.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="56.0" layoutY="322.0">
-               <image>
-                  <Image url="@../../../../../../res/gui/lock.png" />
-               </image>
-            </ImageView>
             <Text fx:id="msg" fill="RED" layoutX="130.0" layoutY="417.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username/email or passord is wrong" visible="false">
                <font>
                   <Font size="15.0" />
                </font>
             </Text>
+            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="41.0" layoutY="215.0">
+               <image>
+                  <Image url="file:res/gui/user.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="41.0" layoutY="322.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="file:res/gui/lock.png" />
+               </image>
+            </ImageView>
          </children>
       </Pane>
       <Button fx:id="registerBtn" layoutX="178.0" layoutY="858.0" mnemonicParsing="false" onAction="#register" prefHeight="77.0" prefWidth="375.0" style="-fx-background-color: #FF9800; -fx-background-radius: 0;" text="Sign up" textAlignment="CENTER" textFill="WHITE">
@@ -105,5 +105,10 @@
       <Line endX="-5.0" endY="40.0" layoutX="1198.0" layoutY="888.0" startX="-100.0" stroke="#ff0ab4" />
       <Line endX="-14.2928466796875" endY="30.7071533203125" layoutX="1208.0" layoutY="898.0" startX="-62.5" startY="30.7071533203125" stroke="#ff0ab4" />
       <Line endX="-70.0" layoutX="1255.0" layoutY="897.0" startX="-62.5" startY="30.7071533203125" stroke="#ff0ab4" />
+      <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="1073.0" layoutY="509.0">
+         <image>
+            <Image url="@../../../../../../res/gui/lock.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

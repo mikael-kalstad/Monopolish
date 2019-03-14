@@ -7,7 +7,6 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 
 /**
  * Controller class for dashboard view
@@ -29,17 +28,40 @@ public class DashboardController {
     @FXML Text highscoreU3;
     @FXML Text highscoreS3;
 
-    // Remaining highscores in top 10 (4-10)
+    // Container for remaining highscores in top 10 (4-10)
     @FXML Pane highscoreContainer;
 
     // Example data
     private String[][] highscoreData = {
             {"Torbjørn", "10000"}, {"Lisa", "9000"}, {"Mikael", "8734"},
             {"Giske", "8500"}, {"Carlos", "7053"}, {"Siv jensen", "3223"},
+            {"Giske", "2300"}, {"Carlos", "1233"}, {"Siv jensen", "1111"},
+            {"KNM Helge Ingstad", "0001"}
     };
 
+    /**
+     * This method will run before the view is rendered
+     */
+    @FXML public void initialize() {
+        // Prevent exception
+        if (Handler.getAccount() != null) {
+            username.setText(Handler.getAccount().getUsername());
+            personalHighscore.setText(String.valueOf(Handler.getAccount().getHighscore()));
+
+        }
+        setLeaderBoard(highscoreData);
+    }
+
+    /**
+     * Will update leaderboard dynamically bases on highscore data
+     *
+     * @param highscoreData two-dimensional array with username and score
+     */
     private void setLeaderBoard(String[][] highscoreData) {
         for (int i = 0; i < highscoreData.length; i++) {
+            // GUI breaks after ten highscores
+            if (i > 9) break;
+
             // Setting top 3 highscores
             if (i == 0) {
                 highscoreU1.setText(highscoreData[i][0]);
@@ -53,7 +75,7 @@ public class DashboardController {
             }
 
             // Setting rest of highscores
-            drawHighscoreRow(highscoreData[i][0], highscoreData[i][0], i);
+            drawHighscoreRow(highscoreData[i][0], highscoreData[i][1], i);
         }
     }
 
@@ -76,6 +98,12 @@ public class DashboardController {
         // Row should alternate with white background to give contrast
         if (index % 2 != 0 ) {
             row.setStyle("-fx-background-color: white");
+        }
+
+        // If the user is in the leaderboard it will be marked to easily see it
+        //if (username.equals(Handler.getAccount().getUsername())) ---- USE THIS WHEN DATABAsE IS UP AGAIN ----
+        if (username.equals("Mikael")) {
+            row.setStyle("-fx-background-color: #ff6b5e");
         }
 
         // Adding text elements
@@ -110,22 +138,17 @@ public class DashboardController {
         highscoreContainer.getChildren().add(row);
     }
 
-    /**
-     * This method will run before the view is rendered
-     */
-    @FXML public void initialize() {
-        // Prevent exception
-        if (Handler.getAccount() != null) {
-            username.setText(Handler.getAccount().getUsername());
-            personalHighscore.setText(String.valueOf(Handler.getAccount().getHighscore()));
-            setLeaderBoard(highscoreData);
-        }
-    }
 
+    /**
+     * Change view to login
+     */
     public void logout() {
         Handler.getSceneManager().setScene(ViewConstants.LOGIN.getValue());
     }
 
+    /**
+     * Change view to game
+     */
     public void play() {
         Handler.getSceneManager().setScene(ViewConstants.GAME.getValue());
     }

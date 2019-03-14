@@ -8,8 +8,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 
-import java.sql.SQLException;
-
 
 /**
  * Controller class for registration view
@@ -62,7 +60,7 @@ public class LoginController {
      * @return true if any inputs are empty, false if all inputs are not empty
      */
     private boolean inputsEmpty() {
-        return (usernameInput.getText().trim().isEmpty() || passwordInput.getText().trim().isEmpty());
+        return (!usernameInput.getText().trim().isEmpty() && !passwordInput.getText().trim().isEmpty());
     }
 
     /**
@@ -89,7 +87,7 @@ public class LoginController {
             textElement.setVisible(true);
         }
         // Warning styling
-        else if (warning && !inputsEmpty()) {
+        else if (warning && inputsEmpty()) {
             setBorderStyle(input, COLOR_WARNING);
             textElement.setText(MSG_WARNING);
             setTextColor(textElement, COLOR_WARNING);
@@ -98,7 +96,7 @@ public class LoginController {
         // Normal styling
         else {
             setBorderStyle(input, COLOR_NORMAL);
-            if (!inputsEmpty()) textElement.setVisible(false);
+            if (inputsEmpty()) textElement.setVisible(false);
         }
     }
 
@@ -121,13 +119,13 @@ public class LoginController {
      * </ul>
      */
     public void login() {
-        Account res = null;
+        Account res;
         boolean canLogin = false;
         boolean dbError = false;
 
         // If inputs are not empty
         // Database query for checking username/email and password combination
-        if (!inputsEmpty()) {
+        if (inputsEmpty()) {
             try {
                 ConnectionPool.create();
                 res = Handler.getAccountDAO().getAccountByCredentials(usernameInput.getText(), passwordInput.getText());
@@ -137,17 +135,10 @@ public class LoginController {
                     dbError = false;
                 }
             }
-            catch (SQLException e) {
+            catch (Exception e) {
                 dbError = true;
             }
         }
-
-        // Testing purposes
-        System.out.println(
-            "logging in... \n" +
-            "username: " + usernameInput.getText() + "\n" +
-            "password: " + passwordInput.getText()
-        );
 
         // Check inputs
         checkInput(usernameInput, msg, !canLogin, dbError);
