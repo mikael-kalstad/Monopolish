@@ -2,6 +2,8 @@ package com.teamfour.monopolish.game.propertylogic;
 
 import com.teamfour.monopolish.database.ConnectionPool;
 import com.teamfour.monopolish.database.DataAccessObject;
+import com.teamfour.monopolish.game.entities.Entity;
+import com.teamfour.monopolish.game.entities.player.Player;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -41,7 +43,15 @@ public class PropertyDAO extends DataAccessObject {
     }
 
 
-    public void updateProperty(Property prop){
+    public void updateProperty(Property prop, Entity entity){
+        String username;
+        if(!(entity instanceof Player)){
+            username = null;
+        }else{
+            Player player = (Player) entity;
+            username = player.getUsername();
+        }
+
         try {
             connection = ConnectionPool.getMainConnectionPool().getConnection();
             cStmt = connection.prepareCall("{call property_update(?, ?, ?, ?)}");
@@ -50,7 +60,7 @@ public class PropertyDAO extends DataAccessObject {
                 cStmt.setInt(1, prop.getId());
                 cStmt.setInt(2, game_id);
                 cStmt.setBoolean(3, prop.isPawned());
-                cStmt.setInt(4, prop.getOwner());
+                cStmt.setString(4, username);
                 cStmt.executeUpdate();
             }
         } catch (SQLException e) {
