@@ -15,7 +15,7 @@ public class AccountTest {
     @BeforeAll
     public void setInstance() {
         LocalDate date = LocalDate.of(2019, Month.DECEMBER, 24);
-        instance = new Account("johhnyBoi23", "johhny@gmail.com", date, 10500);
+        instance = new Account("johhnyBoi23", "johhny@gmail.com", date);
     }
 
     @AfterAll
@@ -44,23 +44,6 @@ public class AccountTest {
     public void getDate() {
         LocalDate result = instance.getRegDate();
         LocalDate expected = LocalDate.of(2019, Month.DECEMBER, 24);
-        assertEquals(result, expected);
-    }
-
-    @Test
-    @DisplayName("Get Highscore")
-    public void getHighscore() {
-        int result = instance.getHighscore();
-        int expected = 10500;
-        assertEquals(result, expected);
-    }
-
-    @Test
-    @DisplayName("Set highscore")
-    public void setHighscore() {
-        instance.setHighscore(10000);
-        int result = instance.getHighscore();
-        int expected = 10000;
         assertEquals(result, expected);
     }
 }
