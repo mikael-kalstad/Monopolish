@@ -29,11 +29,12 @@ public class Handler extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        ConnectionPool.create();
-        //primaryStage.sizeToScene();
-        primaryStage.setWidth(1200);
-        primaryStage.setHeight(675);
         primaryStage.setTitle(APPLICATION_TITLE);
+
+        // Setting full screen size to stage
+        Rectangle2D screen = Screen.getPrimary().getVisualBounds();
+        primaryStage.setWidth(screen.getWidth());
+        primaryStage.setHeight(screen.getHeight());
         //primaryStage.setMaximized(true);
 
         // Setting initial view (login)
@@ -53,12 +54,11 @@ public class Handler extends Application {
         primaryStage.heightProperty().addListener(stageSizeListener);
 
         // Center window
-        Rectangle2D visualBounds = Screen.getPrimary().getVisualBounds();
-        primaryStage.setX((primaryStage.getWidth() - visualBounds.getWidth()) / 2);
-        primaryStage.setX((primaryStage.getHeight() - visualBounds.getHeight()) / 2);
+        //primaryStage.setX((primaryStage.getWidth() - screen.getWidth()) / 2);
+        //primaryStage.setX((primaryStage.getHeight() - screen.getHeight()) / 2);
 
-        System.out.println("visualbounds width: " + visualBounds.getWidth()); // screens usable width (no task bars etc.)
-        System.out.println("visualbounds height: " + visualBounds.getHeight()); // screens usable height
+        System.out.println("visualbounds width: " + screen.getWidth()); // screens usable width (no task bars etc.)
+        System.out.println("visualbounds height: " + screen.getHeight()); // screens usable height
         System.out.println("Actual res width: " + primaryStage.getWidth());
         System.out.println("Actual res height: " + primaryStage.getHeight());
     }

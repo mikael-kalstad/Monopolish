@@ -1,6 +1,7 @@
 package com.teamfour.monopolish.gui.controllers;
 
 import com.teamfour.monopolish.account.Account;
+import com.teamfour.monopolish.database.ConnectionPool;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -128,6 +129,7 @@ public class LoginController {
         // Database query for checking username/email and password combination
         if (!inputsEmpty()) {
             try {
+                ConnectionPool.create();
                 res = Handler.getAccountDAO().getAccountByCredentials(usernameInput.getText(), passwordInput.getText());
                 if (res != null) {
                     Handler.setAccount(res);
@@ -160,5 +162,14 @@ public class LoginController {
     public void register() {
         // Go to register view
         Handler.getSceneManager().setScene(ViewConstants.REGISTER.getValue());
+    }
+
+    // ---- REMOVE BEFORE PRODUCTION! -------
+    public void bypassToDashboard() {
+        Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
+    }
+
+    public void bypassToGame() {
+        Handler.getSceneManager().setScene(ViewConstants.GAME.getValue());
     }
 }

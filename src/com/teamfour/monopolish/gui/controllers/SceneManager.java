@@ -22,6 +22,10 @@ import java.io.IOException;
 public class SceneManager {
     private Stage window;
 
+    // Standard sizes for scenes (in pixels)
+    private final int STANDARD_SCENE_WIDTH = 1940;
+    private final int STANDARD_SCENE_HEIGHT = 1040;
+
     /**
      * Instantiates a new Scene manager.
      *
@@ -85,7 +89,16 @@ public class SceneManager {
         double sw = window.getWidth();
         double sh = window.getHeight();
 
-        Scale scale = new Scale(sw/screen.getWidth() * 0.95, sh/screen.getHeight() * 0.95, 0, 0);
+        /*
+        System.out.println("Scene width: " + window.getWidth());
+        System.out.println("Scene height: " + window.getHeight());
+        System.out.println("Screen width: " + screen.getWidth());
+        System.out.println("Screen height: " + screen.getHeight());
+        System.out.println("Multiplier: width" + sw/window.getScene().getWidth());
+        System.out.println("Multiplier: height" + sh/window.getScene().getHeight());
+        */
+
+        Scale scale = new Scale(sw/STANDARD_SCENE_WIDTH, sh/STANDARD_SCENE_HEIGHT, 0, 0);
         window.getScene().getRoot().getTransforms().setAll(scale);
     }
 }
