@@ -48,7 +48,7 @@ public class EntityManager {
     }
 
     public void removePlayer(String username){
-        playerDAO.removePlayer(username);
+        playerDAO.removePlayer(1, username);
         Player temp = getPlayer(username);
         players.remove(temp);
     }
