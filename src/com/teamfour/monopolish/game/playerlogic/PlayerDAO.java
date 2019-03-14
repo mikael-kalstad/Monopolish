@@ -26,13 +26,14 @@ public class PlayerDAO extends DataAccessObject {
         return(null);
     }
 
-    public void removePlayer(String username){
+    public void removePlayer(int game_id, String username){
         try {
             connection = ConnectionPool.getMainConnectionPool().getConnection();
-            cStmt = connection.prepareCall("{call player_remove(?, ?, ?)}");
+            cStmt = connection.prepareCall("{call player_remove(?, ?)}");
 
             for(int i = 0; i<10; i++) {
                 cStmt.setString(1, username);
+                cStmt.setInt(2, game_id);
                 cStmt.executeQuery();
             }
         } catch (SQLException e) {
@@ -42,16 +43,16 @@ public class PlayerDAO extends DataAccessObject {
         }
     }
 
-    public void updatePlayer(Player player){
+    public void updatePlayer(Player player, int game_id){
         try {
             connection = ConnectionPool.getMainConnectionPool().getConnection();
             cStmt = connection.prepareCall("{call player_update(?, ?, ?)}");
 
             for(int i = 0; i<10; i++) {
                 cStmt.setString(1, player.getUsername());
-                //cStmt.setInt(2, game_id);
-                cStmt.setInt(2, player.getPosition());
-                cStmt.setInt(3, player.getMoney());
+                cStmt.setInt(2, game_id);
+                cStmt.setInt(3, player.getPosition());
+                cStmt.setInt(4, player.getMoney());
 
                 cStmt.executeUpdate();
             }

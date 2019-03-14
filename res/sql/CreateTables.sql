@@ -54,8 +54,14 @@ CREATE TABLE player
   money INT NOT NULL DEFAULT 0,
   currentpos INT NOT NULL DEFAULT 0,
   injail BIT NOT NULL DEFAULT 0,
-  bankrupt BIT NOT NULL DEFAULT 0
+  bankrupt BIT NOT NULL DEFAULT 0,
+  active int not null default 1,
+  score int
 );
+
+-- active = 1 : aktiv,
+-- active = 0 : endgame
+-- active = 2 : sluttet selv
 
 create table property(
   property_id INTEGER NOT NULL,
