@@ -1,7 +1,7 @@
 package com.teamfour.monopolish.game.board;
 
-import com.teamfour.monopolish.game.playerlogic.Player;
-import com.teamfour.monopolish.game.playerlogic.PlayerManager;
+import com.teamfour.monopolish.game.entities.player.Player;
+import com.teamfour.monopolish.game.entities.player.PlayerManager;
 import com.teamfour.monopolish.game.propertylogic.PropertyManager;
 
 import java.util.ArrayList;
