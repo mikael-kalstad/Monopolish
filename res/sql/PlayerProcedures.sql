@@ -40,13 +40,14 @@ delimiter ;
 delimiter $$
 create procedure player_update(
   in u_name varchar(30),
+  in g_id int,
   in pos int,
   in moneyChange int
 )
 begin
   declare u_id int;
 
-  select user_id  into u_id from account where u_name = username;
+  select user_id  into u_id from account where u_name = username and game_id = g_id;
 
   update player set position = pos and money = moneyChange
     where user_id = u_id;
