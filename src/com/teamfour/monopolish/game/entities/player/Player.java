@@ -13,7 +13,7 @@ public class Player extends Entity {
     private final String username;
     private int position = 0;
 
-    public Player(String username){
+    public Player(String username) {
         super();
         this.username = username;
     }

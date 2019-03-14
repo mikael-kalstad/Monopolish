@@ -26,6 +26,9 @@ public class Bank extends Entity {
         availableHouses = STARTING_HOUSES;
         availableHotels = STARTING_HOTELS;
         money = MAX_GAME_MONEY;
+        // Get all properties from database
+        // TODO: Fix this
+        properties = propertyDAO.getAllProperties(1);
     }
 
     /**
