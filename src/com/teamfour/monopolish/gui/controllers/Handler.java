@@ -29,7 +29,6 @@ public class Handler extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        ConnectionPool.create();
         primaryStage.setTitle(APPLICATION_TITLE);
 
         // Setting full screen size to stage

@@ -1,6 +1,7 @@
 package com.teamfour.monopolish.gui.controllers;
 
 import com.teamfour.monopolish.account.Account;
+import com.teamfour.monopolish.database.ConnectionPool;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -152,12 +153,16 @@ public class RegisterController {
             Account user = new Account(usernameInput.getText().trim(), emailInput.getText().trim(), LocalDate.now(), 0);
 
             try {
+                ConnectionPool.create();
                 res = Handler.getAccountDAO().insertAccount(user, passwordInput.getText().trim());
                 if (res == 3) usernameTaken = emailTaken = true;
                 else if (res == 1) usernameTaken = true;
                 else if (res == 2) emailTaken = true;
             }
-            catch (SQLException e) { }
+            catch (SQLException e) {
+                // TODO: Display database error
+                return;
+            }
 
             if (res == 0) {
                 Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());

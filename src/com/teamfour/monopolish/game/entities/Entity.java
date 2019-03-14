@@ -1,6 +1,6 @@
 package com.teamfour.monopolish.game.entities;
 
-import com.teamfour.monopolish.game.propertylogic.Property;
+import com.teamfour.monopolish.game.propertylogic.*;
 
 import java.util.ArrayList;
 
@@ -16,6 +16,7 @@ public abstract class Entity {
     // Attributes
     protected ArrayList<Property> properties;
     protected int money;
+    protected PropertyDAO propertyDAO;
 
     /**
      * Constructor
@@ -23,6 +24,7 @@ public abstract class Entity {
     public Entity() {
         properties = new ArrayList<>();
         money = 0;
+        propertyDAO = new PropertyDAO();
     }
 
     /**

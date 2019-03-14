@@ -3,7 +3,7 @@ package com.teamfour.monopolish.game.entities.player;
 import com.teamfour.monopolish.game.entities.Entity;
 
 /**
- *
+ * Represents the players in a game
  *
  * @author      lisawil
  * @version     1.1
@@ -14,6 +14,7 @@ public class Player extends Entity {
     private int position = 0;
 
     public Player(String username){
+        super();
         this.username = username;
     }
 

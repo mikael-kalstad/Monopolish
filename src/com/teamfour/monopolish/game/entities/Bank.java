@@ -12,6 +12,7 @@ public class Bank extends Entity {
     // Static variables
     public static final int STARTING_HOUSES = 32;
     public static final int STARTING_HOTELS = 8;
+    public static final int MAX_GAME_MONEY = 500000;
 
     // Attributes
     int availableHouses;
@@ -24,6 +25,7 @@ public class Bank extends Entity {
         super();
         availableHouses = STARTING_HOUSES;
         availableHotels = STARTING_HOTELS;
+        money = MAX_GAME_MONEY;
     }
 
     /**
