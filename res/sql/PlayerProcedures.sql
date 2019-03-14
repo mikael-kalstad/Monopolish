@@ -28,9 +28,9 @@ create procedure player_remove(
 begin
   declare u_id int;
 
-  select userid  into u_id from account where u_name = username;
+  select user_id  into u_id from account where u_name = username;
 
-  delete from player where userid = u_id;
+  update player set active = 2 where user_id = u_id and gameid = g_id;
   commit;
 
 end $$
@@ -46,10 +46,10 @@ create procedure player_update(
 begin
   declare u_id int;
 
-  select userid  into u_id from account where u_name = username;
+  select user_id  into u_id from account where u_name = username;
 
   update player set position = pos and money = moneyChange
-    where userid = u_id;
+    where user_id = u_id;
   commit;
 
 end $$
@@ -61,20 +61,15 @@ create procedure player_clean(
   in game_id int
 )
 begin
-  delete from player where gameid = game_id;
+  update player set active = 0 where gameid = game_id and active = 1;
+
+  update player set score = (select (money + sum)
+    from (select money, sum(price) as sum from property join player
+      on player.user_id = property.user_id group by user_id) as a)
+        where player.game_id = game_id and active = 0;
   commit;
 
 end $$
 delimiter ;
 
 
-delimiter $$
-create procedure player_clean(
-  in game_id int
-)
-begin
-  delete from player where gameid = game_id;
-  commit;
-
-end $$
-delimiter ;
