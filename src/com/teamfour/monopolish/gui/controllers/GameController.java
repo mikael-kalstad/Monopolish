@@ -10,7 +10,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -20,15 +19,17 @@ import java.util.Random;
 
 public class GameController {
 
-    @FXML private Button rolldice, next;
+    @FXML private Button rolldice;
+    @FXML private Button next;
     @FXML private GridPane gamegrid;
-    @FXML private ListView playerinfo;
-
+    @FXML private ListView playerinfo; //TextFlow playerinfo må ha en tabell eller en annen løsning som gjør at den ikke overfylles
     ArrayList<Text> textList = new ArrayList<>();
-    ArrayList<Draw> spillere = new ArrayList<>();
+    ArrayList<FxPlayer> players = new ArrayList<>();
+
+    FxPlayer FXPlayer = new FxPlayer(9,9); //for testing purposes
 
     @FXML
-    private void ifRollDice(){ //testmetode
+    private void rollDice(){
         Random rand = new Random();
         rolldice.setOnAction(e -> System.out.println(rand.nextInt(6)));
     }
@@ -38,11 +39,10 @@ public class GameController {
         next.setOnAction(e -> System.out.println("Nei"));
     }
 
-    @FXML
-    private void addToPlayerinfo(){
-        textList.add(new Text("hallo\n")); //denne kan/burde ligge i egen metode som kaller denne metoden, gadd ikke akk nå
-        int focus = textList.size();
+    private void addToPlayerinfo(String s){
+        textList.add(new Text(s));
 
+        int focus = textList.size();
         playerinfo.getItems().clear();
         playerinfo.getItems().addAll(textList);
         playerinfo.scrollTo(focus);
@@ -64,25 +64,31 @@ public class GameController {
                 Alert.AlertType.WARNING, "Ikke faen", "Whoops", "You're not even on the bård, how can you pay rent?");
     }
 
-    public void lagspiller(){
-        Draw spiller = new Draw();
-
-        spillere.add(spiller);
-        GridPane.setConstraints(spiller, 9, 9);
+    @FXML
+    public void drawplayer() throws Exception{
+        for(FxPlayer player : players) {
+            if (player == FXPlayer){
+                throw new Exception("Already drawn");
+            }
+        }
+        players.add(FXPlayer);
+        GridPane.setConstraints(FXPlayer, FXPlayer.getPosX(), FXPlayer.getPosY());
 
         gamegrid.getChildren().clear();
-        gamegrid.getChildren().addAll(spillere);
+        gamegrid.getChildren().addAll(players);
     }
 
-    public void flyttSpillerXY(int spillernr, int posX, int posY) {
-        Draw spiller = new Draw();
+    public void movePlayer(int steps) {
+        FXPlayer.move(steps);
 
-        spillere.remove(spillernr);
-        spillere.add(spillernr, spiller);
-
-        GridPane.setConstraints(spiller, posX,posY);
+        GridPane.setConstraints(FXPlayer, FXPlayer.getPosX(), FXPlayer.getPosY());
 
         gamegrid.getChildren().clear();
-        gamegrid.getChildren().addAll(spillere);
+        gamegrid.getChildren().addAll(players);
+    }
+
+    @FXML
+    public void move1(){
+        movePlayer(1);
     }
 }

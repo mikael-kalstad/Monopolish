@@ -161,4 +161,13 @@ public class LoginController {
         // Go to register view
         Handler.getSceneManager().setScene(ViewConstants.REGISTER.getValue());
     }
+
+    // ---- REMOVE BEFORE PRODUCTION! -------
+    public void bypassToDashboard() {
+        Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
+    }
+
+    public void bypassToGame() {
+        Handler.getSceneManager().setScene(ViewConstants.GAME.getValue());
+    }
 }

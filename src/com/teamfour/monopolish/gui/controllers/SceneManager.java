@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.transform.Scale;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -20,6 +21,10 @@ import java.io.IOException;
  */
 public class SceneManager {
     private Stage window;
+
+    // Standard sizes for scenes (in pixels)
+    private final int STANDARD_SCENE_WIDTH = 1940;
+    private final int STANDARD_SCENE_HEIGHT = 1040;
 
     /**
      * Instantiates a new Scene manager.
@@ -48,7 +53,8 @@ public class SceneManager {
         try {
             Parent fxml = FXMLLoader.load(getClass().getResource(ViewConstants.FILE_PATH.getValue() + filename));
             Scene scene = new Scene(fxml);
-            window.setScene(scene);
+            window.setScene(scene); // Setting new scene to stage
+            setSceneScale(window); // Fixing scaling issues
         }
         catch (IOException e) { e.printStackTrace(); }
     }
@@ -70,5 +76,29 @@ public class SceneManager {
         alert.showAndWait().ifPresent(type -> {
             if (type == okBtn) stage.close();
         });
+    }
+
+    /**
+     * This method will scale the scene to fit within a stage
+     * Note: also used in Handler (when resizing)
+     *
+     * @param window Stage target
+     */
+    public void setSceneScale(Stage window) {
+        Rectangle2D screen = Screen.getPrimary().getVisualBounds();
+        double sw = window.getWidth();
+        double sh = window.getHeight();
+
+        /*
+        System.out.println("Scene width: " + window.getWidth());
+        System.out.println("Scene height: " + window.getHeight());
+        System.out.println("Screen width: " + screen.getWidth());
+        System.out.println("Screen height: " + screen.getHeight());
+        System.out.println("Multiplier: width" + sw/window.getScene().getWidth());
+        System.out.println("Multiplier: height" + sh/window.getScene().getHeight());
+        */
+
+        Scale scale = new Scale(sw/STANDARD_SCENE_WIDTH, sh/STANDARD_SCENE_HEIGHT, 0, 0);
+        window.getScene().getRoot().getTransforms().setAll(scale);
     }
 }
