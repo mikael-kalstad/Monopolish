@@ -13,47 +13,73 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.monopolish.gui.controllers.GameController">
+<AnchorPane prefHeight="1040.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.monopolish.gui.controllers.GameController">
    <children>
-      <Pane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="720.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <Pane layoutX="1040.0" prefHeight="1040.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="1040.0" AnchorPane.rightAnchor="-120.0" AnchorPane.topAnchor="0.0">
          <children>
-            <VBox minHeight="720.0" prefHeight="720.0" prefWidth="360.0">
+            <VBox prefHeight="1040.0" prefWidth="777.0">
                <children>
-                  <AnchorPane style="-fx-background-color: #424242;">
+                  <AnchorPane style="-fx-background-color: #424242;" VBox.vgrow="ALWAYS">
                      <children>
                         <Label layoutX="140.0" layoutY="29.0" text="Your stats" textFill="#fafafa">
                            <font>
-                              <Font size="18.0" />
+                              <Font size="21.0" />
                            </font>
                         </Label>
-                        <HBox alignment="CENTER" layoutX="10.0" layoutY="57.0" prefHeight="66.0" prefWidth="340.0" spacing="50.0">
+                        <HBox alignment="CENTER" layoutX="10.0" layoutY="57.0" prefHeight="142.0" prefWidth="880.0" spacing="50.0">
                            <children>
-                              <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="90.0" style="-fx-background-color: #FF9800;" text="Home" textFill="#fafafa" />
-                              <Label text="Total:" textFill="#fafafa" />
-                              <Label text="[money]" textFill="#fafafa" />
+                              <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #FF9800;" text="Home" textFill="#fafafa" />
+                              <Label text="Total:" textFill="#fafafa">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font></Label>
+                              <Label text="[money]" textFill="#fafafa">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font></Label>
                            </children>
                         </HBox>
                      </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
                   </AnchorPane>
-                  <AnchorPane style="-fx-background-color: #424242;">
+                  <AnchorPane style="-fx-background-color: #424242;" VBox.vgrow="ALWAYS">
                      <children>
-                        <HBox alignment="CENTER" layoutX="14.0" layoutY="24.0" prefHeight="67.0" prefWidth="340.0" spacing="50.0">
+                        <HBox alignment="CENTER" layoutX="14.0" layoutY="24.0" prefHeight="80.0" prefWidth="890.0" spacing="50.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#drawplayer" prefHeight="26.0" prefWidth="90.0" style="-fx-background-color: #FF9800;" text="Button" textFill="#fafafa" />
-                              <Label text="Status" textFill="#fafafa" />
-                              <Label text="[Status]" textFill="#fafafa" />
+                              <Button mnemonicParsing="false" onAction="#drawplayer" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #FF9800;" text="Button" textFill="#fafafa" />
+                              <Label text="Status" textFill="#fafafa">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font></Label>
+                              <Label text="[Status]" textFill="#fafafa">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font></Label>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" layoutX="14.0" layoutY="91.0" prefHeight="67.0" prefWidth="340.0" spacing="50.0">
+                        <HBox alignment="CENTER" layoutX="14.0" layoutY="91.0" prefHeight="80.0" prefWidth="890.0" spacing="50.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#move1" prefHeight="26.0" prefWidth="90.0" style="-fx-background-color: #FF9800;" text="Button" textFill="#fafafa" />
-                              <Label text="Something" textFill="#fafafa" />
-                              <Label text="Æsj" textFill="#fafafa" />
+                              <Button mnemonicParsing="false" onAction="#move1" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #FF9800;" text="Button" textFill="#fafafa" />
+                              <Label text="Something" textFill="#fafafa">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Æsj" textFill="#fafafa">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </HBox>
                      </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
                   </AnchorPane>
-                  <AnchorPane style="-fx-background-color: #424242;" VBox.vgrow="SOMETIMES">
+                  <AnchorPane style="-fx-background-color: #424242;" VBox.vgrow="ALWAYS">
                      <children>
                         <Label layoutX="14.0" layoutY="14.0" text="Opponents" textFill="#fafafa">
                            <font>
@@ -62,28 +88,44 @@
                         </Label>
                         <VBox layoutX="10.0" layoutY="47.0" spacing="5.0">
                            <children>
-                              <HBox alignment="CENTER" prefHeight="50.0" prefWidth="340.0" spacing="30.0" style="-fx-background-color: #212121;">
+                              <HBox alignment="CENTER" prefHeight="80.0" prefWidth="998.0" spacing="30.0" style="-fx-background-color: #212121;">
                                  <children>
-                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="30.0">
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="50.0" stroke="BLACK" strokeType="INSIDE" width="50.0">
                                        <HBox.margin>
                                           <Insets />
                                        </HBox.margin>
                                     </Rectangle>
-                                    <Label text="Playername" textFill="#fafafa" />
-                                    <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="90.0" style="-fx-background-color: #FF9800;" text="View" textFill="#fafafa" />
-                                    <Label text="[money]" textFill="#fafafa" />
+                                    <Label text="Playername" textFill="#fafafa">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #FF9800;" text="View" textFill="#fafafa" />
+                                    <Label text="[money]" textFill="#fafafa">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Label>
                                  </children>
                               </HBox>
-                              <HBox alignment="CENTER" prefHeight="50.0" prefWidth="340.0" spacing="30.0" style="-fx-background-color: #212121;">
+                              <HBox alignment="CENTER" prefHeight="80.0" prefWidth="998.0" spacing="30.0" style="-fx-background-color: #212121;">
                                  <children>
-                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" stroke="BLACK" strokeType="INSIDE" width="30.0">
+                                    <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="50.0" stroke="BLACK" strokeType="INSIDE" width="50.0">
                                        <HBox.margin>
                                           <Insets />
                                        </HBox.margin>
                                     </Rectangle>
-                                    <Label text="Playername" textFill="#fafafa" />
-                                    <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="90.0" style="-fx-background-color: #FF9800;" text="View" textFill="#fafafa" />
-                                    <Label text="[money]" textFill="#fafafa" />
+                                    <Label text="Playername" textFill="#fafafa">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #FF9800;" text="View" textFill="#fafafa" />
+                                    <Label text="[money]" textFill="#fafafa">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Label>
                                  </children>
                               </HBox>
                            </children>
@@ -97,11 +139,12 @@
             </VBox>
          </children>
       </Pane>
-      <Pane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="360.0" AnchorPane.topAnchor="0.0">
+      <Pane prefHeight="1040.0" prefWidth="1040.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <GridPane fx:id="board" gridLinesVisible="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="720.0" snapToPixel="false">
+            <GridPane fx:id="board" gridLinesVisible="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1040.0" prefWidth="1040.0" snapToPixel="false">
                <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" percentWidth="0.0" prefWidth="120.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="65.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="65.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="65.0" />
@@ -109,77 +152,88 @@
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="65.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="65.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="65.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="65.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="120.0" />
                </columnConstraints>
                <rowConstraints>
-                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="-Infinity" percentHeight="0.0" prefHeight="120.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="-Infinity" prefHeight="65.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="-Infinity" prefHeight="65.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="-Infinity" prefHeight="65.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="-Infinity" prefHeight="65.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="-Infinity" prefHeight="65.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="-Infinity" prefHeight="65.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="-Infinity" prefHeight="65.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="-Infinity" prefHeight="65.0" vgrow="SOMETIMES" />
+                  <RowConstraints percentHeight="0.0" prefHeight="120.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="2" GridPane.rowIndex="9">
                      <children>
                         <HBox layoutY="-1.0" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #64b5f6;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children></AnchorPane>
+                     </children>
+                  </AnchorPane>
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.rowIndex="9" />
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.rowIndex="6">
                      <children>
                         <VBox layoutX="70.0" layoutY="-3.0" prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #F06292;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children></AnchorPane>
+                     </children>
+                  </AnchorPane>
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.rowIndex="7" />
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.rowIndex="8">
                      <children>
                         <VBox layoutX="60.0" layoutY="5.0" prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #F06292;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children></AnchorPane>
+                     </children>
+                  </AnchorPane>
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="4" GridPane.rowIndex="9">
                      <children>
                         <HBox layoutX="-2.0" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #64b5f6;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children></AnchorPane>
+                     </children>
+                  </AnchorPane>
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="1" GridPane.rowIndex="9">
                      <children>
                         <HBox layoutY="-1.0" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #64b5f6;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children></AnchorPane>
+                     </children>
+                  </AnchorPane>
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.rowIndex="2">
                      <children>
                         <VBox layoutX="73.0" layoutY="7.0" prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #FFA726;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children></AnchorPane>
+                     </children>
+                  </AnchorPane>
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.rowIndex="1">
                      <children>
                         <VBox layoutX="24.0" layoutY="27.0" prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #FFA726;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children></AnchorPane>
+                     </children>
+                  </AnchorPane>
                   <AnchorPane style="-fx-background-color: #DCEDC8;" />
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="1">
                      <children>
                         <HBox layoutX="1.0" layoutY="69.0" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #e57373;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                     </children></AnchorPane>
+                     </children>
+                  </AnchorPane>
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="2" />
                   <AnchorPane pickOnBounds="false" style="-fx-background-color: #DCEDC8;" GridPane.rowIndex="3" />
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.rowIndex="4">
                      <children>
                         <VBox layoutX="75.0" layoutY="-5.0" prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #FFA726;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children></AnchorPane>
+                     </children>
+                  </AnchorPane>
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.rowIndex="5">
                      <children>
                         <VBox layoutX="63.0" layoutY="-9.0" prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #F06292;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children></AnchorPane>
+                     </children>
+                  </AnchorPane>
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="9" GridPane.rowIndex="9" />
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="8" GridPane.rowIndex="9">
                      <children>
                         <HBox layoutX="3.0" layoutY="3.0" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #8D6E63;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children></AnchorPane>
+                     </children>
+                  </AnchorPane>
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="7" GridPane.rowIndex="9" />
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="6" GridPane.rowIndex="9">
                      <children>
                         <HBox layoutX="-2.0" layoutY="1.0" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #8D6E63;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children></AnchorPane>
+                     </children>
+                  </AnchorPane>
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="5" GridPane.rowIndex="9" />
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="3" GridPane.rowIndex="9" />
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="3" GridPane.rowIndex="9" />
@@ -193,76 +247,86 @@
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="3">
                      <children>
                         <HBox layoutY="75.0" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #e57373;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                     </children></AnchorPane>
+                     </children>
+                  </AnchorPane>
                   <AnchorPane style="-fx-background-color: #DCEDC8;" />
                   <AnchorPane style="-fx-background-color: #DCEDC8;" />
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="9" GridPane.rowIndex="8">
                      <children>
                         <VBox layoutX="1.0" layoutY="-5.0" prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #1565C0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children></AnchorPane>
+                     </children>
+                  </AnchorPane>
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="9" GridPane.rowIndex="7" />
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="9" GridPane.rowIndex="6">
                      <children>
                         <VBox layoutX="3.0" layoutY="9.0" prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #1565C0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children></AnchorPane>
+                     </children>
+                  </AnchorPane>
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="9" GridPane.rowIndex="5" />
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="9" GridPane.rowIndex="4">
                      <children>
                         <VBox layoutX="13.0" layoutY="-5.0" prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #81c784;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children></AnchorPane>
+                     </children>
+                  </AnchorPane>
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="9" GridPane.rowIndex="3" />
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="9" GridPane.rowIndex="2">
                      <children>
                         <VBox layoutX="15.0" layoutY="20.0" prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #81c784;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children></AnchorPane>
-                     <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="9" GridPane.rowIndex="1">
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="9" GridPane.rowIndex="1">
                      <children>
                         <VBox layoutX="6.0" layoutY="-7.0" prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #81c784;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children></AnchorPane>
+                     </children>
+                  </AnchorPane>
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="9" />
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="8">
                      <children>
                         <HBox layoutX="8.0" layoutY="67.0" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #fff176;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                     </children></AnchorPane>
+                     </children>
+                  </AnchorPane>
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="7" />
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="6">
                      <children>
                         <HBox layoutX="-12.0" layoutY="72.0" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #fff176;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                     </children></AnchorPane>
+                     </children>
+                  </AnchorPane>
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="5">
                      <children>
                         <HBox layoutX="1.0" layoutY="76.0" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #fff176;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                     </children></AnchorPane>
+                     </children>
+                  </AnchorPane>
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="4">
                      <children>
                         <HBox layoutX="-6.0" layoutY="73.0" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #e57373;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                     </children></AnchorPane>
+                     </children>
+                  </AnchorPane>
                </children>
             </GridPane>
-            <GridPane fx:id="gamegrid" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="720.0" snapToPixel="false">
+            <GridPane fx:id="gamegrid" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1040.0" prefWidth="1040.0" snapToPixel="false">
                <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="65.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="65.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="65.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="65.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="65.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="65.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="65.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="65.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" percentWidth="0.0" prefWidth="120.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="221.0" minWidth="0.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="169.0" minWidth="0.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="65.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="65.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="65.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="65.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="65.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="120.0" />
                </columnConstraints>
                <rowConstraints>
-                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="65.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="-Infinity" percentHeight="0.0" prefHeight="120.0" vgrow="SOMETIMES" />
+                  <RowConstraints prefHeight="100.0" vgrow="SOMETIMES" />
+                  <RowConstraints prefHeight="100.0" vgrow="SOMETIMES" />
+                  <RowConstraints prefHeight="100.0" vgrow="SOMETIMES" />
+                  <RowConstraints prefHeight="100.0" vgrow="SOMETIMES" />
+                  <RowConstraints prefHeight="100.0" vgrow="SOMETIMES" />
+                  <RowConstraints prefHeight="100.0" vgrow="SOMETIMES" />
+                  <RowConstraints prefHeight="100.0" vgrow="SOMETIMES" />
+                  <RowConstraints prefHeight="100.0" vgrow="SOMETIMES" />
+                  <RowConstraints percentHeight="0.0" prefHeight="120.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
          </children>

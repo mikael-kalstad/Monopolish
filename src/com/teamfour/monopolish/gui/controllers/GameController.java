@@ -69,7 +69,7 @@ public class GameController {
             if (player == FXPlayer){
                 throw new Exception("Already drawn");
             }
-        }
+        }   
         players.add(FXPlayer);
         GridPane.setConstraints(FXPlayer, FXPlayer.getPosX(), FXPlayer.getPosY());
 
