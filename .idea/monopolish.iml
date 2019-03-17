@@ -46,9 +46,9 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library" exported="">
-      <library>
+      <library name="JDBC">
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/res/mysql-connector-java-8.0.13.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/mysql-connector-java-8.0.13.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

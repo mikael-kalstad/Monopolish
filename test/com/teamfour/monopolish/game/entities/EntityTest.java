@@ -13,13 +13,13 @@ public class EntityTest {
 
     @BeforeAll
     public static void setInstance() {
-        instance = new Bank();
+        instance = new Bank(1);
         instance.adjustMoney(2000);
     }
 
     @Test
     public void testTransferMoney() {
-        Bank otherBank = new Bank();
+        Bank otherBank = new Bank(1);
         otherBank.adjustMoney(2000);
 
         otherBank.transferMoney(instance, 500);
@@ -30,14 +30,14 @@ public class EntityTest {
 
     @Test
     public void testTransferMoney2() {
-        Bank otherBank = new Bank();
+        Bank otherBank = new Bank(1);
 
         assertFalse(otherBank.transferMoney(instance, 500));
     }
 
     @Test
     public void testTransferProperty() {
-        Bank otherBank = new Bank();
+        Bank otherBank = new Bank(1);
         instance.getProperties().add(new Property(1, "Test", 2000, 4, "Red"));
 
         instance.transferProperty(otherBank, 0);
@@ -49,7 +49,7 @@ public class EntityTest {
 
     @Test
     public void testTransferProperty2() {
-        Bank otherBank = new Bank();
+        Bank otherBank = new Bank(1);
 
         assertFalse(instance.transferProperty(otherBank, 0));
     }

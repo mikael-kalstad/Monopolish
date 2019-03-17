@@ -21,14 +21,14 @@ public class Bank extends Entity {
     /**
      * Constructor
      */
-    public Bank() {
+    public Bank(int gameId) {
         super();
         availableHouses = STARTING_HOUSES;
         availableHotels = STARTING_HOTELS;
         money = MAX_GAME_MONEY;
         // Get all properties from database
         // TODO: Fix this
-        properties = propertyDAO.getAllProperties(1);
+        properties = propertyDAO.getAllProperties(gameId);
     }
 
     /**
