@@ -36,7 +36,8 @@ public class AccountDAO extends DataAccessObject {
                 status = cStmt.getInt(5);
 
         } catch (SQLException e) {
-            return 1;
+            //return 1; Is this useful?
+            throw new SQLException();
         } finally {
             releaseConnection();
         }
@@ -101,6 +102,7 @@ public class AccountDAO extends DataAccessObject {
 
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new SQLException();
         } finally {
             releaseConnection();
         }

@@ -6,6 +6,7 @@ import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 
@@ -28,6 +29,7 @@ public class RegisterController {
     @FXML private Text emailMsg;
     @FXML private Text passwordMsg;
     @FXML private Text passwordRepeatMsg;
+    @FXML private Pane passwordRequirement;
 
     // Color constants
     private final String COLOR_NORMAL = "white";
@@ -43,6 +45,16 @@ public class RegisterController {
 
     // Password requirements constants
     private final int MIN_PASSWORD_LENGTH = 6;
+
+    @FXML public void initialize()  {
+        passwordInput.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                passwordRequirement.setVisible(true);
+            } else {
+                passwordRequirement.setVisible(false);
+            }
+        });
+    }
 
     private void setBorderStyle(Node element, String color) {
         element.setStyle("-fx-border-color: " + color);
