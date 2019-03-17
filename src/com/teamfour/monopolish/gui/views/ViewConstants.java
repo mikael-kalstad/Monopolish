@@ -20,6 +20,7 @@ public enum ViewConstants {
     LOGIN("login.fxml"),
     REGISTER("register.fxml"),
     DASHBOARD("dashboard.fxml"),
+    LOBBY("lobby.fxml"),
     GAME("game.fxml");
 
     private String value;

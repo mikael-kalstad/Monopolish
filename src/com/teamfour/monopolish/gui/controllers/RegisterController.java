@@ -22,6 +22,7 @@ import java.time.LocalDate;
 
 public class RegisterController {
     @FXML private TextField usernameInput;
+    @FXML private Pane usernameRequirement;
     @FXML private TextField emailInput;
     @FXML private TextField passwordInput;
     @FXML private TextField passwordRepeatInput;
@@ -41,17 +42,42 @@ public class RegisterController {
     private final String MSG_PASSWORD_WARNING = "*Check password requirements";
     private final String MSG_PASSWORDREPEAT_WARNING = "*Passwords do not match";
     private final String MSG_USERNAME_WARNING = "*Username is taken, choose a different one";
+    private final String MSG_USERNAME_REQUIREMENTS = "*Check username requirements";
     private final String MSG_EMAIL_WARNING = "*Email is already registered";
 
-    // Password requirements constants
+    //  Input requirements constants
+    private final int MAX_USERNAME_LENGTH = 30;
     private final int MIN_PASSWORD_LENGTH = 6;
 
+
     @FXML public void initialize()  {
+        // Add focus listener and show password requirement,
+        // if password length is lower than required
         passwordInput.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue) {
+            if (newValue && passwordInput.getText().length() < MIN_PASSWORD_LENGTH) {
                 passwordRequirement.setVisible(true);
             } else {
                 passwordRequirement.setVisible(false);
+            }
+        });
+
+        // Check if password length meets the requirement,
+        // and show or hide the requirement accordingly.
+        passwordInput.setOnKeyTyped((observable) -> {
+            if (passwordInput.getText().length() >= MIN_PASSWORD_LENGTH) {
+                passwordRequirement.setVisible(false);
+            } else {
+                passwordRequirement.setVisible(true);
+            }
+        });
+
+        usernameInput.setOnKeyTyped((observable) -> {
+            System.out.println("length " + usernameInput.getText().length());
+            if (usernameInput.getText().length() >= MAX_USERNAME_LENGTH) {
+                usernameRequirement.setVisible(true);
+
+            } else {
+                usernameRequirement.setVisible(false);
             }
         });
     }
@@ -155,13 +181,14 @@ public class RegisterController {
      */
     public void register() {
         boolean usernameTaken = false;
+        boolean usernameRequirement = usernameInput.getText().length() >= MAX_USERNAME_LENGTH;
         boolean emailTaken = false;
         boolean passwordRequirements = checkPasswordRequirements();
         boolean passwordMatch = passwordMatch();
 
         // Check requirements (details in javadoc above method)
-        if (!inputsEmpty() && passwordMatch) {
-            int res = 0;
+        if (!inputsEmpty() && passwordMatch && !usernameRequirement) {
+            int res;
             Account user = new Account(usernameInput.getText().trim(), emailInput.getText().trim(), LocalDate.now(), 0);
 
             try {
@@ -183,6 +210,7 @@ public class RegisterController {
 
         // Username check
         checkField(usernameInput, usernameMsg, MSG_USERNAME_WARNING, usernameTaken);
+        checkField(usernameInput, usernameMsg, MSG_USERNAME_REQUIREMENTS, usernameRequirement);
 
         // Email check
         checkField(emailInput, emailMsg, MSG_EMAIL_WARNING, emailTaken);

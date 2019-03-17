@@ -21,6 +21,7 @@ import java.io.IOException;
  */
 public class SceneManager {
     private Stage window;
+    private final String EXIT_PROMPT_MSG = "Are you sure you want to leave? You can not rejoin the game later.";
 
     // Standard sizes for scenes (in pixels)
     private final int STANDARD_SCENE_WIDTH = 1940;
@@ -36,10 +37,7 @@ public class SceneManager {
     SceneManager(Stage stage, String initial_view) {
        this.window = stage;
 
-       window.setOnCloseRequest(e -> {
-            e.consume(); // Override default closing of window
-            closeWindow(window); // Run closing method
-       });
+
 
        setScene(initial_view);
     }
@@ -50,6 +48,14 @@ public class SceneManager {
      * @param filename the filename
      */
     public void setScene(String filename) {
+        // Only give exit prompt if the player is in the game view
+        if (filename.equals(ViewConstants.GAME.getValue())) {
+            window.setOnCloseRequest(e -> {
+                e.consume(); // Override default closing of window
+                closeWindow(window); // Run closing method
+            });
+        }
+
         try {
             Parent fxml = FXMLLoader.load(getClass().getResource(ViewConstants.FILE_PATH.getValue() + filename));
             Scene scene = new Scene(fxml);
@@ -67,7 +73,7 @@ public class SceneManager {
     private void closeWindow(Stage stage) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Warning");
-        alert.setContentText("Are you sure you want to close the application?");
+        alert.setContentText(EXIT_PROMPT_MSG);
 
         ButtonType okBtn = new ButtonType("Yes");
         ButtonType noBtn = new ButtonType("No");
