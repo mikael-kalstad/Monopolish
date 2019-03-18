@@ -37,6 +37,59 @@ public class LobbyDAO extends DataAccessObject {
         return roomId;
     }
 
+    public int newLobby(String username) throws SQLException {
+        getConnection();
+        cStmt = connection.prepareCall("{call new_lobby(?, ?)}");
+
+        cStmt.setString(1, username);
+        cStmt.registerOutParameter(2, Types.INTEGER);
+
+        int lobby_id = -1;
+        if (cStmt.executeUpdate() > 0) lobby_id = cStmt.getInt(2);
+
+        return lobby_id;
+    }
+
+    /**
+     * Add the specified user to the specified lobby
+     * @param lobby_id Lobby id
+     * @param username Username
+     * @return True if successful
+     * @throws SQLException
+     */
+    public boolean addPlayer(String username, int lobby_id) throws SQLException {
+        getConnection();
+        cStmt = connection.prepareCall("{call insert_player(?, ?)}");
+
+        cStmt.setString(1, username);
+        cStmt.setInt(2, lobby_id);
+        cStmt.registerOutParameter(3, Types.BOOLEAN);
+
+        boolean res = false;
+        if (cStmt.executeUpdate() > 0) res  = cStmt.getBoolean(2);
+
+        return res;
+    }
+
+    /**
+     * Deletes the specified user from the specified lobby
+     * @param lobby_id Lobby id
+     * @param username Username
+     * @return True if successful
+     * @throws SQLException
+     */
+    public boolean removePlayer(String username, int lobby_id) throws SQLException {
+        getConnection();
+        cStmt = connection.prepareCall("{call lobby_delete_user(?, ?)}");
+
+        cStmt.setInt(1, lobby_id);
+        cStmt.setString(2, username);
+
+        int count = cStmt.executeUpdate();
+
+        return (count > 0);
+    }
+
     /**
      * Sets the specified users 'ready' status
      * @param roomId Lobby id
@@ -97,24 +150,5 @@ public class LobbyDAO extends DataAccessObject {
         releaseConnection();
 
         return users;
-    }
-
-    /**
-     * Deletes the specified user from the specified lobby
-     * @param roomId Lobby id
-     * @param username Username
-     * @return True if successful
-     * @throws SQLException
-     */
-    public boolean deleteUserFromLobby(int roomId, String username) throws SQLException {
-        getConnection();
-        cStmt = connection.prepareCall("{call lobby_delete_user(?, ?)}");
-
-        cStmt.setInt(1, roomId);
-        cStmt.setString(2, username);
-
-        int count = cStmt.executeUpdate();
-
-        return (count > 0);
     }
 }

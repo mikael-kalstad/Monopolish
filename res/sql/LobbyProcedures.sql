@@ -33,6 +33,44 @@ CREATE PROCEDURE lobby_insert(IN username VARCHAR(30), OUT lobby_id INT)
 -- END$$
 
 /**
+Procedure to make a new lobby
+ */
+DROP PROCEDURE new_lobby;
+
+CREATE PROCEDURE new_lobby(IN username VARCHAR(30), OUT lobby_id INT)
+  BEGIN
+    -- Get next lobby_id
+    SET lobby_id = IFNULL((SELECT (MAX(room_id)+1) FROM lobby), 1);
+    SET account_id = (SELECT a.user_id FROM account a WHERE a.username LIKE username LIMIT 1);
+
+    -- Insert player into the lobby
+    INSERT INTO lobby (room_id, user_id)
+    VALUES (lobby_id, account_id);
+  END;
+
+/**
+Procedure to make a new lobby
+ */
+
+DROP PROCEDURE insert_player;
+
+CREATE PROCEDURE insert_player(IN username VARCHAR(30), IN lobby_id INT, OUT ok BIT)
+  BEGIN
+    SET account_id = (SELECT a.user_id FROM account a WHERE a.username LIKE username LIMIT 1);
+    SET num_of_players = (SELECT COUNT(*) FROM lobby WHERE lobby_id = room_id);
+    SET ok = false;
+
+    -- Insert player if the lobby has less than 4 players (max amount)
+    -- Return if the player got inserted or not
+    IF (num_of_players < 4) THEN
+      INSERT INTO lobby (room_id, user_id)
+      VALUES (userId, account_id);
+    ELSE
+      SET ok = true;
+    END IF;
+  END;
+
+/**
 Procedure to set ready status
  */
 
