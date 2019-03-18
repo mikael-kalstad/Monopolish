@@ -8,13 +8,26 @@ import com.teamfour.monopolish.game.entities.player.Player;
 import java.sql.*;
 import java.util.ArrayList;
 
+/**
+ * Handles Property-DB connection and methods
+ *
+ *
+ * @author      lisawil
+ * @version     1.0
+ */
+
 public class PropertyDAO extends DataAccessObject {
+    //Attributes
     Connection connection;
     CallableStatement cStmt;
-    private int game_id;
 
+
+    /**
+     * creates gameproperties in the database and Property objects for the game.
+     *
+     *
+     */
     public ArrayList<Property> getAllProperties(int game_id){
-        this.game_id = game_id;
         ArrayList<Property> props = null;
         Property temp;
         try {
@@ -28,7 +41,7 @@ public class PropertyDAO extends DataAccessObject {
                 cStmt.setInt(2, prop_id);
 
                 rs =  cStmt.executeQuery();
-                //props.add(new Property(rs.getInt("property_id"), rs.getString("name"), rs.getInt("price"), rs.getInt("position"), rs.getString("categorycolor")));
+                props.add(new Property(rs.getInt("property_id"), rs.getString("name"), rs.getInt("price"), rs.getInt("position"), rs.getString("categorycolor")));
 
                 //ikke helt ideelt?
                 rs.close();
@@ -42,12 +55,17 @@ public class PropertyDAO extends DataAccessObject {
         return (props);
     }
 
+    /**
+     * updates owner and pawned-state of a property
+     *
+     *
+     */
 
-    public void updateProperty(Property prop, Entity entity){
+    public void updateProperty(Property prop, Entity entity, int game_id){
         String username;
         if(!(entity instanceof Player)){
             username = null;
-        }else{
+        }else {
             Player player = (Player) entity;
             username = player.getUsername();
         }
@@ -55,7 +73,6 @@ public class PropertyDAO extends DataAccessObject {
         try {
             connection = ConnectionPool.getMainConnectionPool().getConnection();
             cStmt = connection.prepareCall("{call property_update(?, ?, ?, ?)}");
-            //works with property id's being 10000 inkremented and 10 properties
             for(int i = 0; i<10; i++) {
                 cStmt.setInt(1, prop.getId());
                 cStmt.setInt(2, game_id);
@@ -71,7 +88,7 @@ public class PropertyDAO extends DataAccessObject {
     }
 
 
-    public void endGame(){
+    public void endGame(int game_id){
         try {
             connection = ConnectionPool.getMainConnectionPool().getConnection();
             cStmt = connection.prepareCall("{call property_clean(?)}");
