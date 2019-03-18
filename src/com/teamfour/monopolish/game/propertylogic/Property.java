@@ -1,13 +1,27 @@
 package com.teamfour.monopolish.game.propertylogic;
 
+/**
+ * Represents all properties in a game
+ *
+ *
+ * @author      lisawil
+ * @version     1.0
+ */
+
 public class Property {
-    private int id;
-    private String name;
+
+    //Attributes
+    private final int id;
+    private final String name;
     private int price;
     private int position;
     private boolean pawned = false;
-    private String categorycolor;
+    private final String categorycolor;
 
+
+    /**
+     * Constructor
+     */
     public Property(int p_id, String name, int price, int position, String categorycolor){
         this.id = p_id;
         this.name = name;

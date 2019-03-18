@@ -31,8 +31,13 @@ create procedure property_update(
     in u_name varchar (30)
   )
   begin
-  declare u_id int;
-  select user_id  into u_id from account where u_name = username;
+    declare u_id int;
+
+  if u_name is null then set u_id = null;
+
+  else select user_id  into u_id from account where u_name = username;
+
+  end if;
 
    update gameproperty set pawned = pawn
       where property_id = prop_id and game_id = g_id;
