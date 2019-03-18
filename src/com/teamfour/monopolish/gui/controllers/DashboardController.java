@@ -34,7 +34,7 @@ public class DashboardController {
     // Example data
     private String[][] highscoreData = {
             {"Torbjørn", "10000"}, {"Lisa", "9000"}, {"Mikael", "8734"},
-            {"Giske", "8500"}, {"Carlos", "7053"}, {"Siv jensen", "3223"},
+            {"giske777", "8500"}, {"Carlos", "7053"}, {"Siv jensen", "3223"},
             {"Giske", "2300"}, {"Carlos", "1233"}, {"Siv jensen", "1111"},
             {"KNM Helge Ingstad", "0001"}
     };
@@ -111,7 +111,7 @@ public class DashboardController {
         }
         // If the user is in the leaderboard it will be marked to easily see it
         //if (username.equals(Handler.getAccount().getUsername())) ---- USE THIS WHEN DATABAsE IS UP AGAIN ----
-        if (username.equals("Mikael")) { // ---- ADD HANDLER ACCOUNT NAME HERE!
+        if (username.equals(Handler.getAccount().getUsername())) { // ---- ADD HANDLER ACCOUNT NAME HERE!
             color = "#ff6b5e";
         }
 

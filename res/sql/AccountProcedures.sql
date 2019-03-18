@@ -83,7 +83,7 @@ CREATE PROCEDURE account_validate_user(IN uname VARCHAR(30), IN password VARCHAR
 
     SELECT salt FROM account WHERE uname = account.username INTO salt_pw;
     SELECT SHA2(CONCAT(password, salt_pw), 256) INTO hashed_pwd;
-    SELECT username, email, regdate, highscore FROM account WHERE hashed_pwd = account.hashed_password;
+    SELECT username, email, regdate FROM account WHERE hashed_pwd = account.hashed_password;
   END;
 
 -- TEST:
