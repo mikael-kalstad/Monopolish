@@ -38,6 +38,11 @@ public class PlayerDAO extends DataAccessObject {
         return(null);
     }
 
+    /**
+     * creates one player in the database and a Player object.
+     *
+     *
+     */
 
     public Player createPlayer(int game_id, String username){
         ArrayList<Player> players = null;
@@ -79,10 +84,15 @@ public class PlayerDAO extends DataAccessObject {
         }
     }
 
+    /**
+     * updates a players, position or money.
+     *
+     *
+     */
     public void updatePlayer(Player player, int game_id){
         try {
             connection = ConnectionPool.getMainConnectionPool().getConnection();
-            cStmt = connection.prepareCall("{call player_update(?, ?, ?)}");
+            cStmt = connection.prepareCall("{call player_update(?, ?, ?, ?)}");
 
             for(int i = 0; i<10; i++) {
                 cStmt.setString(1, player.getUsername());
@@ -98,11 +108,15 @@ public class PlayerDAO extends DataAccessObject {
             releaseConnection();
         }
     }
-
+    /**
+     * ends the game and registers each players score in the database
+     *
+     *
+     */
     public void endGame(int game_id){
         try {
             connection = ConnectionPool.getMainConnectionPool().getConnection();
-            cStmt = connection.prepareCall("{call player_clean(?, ?, ?)}");
+            cStmt = connection.prepareCall("{call player_endgame(?)}");
 
             for(int i = 0; i<10; i++) {
 

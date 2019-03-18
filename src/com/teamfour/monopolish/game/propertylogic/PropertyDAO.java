@@ -56,7 +56,7 @@ public class PropertyDAO extends DataAccessObject {
     }
 
     /**
-     * updates owner and pawned-state of a property
+     * updates owner and/or pawned-state of a property
      *
      *
      */
@@ -88,7 +88,7 @@ public class PropertyDAO extends DataAccessObject {
     }
 
     /**
-     * deletes all gameproperties for the game_id
+     * deletes all gameProperties for the given game_id
      *
      *
      */
