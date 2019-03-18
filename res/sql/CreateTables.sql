@@ -67,6 +67,7 @@ create table property(
   property_id INTEGER NOT NULL,
   name VARCHAR(30) NOT NULL,
   price REAL,
+  position INTEGER not null,
   categorycolor varchar(12),
   primary key(property_id)
 );

@@ -9,7 +9,7 @@
 -- DELIMITER $$
 DROP PROCEDURE account_insert_user;     -- (username, email, password, salt, regdate)
 -- Error/exit codes:
--- 0 = no errors, 1 = username allredy taken, 2 = email allredy taken
+-- 0 = no errors, 1 = username allredy taken, 2 = email already taken
 CREATE PROCEDURE account_insert_user(
     IN uname VARCHAR(30),
     IN mail VARCHAR(50),
