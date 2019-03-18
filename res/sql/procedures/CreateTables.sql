@@ -66,7 +66,7 @@ create table property(
   property_id INTEGER NOT NULL,
   name VARCHAR(30) NOT NULL,
   price REAL,
-  position INTEGER not null,
+  position INTEGER not null DEFAULT 0,
   categorycolor varchar(12),
   primary key(property_id)
 );
@@ -83,7 +83,7 @@ create table game(
 create table gameproperty(
   game_id integer not null,
   property_id integer not null,
-  position int not null,
+  position int not null DEFAULT 0,
   pawned bit default 0,
   user_id integer,
   constraint pk_gameproperty PRIMARY KEY (game_id, property_id)
@@ -95,8 +95,6 @@ ADD FOREIGN KEYS
 
 ALTER TABLE game
 ADD foreign key(winner) references account(user_id);
-ALTER TABLE game
-ADD foreign key (currentplayer) references player(player_id);
 ALTER TABLE lobby
 ADD FOREIGN KEY (user_id) REFERENCES account(user_id);
 

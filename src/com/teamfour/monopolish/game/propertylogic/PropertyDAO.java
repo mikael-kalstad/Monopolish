@@ -17,20 +17,15 @@ import java.util.ArrayList;
  */
 
 public class PropertyDAO extends DataAccessObject {
-    //Attributes
-    Connection connection;
-    CallableStatement cStmt;
-
-
     /**
      * creates gameproperties in the database and Property objects for the game.
      * @param game_id the game_id the id of the current game
      *
      */
     public ArrayList<Property> getAllProperties(int game_id) throws SQLException {
-        ArrayList<Property> props = null;
+        ArrayList<Property> props = new ArrayList<>();
 
-        connection = ConnectionPool.getMainConnectionPool().getConnection();
+        getConnection();
         cStmt = connection.prepareCall("{call property_get_all(?)}");
 
         cStmt.setInt(1, game_id);

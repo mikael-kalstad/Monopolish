@@ -34,12 +34,12 @@ Procedure to retrieve the current player
 -- DELIMITER $$
 DROP PROCEDURE game_get_current_player;
 
-CREATE PROCEDURE game_get_current_player(IN game_id int)
+CREATE PROCEDURE game_get_current_player(IN gameid int)
   BEGIN
     SELECT IFNULL(a.username, "") FROM game g
     JOIN player p on g.currentplayer = p.player_id
     JOIN account a on p.user_id = a.user_id
-    WHERE g.game_id=game_id;
+    WHERE g.game_id=gameid;
   END;
 -- END$$
 
@@ -50,18 +50,18 @@ Procedure to retrieve the current player
 -- DELIMITER $$
 DROP PROCEDURE game_set_current_player;
 
-CREATE PROCEDURE game_set_current_player(IN game_id INT, IN current_username VARCHAR(30))
+CREATE PROCEDURE game_set_current_player(IN gameid INT, IN current_username VARCHAR(30))
   BEGIN
     DECLARE current_player_id INT;
-    SELECT current_player_id=a.user_id
+    SET current_player_id = (SELECT p.player_id
     FROM player p
     JOIN account a on p.user_id = a.user_id
-    WHERE a.username LIKE current_username;
+    WHERE a.username LIKE current_username LIMIT 1);
 
     IF (current_player_id IS NOT NULL) THEN
-      UPDATE game g
-      SET g.currentplayer=current_player_id
-      WHERE g.game_id=game_id;
+      UPDATE game
+      SET currentplayer=current_player_id
+      WHERE game_id=gameid;
     END IF;
   END;
 -- END$$
