@@ -135,3 +135,15 @@ CREATE PROCEDURE player_get_highscore(IN name VARCHAR(30))
   BEGIN
     SELECT score FROM player WHERE user_id = name;
   END;
+
+
+
+delimiter $$
+create procedure account_getUserid(
+  in u_name int
+)
+begin
+  select user_id from account where u_name = username;
+  commit;
+end $$
+delimiter ;

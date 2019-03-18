@@ -17,7 +17,8 @@ public class PlayerDAO extends DataAccessObject {
 
     /**
      * creates players in the database and Player objects.
-     *
+     *@param game_id the id of the current game
+     * @param usernames the usernames of the players that's created
      *
      */
 
@@ -42,8 +43,8 @@ public class PlayerDAO extends DataAccessObject {
 
     /**
      * creates one player in the database and a Player object.
-     *
-     *
+     * @param game_id the id of the current game
+     * @param username the username of the player that is created
      */
 
     public Player createPlayer(int game_id, String username){
@@ -66,8 +67,8 @@ public class PlayerDAO extends DataAccessObject {
     }
     /**
      * removes a player that forfiets the game, by giving this player active status == 2
-     *
-     *
+     * @param game_id the id of the current game
+     * @param username the username of the player that is removed
      */
     public void removePlayer(int game_id, String username){
         try {
@@ -88,8 +89,8 @@ public class PlayerDAO extends DataAccessObject {
 
     /**
      * updates a players, position or money.
-     *
-     *
+     * @param player the Player object that gets updated
+     * @param game_id the id of the current game
      */
     public void updatePlayer(Player player, int game_id){
         try {
@@ -138,7 +139,7 @@ public class PlayerDAO extends DataAccessObject {
 
     /**
      * ends the game and registers each players score in the database
-     *
+     * @param game_id the id of the current game
      *
      */
     public void endGame(int game_id){
