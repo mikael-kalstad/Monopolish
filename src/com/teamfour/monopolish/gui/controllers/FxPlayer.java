@@ -111,7 +111,7 @@ public class FxPlayer extends StackPane{
     }
 
     public String toString() {
-        String s = "X: " + posX + ", Y: " + posY + ", Retning: " + retning;
+        String s = "Spiller flyttet til X: " + posX + ", Y: " + posY + ", Retning: " + retning;
         return s;
     }
 }
