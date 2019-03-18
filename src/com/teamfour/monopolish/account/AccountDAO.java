@@ -78,12 +78,12 @@ public class AccountDAO extends DataAccessObject {
     /**
      * Finds a user based on its credentials
      * @param username Username of the account
-     * @param password Password of the acount
+     * @param password Password of the account
      * @return Null if credentials are wrong
      */
     public Account getAccountByCredentials(String username, String password) throws SQLException {
-        ResultSet rs = null;
-        Account account = null;
+        ResultSet rs;
+        Account account;
         try {
             getConnection();
             cStmt = connection.prepareCall("{call account_validate_user(?, ?)}");
@@ -93,7 +93,7 @@ public class AccountDAO extends DataAccessObject {
 
             rs = cStmt.executeQuery();
 
-            if (rs.next() == false) {
+            if (!rs.next()) {
                 return null;
             }
 

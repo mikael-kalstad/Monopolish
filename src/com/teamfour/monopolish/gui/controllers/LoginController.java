@@ -38,10 +38,10 @@ public class LoginController {
      */
     private void setBorderStyle(TextField element, String color) {
         element.setStyle(
-            "-fx-border-color: " + color + ";" +
-            "-fx-border-width: 0 0 2 0;" +
-            "-fx-background-color: transparent;" +
-            "-fx-text-inner-color: " + COLOR_NORMAL + ";");
+                "-fx-border-color: " + color + ";" +
+                        "-fx-border-width: 0 0 2 0;" +
+                        "-fx-background-color: transparent;" +
+                        "-fx-text-inner-color: " + COLOR_NORMAL + ";");
     }
 
     /**
