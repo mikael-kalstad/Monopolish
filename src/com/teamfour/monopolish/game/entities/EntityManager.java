@@ -4,6 +4,13 @@ import com.teamfour.monopolish.game.entities.player.*;
 
 import java.util.ArrayList;
 
+/**
+ *
+ *
+ * @author      eirikhem
+ * @version     1.0
+ */
+
 public class EntityManager {
     int gameId;
     ArrayList<Player> players;
@@ -87,7 +94,15 @@ public class EntityManager {
      * Retrieves all player data from the database, to update the current game
      * after an opponent's round
      */
-    public void update() {
-        // TODO: Call DAO
+    public void updateFromDatabase() {
+        players.clear();
+        //players = playerDAO.getPlayersInGame(gameId);
+    }
+
+    /**
+     * Writes all players to the database
+     */
+    public void updateToDatabase() {
+
     }
 }

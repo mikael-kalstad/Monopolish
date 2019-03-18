@@ -27,6 +27,12 @@ public abstract class Entity {
         propertyDAO = new PropertyDAO();
     }
 
+    public Entity(int money) {
+        properties = new ArrayList<>();
+        this.money = money;
+        propertyDAO = new PropertyDAO();
+    }
+
     /**
      * Adjusts the amount of money
      * @param amount Money to add or subtract

@@ -79,12 +79,10 @@ create procedure player_getByGameId(
   in game_id int
 )
 begin
-  select * from player where game_id = player.game_id;
+  select a.username, p.money, p.currentpos, p.injail, p.bankrupt, p.active, p.score
+  from player p
+  join account a on p.user_id = a.user_id
+  where game_id = player.game_id;
   commit;
-
 end $$
 delimiter ;
-
-
-
-

@@ -40,7 +40,7 @@ public class GameDAO extends DataAccessObject {
      * @return Id of the current player
      * @throws SQLException
      */
-    public int getCurrentPlayer(int gameId) throws SQLException {
+    public String getCurrentPlayer(int gameId) throws SQLException {
         getConnection();
         cStmt = connection.prepareCall("{call game_get_current_player(?)}");
 
@@ -49,9 +49,9 @@ public class GameDAO extends DataAccessObject {
         ResultSet rs = cStmt.executeQuery();
 
         if (rs.next())
-            return rs.getInt(1);
+            return rs.getString(1);
 
-        return -1;
+        return "";
     }
 
     /**
@@ -61,12 +61,12 @@ public class GameDAO extends DataAccessObject {
      * @return True if successful
      * @throws SQLException
      */
-    public boolean setCurrentPlayer(int gameId, int currentPlayer) throws SQLException {
+    public boolean setCurrentPlayer(int gameId, String currentPlayer) throws SQLException {
         getConnection();
         cStmt = connection.prepareCall("{call game_set_current_player(?, ?)}");
 
         cStmt.setInt(1, gameId);
-        cStmt.setInt(2, currentPlayer);
+        cStmt.setString(2, currentPlayer);
 
         int count = cStmt.executeUpdate();
 

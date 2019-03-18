@@ -2,6 +2,8 @@ package com.teamfour.monopolish.game.entities.player;
 
 import com.teamfour.monopolish.database.ConnectionPool;
 import com.teamfour.monopolish.database.DataAccessObject;
+
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -61,6 +63,31 @@ public class PlayerDAO extends DataAccessObject {
         } finally {
             releaseConnection();
         }
+    }
+
+    public ArrayList<Player> getPlayersInGame(int gameId) throws SQLException {
+        ArrayList<Player> players = new ArrayList<>();
+
+        getConnection();
+        cStmt = connection.prepareCall("{call player_getByGameId(?)}");
+
+        ResultSet rs = cStmt.executeQuery();
+
+        while (rs.next()) {
+            String username = cStmt.getString(1);
+            int money = cStmt.getInt(2);
+            int position = cStmt.getInt(3);
+            boolean inJail = cStmt.getBoolean(4);
+            boolean bankrupt = cStmt.getBoolean(5);
+            int active = cStmt.getInt(6);
+            int score = cStmt.getInt(7);
+
+            players.add(new Player(username, money, position, inJail, bankrupt, active, score));
+        }
+
+        releaseConnection();
+
+        return players;
     }
 
     public void endGame(int game_id){

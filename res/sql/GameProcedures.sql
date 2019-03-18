@@ -36,7 +36,9 @@ DROP PROCEDURE game_get_current_player;
 
 CREATE PROCEDURE game_get_current_player(IN game_id int)
   BEGIN
-    SELECT IFNULL(g.currentplayer, -1) FROM game g
+    SELECT IFNULL(a.username, "") FROM game g
+    JOIN player p on g.currentplayer = p.player_id
+    JOIN account a on p.user_id = a.user_id
     WHERE g.game_id=game_id;
   END;
 -- END$$
@@ -48,11 +50,19 @@ Procedure to retrieve the current player
 -- DELIMITER $$
 DROP PROCEDURE game_set_current_player;
 
-CREATE PROCEDURE game_set_current_player(IN game_id INT, IN current_player_id INT)
+CREATE PROCEDURE game_set_current_player(IN game_id INT, IN current_username VARCHAR(30))
   BEGIN
-    UPDATE game g
-    SET g.currentplayer=current_player_id
-    WHERE g.game_id=game_id;
+    DECLARE current_player_id INT;
+    SELECT current_player_id=a.user_id
+    FROM player p
+    JOIN account a on p.user_id = a.user_id
+    WHERE a.username LIKE current_username;
+
+    IF (current_player_id IS NOT NULL) THEN
+      UPDATE game g
+      SET g.currentplayer=current_player_id
+      WHERE g.game_id=game_id;
+    END IF;
   END;
 -- END$$
 
