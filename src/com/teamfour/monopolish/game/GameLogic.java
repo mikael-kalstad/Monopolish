@@ -50,7 +50,9 @@ public class GameLogic {
         // 4. Generate random turn order
         System.out.println("Randomizing turn order...");
         turns = entityManager.generateTurnOrder();
-        gameDAO.setCurrentPlayer(gameId, turns[0]);
+        currentPlayer = turns[0];
+        gameDAO.setCurrentPlayer(gameId, currentPlayer);
+
 
         for (int i = 0; i < turns.length; i++) {
             System.out.println((i + 1) + ": " + turns[i]);
@@ -65,71 +67,67 @@ public class GameLogic {
         // Main game loop
         System.out.println("Game is starting!");
         while (!finished) {
+            System.out.println("It is " + currentPlayer + "'s turn.");
             // Check to see if currentPlayer has changed
-            if (currentPlayer == gameDAO.getCurrentPlayer(gameId)) {
-                // If not, wait a second before checking again
-                Thread.sleep(1000);
-                continue;
-            }
 
-            // If changed, increment turn
-            newTurn();
             // Update data from database
             currentPlayer = gameDAO.getCurrentPlayer(gameId);
             entityManager.updateFromDatabase();
-            System.out.println("It is " + currentPlayer + "'s turn.");
             // TODO: Update view
 
             Handler.setAccount(new Account("giske", "giske@damer.no", LocalDate.now(), 0));
 
             // Check to see if it's your turn
-            if (turns[turnNumber] != Handler.getAccount().getUsername()) {
+            if (!turns[turnNumber].equals(Handler.getAccount().getUsername())) {
                 Thread.sleep(1000);
                 continue;
             }
-
-            // Your turn!!
-
-            System.out.println("It is your turn!");
 
             int placesToMove = 0;
 
             // If you are in jail, try to escape from jail through a bail
             if (!entityManager.getYou().isInJail()) {
+                System.out.println("You are not in jail.");
                 // If not in jail, throw the dice!
                 int throwCounter = 0;
                 // jailDice indicates that if you get this result, you
                 // have to throw again
-                int[] throwResult = dice.throwDice();
-                while (throwResult[0] == throwResult[1]) {
+                int[] throwResult = {1, 1};
+                do {
                     // If you get jailDice three times in a row, move to jail!
                     if (throwCounter < 2) {
                         throwResult = dice.throwDice();
+                        System.out.println("You got " + throwResult[0] + " and " + throwResult[1]);
 
                         // Sum up the dices to placesToMove
                         placesToMove = throwResult[0] + throwResult[1];
 
                         // Move your player by placesToMove
+                        System.out.println("You're moving " + placesToMove + " places.");
                         entityManager.getYou().move(placesToMove);
 
                         // Time to check where you landed!
                         int yourPosition = entityManager.getYou().getPosition();
                         if (board.getTileType(yourPosition) == Board.GO_TO_JAIL) {
                             // TODO: Gotojail
+                            System.out.println("You are going to jail!");
                             entityManager.getYou().setInJail(true);
                             entityManager.getYou().moveTo(board.getJailPosition());
                         } else if (board.getTileType(yourPosition) == Board.START) {
                             // If landing at start, get money from bank
+                            System.out.println("You get money from bank");
                             entityManager.transferMoneyFromBank(Handler.getAccount().getUsername(), START_MONEY * 2);
                         } else if (board.getTileType(yourPosition) == Board.PROPERTY) {
                             // TODO: Property handling NOTE: Kill me
+                            System.out.println("You are on property. Please kill me.");
                         }
                     } else {
                         // TODO: Go to jail
                         entityManager.getYou().setInJail(true);
                         entityManager.getYou().moveTo(board.getJailPosition());
                     }
-                }
+                    // If dices are the same, continue
+                } while (throwResult[0] == throwResult[1]);
             } else {
                 // TODO: tryBail method
                 // If trybail fails:
@@ -145,8 +143,14 @@ public class GameLogic {
 
             // TODO: Check if anyone has won
             if (entityManager.findWinner() != null) {
+                System.out.println("How can the game be finished??");
                 finished = true;
             } else {
+                if (currentPlayer.equals(gameDAO.getCurrentPlayer(gameId))) {
+                    // If not, wait a second before checking again
+                    Thread.sleep(1000);
+                    continue;
+                }
                 newTurn();
             }
         }
@@ -156,7 +160,7 @@ public class GameLogic {
      * Increments the turn number
      */
     public void newTurn() throws SQLException {
-        if (turnNumber == entityManager.getPlayers().size()) {
+        if (turnNumber == entityManager.getPlayers().size() - 1) {
             roundNumber++;
             turnNumber = 0;
         } else {

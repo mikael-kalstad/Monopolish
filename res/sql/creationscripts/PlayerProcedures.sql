@@ -63,7 +63,7 @@ begin
                     bankrupt = bankrupt,
                     active = active,
                     score = score
-    where user_id = u_id;
+    where player_id = u_id;
   commit;
 
 end $$
