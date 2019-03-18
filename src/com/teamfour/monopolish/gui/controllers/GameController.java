@@ -17,8 +17,8 @@ import java.util.ArrayList;
 
 public class GameController {
 
-    ArrayList<Text> eventList = new ArrayList<>();
-    ArrayList<FxPlayer> playerList = new ArrayList<>(); //hentes fra et annet sted, lobby?
+    private ArrayList<Text> eventList = new ArrayList<>();
+    private ArrayList<FxPlayer> playerList = new ArrayList<>(); //hentes fra et annet sted, lobby?
     //@FXML private Label p1name, p1money, p2name, p2money, p3name, p3money;
     @FXML
     private GridPane gamegrid;
