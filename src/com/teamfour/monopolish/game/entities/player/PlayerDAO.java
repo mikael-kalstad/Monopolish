@@ -110,6 +110,10 @@ public class PlayerDAO extends DataAccessObject {
         return (count > 0);
     }
 
+    /**
+     * gets all players with the given game_id
+     * @param gameId the id of the current game
+     */
     public ArrayList<Player> getPlayersInGame(int gameId) throws SQLException {
         ArrayList<Player> players = new ArrayList<>();
 

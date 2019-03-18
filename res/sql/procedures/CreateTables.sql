@@ -32,8 +32,7 @@ CREATE TABLE account
   email VARCHAR(50) NOT NULL UNIQUE,
   hashed_password VARCHAR(64) NOT NULL,
   salt BINARY(32) NOT NULL,
-  regdate DATETIME NOT NULL,
-  highscore INT NOT NULL DEFAULT 0
+  regdate DATETIME NOT NULL
 );
 
 -- Lobby
@@ -67,6 +66,7 @@ create table property(
   property_id INTEGER NOT NULL,
   name VARCHAR(30) NOT NULL,
   price REAL,
+  position INTEGER not null,
   categorycolor varchar(12),
   primary key(property_id)
 );
