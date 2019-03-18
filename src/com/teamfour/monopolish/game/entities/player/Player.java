@@ -1,5 +1,6 @@
 package com.teamfour.monopolish.game.entities.player;
 
+import com.teamfour.monopolish.game.board.Board;
 import com.teamfour.monopolish.game.entities.Entity;
 
 /**
@@ -10,6 +11,7 @@ import com.teamfour.monopolish.game.entities.Entity;
  */
 
 public class Player extends Entity {
+    // Attributes
     private final String username;
     private int position = 0;
     private boolean inJail = false;
@@ -17,12 +19,26 @@ public class Player extends Entity {
     private int active = 0;
     private int score = 0;
 
+    /**
+     * Constructor
+     * @param username
+     */
     public Player(String username) {
         super();
         this.username = username;
         this.position = 0;
     }
 
+    /**
+     * Constructor
+     * @param username
+     * @param money
+     * @param position
+     * @param inJail
+     * @param bankrupt
+     * @param active
+     * @param score
+     */
     public Player(String username, int money, int position, boolean inJail,
                   boolean bankrupt, int active, int score) {
         super(money);
@@ -32,6 +48,28 @@ public class Player extends Entity {
         this.bankrupt = bankrupt;
         this.active = active;
         this.score = score;
+    }
+
+    /**
+     * Moves a specified amount
+     * @param steps
+     */
+    public void move(int steps){
+        if(position + steps > (Board.BOARD_LENGTH - 1)){
+            position = position + steps - (Board.BOARD_LENGTH - 1);
+        }
+        position+=steps;
+    }
+
+    /**
+     * Moves to a specified position
+     * @param position
+     */
+    public void moveTo(int position) {
+        if (position < (Board.BOARD_LENGTH - 1))
+            throw new IllegalArgumentException("Position is not within board bounds");
+
+        this.position = position;
     }
 
     public String getUsername() {
@@ -60,13 +98,6 @@ public class Player extends Entity {
 
     public void setScore(int score) {
         this.score = score;
-    }
-
-    public void move(int steps){
-        if(position + steps >31){
-            position = position + steps - 31;
-        }
-        position+=steps;
     }
 
     public boolean isInJail() {

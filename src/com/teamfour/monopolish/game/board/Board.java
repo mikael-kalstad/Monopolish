@@ -10,10 +10,12 @@ package com.teamfour.monopolish.game.board;
 
 public class Board {
     // Static variables
+    public static final int BOARD_LENGTH = 32;
     public static final int START = 0;
     public static final int PROPERTY = 1;
-    public static final int GOTOJAIL = 2;
-    public static final int FREEPARKING = 3;
+    public static final int GO_TO_JAIL = 2;
+    public static final int FREE_PARKING = 3;
+    public static final int JAIL = 4;
 
     // Attributes
     private int[] tiles;
@@ -25,5 +27,19 @@ public class Board {
      */
     public int getTileType(int position) {
         return tiles[position];
+    }
+
+    /**
+     * Returns the position where jail is located
+     * @return The int position where jail is located
+     */
+    public int getJailPosition() {
+        for (int i = 0; i < tiles.length; i++) {
+            if (tiles[i] == JAIL) {
+                return i;
+            }
+        }
+
+        return -1;
     }
 }
