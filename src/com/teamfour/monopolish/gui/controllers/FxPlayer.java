@@ -7,7 +7,7 @@ import javafx.scene.shape.Circle;
 
 public class FxPlayer extends StackPane{
 
-    private final int MAX = 9;
+    private static int MAX = 9;
     int retning;
 
     private int posX, posY;
@@ -33,19 +33,15 @@ public class FxPlayer extends StackPane{
 
     public void getDirection() {
         if (posX > 0 && posY == MAX) {
-            //System.out.println("retning venstre");
             retning = 1; //venstre
         }
         if (posX == 0 && posY > 0) {
-            //System.out.println("retning opp");
             retning = 2; //opp
         }
         if (posX < MAX && posY == 0) {
-            //System.out.println("retning høyre");
             retning = 3; //høyre
         }
         if (posX == MAX && posY < MAX) {
-            //System.out.println("retning ned");
             retning = 4; //ned
         }
     }
@@ -57,44 +53,36 @@ public class FxPlayer extends StackPane{
                 case 1:
                     while (posX >= 0 && count!= 0) {
                         posX--;
-                        //System.out.println("Venstre til x=" + posX + ", y=" + posY);
                         count--;
                         if (posX == 0) {
                             retning = 2;
-                            //System.out.println("Retning=2");
                             break;
                         }
                     }
                 case 2:
                     while (posY >= 0 && count != 0) {
                         posY--;
-                        //System.out.println("Opp til y =" + posY + ", x=" + posX);
                         count--;
                         if (posY == 0) {
                             retning = 3;
-                            //System.out.println("Retning=3");
                             break;
                         }
                     }
                 case 3:
                     while (posX <= MAX && count != 0) {
                         posX++;
-                        //System.out.println("Høyre til x =" + posX + ", y=" + posY);
                         count--;
                         if (posX == MAX) {
                             retning = 4;
-                            //System.out.println("Retning=4");
                             break;
                         }
                     }
                 case 4:
                     while (posY <= MAX && count != 0) {
                         posY++;
-                        //System.out.println("Ned til y =" + posY + ", x=" + posX);
                         count--;
                         if (posY == MAX) {
                             retning = 1;
-                            //System.out.println("Retning=1");
                             break;
                         }
                     }
@@ -110,8 +98,12 @@ public class FxPlayer extends StackPane{
         return posY;
     }
 
+    public static int getMAX() {
+        return MAX;
+    }
+
     public String toString() {
-        String s = "Spiller flyttet til X: " + posX + ", Y: " + posY + ", Retning: " + retning;
+        String s = "Player moved to X: " + posX + ", Y: " + posY;
         return s;
     }
 }

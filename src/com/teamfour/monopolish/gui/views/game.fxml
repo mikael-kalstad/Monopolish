@@ -29,7 +29,7 @@
                         </Label>
                         <HBox alignment="CENTER" layoutX="10.0" layoutY="57.0" prefHeight="142.0" prefWidth="880.0" spacing="50.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#showDice" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #FF9800;" text="Home" textFill="#fafafa" />
+                              <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #FF9800;" text="Home" textFill="#fafafa" />
                               <Label text="Total:" textFill="#fafafa">
                                  <font>
                                     <Font size="15.0" />
@@ -49,7 +49,7 @@
                      <children>
                         <HBox alignment="CENTER" layoutX="14.0" layoutY="24.0" prefHeight="142.0" prefWidth="594.0" spacing="50.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#drawplayer" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #FF9800;" text="Button" textFill="#fafafa" />
+                              <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #FF9800;" text="Button" textFill="#fafafa" />
                               <Label text="Status" textFill="#fafafa">
                                  <font>
                                     <Font size="15.0" />
@@ -62,7 +62,7 @@
                         </HBox>
                         <HBox alignment="CENTER" layoutX="14.0" layoutY="164.0" prefHeight="142.0" prefWidth="594.0" spacing="50.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#move1" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #FF9800;" text="Button" textFill="#fafafa" />
+                              <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #FF9800;" text="Button" textFill="#fafafa" />
                               <Label text="Something" textFill="#fafafa">
                                  <font>
                                     <Font size="15.0" />
