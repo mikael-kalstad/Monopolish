@@ -55,16 +55,6 @@ public class GameDAOTest {
     }
 
     @Test
-    public void testSetCurrentPlayer() {
-        try {
-            assertTrue(instance.setCurrentPlayer(4, 13));
-            assertFalse(instance.setCurrentPlayer(7, 13));
-            assertFalse(instance.setCurrentPlayer(5, 2));
-        } catch (SQLException e){
-        }
-    }
-
-    @Test
     public void testFinishGame() {
         try {
             assertTrue(instance.finishGame(4, 13));
