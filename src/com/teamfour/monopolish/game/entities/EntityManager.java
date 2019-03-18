@@ -5,6 +5,7 @@ import com.teamfour.monopolish.game.entities.player.*;
 import java.util.ArrayList;
 
 public class EntityManager {
+    int gameId;
     ArrayList<Player> players;
     PlayerDAO playerDAO;
     Bank bank;
@@ -14,9 +15,10 @@ public class EntityManager {
      * @param gameId
      */
     public EntityManager(int gameId) {
+        this.gameId = gameId;
         //this.players = playerDAO.getPlayersInGame(gameId);
         this.playerDAO = new PlayerDAO();
-        this.bank = new Bank();
+        this.bank = new Bank(gameId);
     }
 
     public ArrayList<Player> getPlayers() {
@@ -48,7 +50,7 @@ public class EntityManager {
     }
 
     public void removePlayer(String username){
-        playerDAO.removePlayer(1, username);
+        playerDAO.removePlayer(gameId, username);
         Player temp = getPlayer(username);
         players.remove(temp);
     }

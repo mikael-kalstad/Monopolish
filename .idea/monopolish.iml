@@ -45,6 +45,14 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" exported="" name="mysql-connector-java-8.0.13" level="project" />
+    <orderEntry type="module-library" exported="">
+      <library name="JDBC">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/mysql-connector-java-8.0.13.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
