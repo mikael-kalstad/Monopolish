@@ -4,9 +4,6 @@ drop procedure if exists player_update;
 drop procedure if exists player_endgame;
 drop procedure if exists player_getByGameId;
 
-
-
-
 delimiter $$
 create procedure player_create(
     in g_id int,

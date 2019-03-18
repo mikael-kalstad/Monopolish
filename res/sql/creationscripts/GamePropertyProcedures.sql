@@ -22,6 +22,21 @@ create procedure property_create(
 end $$
 delimiter ;
 
+DROP PROCEDURE property_get_all;
+
+DELIMITER $$
+CREATE PROCEDURE property_get_all(
+  IN game_id INT
+)
+BEGIN
+  INSERT INTO gameproperty (game_id, property_id)
+  SELECT game_id, property_id FROM property;
+
+  select gameproperty.*, p.position, p.price, p.categorycolor
+  from gameproperty gp
+  join property p on gameproperty.property_id = p.property_id
+  WHERE gp.game_id=game_id;
+END $$
 
 delimiter $$
 create procedure property_update(

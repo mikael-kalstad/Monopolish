@@ -28,7 +28,11 @@ public class Bank extends Entity {
         money = MAX_GAME_MONEY;
         // Get all properties from database
         // TODO: Fix this
-        properties = propertyDAO.getAllProperties(gameId);
+        try {
+            properties = propertyDAO.getAllProperties(gameId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

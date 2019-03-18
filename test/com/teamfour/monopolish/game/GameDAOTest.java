@@ -29,7 +29,7 @@ public class GameDAOTest {
     @Test
     public void testInsert() {
         try {
-            assertEquals(5, instance.insertGame(2));
+            assertEquals(1, instance.insertGame(1));
         } catch (SQLException e){
             e.printStackTrace();
         }
