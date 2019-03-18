@@ -59,7 +59,7 @@ delimiter ;
 
 
 delimiter $$
-create procedure player_clean(
+create procedure player_(
   in game_id int
 )
 begin

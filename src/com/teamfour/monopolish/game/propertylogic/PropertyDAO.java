@@ -87,7 +87,11 @@ public class PropertyDAO extends DataAccessObject {
         }
     }
 
-
+    /**
+     * deletes all gameproperties for the game_id
+     *
+     *
+     */
     public void endGame(int game_id){
         try {
             connection = ConnectionPool.getMainConnectionPool().getConnection();

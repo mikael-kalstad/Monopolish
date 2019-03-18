@@ -4,8 +4,20 @@ import com.teamfour.monopolish.database.ConnectionPool;
 import com.teamfour.monopolish.database.DataAccessObject;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
+/**
+ * Handles Player-DB connection and methods
+ *
+ *
+ * @author      lisawil
+ * @version     1.0
+ */
 public class PlayerDAO extends DataAccessObject {
+
+    /**
+     * creates players in the database and Player objects.
+     *
+     *
+     */
 
     public ArrayList<Player> createPlayers(int game_id, String[] usernames){
         ArrayList<Player> players = null;
@@ -26,6 +38,30 @@ public class PlayerDAO extends DataAccessObject {
         return(null);
     }
 
+
+    public Player createPlayer(int game_id, String username){
+        ArrayList<Player> players = null;
+        try {
+            connection = ConnectionPool.getMainConnectionPool().getConnection();
+            cStmt = connection.prepareCall("{call player_create(?, ?)}");
+
+                cStmt.setInt(1, game_id);
+                cStmt.setString(2, username);
+
+                players.add(new Player(cStmt.executeQuery().getString("username")));
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            releaseConnection();
+        }
+        return(null);
+    }
+    /**
+     * removes a player that forfiets the game, by giving this player active status == 2
+     *
+     *
+     */
     public void removePlayer(int game_id, String username){
         try {
             connection = ConnectionPool.getMainConnectionPool().getConnection();
