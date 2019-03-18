@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * Controller class for lobby view
  *
  * @author Mikael Kalstad
- * @version 1.0
+ * @version 1.1
  */
 public class LobbyController {
     @FXML private FlowPane lobbiesContainer;
@@ -258,7 +258,7 @@ public class LobbyController {
 
         // Add button to the lobbies array
         btnIds.add(btn);
-        System.out.println(btnIds.toString());
+        //System.out.println(btnIds.toString());
 
         // Add grid to the lobby view
         lobbiesContainer.getChildren().add(grid);

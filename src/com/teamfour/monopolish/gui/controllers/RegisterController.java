@@ -17,7 +17,7 @@ import java.time.LocalDate;
  * Controller class for registration view
  *
  * @author Mikael Kalstad
- * @version 1.5
+ * @version 1.6
  */
 
 public class RegisterController {
@@ -72,7 +72,6 @@ public class RegisterController {
         });
 
         usernameInput.setOnKeyTyped((observable) -> {
-            System.out.println("length " + usernameInput.getText().length());
             if (usernameInput.getText().length() >= MAX_USERNAME_LENGTH) {
                 usernameRequirement.setVisible(true);
 
