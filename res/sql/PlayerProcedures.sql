@@ -43,14 +43,26 @@ create procedure player_update(
   in u_name varchar(30),
   in g_id int,
   in pos int,
-  in moneyChange int
+  in moneyChange int,
+  in in_jail bit,
+  in bankrupt bit,
+  in active int,
+  in score int
 )
 begin
   declare u_id int;
 
-  select user_id  into u_id from account where u_name = username and game_id = g_id;
+  select p.player_id into u_id
+  from account a
+  join player p on a.user_id = p.user_id
+  where u_name = a.username and p.game_id = g_id;
 
-  update player set position = pos and money = moneyChange
+  update player set position = pos,
+                    money = moneyChange,
+                    injail = in_jail,
+                    bankrupt = bankrupt,
+                    active = active,
+                    score = score
     where user_id = u_id;
   commit;
 

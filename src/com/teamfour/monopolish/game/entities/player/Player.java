@@ -46,10 +46,42 @@ public class Player extends Entity {
         this.position = position;
     }
 
+    public void setInJail(boolean inJail) {
+        this.inJail = inJail;
+    }
+
+    public void setBankrupt(boolean bankrupt) {
+        this.bankrupt = bankrupt;
+    }
+
+    public void setActive(int active) {
+        this.active = active;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
     public void move(int steps){
         if(position + steps >31){
             position = position + steps - 31;
         }
         position+=steps;
+    }
+
+    public boolean isInJail() {
+        return inJail;
+    }
+
+    public boolean isBankrupt() {
+        return bankrupt;
+    }
+
+    public int getActive() {
+        return active;
+    }
+
+    public int getScore() {
+        return score;
     }
 }

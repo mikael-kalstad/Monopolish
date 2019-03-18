@@ -25,28 +25,6 @@ public class LobbyDAOTest {
     }
 
     @Test
-    public void testInsert() {
-        try {
-            assertEquals(2, instance.insertLobby(1));
-            assertEquals(2, instance.insertLobby(15));
-            assertEquals(2, instance.insertLobby(20));
-            assertEquals(3, instance.insertLobby(21));
-            assertEquals(3, instance.insertLobby(22));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Test
-    public void testDeleteUser() {
-        try {
-            assertTrue(instance.deleteUserFromLobby(2, 22));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Test
     public void testDeleteLobby() {
         try {
             assertTrue(instance.deleteLobby(1));

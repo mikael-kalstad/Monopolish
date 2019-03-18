@@ -1,8 +1,11 @@
 package com.teamfour.monopolish.game.entities;
 
 import com.teamfour.monopolish.game.entities.player.*;
+import com.teamfour.monopolish.gui.controllers.Handler;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  *
@@ -23,7 +26,6 @@ public class EntityManager {
      */
     public EntityManager(int gameId) {
         this.gameId = gameId;
-        //this.players = playerDAO.getPlayersInGame(gameId);
         this.playerDAO = new PlayerDAO();
         this.bank = new Bank(gameId);
     }
@@ -94,15 +96,63 @@ public class EntityManager {
      * Retrieves all player data from the database, to update the current game
      * after an opponent's round
      */
-    public void updateFromDatabase() {
+    public void updateFromDatabase() throws SQLException {
         players.clear();
-        //players = playerDAO.getPlayersInGame(gameId);
+        players = playerDAO.getPlayersInGame(gameId);
+    }
+
+    public Player getYou() {
+        for(Player p : players) {
+            if (p.getUsername() == Handler.getAccount().getUsername()) {
+                return p;
+            }
+        }
+
+        return null;
+    }
+
+    public void updateBankruptcy() {
+        for (Player p : players) {
+            if (p.getMoney() <= 0) {
+                p.setBankrupt(true);
+            }
+        }
+    }
+
+    public String findWinner() {
+        String result = null;
+        int notBankrupt = 0;
+        for (Player p : players) {
+            if (!p.isBankrupt()) {
+                notBankrupt++;
+                result = p.getUsername();
+            }
+        }
+
+        if (notBankrupt == 1) {
+            return result;
+        } else {
+            return null;
+        }
+    }
+
+    public String[] generateTurnOrder() {
+        // Use shuffle to shuffle the order of player arraylist
+        Collections.shuffle(players);
+        String[] turns = new String[players.size()];
+        for (int i = 0; i < turns.length; i++) {
+            turns[i] = players.get(i).getUsername();
+        }
+
+        return turns;
     }
 
     /**
-     * Writes all players to the database
+     * Writes all player updates to the database
      */
-    public void updateToDatabase() {
-
+    public void updateToDatabase() throws SQLException {
+        for (Player p : players) {
+            playerDAO.updatePlayer(p, gameId);
+        }
     }
 }

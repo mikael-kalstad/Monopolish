@@ -91,24 +91,22 @@ public class PlayerDAO extends DataAccessObject {
      *
      *
      */
-    public void updatePlayer(Player player, int game_id){
-        try {
-            connection = ConnectionPool.getMainConnectionPool().getConnection();
-            cStmt = connection.prepareCall("{call player_update(?, ?, ?, ?)}");
+    public boolean updatePlayer(Player player, int game_id) throws SQLException {
+        connection = ConnectionPool.getMainConnectionPool().getConnection();
+        cStmt = connection.prepareCall("{call player_update(?, ?, ?, ?)}");
 
-            for(int i = 0; i<10; i++) {
-                cStmt.setString(1, player.getUsername());
-                cStmt.setInt(2, game_id);
-                cStmt.setInt(3, player.getPosition());
-                cStmt.setInt(4, player.getMoney());
+        cStmt.setString(1, player.getUsername());
+        cStmt.setInt(2, game_id);
+        cStmt.setInt(3, player.getPosition());
+        cStmt.setInt(4, player.getMoney());
+        cStmt.setBoolean(5, player.isInJail());
+        cStmt.setBoolean(6, player.isBankrupt());
+        cStmt.setInt(7, player.getActive());
+        cStmt.setInt(8, player.getScore());
 
-                cStmt.executeUpdate();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            releaseConnection();
-        }
+        int count = cStmt.executeUpdate();
+
+        return (count > 0);
     }
 
     public ArrayList<Player> getPlayersInGame(int gameId) throws SQLException {
