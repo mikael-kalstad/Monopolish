@@ -1,7 +1,7 @@
 drop procedure if exists player_create;
 drop procedure if exists player_remove;
 drop procedure if exists player_update;
-drop procedure if exists player_clean;
+drop procedure if exists player_endgame;
 drop procedure if exists player_getByGameId;
 
 delimiter $$
@@ -59,7 +59,7 @@ delimiter ;
 
 
 delimiter $$
-create procedure player_clean(
+create procedure player_endgame(
   in game_id int
 )
 begin
