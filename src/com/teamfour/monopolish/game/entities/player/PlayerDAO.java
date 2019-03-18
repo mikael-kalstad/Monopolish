@@ -94,7 +94,7 @@ public class PlayerDAO extends DataAccessObject {
      */
     public boolean updatePlayer(Player player, int game_id) throws SQLException {
         connection = ConnectionPool.getMainConnectionPool().getConnection();
-        cStmt = connection.prepareCall("{call player_update(?, ?, ?, ?)}");
+        cStmt = connection.prepareCall("{call player_update(?, ?, ?, ?, ?, ?, ?, ?)}");
 
         cStmt.setString(1, player.getUsername());
         cStmt.setInt(2, game_id);
@@ -120,16 +120,18 @@ public class PlayerDAO extends DataAccessObject {
         getConnection();
         cStmt = connection.prepareCall("{call player_getByGameId(?)}");
 
+        cStmt.setInt(1, gameId);
+
         ResultSet rs = cStmt.executeQuery();
 
         while (rs.next()) {
-            String username = cStmt.getString(1);
-            int money = cStmt.getInt(2);
-            int position = cStmt.getInt(3);
-            boolean inJail = cStmt.getBoolean(4);
-            boolean bankrupt = cStmt.getBoolean(5);
-            int active = cStmt.getInt(6);
-            int score = cStmt.getInt(7);
+            String username = rs.getString(1);
+            int money = rs.getInt(2);
+            int position = rs.getInt(3);
+            boolean inJail = rs.getBoolean(4);
+            boolean bankrupt = rs.getBoolean(5);
+            int active = rs.getInt(6);
+            int score = rs.getInt(7);
 
             players.add(new Player(username, money, position, inJail, bankrupt, active, score));
         }

@@ -32,9 +32,9 @@ BEGIN
   INSERT INTO gameproperty (game_id, property_id)
   SELECT game_id, property_id FROM property;
 
-  select gameproperty.*, p.position, p.price, p.categorycolor
+  select gp.*, p.position, p.price, p.categorycolor
   from gameproperty gp
-  join property p on gameproperty.property_id = p.property_id
+  join property p on gp.property_id = p.property_id
   WHERE gp.game_id=game_id;
 END $$
 

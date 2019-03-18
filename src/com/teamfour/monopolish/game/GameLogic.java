@@ -1,10 +1,12 @@
 package com.teamfour.monopolish.game;
 
+import com.teamfour.monopolish.account.Account;
 import com.teamfour.monopolish.game.board.Board;
 import com.teamfour.monopolish.game.entities.EntityManager;
 import com.teamfour.monopolish.gui.controllers.Handler;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class GameLogic {
     // Attributes
@@ -40,6 +42,7 @@ public class GameLogic {
         board = new Board();
         System.out.println("Loading players...");
         entityManager = new EntityManager(gameId);
+        entityManager.updateFromDatabase();
 
         // 3. Transfer money from bank to players
         System.out.println("Distributing money...");
@@ -49,7 +52,7 @@ public class GameLogic {
         turns = entityManager.generateTurnOrder();
         gameDAO.setCurrentPlayer(gameId, turns[0]);
 
-        for (int i = 0; i < turns.length;) {
+        for (int i = 0; i < turns.length; i++) {
             System.out.println((i + 1) + ": " + turns[i]);
         }
         System.out.println("\n");
@@ -76,6 +79,8 @@ public class GameLogic {
             entityManager.updateFromDatabase();
             System.out.println("It is " + currentPlayer + "'s turn.");
             // TODO: Update view
+
+            Handler.setAccount(new Account("giske", "giske@damer.no", LocalDate.now(), 0));
 
             // Check to see if it's your turn
             if (turns[turnNumber] != Handler.getAccount().getUsername()) {
