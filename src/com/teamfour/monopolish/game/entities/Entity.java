@@ -67,6 +67,8 @@ public abstract class Entity {
      * @param entity the other entity
      * @param id Id of property to exchange
      */
+
+    //hæ? Lisa
     public boolean transferProperty(Entity entity, int id) {
         if (id >= properties.size() || properties.get(id) == null)
             return false;

@@ -24,7 +24,7 @@ public class PropertyDAO extends DataAccessObject {
 
     /**
      * creates gameproperties in the database and Property objects for the game.
-     *
+     * @param game_id the game_id the id of the current game
      *
      */
     public ArrayList<Property> getAllProperties(int game_id){
@@ -35,7 +35,7 @@ public class PropertyDAO extends DataAccessObject {
             cStmt = connection.prepareCall("{call property_create(?, ?)}");
             ResultSet rs;
             //works with property id's being 10000 inkremented and 10 properties
-            int prop_id = 10000;
+            int prop_id = 0;
             for(int i = 0; i<10; i++) {
                 cStmt.setInt(1, game_id);
                 cStmt.setInt(2, prop_id);
