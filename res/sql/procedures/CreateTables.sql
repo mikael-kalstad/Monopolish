@@ -32,8 +32,7 @@ CREATE TABLE account
   email VARCHAR(50) NOT NULL UNIQUE,
   hashed_password VARCHAR(64) NOT NULL,
   salt BINARY(32) NOT NULL,
-  regdate DATETIME NOT NULL,
-  highscore INT NOT NULL DEFAULT 0
+  regdate DATETIME NOT NULL
 );
 
 -- Lobby

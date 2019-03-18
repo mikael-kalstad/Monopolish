@@ -25,6 +25,17 @@ public class LobbyDAOTest {
     }
 
     @Test
+    public void testInsertLobby() {
+        try {
+            instance.deleteLobby(1);
+            instance.insertLobby("helgeingstad");
+            instance.insertLobby("giske");
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void testDeleteLobby() {
         try {
             assertTrue(instance.deleteLobby(1));

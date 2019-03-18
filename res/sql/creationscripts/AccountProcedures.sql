@@ -5,9 +5,11 @@
 /**
   Procedure to add new users
  */
-
+USe monopolish;
 -- DELIMITER $$
-DROP PROCEDURE account_insert_user;     -- (username, email, password, salt, regdate)
+DROP PROCEDURE account_insert_user;
+
+-- (username, email, password, salt, regdate)
 -- Error/exit codes:
 -- 0 = no errors, 1 = username allredy taken, 2 = email already taken
 CREATE PROCEDURE account_insert_user(
@@ -40,7 +42,8 @@ CREATE PROCEDURE account_insert_user(
       END;
       */
 
-    SET salt_pw = RANDOM_BYTES(32);
+    -- SET salt_pw = RANDOM_BYTES(32);
+    SET salt_pw = RAND();
     SET hashed_pwd = SHA2(CONCAT(password, salt_pw), 256);
 
 /*
@@ -68,7 +71,7 @@ CREATE PROCEDURE account_insert_user(
 -- END$$
 
 -- TEST:
-CALL account_insert_user('Testman3', 'test3@man.com', 'secret', DATE('2019-02-02 20:00:00'), @error_code);
+CALL account_insert_user('ny', 'ny', 'ny', DATE('2019-02-02 20:00:00'), @error_code);
 
 /**
   Procedure to check password on login
@@ -98,7 +101,7 @@ CREATE PROCEDURE account_validate_user(IN uname VARCHAR(30), IN password VARCHAR
   END;
 
 -- TEST:
-CALL account_validate_user('testbruker', 'testbruker');
+CALL account_validate_user('ny', 'ny');
 
 
 CALL account_insert_user('testbruker', 'testbruker', 'testbruker', DATE('2019-02-02 20:00:00'), @error_code);
@@ -119,7 +122,8 @@ CREATE PROCEDURE account_reset_password(
     DECLARE old_salt BINARY(32);
     DECLARE new_salt BINARY(32);
 
-    SET new_salt = RANDOM_BYTES(32);
+    -- SET new_salt = RANDOM_BYTES(32);
+    SET new_salt = RAND();
 
     SELECT SHA2(CONCAT(old_password, old_salt), 256) INTO old_pwd_hashed;
     -- SELECT hashed_password FROM account

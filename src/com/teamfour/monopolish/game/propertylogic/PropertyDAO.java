@@ -27,31 +27,28 @@ public class PropertyDAO extends DataAccessObject {
      * @param game_id the game_id the id of the current game
      *
      */
-    public ArrayList<Property> getAllProperties(int game_id){
+    public ArrayList<Property> getAllProperties(int game_id) throws SQLException {
         ArrayList<Property> props = null;
-        Property temp;
-        try {
-            connection = ConnectionPool.getMainConnectionPool().getConnection();
-            cStmt = connection.prepareCall("{call property_create(?, ?)}");
-            ResultSet rs;
-            //works with property id's being 10000 inkremented and 10 properties
-            int prop_id = 0;
-            for(int i = 0; i<10; i++) {
-                cStmt.setInt(1, game_id);
-                cStmt.setInt(2, prop_id);
 
-                rs =  cStmt.executeQuery();
-                props.add(new Property(rs.getInt("property_id"), rs.getString("name"), rs.getInt("price"), rs.getInt("position"), rs.getString("categorycolor")));
+        connection = ConnectionPool.getMainConnectionPool().getConnection();
+        cStmt = connection.prepareCall("{call property_get_all(?)}");
 
-                //ikke helt ideelt?
-                rs.close();
-                prop_id++;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            releaseConnection();
+        cStmt.setInt(1, game_id);
+
+        ResultSet rs = cStmt.executeQuery();
+
+        while(rs.next()) {
+            int propertyId = rs.getInt(1);
+            String name = rs.getString(2);
+            int price = rs.getInt(3);
+            int position = rs.getInt(4);
+            String categoryColor = rs.getString(5);
+
+            props.add(new Property(propertyId, name, price, position, categoryColor));
         }
+
+        releaseConnection();
+
         return (props);
     }
 
