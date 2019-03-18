@@ -62,6 +62,4 @@ public class GameDAOTest {
         } catch (SQLException e){
         }
     }
-
-
 }

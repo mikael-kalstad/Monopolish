@@ -5,7 +5,7 @@ Procedure to join or create lobby
 -- DELIMITER $$
 DROP PROCEDURE lobby_insert;
 
-CREATE PROCEDURE lobby_insert(IN account_id int, OUT lobby_id INT)
+CREATE PROCEDURE lobby_insert(IN username VARCHAR(30), OUT lobby_id INT)
   BEGIN
     -- Create a view of all current lobbies, with total players in each session
     CREATE OR REPLACE VIEW lobbies AS
@@ -25,6 +25,8 @@ CREATE PROCEDURE lobby_insert(IN account_id int, OUT lobby_id INT)
 
     DROP VIEW lobbies;
 
+    SET account_id = (SELECT a.user_id FROM account a WHERE a.username LIKE username LIMIT 1);
+
     INSERT INTO lobby(room_id, user_id)
     VALUES(lobby_id, account_id);
   END;
@@ -37,8 +39,9 @@ Procedure to set ready status
 -- DELIMITER $$
 DROP PROCEDURE lobby_set_player_ready;
 
-CREATE PROCEDURE lobby_set_player_ready(IN room_id INT, IN user_id INT, IN ready BIT)
+CREATE PROCEDURE lobby_set_player_ready(IN room_id INT, IN username VARCHAR(30), IN ready BIT)
   BEGIN
+    SET user_id = (SELECT a.user_id FROM account a WHERE a.username LIKE username LIMIT 1);
     UPDATE lobby l
     SET l.ready=ready
     WHERE l.room_id=room_id AND l.user_id=user_id;
@@ -65,8 +68,9 @@ Procedure to delete user from lobby
 -- DELIMITER $$
 DROP PROCEDURE lobby_delete_user;
 
-CREATE PROCEDURE lobby_delete(IN room_id INT, IN user_id INT)
+CREATE PROCEDURE lobby_delete(IN room_id INT, IN username INT)
   BEGIN
+    SET user_id = (SELECT a.user_id FROM account a WHERE a.username LIKE username LIMIT 1);
     DELETE FROM lobby WHERE lobby.room_id=room_id AND lobby.user_id=user_id;
   END;
 -- END$$

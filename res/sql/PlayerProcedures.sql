@@ -74,6 +74,7 @@ begin
 end $$
 delimiter ;
 
+drop procedure player_getByGameId;
 
 delimiter $$
 create procedure player_getByGameId(
