@@ -537,7 +537,7 @@
                   </AnchorPane>
                </children>
             </GridPane>
-            <GridPane gridLinesVisible="true" visible="false">
+            <GridPane fx:id="gamegrid">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="120.0" />
                   <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="90.0" />
@@ -563,7 +563,6 @@
                   <RowConstraints percentHeight="0.0" prefHeight="120.0" vgrow="SOMETIMES" />
                </rowConstraints>
             </GridPane>
-            <AnchorPane layoutX="10.0" layoutY="10.0" style="-fx-background-color: #DCEDC8;" />
          </children>
       </AnchorPane>
    </children>
