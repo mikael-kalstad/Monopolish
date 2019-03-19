@@ -35,11 +35,11 @@ public class LobbyController {
     ]
      */
     private String[][] fakeData = {
-            {"1234", "Mikael", "0", "true"},
-            {"1234", "Bård", "1", "false"},
-            {"1235", "Torbjørn", "0","false"},
-            {"1235", "Eirik", "1","false"},
-            {"1236", "Lisa", "0","false"}
+//            {"1234", "Mikael", "0", "true"},
+//            {"1234", "Bård", "1", "false"},
+//            {"1235", "Torbjørn", "0","false"},
+//            {"1235", "Eirik", "1","false"},
+//            {"1236", "Lisa", "0","false"}
     };
 
     private ArrayList<Pane> lobbies = new ArrayList<>();
@@ -70,25 +70,25 @@ public class LobbyController {
     @FXML public void initialize() {
         // -- FAKEDATA SHOULD BE DATA FROM DATABASE! --
 
-        if (fakeData.length == 0) {
-            createLobby("myLobby");
-        } else {
-            for (String[] data : fakeData) {
-                Pane container;
-                int lobby_id = Integer.valueOf(data[0]);
-                String username = data[1];
-                int index = Integer.valueOf(data[2]);
-                boolean ready = Boolean.valueOf(data[3]);
-
-                if ((container = getLobbyContainer(lobby_id)) != null) {
-                    addPlayer(username, container, lobby_id, index);
-                } else {
-                    createLobby("myLobby");
-                    container = getLobbyContainer(lobby_id);
-                    addPlayer(username, container, lobby_id, index);
-                }
-            }
-        }
+//        if (fakeData.length == 0) {
+//            createLobby("myLobby");
+//        } else {
+//            for (String[] data : fakeData) {
+//                Pane container;
+//                int lobby_id = Integer.valueOf(data[0]);
+//                String username = data[1];
+//                int index = Integer.valueOf(data[2]);
+//                boolean ready = Boolean.valueOf(data[3]);
+//
+//                if ((container = getLobbyContainer(lobby_id)) != null) {
+//                    addPlayer(username, container, lobby_id, index);
+//                } else {
+//                    createLobby("myLobby");
+//                    container = getLobbyContainer(lobby_id);
+//                    addPlayer(username, container, lobby_id, index);
+//                }
+//            }
+//        }
     }
 
     private Pane getLobbyContainer(int lobby_id) {
@@ -376,15 +376,16 @@ public class LobbyController {
         }
         catch (SQLException e) { e.printStackTrace(); }
 
-        // Set logic when player uses button (i.e. joins or leaves the lobby)
         int finalLobby_id = lobby_id;
+
+        // Set logic when player uses button (i.e. joins or leaves the lobby)
         btn.setOnAction(click -> {
             int numOfPlayers = playersContainer.getChildren().size();
 
             // If user is in the actual lobby
             if (current_lobby_id == finalLobby_id) {
                 changeBtnStyle(btn, false);
-                removePlayer(playersContainer, finalLobby_id, numOfPlayers);
+                removePlayer(playersContainer, finalLobby_id, numOfPlayers-1);
             }
 
             // If the user is not in the actual lobby
@@ -416,3 +417,4 @@ public class LobbyController {
         Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
     }
 }
+// SNOOOOOOP DOOOOOOG!

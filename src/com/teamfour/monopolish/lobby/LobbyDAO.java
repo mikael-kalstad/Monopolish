@@ -59,14 +59,14 @@ public class LobbyDAO extends DataAccessObject {
      */
     public boolean addPlayer(String username, int lobby_id) throws SQLException {
         getConnection();
-        cStmt = connection.prepareCall("{call insert_player(?, ?)}");
+        cStmt = connection.prepareCall("{call join_lobby(?, ?, ?)}");
 
         cStmt.setString(1, username);
         cStmt.setInt(2, lobby_id);
         cStmt.registerOutParameter(3, Types.BOOLEAN);
 
         boolean res = false;
-        if (cStmt.executeUpdate() > 0) res  = cStmt.getBoolean(2);
+        if (cStmt.executeUpdate() > 0) res  = cStmt.getBoolean(3);
 
         return res;
     }
