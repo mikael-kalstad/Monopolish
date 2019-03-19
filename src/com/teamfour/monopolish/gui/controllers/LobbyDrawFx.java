@@ -41,9 +41,9 @@ public class LobbyDrawFx {
      *
      * @param btn Button target for style change
      */
-    public static void changeBtnStyle(Button btn, String BTN_LEAVE, String BTN_JOIN) {
+    public static void changeBtnStyle(Button btn, String BTN_LEAVE, String BTN_JOIN, boolean join) {
         // If the user is in the actual lobby
-        if (btn.getText().equals(BTN_JOIN)) {
+        if (!join) {
             btn.setText(BTN_LEAVE);
             btn.setStyle(
                     "-fx-text-fill: white;" +
