@@ -46,41 +46,41 @@ public class FxPlayer extends StackPane{
         }
     }
 
-    public void move(int count) {
+    public void move(int steps) {
         getDirection();
-        while (count != 0) {
+        while (steps != 0) {
             switch (retning) {
                 case 1:
-                    while (posX >= 0 && count!= 0) {
+                    while (posX >= 0 && steps!= 0) {
                         posX--;
-                        count--;
+                        steps--;
                         if (posX == 0) {
                             retning = 2;
                             break;
                         }
                     }
                 case 2:
-                    while (posY >= 0 && count != 0) {
+                    while (posY >= 0 && steps != 0) {
                         posY--;
-                        count--;
+                        steps--;
                         if (posY == 0) {
                             retning = 3;
                             break;
                         }
                     }
                 case 3:
-                    while (posX <= MAX && count != 0) {
+                    while (posX <= MAX && steps != 0) {
                         posX++;
-                        count--;
+                        steps--;
                         if (posX == MAX) {
                             retning = 4;
                             break;
                         }
                     }
                 case 4:
-                    while (posY <= MAX && count != 0) {
+                    while (posY <= MAX && steps != 0) {
                         posY++;
-                        count--;
+                        steps--;
                         if (posY == MAX) {
                             retning = 1;
                             break;
