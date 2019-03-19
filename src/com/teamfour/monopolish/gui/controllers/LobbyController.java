@@ -324,22 +324,11 @@ public class LobbyController {
         // If any of these elements are null return to avoid nullpointerexception
         if (btn == null || playersContainer == null || statusValue == null) return;
 
-        int lobby_id = -1;
-
-        try {
-            // Make a new lobby in the database
-            lobby_id = Handler.getLobbyDAO().newLobby(USERNAME);
-
-            // Add btn to the lobby arraylist
-            lobbyList.add(playersContainer);
-        }
-        catch (SQLException e) { e.printStackTrace(); }
+        int lobby_id = Integer.valueOf(container.getId());
 
         if (current_lobby_id == lobby_id) {
             LobbyDrawFx.changeBtnStyle(btn, BTN_LEAVE, BTN_JOIN);
         }
-
-        int finalLobby_id = lobby_id;
 
         //Set logic when player uses button (i.e. joins or leaves the lobby)
         btn.setOnAction(click -> {
@@ -347,15 +336,15 @@ public class LobbyController {
             int numOfPlayers = playersContainer.getChildren().size();
 
             // If user is in the actual lobby
-            if (current_lobby_id == finalLobby_id) {
+            if (current_lobby_id == lobby_id) {
                 LobbyDrawFx.changeBtnStyle(btn, BTN_LEAVE, BTN_JOIN);
-                removePlayer(playersContainer, finalLobby_id, numOfPlayers-1);
+                removePlayer(playersContainer, lobby_id, numOfPlayers-1);
             }
 
             LobbyDrawFx.changeBtnStyle(btn, BTN_LEAVE, BTN_JOIN);
 
             // Disable join btn if lobby is full
-            if (numOfPlayers == 4 && current_lobby_id != finalLobby_id) {
+            if (numOfPlayers == 4 && current_lobby_id != lobby_id) {
                 btn.setDisable(true);
                 statusValue.setText(STATUS_FULL);
                 LobbyDrawFx.setTextColor(statusValue, PLAYER_COLOR_RED);
