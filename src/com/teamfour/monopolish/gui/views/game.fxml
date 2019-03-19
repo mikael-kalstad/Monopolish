@@ -46,7 +46,7 @@
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="2" GridPane.rowIndex="9">
                      <children>
                         <HBox layoutY="-1.0" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #64b5f6;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        <Label layoutX="30.0" layoutY="34.0" text="Label" textAlignment="CENTER" AnchorPane.topAnchor="34.0">
+                        <Label layoutX="7.0" layoutY="30.0" text="Lille London" textAlignment="CENTER" AnchorPane.topAnchor="30.0">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -56,7 +56,7 @@
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="1" GridPane.rowIndex="9">
                      <children>
                         <HBox layoutY="-1.0" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #64b5f6;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        <Label layoutX="30.0" layoutY="34.0" text="Label" textAlignment="CENTER" AnchorPane.topAnchor="34.0">
+                        <Label layoutX="10.0" layoutY="30.0" text="Work Work" textAlignment="CENTER" AnchorPane.topAnchor="30.0">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -65,9 +65,9 @@
                   </AnchorPane>
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="3" GridPane.rowIndex="9">
                      <children>
-                        <Label layoutX="30.0" layoutY="34.0" text="Label" textAlignment="CENTER" AnchorPane.topAnchor="34.0">
+                        <Label layoutX="31.0" layoutY="17.0" text="?" textAlignment="CENTER" AnchorPane.topAnchor="17.0">
                            <font>
-                              <Font size="14.0" />
+                              <Font size="59.0" />
                            </font>
                         </Label>
                      </children>
@@ -75,7 +75,7 @@
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="4" GridPane.rowIndex="9">
                      <children>
                         <HBox layoutY="-1.0" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #64b5f6;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        <Label layoutX="30.0" layoutY="34.0" text="Label" textAlignment="CENTER" AnchorPane.topAnchor="34.0">
+                        <Label layoutX="15.0" layoutY="30.0" text="Bar Circus" textAlignment="CENTER" AnchorPane.topAnchor="30.0">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -94,7 +94,7 @@
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="6" GridPane.rowIndex="9">
                      <children>
                         <HBox layoutY="-1.0" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #8D6E63;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        <Label layoutX="15.0" layoutY="30.0" text="pls kill me" textAlignment="CENTER" AnchorPane.topAnchor="34.0">
+                        <Label layoutX="7.0" layoutY="30.0" text="Svartlamoen" textAlignment="CENTER" AnchorPane.topAnchor="30.0">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -113,7 +113,7 @@
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="8" GridPane.rowIndex="9">
                      <children>
                         <HBox layoutY="-1.0" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #8D6E63;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        <Label layoutX="10.0" layoutY="34.0" text="Gløshaugen" textAlignment="CENTER" AnchorPane.topAnchor="34.0">
+                        <Label layoutX="8.0" layoutY="30.0" text="Gløshaugen" textAlignment="CENTER" AnchorPane.topAnchor="30.0">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -123,7 +123,7 @@
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="1">
                      <children>
                         <HBox layoutY="90.0" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #EF5350;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                        <Label layoutX="30.0" layoutY="34.0" text="Label" textAlignment="CENTER" AnchorPane.bottomAnchor="34.0">
+                        <Label layoutX="24.0" layoutY="70.0" text="Heidi's" textAlignment="CENTER" AnchorPane.bottomAnchor="30.0">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -132,9 +132,9 @@
                   </AnchorPane>
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="2">
                      <children>
-                        <Label layoutX="30.0" layoutY="34.0" text="Label" textAlignment="CENTER" AnchorPane.bottomAnchor="34.0">
+                        <Label layoutX="32.0" layoutY="17.0" rotate="180.0" text="?" textAlignment="CENTER" AnchorPane.bottomAnchor="16.599999999999994">
                            <font>
-                              <Font size="14.0" />
+                              <Font size="59.0" />
                            </font>
                         </Label>
                      </children>
@@ -142,7 +142,7 @@
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="3">
                      <children>
                         <HBox layoutY="91.0" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #EF5350;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                        <Label layoutX="30.0" layoutY="34.0" text="Label" textAlignment="CENTER" AnchorPane.bottomAnchor="34.0">
+                        <Label layoutX="7.0" layoutY="71.0" text="Sukkerhuset" textAlignment="CENTER" AnchorPane.bottomAnchor="30.599999999999994">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -151,7 +151,7 @@
                   </AnchorPane>
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="7">
                      <children>
-                        <Label layoutX="30.0" layoutY="34.0" text="Label" textAlignment="CENTER" AnchorPane.bottomAnchor="34.0">
+                        <Label layoutX="15.0" layoutY="50.0" text="Giskestop" textAlignment="CENTER" AnchorPane.bottomAnchor="50.0">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -161,7 +161,7 @@
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="6">
                      <children>
                         <HBox layoutX="1.0" layoutY="90.0" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #fff176;" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="-1.0" />
-                        <Label layoutX="30.0" layoutY="34.0" text="Label" textAlignment="CENTER" AnchorPane.bottomAnchor="34.0">
+                        <Label layoutX="20.0" layoutY="70.0" text="Solsiden" textAlignment="CENTER" AnchorPane.bottomAnchor="30.799999999999997">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -171,7 +171,7 @@
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="5">
                      <children>
                         <HBox layoutX="1.0" layoutY="91.0" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #fff176;" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="-1.0" />
-                        <Label layoutX="30.0" layoutY="34.0" text="Label" textAlignment="CENTER" AnchorPane.bottomAnchor="34.0">
+                        <Label layoutX="25.0" layoutY="71.0" text="Torvet" textAlignment="CENTER" AnchorPane.bottomAnchor="30.599999999999994">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -181,7 +181,7 @@
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="4">
                      <children>
                         <HBox layoutY="92.0" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #EF5350;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                        <Label layoutX="30.0" layoutY="34.0" text="Label" textAlignment="CENTER" AnchorPane.bottomAnchor="34.0">
+                        <Label layoutX="11.0" layoutY="72.0" text="Samfundet" textAlignment="CENTER" AnchorPane.bottomAnchor="30.400000000000006">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -191,7 +191,7 @@
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="8">
                      <children>
                         <HBox layoutY="90.0" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #fff176;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                        <Label layoutX="17.0" layoutY="30.0" text="Hallaballa" textAlignment="CENTER" AnchorPane.bottomAnchor="34.0">
+                        <Label layoutX="30.0" layoutY="70.0" text="Lade" textAlignment="CENTER" AnchorPane.bottomAnchor="30.799999999999997">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -237,7 +237,7 @@
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.rowIndex="1">
                      <children>
                         <VBox layoutX="70.0" layoutY="-3.0" prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #FFA726;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        <Label layoutX="56.0" layoutY="37.0" rotate="90.0" text="Label" AnchorPane.rightAnchor="34.0">
+                        <Label layoutX="56.0" layoutY="35.0" rotate="90.0" text="Nidelva" AnchorPane.rightAnchor="16.799999999999997">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -247,7 +247,7 @@
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.rowIndex="2">
                      <children>
                         <VBox layoutX="70.0" layoutY="-3.0" prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #FFA726;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        <Label layoutX="56.0" layoutY="37.0" rotate="90.0" text="Label" AnchorPane.rightAnchor="34.0">
+                        <Label layoutX="46.0" layoutY="35.0" rotate="90.0" text="Bakklandet" AnchorPane.rightAnchor="6.0">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -266,7 +266,7 @@
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.rowIndex="8">
                      <children>
                         <VBox layoutX="70.0" layoutY="-3.0" prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #F06292;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        <Label layoutX="56.0" layoutY="37.0" rotate="90.0" text="Label" AnchorPane.rightAnchor="34.0">
+                        <Label layoutX="46.0" layoutY="35.0" rotate="90.0" text="Café Løkka" AnchorPane.rightAnchor="6.799999999999997">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -285,7 +285,7 @@
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.rowIndex="6">
                      <children>
                         <VBox layoutX="70.0" layoutY="-3.0" prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #F06292;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        <Label layoutX="56.0" layoutY="37.0" rotate="90.0" text="Label" AnchorPane.rightAnchor="34.0">
+                        <Label layoutX="48.0" layoutY="35.0" rotate="90.0" text="Bodegaen" AnchorPane.rightAnchor="8.799999999999997">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -295,7 +295,7 @@
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.rowIndex="5">
                      <children>
                         <VBox layoutX="70.0" layoutY="-3.0" prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #F06292;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        <Label layoutX="56.0" layoutY="37.0" rotate="90.0" text="Label" AnchorPane.rightAnchor="34.0">
+                        <Label layoutX="40.0" layoutY="35.0" rotate="90.0" text="SQLExeption" AnchorPane.rightAnchor="1.5999999999999943">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -305,7 +305,7 @@
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.rowIndex="4">
                      <children>
                         <VBox layoutX="70.0" layoutY="-3.0" prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #FFA726;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        <Label layoutX="56.0" layoutY="37.0" rotate="90.0" text="Label" AnchorPane.rightAnchor="34.0">
+                        <Label layoutX="38.0" layoutY="35.0" rotate="90.0" text="Munkholmen" AnchorPane.rightAnchor="-0.4000000000000057">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -315,7 +315,7 @@
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="9" GridPane.rowIndex="8">
                      <children>
                         <VBox layoutX="-1.0" prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #1565C0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        <Label layoutX="6.0" layoutY="35.0" rotate="-90.0" text="Kalvskinnet" AnchorPane.leftAnchor="10.0">
+                        <Label layoutX="6.0" layoutY="35.0" rotate="-90.0" text="Kalvskinnet" AnchorPane.leftAnchor="6.0">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -334,7 +334,7 @@
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="9" GridPane.rowIndex="6">
                      <children>
                         <VBox prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #1565C0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        <Label layoutX="56.0" layoutY="37.0" rotate="-90.0" text="Halla" AnchorPane.leftAnchor="34.0">
+                        <Label layoutX="10.0" layoutY="35.0" rotate="-90.0" text="E.C. Dahls" AnchorPane.leftAnchor="10.0">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -343,9 +343,9 @@
                   </AnchorPane>
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="9" GridPane.rowIndex="5">
                      <children>
-                        <Label layoutX="56.0" layoutY="37.0" rotate="-90.0" text="Label" AnchorPane.leftAnchor="34.0">
+                        <Label layoutX="46.0" layoutY="2.0" rotate="-90.0" text="?" AnchorPane.leftAnchor="46.0">
                            <font>
-                              <Font size="14.0" />
+                              <Font size="59.0" />
                            </font>
                         </Label>
                      </children>
@@ -353,9 +353,9 @@
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="9" GridPane.rowIndex="4">
                      <children>
                         <VBox layoutX="-1.0" prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #81c784;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        <Label layoutX="56.0" layoutY="37.0" rotate="-90.0" text="Label" AnchorPane.leftAnchor="34.0">
+                        <Label layoutX="-3.0" layoutY="36.0" rotate="-90.0" text="Nidarosdomen" AnchorPane.leftAnchor="-3.0">
                            <font>
-                              <Font size="14.0" />
+                              <Font size="13.0" />
                            </font>
                         </Label>
                      </children>
@@ -372,7 +372,7 @@
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="9" GridPane.rowIndex="2">
                      <children>
                         <VBox layoutX="-1.0" prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #81c784;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        <Label layoutX="56.0" layoutY="37.0" rotate="-90.0" text="Label" AnchorPane.leftAnchor="34.0">
+                        <Label layoutX="3.0" layoutY="36.0" rotate="-90.0" text="Tyholttårnet" AnchorPane.leftAnchor="3.0">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -382,7 +382,7 @@
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="9" GridPane.rowIndex="1">
                      <children>
                         <VBox layoutX="-2.0" prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #81c784;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        <Label layoutX="56.0" layoutY="37.0" rotate="-90.0" text="Label" AnchorPane.leftAnchor="34.0">
+                        <Label layoutX="10.0" layoutY="35.0" rotate="-90.0" text="Rockheim" AnchorPane.leftAnchor="10.0">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -391,7 +391,7 @@
                   </AnchorPane>
                </children>
             </GridPane>
-            <GridPane fx:id="gamegrid">
+            <GridPane fx:id="gamegrid" visible="false">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="120.0" />
                   <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="90.0" />
@@ -419,7 +419,7 @@
             </GridPane>
          </children>
       </AnchorPane>
-      <AnchorPane AnchorPane.rightAnchor="0.0">
+      <AnchorPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="1240.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <VBox prefHeight="1050.0" prefWidth="680.0">
                <children>
@@ -592,7 +592,7 @@
             </VBox>
          </children>
       </AnchorPane>
-      <AnchorPane layoutY="14.0" prefHeight="394.0" prefWidth="240.0">
+      <AnchorPane layoutY="14.0" prefHeight="394.0" prefWidth="240.0" AnchorPane.bottomAnchor="642.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1680.0" AnchorPane.topAnchor="14.0">
          <children>
             <Button layoutX="53.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #FF9800;" text="Leave" textFill="#fafafa" />
             <Button layoutX="53.0" layoutY="61.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #FF9800;" text="Hmm" textFill="#fafafa" />
