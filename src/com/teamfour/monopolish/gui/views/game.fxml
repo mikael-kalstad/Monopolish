@@ -507,7 +507,7 @@
                   </AnchorPane>
                </children>
             </GridPane>
-            <GridPane fx:id="gamegrid" visible="false">
+            <GridPane fx:id="gamegrid">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="120.0" />
                   <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="90.0" />
