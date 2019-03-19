@@ -1,6 +1,7 @@
 package com.teamfour.monopolish.game.entities;
 
 import com.teamfour.monopolish.game.entities.player.*;
+import com.teamfour.monopolish.game.propertylogic.Property;
 import com.teamfour.monopolish.gui.controllers.Handler;
 
 import java.sql.SQLException;
@@ -63,6 +64,18 @@ public class EntityManager {
         players.remove(temp);
     }
 
+    public Property getPropertyAtPosition(int position) {
+        Property prop = null;
+        for (Player p : players) {
+            prop = p.getPropertyAtPosition(position);
+            if (prop != null) {
+                return prop;
+            }
+        }
+
+        return bank.getPropertyAtPosition(position);
+    }
+
     public boolean transferMoneyFromBank(String username, int amount) {
         Player player = getPlayer(username);
         if (player == null) {
@@ -91,6 +104,28 @@ public class EntityManager {
 
     }
 
+    public void transactProperty(Entity receiver, Property property) {
+        Entity propertyOwner;
+        String owner = property.getOwner();
+        if (owner.equals("") || owner == null) {
+            propertyOwner = bank;
+        } else {
+            propertyOwner = getPlayer(property.getOwner());
+        }
+
+        if (receiver instanceof Player)
+            property.setOwner(((Player) receiver).getUsername());
+        else
+            property.setOwner("");
+
+        // Transfer properties
+        receiver.getProperties().add(property);
+        propertyOwner.getProperties().remove(property);
+
+        // Transfer money
+        receiver.transferMoney(propertyOwner, property.getPrice());
+    }
+
     /**
      * Retrieves all player data from the database, to update the current game
      * after an opponent's round
@@ -98,6 +133,16 @@ public class EntityManager {
     public void updateFromDatabase() throws SQLException {
         players.clear();
         players = playerDAO.getPlayersInGame(gameId);
+    }
+
+    /**
+     * Writes all player updates to the database
+     */
+    public void updateToDatabase() throws SQLException {
+        for (Player p : players) {
+            playerDAO.updatePlayer(p, gameId);
+            p.updatePropertiesToDatabase(gameId);
+        }
     }
 
     public Player getYou() {
@@ -144,12 +189,12 @@ public class EntityManager {
         return turns;
     }
 
-    /**
-     * Writes all player updates to the database
-     */
-    public void updateToDatabase() throws SQLException {
-        for (Player p : players) {
-            playerDAO.updatePlayer(p, gameId);
+    public String toString() {
+        String result = "Properties: \n";
+        for (Property p : bank.getProperties()) {
+            result += p.toString() + "\n";
         }
+
+        return result;
     }
 }

@@ -25,6 +25,9 @@ public class Board {
         for (int i = 0; i < tiles.length; i++) {
             tiles[i] = PROPERTY;
         }
+
+        tiles[4] = GO_TO_JAIL;
+        tiles[16] = JAIL;
     }
 
     /**
@@ -43,6 +46,7 @@ public class Board {
     public int getJailPosition() {
         for (int i = 0; i < tiles.length; i++) {
             if (tiles[i] == JAIL) {
+                System.out.println("Jail is at " + i);
                 return i;
             }
         }

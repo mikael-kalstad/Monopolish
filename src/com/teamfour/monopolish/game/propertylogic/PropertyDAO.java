@@ -38,8 +38,9 @@ public class PropertyDAO extends DataAccessObject {
             int price = rs.getInt(3);
             int position = rs.getInt(4);
             String categoryColor = rs.getString(5);
+            String owner = rs.getString(6);
 
-            props.add(new Property(propertyId, name, price, position, categoryColor));
+            props.add(new Property(propertyId, name, price, position, categoryColor, owner));
         }
 
         releaseConnection();
@@ -53,25 +54,16 @@ public class PropertyDAO extends DataAccessObject {
      *
      */
 
-    public void updateProperty(Property prop, Entity entity, int game_id){
-        String username;
-        if(!(entity instanceof Player)){
-            username = null;
-        }else {
-            Player player = (Player) entity;
-            username = player.getUsername();
-        }
-
+    public void updateProperty(Property prop, int game_id){
         try {
-            connection = ConnectionPool.getMainConnectionPool().getConnection();
+            getConnection();
             cStmt = connection.prepareCall("{call property_update(?, ?, ?, ?)}");
-            for(int i = 0; i<10; i++) {
                 cStmt.setInt(1, prop.getId());
                 cStmt.setInt(2, game_id);
                 cStmt.setBoolean(3, prop.isPawned());
-                cStmt.setString(4, username);
+                System.out.println(prop.getOwner());
+                cStmt.setString(4, prop.getOwner());
                 cStmt.executeUpdate();
-            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

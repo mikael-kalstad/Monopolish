@@ -61,12 +61,14 @@ public class Player extends Entity {
         position+=steps;
     }
 
+
+
     /**
      * Moves to a specified position
      * @param position
      */
     public void moveTo(int position) {
-        if (position < (Board.BOARD_LENGTH - 1))
+        if (position >= (Board.BOARD_LENGTH) || position < 0)
             throw new IllegalArgumentException("Position is not within board bounds");
 
         this.position = position;

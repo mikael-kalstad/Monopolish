@@ -33,7 +33,7 @@ public class Dice {
      * @return random number within boundaries
      */
     private int randomNum(int min, int max) {
-        return random.nextInt(max-min) + min;
+        return random.nextInt(max-min+1) + min;
     }
 
 

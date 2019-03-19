@@ -1,5 +1,6 @@
 package com.teamfour.monopolish.game.entities;
 
+import com.teamfour.monopolish.game.entities.player.Player;
 import com.teamfour.monopolish.game.propertylogic.*;
 
 import java.util.ArrayList;
@@ -33,6 +34,15 @@ public abstract class Entity {
         propertyDAO = new PropertyDAO();
     }
 
+    public Property getPropertyAtPosition(int position) {
+        for (Property p : properties) {
+            if (p.getPosition() == position)
+                return p;
+        }
+
+        return null;
+    }
+
     /**
      * Adjusts the amount of money
      * @param amount Money to add or subtract
@@ -48,7 +58,7 @@ public abstract class Entity {
     }
 
     /**
-     * Exchanges money between another entity
+     * Exchanges money to another entity
      * @param entity The other entity
      * @param amount Amount to transfer
      */
@@ -67,16 +77,35 @@ public abstract class Entity {
      * @param entity the other entity
      * @param id Id of property to exchange
      */
-
-    //hæ? Lisa
     public boolean transferProperty(Entity entity, int id) {
         if (id >= properties.size() || properties.get(id) == null)
             return false;
 
-        entity.getProperties().add(properties.get(id));
+        Property property = properties.get(id);
+        if (entity instanceof Player)
+            property.setOwner(((Player) entity).getUsername());
+        else
+            property.setOwner("");
+
+        entity.getProperties().add(property);
         properties.remove(id);
 
         return true;
+    }
+
+    public void updatePropertiesToDatabase(int gameId) {
+        for (Property prop : properties) {
+            propertyDAO.updateProperty(prop, gameId);
+        }
+    }
+
+    public String toString() {
+        String result = "Properties:\n";
+        for (Property p : properties) {
+            result += p.toString();
+        }
+
+        return result;
     }
 
     // GETTERS & SETTERS
