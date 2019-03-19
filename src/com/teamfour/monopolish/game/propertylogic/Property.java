@@ -16,18 +16,20 @@ public class Property {
     private int price;
     private int position;
     private boolean pawned = false;
+    private String owner;
     private final String categorycolor;
 
 
     /**
      * Constructor
      */
-    public Property(int p_id, String name, int price, int position, String categorycolor){
+    public Property(int p_id, String name, int price, int position, String categorycolor, String owner){
         this.id = p_id;
         this.name = name;
         this.price = price;
         this.position = position;
         this.categorycolor = categorycolor;
+        this.owner = owner;
     }
 
     public String toString() {
@@ -57,6 +59,14 @@ public class Property {
 
     public boolean isPawned() {
         return pawned;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
     public void setPawned(boolean pawned) {

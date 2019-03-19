@@ -29,12 +29,17 @@ CREATE PROCEDURE property_get_all(
   IN game_id INT
 )
 BEGIN
-  INSERT INTO gameproperty (game_id, property_id)
-  SELECT game_id, property_id FROM property;
+  -- Delete all data related to this game session before starting
+  DELETE FROM gameproperty WHERE gameproperty.game_id=game_id;
 
-  select gp.*, p.position, p.price, p.categorycolor
+  INSERT INTO gameproperty (game_id, property_id, position)
+  SELECT game_id, property_id, position FROM property;
+
+  select gp.property_id, p.name, p.price, p.position, p.categorycolor, IFNULL(a.username, '')
   from gameproperty gp
   join property p on gp.property_id = p.property_id
+  left join player p2 on gp.user_id = p2.user_id
+  left join account a on p2.user_id = a.user_id
   WHERE gp.game_id=game_id;
 END $$
 
@@ -50,16 +55,13 @@ create procedure property_update(
 
   if u_name is null then set u_id = null;
 
-  else select user_id  into u_id from account where u_name = username;
+  else select user_id  into u_id from account where username LIKE u_name;
 
   end if;
 
-   update gameproperty set pawned = pawn
+   update gameproperty set pawned = pawn,
+                           user_id = u_id
       where property_id = prop_id and game_id = g_id;
-
-   update gameproperty set user_id = u_id
-      where property_id = prop_id and game_id = g_id;
-
 end $$
 delimiter ;
 

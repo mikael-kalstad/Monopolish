@@ -3,14 +3,16 @@ package com.teamfour.monopolish.game;
 import com.teamfour.monopolish.account.Account;
 import com.teamfour.monopolish.game.board.Board;
 import com.teamfour.monopolish.game.entities.EntityManager;
+import com.teamfour.monopolish.game.propertylogic.Property;
 import com.teamfour.monopolish.gui.controllers.Handler;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Scanner;
 
 public class GameLogic {
     // Attributes
-    private final int START_MONEY = 2000;
+    private final int START_MONEY = 5000;
     private GameDAO gameDAO;                // Database connection
     private int gameId;                     // The current's session global game id
     private Dice dice = new Dice(2,6); // Dice object
@@ -67,13 +69,13 @@ public class GameLogic {
         // Main game loop
         System.out.println("Game is starting!");
         while (!finished) {
-            System.out.println("It is " + currentPlayer + "'s turn.");
             // Check to see if currentPlayer has changed
 
             // Update data from database
             currentPlayer = gameDAO.getCurrentPlayer(gameId);
             entityManager.updateFromDatabase();
-            // TODO: Update view
+
+            System.out.println("It is " + currentPlayer + "'s turn.");
 
             Handler.setAccount(new Account("giske", "giske@damer.no", LocalDate.now(), 0));
 
@@ -96,6 +98,7 @@ public class GameLogic {
                 do {
                     // If you get jailDice three times in a row, move to jail!
                     if (throwCounter < 2) {
+                        // TODO: Press button to throw dice
                         throwResult = dice.throwDice();
                         System.out.println("You got " + throwResult[0] + " and " + throwResult[1]);
 
@@ -105,6 +108,7 @@ public class GameLogic {
                         // Move your player by placesToMove
                         System.out.println("You're moving " + placesToMove + " places.");
                         entityManager.getYou().move(placesToMove);
+                        System.out.println("You are at " + entityManager.getYou().getPosition());
 
                         // Time to check where you landed!
                         int yourPosition = entityManager.getYou().getPosition();
@@ -113,13 +117,14 @@ public class GameLogic {
                             System.out.println("You are going to jail!");
                             entityManager.getYou().setInJail(true);
                             entityManager.getYou().moveTo(board.getJailPosition());
+                            break;
                         } else if (board.getTileType(yourPosition) == Board.START) {
                             // If landing at start, get money from bank
                             System.out.println("You get money from bank");
                             entityManager.transferMoneyFromBank(Handler.getAccount().getUsername(), START_MONEY * 2);
                         } else if (board.getTileType(yourPosition) == Board.PROPERTY) {
                             // TODO: Property handling NOTE: Kill me
-                            System.out.println("You are on property. Please kill me.");
+                            propertyTransaction();
                         }
                     } else {
                         // TODO: Go to jail
@@ -131,10 +136,12 @@ public class GameLogic {
             } else {
                 // TODO: tryBail method
                 // If trybail fails:
+                System.out.println("You are in jail.");
             }
 
             // TURN FINISHED!!
 
+            System.out.println("Hello, the turn has ended for you.");
             // Check if anyone is bankrupt and update accordingly
             entityManager.updateBankruptcy();
 
@@ -146,20 +153,35 @@ public class GameLogic {
                 System.out.println("How can the game be finished??");
                 finished = true;
             } else {
+                newTurn();
                 if (currentPlayer.equals(gameDAO.getCurrentPlayer(gameId))) {
                     // If not, wait a second before checking again
                     Thread.sleep(1000);
                     continue;
                 }
-                newTurn();
             }
         }
+    }
+
+    public void propertyTransaction() {
+        Property property = entityManager.getPropertyAtPosition(entityManager.getYou().getPosition());
+        if (property == null) {
+            System.out.println("No property here, get lost, punk.");
+            return;
+        }
+
+        System.out.println("You have landed on " + property.getName() + ". You are buying it.");
+        // TODO: Press button to buy property if you have enough money
+        entityManager.transactProperty(entityManager.getYou(), property);
+        System.out.println("You now have " + entityManager.getYou().getMoney() + " caches");
+        System.out.println(entityManager.getYou().toString());
     }
 
     /**
      * Increments the turn number
      */
     public void newTurn() throws SQLException {
+        System.out.println("New turn!");
         if (turnNumber == entityManager.getPlayers().size() - 1) {
             roundNumber++;
             turnNumber = 0;

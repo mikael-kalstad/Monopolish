@@ -36,18 +36,6 @@ public class EntityTest {
     }
 
     @Test
-    public void testTransferProperty() {
-        Bank otherBank = new Bank(1);
-        instance.getProperties().add(new Property(1, "Test", 2000, 4, "Red"));
-
-        instance.transferProperty(otherBank, 0);
-
-        System.out.println(otherBank.getProperties().get(0));
-        assertEquals(1, otherBank.getProperties().size());
-        assertEquals(0, instance.getProperties().size());
-    }
-
-    @Test
     public void testTransferProperty2() {
         Bank otherBank = new Bank(1);
 
