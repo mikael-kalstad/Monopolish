@@ -8,7 +8,7 @@ import java.sql.SQLException;
 /**
  * Represents the players in a game
  *
- * @author      lisawil
+ * @author      lisawil & eirikhem
  * @version     1.2
  */
 

@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * Handles Player-DB connection and methods
  *
  *
- * @author      lisawil
+ * @author      lisawil & eirikhem
  * @version     1.0
  */
 public class PlayerDAO extends DataAccessObject {
@@ -113,7 +113,7 @@ public class PlayerDAO extends DataAccessObject {
     }
 
     /**
-     * gets all players with the given game_id
+     * create Player objects for all players with the given game_id
      * @param gameId the id of the current game
      */
     public ArrayList<Player> getPlayersInGame(int gameId) throws SQLException {
@@ -144,7 +144,7 @@ public class PlayerDAO extends DataAccessObject {
     }
 
     /**
-     * ends the game and registers each players score in the database
+     * ends the game and registers each player's score in the database
      * @param game_id the id of the current game
      *
      */

@@ -102,6 +102,28 @@ public class FxPlayer extends StackPane{
         return MAX;
     }
 
+    private int[][] positionGenerator() {
+
+        int[][] position = new int[36][2];
+        int x = 9;
+        int y = 9;
+        for(int i = 0; i<36; i++){
+            position[i][0] = x;
+            position[i][1] = y;
+
+            if(x>0 && i<9){
+                x--;
+            } else if(x<1 && y>0){
+                y--;
+            } else if(y<1 && x<9){
+                x++;
+            } else if(x == 9 && i>1){
+                y++;
+            }
+        }
+        return(position);
+    }
+
     public String toString() {
         String s = "Player moved to X: " + posX + ", Y: " + posY;
         return s;
