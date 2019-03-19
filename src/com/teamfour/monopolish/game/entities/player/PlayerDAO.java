@@ -93,7 +93,7 @@ public class PlayerDAO extends DataAccessObject {
      * @param game_id the id of the current game
      */
     public boolean updatePlayer(Player player, int game_id) throws SQLException {
-        connection = ConnectionPool.getMainConnectionPool().getConnection();
+        getConnection();
         cStmt = connection.prepareCall("{call player_update(?, ?, ?, ?, ?, ?, ?, ?)}");
 
         cStmt.setString(1, player.getUsername());
@@ -106,6 +106,8 @@ public class PlayerDAO extends DataAccessObject {
         cStmt.setInt(8, player.getScore());
 
         int count = cStmt.executeUpdate();
+
+        releaseConnection();
 
         return (count > 0);
     }

@@ -65,6 +65,36 @@ create procedure property_update(
 end $$
 delimiter ;
 
+DROP PROCEDURE property_get_by_owner;
+
+DELIMITER $$
+CREATE PROCEDURE property_get_by_owner(
+  IN game_id INT,
+  IN username VARCHAR(30)
+)
+BEGIN
+  DECLARE owner_id INT;
+  SET owner_id = (SELECT a.user_id
+                  FROM account a
+                  WHERE a.username LIKE username);
+
+  IF (username IS NULL OR username LIKE '') THEN
+    select gp.property_id, p.name, p.price, p.position, p.categorycolor, IFNULL(a.username, '')
+      from gameproperty gp
+      join property p on gp.property_id = p.property_id
+      left join player p2 on gp.user_id = p2.user_id
+      left join account a on p2.user_id = a.user_id
+      WHERE gp.game_id=game_id AND a.username IS NULL;
+  ELSE
+    select gp.property_id, p.name, p.price, p.position, p.categorycolor, IFNULL(a.username, '')
+    from gameproperty gp
+      join property p on gp.property_id = p.property_id
+      left join player p2 on gp.user_id = p2.user_id
+      left join account a on p2.user_id = a.user_id
+      WHERE gp.game_id=game_id AND a.username LIKE username;
+  END IF;
+END $$
+DELIMITER ;
 
 delimiter $$
 create procedure property_clean(
@@ -123,4 +153,3 @@ begin
 end $$
 delimiter ;
 */
-
