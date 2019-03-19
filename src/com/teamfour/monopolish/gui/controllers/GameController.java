@@ -7,6 +7,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Controller class for game view
@@ -27,6 +28,22 @@ public class GameController {
 
     @FXML
     public void initialize() {
+        playerList.add(new FxPlayer(FxPlayer.getMAX(), FxPlayer.getMAX()));
+        playerList.add(new FxPlayer(FxPlayer.getMAX(), FxPlayer.getMAX()));
+        playerList.add(new FxPlayer(FxPlayer.getMAX(), FxPlayer.getMAX()));
+        playerList.add(new FxPlayer(FxPlayer.getMAX(), FxPlayer.getMAX()));
+
+        drawPlayers();
+    }
+
+    public void moveffs() {
+        Random rand = new Random();
+        movePlayer(playerList.get(0), rand.nextInt(11)+1);
+    }
+
+    public void moveffs2() {
+        Random rand = new Random();
+        movePlayer(playerList.get(1), rand.nextInt(11)+1);
     }
 
     public void drawPlayers() {
@@ -42,7 +59,7 @@ public class GameController {
 
     public void movePlayer(FxPlayer player, int steps) {
         player.move(steps);
-
+        player.setAlignment(Pos.CENTER);
         GridPane.setConstraints(player, player.getPosX(), player.getPosY());
 
         gamegrid.getChildren().clear();
