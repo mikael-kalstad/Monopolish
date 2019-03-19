@@ -51,6 +51,8 @@ public class GameDAO extends DataAccessObject {
         if (rs.next())
             return rs.getString(1);
 
+        releaseConnection();
+
         return "";
     }
 
@@ -70,6 +72,8 @@ public class GameDAO extends DataAccessObject {
 
         int count = cStmt.executeUpdate();
 
+        releaseConnection();
+
         return (count > 0);
     }
 
@@ -88,6 +92,9 @@ public class GameDAO extends DataAccessObject {
         cStmt.setInt(2, winnerId);
 
         int count = cStmt.executeUpdate();
+
+        releaseConnection();
+
         return (count > 0);
     }
 
@@ -107,6 +114,8 @@ public class GameDAO extends DataAccessObject {
         int winnerId = -1;
         if (cStmt.execute())
             winnerId = cStmt.getInt(2);
+
+        releaseConnection();
 
         return winnerId;
     }

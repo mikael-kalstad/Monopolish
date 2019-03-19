@@ -133,6 +133,11 @@ public class EntityManager {
     public void updateFromDatabase() throws SQLException {
         players.clear();
         players = playerDAO.getPlayersInGame(gameId);
+        for (Player p : players) {
+            p.updatePropertiesFromDatabase(gameId);
+        }
+
+        bank.updatePropertiesFromDatabase(gameId);
     }
 
     /**

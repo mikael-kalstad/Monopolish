@@ -3,6 +3,8 @@ package com.teamfour.monopolish.game.entities.player;
 import com.teamfour.monopolish.game.board.Board;
 import com.teamfour.monopolish.game.entities.Entity;
 
+import java.sql.SQLException;
+
 /**
  * Represents the players in a game
  *
@@ -61,7 +63,11 @@ public class Player extends Entity {
         position+=steps;
     }
 
-
+    @Override
+    public void updatePropertiesFromDatabase(int gameId) throws SQLException {
+        properties.clear();
+        properties = propertyDAO.getPropertiesByOwner(gameId, username);
+    }
 
     /**
      * Moves to a specified position
