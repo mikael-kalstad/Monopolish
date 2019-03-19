@@ -27,6 +27,20 @@ public class GameController {
 
     @FXML
     public void initialize() {
+        playerList.add(new FxPlayer(FxPlayer.getMAX(), FxPlayer.getMAX()));
+        playerList.add(new FxPlayer(FxPlayer.getMAX(), FxPlayer.getMAX()));
+        playerList.add(new FxPlayer(FxPlayer.getMAX(), FxPlayer.getMAX()));
+        playerList.add(new FxPlayer(FxPlayer.getMAX(), FxPlayer.getMAX()));
+
+        drawPlayers();
+    }
+
+    public void moveffs() {
+        movePlayer(playerList.get(0), 1);
+    }
+
+    public void moveffs2() {
+        movePlayer(playerList.get(1), 1);
     }
 
     public void drawPlayers() {
@@ -42,7 +56,7 @@ public class GameController {
 
     public void movePlayer(FxPlayer player, int steps) {
         player.move(steps);
-
+        player.setAlignment(Pos.CENTER);
         GridPane.setConstraints(player, player.getPosX(), player.getPosY());
 
         gamegrid.getChildren().clear();
