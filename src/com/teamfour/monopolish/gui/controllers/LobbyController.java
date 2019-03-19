@@ -54,7 +54,6 @@ public class LobbyController {
     private final String BUTTON_JOIN_ID = "join";
     private final String STATUS_VALUE_ID = "statusValue";
 
-
     @FXML public void initialize() {
         ArrayList<String[]> lobbyInfo = new ArrayList<>();
         try {
@@ -70,7 +69,6 @@ public class LobbyController {
 
             // Add player to lobby if lobby already exists
             if ((container = getLobbyContainer(lobby_id)) != null) {
-                System.out.println("Lobby already exists!");
                 addPlayer(username, container, lobby_id);
             }
             // Create a new lobby and add player
@@ -354,14 +352,10 @@ public class LobbyController {
                 removePlayer(playersContainer, finalLobby_id, numOfPlayers-1);
             }
 
-            // If the user is not in the actual lobby
-            else {
-                LobbyDrawFx.changeBtnStyle(btn, BTN_LEAVE, BTN_JOIN);
-                addPlayer(Handler.getAccount().getUsername(), playersContainer, finalLobby_id);
-            }
+            LobbyDrawFx.changeBtnStyle(btn, BTN_LEAVE, BTN_JOIN);
 
             // Disable join btn if lobby is full
-                if (numOfPlayers == 4 && current_lobby_id != finalLobby_id) {
+            if (numOfPlayers == 4 && current_lobby_id != finalLobby_id) {
                 btn.setDisable(true);
                 statusValue.setText(STATUS_FULL);
                 LobbyDrawFx.setTextColor(statusValue, PLAYER_COLOR_RED);
