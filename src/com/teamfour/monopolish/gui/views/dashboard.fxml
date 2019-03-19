@@ -66,27 +66,22 @@
             </Text>
          </children>
       </Pane>
-      <Button layoutX="1069.0" layoutY="881.0" mnemonicParsing="false" onAction="#play" prefHeight="64.0" prefWidth="293.0" style="-fx-background-color: #FF9800; -fx-background-radius: 0;" text="Play" textAlignment="CENTER" textFill="WHITE">
+      <Button layoutX="1051.0" layoutY="902.0" mnemonicParsing="false" onAction="#play" prefHeight="70.0" prefWidth="330.0" style="-fx-background-color: #FF9800; -fx-background-radius: 0;" text="Play" textAlignment="CENTER" textFill="WHITE">
          <font>
-            <Font size="21.0" />
+            <Font size="30.0" />
          </font>
          <cursor>
             <Cursor fx:constant="CLOSED_HAND" />
          </cursor>
       </Button>
-      <Text fill="#250000" layoutX="727.0" layoutY="772.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Users online " wrappingWidth="292.9999923706055">
-         <font>
-            <Font name="System Bold" size="36.0" />
-         </font>
-      </Text>
-      <Pane layoutX="510.0" prefHeight="629.0" prefWidth="1411.0" style="-fx-background-color: e5e5e8;">
+      <Pane layoutX="510.0" prefHeight="720.0" prefWidth="1411.0" style="-fx-background-color: e5e5e8;">
          <children>
-            <Text layoutX="221.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Leaderboard" wrappingWidth="249.00011444091803">
+            <Text layoutX="244.0" layoutY="135.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Leaderboard" wrappingWidth="305.000114440918">
                <font>
-                  <Font name="System Bold" size="40.0" />
+                  <Font name="System Bold" size="47.0" />
                </font>
             </Text>
-            <Pane layoutX="65.0" layoutY="190.0" prefHeight="344.0" prefWidth="562.0" style="-fx-background-color: fcfcff; -fx-background-radius: 10;">
+            <Pane layoutX="116.0" layoutY="249.0" prefHeight="344.0" prefWidth="562.0" style="-fx-background-color: fcfcff; -fx-background-radius: 10;">
                <children>
                   <Pane layoutX="16.0" layoutY="225.0" prefHeight="93.0" prefWidth="176.0">
                      <children>
@@ -174,7 +169,7 @@
                   </ImageView>
                </children>
             </Pane>
-            <Pane layoutX="845.0" layoutY="31.0" prefHeight="70.0" prefWidth="421.0" style="-fx-background-radius: 10 10 0 0; -fx-background-color: EEEEEE;" />
+            <Pane layoutX="845.0" layoutY="31.0" prefHeight="70.0" prefWidth="421.0" style="-fx-background-radius: 10 10 0 0; -fx-background-color: white;" />
             <Text layoutX="856.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player">
                <font>
                   <Font name="System Bold" size="29.0" />
@@ -189,5 +184,10 @@
             <Pane fx:id="highscoreContainer" layoutX="846.0" layoutY="99.0" prefHeight="500.0" prefWidth="420.0" />
          </children>
       </Pane>
+      <Text layoutX="969.0" layoutY="811.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Click here to find a lobby and start playing!">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Text>
    </children>
 </Pane>

@@ -2,8 +2,9 @@ package com.teamfour.monopolish.gui.controllers;
 
 import com.teamfour.monopolish.account.Account;
 import com.teamfour.monopolish.account.AccountDAO;
-import com.teamfour.monopolish.database.ConnectionPool;
+import com.teamfour.monopolish.game.entities.player.PlayerDAO;
 import com.teamfour.monopolish.gui.views.ViewConstants;
+import com.teamfour.monopolish.lobby.LobbyDAO;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Rectangle2D;
@@ -14,6 +15,8 @@ public class Handler extends Application {
     private static SceneManager sceneManager;
     private static Account account;
     private static AccountDAO accountDAO = new AccountDAO();
+    private static PlayerDAO playerDAO = new PlayerDAO();
+    private static LobbyDAO lobbyDAO = new LobbyDAO();
 
     private final String APPLICATION_TITLE = "Monopoly";
     private final double ASPECT_RATIO = 16.0/9.0;
@@ -83,4 +86,7 @@ public class Handler extends Application {
     public static AccountDAO getAccountDAO() {
         return accountDAO;
     }
+
+    public static PlayerDAO getPlayerDAO() { return playerDAO; }
+    public static LobbyDAO getLobbyDAO() { return lobbyDAO; }
 }

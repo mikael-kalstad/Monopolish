@@ -8,6 +8,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 
+import java.time.LocalDate;
+
 
 /**
  * Controller class for registration view
@@ -157,6 +159,7 @@ public class LoginController {
 
     // ---- REMOVE BEFORE PRODUCTION! -------
     public void bypassToDashboard() {
+        Handler.setAccount(new Account("Mikael", "mikael@hotmail.com", LocalDate.now(), 7634));
         Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
     }
 

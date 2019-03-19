@@ -185,14 +185,21 @@ public class RegisterController {
         boolean passwordRequirements = checkPasswordRequirements();
         boolean passwordMatch = passwordMatch();
 
+        // These fields can be checked before trying to connect to the database
+        checkField(passwordInput, passwordMsg, MSG_PASSWORD_WARNING, !passwordRequirements);
+        checkField(passwordRepeatInput, passwordRepeatMsg, MSG_PASSWORDREPEAT_WARNING, !passwordMatch);
+        checkField(usernameInput, usernameMsg, MSG_USERNAME_REQUIREMENTS, usernameRequirement);
+
         // Check requirements (details in javadoc above method)
         if (!inputsEmpty() && passwordMatch && !usernameRequirement) {
             int res;
             Account user = new Account(usernameInput.getText().trim(), emailInput.getText().trim(), LocalDate.now(), 0);
 
             try {
+                System.out.println("registering...");
                 ConnectionPool.create();
                 res = Handler.getAccountDAO().insertAccount(user, passwordInput.getText().trim());
+                System.out.println("res" + res);
                 if (res == 3) usernameTaken = emailTaken = true;
                 else if (res == 1) usernameTaken = true;
                 else if (res == 2) emailTaken = true;
@@ -207,16 +214,11 @@ public class RegisterController {
             }
         }
 
-        // Username check
+        // Username taken check
         checkField(usernameInput, usernameMsg, MSG_USERNAME_WARNING, usernameTaken);
-        checkField(usernameInput, usernameMsg, MSG_USERNAME_REQUIREMENTS, usernameRequirement);
 
-        // Email check
+        // Email taken check
         checkField(emailInput, emailMsg, MSG_EMAIL_WARNING, emailTaken);
-
-        // Password check
-        checkField(passwordInput, passwordMsg, MSG_PASSWORD_WARNING, !passwordRequirements);
-        checkField(passwordRepeatInput, passwordRepeatMsg, MSG_PASSWORDREPEAT_WARNING, !passwordMatch);
     }
 
     /**

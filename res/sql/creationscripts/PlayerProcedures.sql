@@ -12,9 +12,9 @@ create procedure player_create(
   begin
     declare u_id int;
 
-    select userid  into u_id from account where u_name = username;
+    select user_id into u_id from account where u_name = username;
 
-    insert into player(game_id, userid) values (g_id, u_id);
+    insert into player(game_id, user_id) values (g_id, u_id);
   commit;
 
 end $$
