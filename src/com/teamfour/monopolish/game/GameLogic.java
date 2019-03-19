@@ -76,7 +76,7 @@ public class GameLogic {
         // 6. Start!
 
         // Load yourPlayer
-        yourPlayer = entityManager.getYou();
+        //yourPlayer = entityManager.getYou();
 
         // Main game loop
         System.out.println("Game is starting!");

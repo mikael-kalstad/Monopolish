@@ -6,6 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,6 +25,8 @@ public class GameController {
     private ArrayList<Text> eventList = new ArrayList<>();
     private ArrayList<FxPlayer> playerList = new ArrayList<>(); //hentes fra et annet sted, lobby?
     //@FXML private Label p1name, p1money, p2name, p2money, p3name, p3money;
+    @FXML
+    private TextFlow propertycard;
     @FXML
     private GridPane gamegrid;
     @FXML
