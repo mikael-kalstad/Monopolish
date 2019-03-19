@@ -16,8 +16,8 @@ import java.util.Collections;
 
 public class EntityManager {
     int gameId;
-    ArrayList<Player> players;
-    PlayerDAO playerDAO;
+    ArrayList<Player> players = new ArrayList<>();
+    PlayerDAO playerDAO = new PlayerDAO();
     Bank bank;
 
     /**
@@ -26,7 +26,6 @@ public class EntityManager {
      */
     public EntityManager(int gameId) {
         this.gameId = gameId;
-        this.playerDAO = new PlayerDAO();
         this.bank = new Bank(gameId);
     }
 
@@ -103,7 +102,7 @@ public class EntityManager {
 
     public Player getYou() {
         for(Player p : players) {
-            if (p.getUsername() == Handler.getAccount().getUsername()) {
+            if (p.getUsername().equals(Handler.getAccount().getUsername())) {
                 return p;
             }
         }
@@ -137,8 +136,6 @@ public class EntityManager {
     }
 
     public String[] generateTurnOrder() {
-        // Use shuffle to shuffle the order of player arraylist
-        Collections.shuffle(players);
         String[] turns = new String[players.size()];
         for (int i = 0; i < turns.length; i++) {
             turns[i] = players.get(i).getUsername();
