@@ -7,6 +7,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Controller class for game view
@@ -36,11 +37,13 @@ public class GameController {
     }
 
     public void moveffs() {
-        movePlayer(playerList.get(0), 1);
+        Random rand = new Random();
+        movePlayer(playerList.get(0), rand.nextInt(11)+1);
     }
 
     public void moveffs2() {
-        movePlayer(playerList.get(1), 1);
+        Random rand = new Random();
+        movePlayer(playerList.get(1), rand.nextInt(11)+1);
     }
 
     public void drawPlayers() {
