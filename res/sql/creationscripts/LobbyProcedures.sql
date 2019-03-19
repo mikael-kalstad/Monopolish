@@ -15,8 +15,6 @@ CREATE PROCEDURE new_lobby(IN username VARCHAR(30), OUT lobby_id INT)
     VALUES (lobby_id, account_id);
   END;
 
-CA
-LL new_lobby('giske', loby_id);
 /**
 Procedure to add user to a lobby
  */

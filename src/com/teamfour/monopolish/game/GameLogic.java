@@ -1,8 +1,10 @@
 package com.teamfour.monopolish.game;
 
 import com.teamfour.monopolish.account.Account;
+import com.teamfour.monopolish.database.ConnectionPool;
 import com.teamfour.monopolish.game.board.Board;
 import com.teamfour.monopolish.game.entities.EntityManager;
+import com.teamfour.monopolish.game.entities.player.Player;
 import com.teamfour.monopolish.game.propertylogic.Property;
 import com.teamfour.monopolish.gui.controllers.Handler;
 
@@ -27,6 +29,7 @@ public class GameLogic {
     private int roundNumber = 0;
     private String currentPlayer;
     private boolean finished = false;       // Is the game finished?
+    private Player yourPlayer;
 
     /**
      * Constructor
@@ -35,6 +38,48 @@ public class GameLogic {
     public GameLogic(int gameId) {
         gameDAO = new GameDAO();
         this.gameId = gameId;
+    }
+
+    /**
+     * Set up the game session
+     * @throws SQLException
+     */
+    public void setupGame() throws SQLException {
+        // Load board, graphics, etc.
+        ConnectionPool.create();
+
+        // 1. Load players from database by gameid
+        // 2. Load all properties from database into bank's properties
+        // Initialize board and get players from database
+        System.out.println("Loading board...");
+        board = new Board();
+        System.out.println("Loading players...");
+        entityManager = new EntityManager(gameId);
+        entityManager.updateFromDatabase();
+
+        // 3. Transfer money from bank to players
+        System.out.println("Distributing money...");
+        entityManager.distributeMoneyFromBank(START_MONEY);
+        // 4. Generate random turn order
+        System.out.println("Getting turn order...");
+        turns = entityManager.generateTurnOrder();
+
+        for (int i = 0; i < turns.length; i++) {
+            System.out.println((i + 1) + ": " + turns[i]);
+        }
+        System.out.println("\n");
+
+        // 5. Write current player and money amounts to database
+        System.out.println("Writing back to database...");
+        gameDAO.setCurrentPlayer(gameId, turns[0]);
+        entityManager.updateToDatabase();
+        // 6. Start!
+
+        // Load yourPlayer
+        yourPlayer = entityManager.getYou();
+
+        // Main game loop
+        System.out.println("Game is starting!");
     }
 
     // TODO: Remove throws exception
@@ -56,8 +101,7 @@ public class GameLogic {
         // 4. Generate random turn order
         System.out.println("Getting turn order...");
         turns = entityManager.generateTurnOrder();
-        currentPlayer = turns[0];
-        gameDAO.setCurrentPlayer(gameId, currentPlayer);
+        gameDAO.setCurrentPlayer(gameId, turns[0]);
 
         for (int i = 0; i < turns.length; i++) {
             System.out.println((i + 1) + ": " + turns[i]);
@@ -72,8 +116,13 @@ public class GameLogic {
         // Main game loop
         System.out.println("Game is starting!");
         while (!finished) {
-            // Check to see if currentPlayer has changed
-
+            currentPlayer = "";
+            // CHeck if the current player has changed
+            if (currentPlayer.equals(gameDAO.getCurrentPlayer(gameId))) {
+                // If not, wait a second before checking again
+                Thread.sleep(1000);
+                continue;
+            }
             // Update data from database
             currentPlayer = gameDAO.getCurrentPlayer(gameId);
             entityManager.updateFromDatabase();
@@ -156,11 +205,6 @@ public class GameLogic {
                 finished = true;
             } else {
                 newTurn();
-                if (currentPlayer.equals(gameDAO.getCurrentPlayer(gameId))) {
-                    // If not, wait a second before checking again
-                    Thread.sleep(1000);
-                    continue;
-                }
             }
         }
     }
@@ -205,6 +249,8 @@ public class GameLogic {
         gameDAO.setCurrentPlayer(gameId, turns[turnNumber]);
     }
 
+    // SETTERS & GETTERS
+
     public int getGameId() {
         return gameId;
     }
@@ -224,4 +270,6 @@ public class GameLogic {
     public boolean isFinished() {
         return finished;
     }
+
+    public String[] getTurns() { return turns; }
 }

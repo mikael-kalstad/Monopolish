@@ -89,7 +89,6 @@ public class PropertyDAO extends DataAccessObject {
                 cStmt.setInt(1, prop.getId());
                 cStmt.setInt(2, game_id);
                 cStmt.setBoolean(3, prop.isPawned());
-                System.out.println(prop.getOwner());
                 cStmt.setString(4, prop.getOwner());
                 cStmt.executeUpdate();
         } catch (SQLException e) {

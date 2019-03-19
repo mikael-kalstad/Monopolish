@@ -1,11 +1,13 @@
 package com.teamfour.monopolish.gui.controllers;
 
+import com.teamfour.monopolish.game.GameLogic;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -18,6 +20,7 @@ import java.util.Random;
 
 public class GameController {
 
+    private GameLogic gameLogic;
     private ArrayList<Text> eventList = new ArrayList<>();
     private ArrayList<FxPlayer> playerList = new ArrayList<>(); //hentes fra et annet sted, lobby?
     //@FXML private Label p1name, p1money, p2name, p2money, p3name, p3money;
@@ -28,10 +31,18 @@ public class GameController {
 
     @FXML
     public void initialize() {
-        playerList.add(new FxPlayer(FxPlayer.getMAX(), FxPlayer.getMAX()));
-        playerList.add(new FxPlayer(FxPlayer.getMAX(), FxPlayer.getMAX()));
-        playerList.add(new FxPlayer(FxPlayer.getMAX(), FxPlayer.getMAX()));
-        playerList.add(new FxPlayer(FxPlayer.getMAX(), FxPlayer.getMAX()));
+        // Load gamelogic and initialize the game setup
+        gameLogic = new GameLogic(1);
+        try {
+            gameLogic.setupGame();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // Draw players based on the number of players
+        for (int i = 0; i < gameLogic.getTurns().length; i++) {
+            playerList.add(new FxPlayer(FxPlayer.getMAX(), FxPlayer.getMAX()));
+        }
 
         drawPlayers();
     }

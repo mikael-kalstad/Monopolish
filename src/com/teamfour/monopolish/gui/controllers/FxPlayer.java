@@ -103,7 +103,6 @@ public class FxPlayer extends StackPane{
     }
 
     private int[][] positionGenerator() {
-
         int[][] position = new int[36][2];
         int x = 9;
         int y = 9;
