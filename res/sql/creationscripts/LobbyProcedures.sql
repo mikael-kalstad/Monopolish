@@ -1,4 +1,45 @@
 /**
+Procedure to create a new lobby
+ */
+DROP PROCEDURE new_lobby;
+
+CREATE PROCEDURE new_lobby(IN username VARCHAR(30), OUT lobby_id INT)
+  BEGIN
+    DECLARE lobby_id INT;
+    DECLARE account_id INT;
+
+    SET lobby_id = (IFNULL(SELECT (MAX(room_id)+1) FROM lobby), 1);
+    SET account_id = (SELECT a.user_id FROM account a WHERE a.username LIKE username LIMIT 1);
+
+    IF (lobby_id IS NULL) THEN
+      SET lobby_id = 1;
+    END IF;
+
+    INSERT INTO lobby (room_id, user_id)
+    VALUES (lobby_id, account_id);
+  END;
+
+
+/**
+Procedure to add user to a lobby
+ */
+DROP PROCEDURE join_lobby;
+
+CREATE PROCEDURE join_lobby(IN username VARCHAR(30), IN lobby_id INT, OUT ok BIT)
+  BEGIN
+    SET num_of_players = (SELECT COUNT(*) FROM lobby WHERE lobby_id = room_id);
+    SET account_id = (SELECT a.user_id FROM account a WHERE a.username LIKE username LIMIT 1);
+    SET ok = false;
+
+    IF (num_of_players < 4) THEN
+      SET ok = true;
+      INSERT INTO lobby (room_id, user_id)
+      VALUES (lobby_id, account_id);
+    END IF;
+  END;
+
+
+/**
 Procedure to join or create lobby
  */
 
@@ -68,8 +109,9 @@ Procedure to delete user from lobby
 -- DELIMITER $$
 DROP PROCEDURE lobby_delete_user;
 
-CREATE PROCEDURE lobby_delete(IN room_id INT, IN username INT)
+CREATE PROCEDURE lobby_delete_user(IN room_id INT, IN username VARCHAR(30))
   BEGIN
+    DECLARE user_id INT;
     SET user_id = (SELECT a.user_id FROM account a WHERE a.username LIKE username LIMIT 1);
     DELETE FROM lobby WHERE lobby.room_id=room_id AND lobby.user_id=user_id;
   END;

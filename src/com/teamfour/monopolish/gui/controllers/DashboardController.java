@@ -110,8 +110,7 @@ public class DashboardController {
             color = "white";
         }
         // If the user is in the leaderboard it will be marked to easily see it
-        //if (username.equals(Handler.getAccount().getUsername())) ---- USE THIS WHEN DATABAsE IS UP AGAIN ----
-        if (username.equals(Handler.getAccount().getUsername())) { // ---- ADD HANDLER ACCOUNT NAME HERE!
+        if (username.equals(Handler.getAccount().getUsername())) {
             color = "#ff6b5e";
         }
 

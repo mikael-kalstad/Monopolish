@@ -102,7 +102,7 @@ public class EntityManager {
 
     public Player getYou() {
         for(Player p : players) {
-            if (p.getUsername() == Handler.getAccount().getUsername()) {
+            if (p.getUsername().equals(Handler.getAccount().getUsername())) {
                 return p;
             }
         }

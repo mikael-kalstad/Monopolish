@@ -20,6 +20,13 @@ public class Board {
     // Attributes
     private int[] tiles;
 
+    public Board() {
+        tiles = new int[BOARD_LENGTH];
+        for (int i = 0; i < tiles.length; i++) {
+            tiles[i] = PROPERTY;
+        }
+    }
+
     /**
      * Returns the tile type at the specified position
      * @param position Position integer
