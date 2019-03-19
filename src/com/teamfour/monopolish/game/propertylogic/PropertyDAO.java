@@ -5,6 +5,7 @@ import com.teamfour.monopolish.database.DataAccessObject;
 import com.teamfour.monopolish.game.entities.Entity;
 import com.teamfour.monopolish.game.entities.player.Player;
 
+import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -46,6 +47,33 @@ public class PropertyDAO extends DataAccessObject {
         releaseConnection();
 
         return (props);
+    }
+
+    public ArrayList<Property> getPropertiesByOwner(int gameId, String username) throws SQLException {
+        ArrayList<Property> properties = new ArrayList<>();
+
+        getConnection();
+        cStmt = connection.prepareCall("{CALL property_get_by_owner(?, ?)}");
+
+        cStmt.setInt(1, gameId);
+        cStmt.setString(2, username);
+
+        ResultSet rs = cStmt.executeQuery();
+
+        while (rs.next()) {
+            int propertyId = rs.getInt(1);
+            String name = rs.getString(2);
+            int price = rs.getInt(3);
+            int position = rs.getInt(4);
+            String categoryColor = rs.getString(5);
+            String owner = rs.getString(6);
+
+            properties.add(new Property(propertyId, name, price, position, categoryColor, owner));
+        }
+
+        releaseConnection();
+
+        return properties;
     }
 
     /**

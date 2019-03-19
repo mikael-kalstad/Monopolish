@@ -50,11 +50,10 @@ public class GameLogic {
         System.out.println("Distributing money...");
         entityManager.distributeMoneyFromBank(START_MONEY);
         // 4. Generate random turn order
-        System.out.println("Randomizing turn order...");
+        System.out.println("Getting turn order...");
         turns = entityManager.generateTurnOrder();
         currentPlayer = turns[0];
         gameDAO.setCurrentPlayer(gameId, currentPlayer);
-
 
         for (int i = 0; i < turns.length; i++) {
             System.out.println((i + 1) + ": " + turns[i]);
@@ -172,9 +171,13 @@ public class GameLogic {
 
         System.out.println("You have landed on " + property.getName() + ". You are buying it.");
         // TODO: Press button to buy property if you have enough money
-        entityManager.transactProperty(entityManager.getYou(), property);
-        System.out.println("You now have " + entityManager.getYou().getMoney() + " caches");
-        System.out.println(entityManager.getYou().toString());
+        if (entityManager.getYou().getMoney() >= property.getPrice()) {
+            entityManager.transactProperty(entityManager.getYou(), property);
+            System.out.println("You now have " + entityManager.getYou().getMoney() + " caches");
+            System.out.println(entityManager.getYou().toString());
+        } else {
+            System.out.println("You can't afford it, you doofus.");
+        }
     }
 
     /**
