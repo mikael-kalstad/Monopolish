@@ -5,7 +5,6 @@ Author:   eirikhem, lisawil
 Date:     07.03.2019
 Version:  1.0
  */
-
 -- Disable foreign key check
 SET FOREIGN_KEY_CHECKS=0;
 
