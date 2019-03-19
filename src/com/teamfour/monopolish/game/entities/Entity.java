@@ -105,10 +105,12 @@ public abstract class Entity {
         properties = propertyDAO.getPropertiesByOwner(gameId, null);
     }
 
+    @Override
     public String toString() {
-        String result = "Properties:\n";
+        String result = "Money: " + money + "\n";
+        result += "Properties:\n";
         for (Property p : properties) {
-            result += p.toString();
+            result += p.toString() + "\n";
         }
 
         return result;
