@@ -237,7 +237,7 @@
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.rowIndex="1">
                      <children>
                         <VBox layoutX="70.0" layoutY="-3.0" prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #FFA726;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        <Label layoutX="56.0" layoutY="37.0" rotate="90.0" text="Label" AnchorPane.rightAnchor="34.0">
+                        <Label layoutX="56.0" layoutY="35.0" rotate="90.0" text="Nidelva" AnchorPane.rightAnchor="16.799999999999997">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -247,7 +247,7 @@
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.rowIndex="2">
                      <children>
                         <VBox layoutX="70.0" layoutY="-3.0" prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #FFA726;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        <Label layoutX="56.0" layoutY="37.0" rotate="90.0" text="Label" AnchorPane.rightAnchor="34.0">
+                        <Label layoutX="46.0" layoutY="35.0" rotate="90.0" text="Bakklandet" AnchorPane.rightAnchor="6.0">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -305,7 +305,7 @@
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.rowIndex="4">
                      <children>
                         <VBox layoutX="70.0" layoutY="-3.0" prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #FFA726;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                        <Label layoutX="56.0" layoutY="37.0" rotate="90.0" text="Label" AnchorPane.rightAnchor="34.0">
+                        <Label layoutX="38.0" layoutY="35.0" rotate="90.0" text="Munkholmen" AnchorPane.rightAnchor="-0.4000000000000057">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -391,7 +391,7 @@
                   </AnchorPane>
                </children>
             </GridPane>
-            <GridPane fx:id="gamegrid">
+            <GridPane fx:id="gamegrid" visible="false">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="120.0" />
                   <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="90.0" />
