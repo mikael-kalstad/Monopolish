@@ -47,7 +47,7 @@ public class LobbyDAO extends DataAccessObject {
         int lobby_id = -1;
         if (cStmt.executeUpdate() > 0) lobby_id = cStmt.getInt(2);
 
-        return lobby_id;
+        return lobby_id+1;
     }
 
     /**
@@ -150,5 +150,23 @@ public class LobbyDAO extends DataAccessObject {
         releaseConnection();
 
         return users;
+    }
+
+    public ArrayList<String[]> getAllLobbies() throws SQLException {
+        ArrayList<String[]> lobbyInfo = new ArrayList<>();
+
+        getConnection();
+        cStmt = connection.prepareCall("{CALL getAllLobbies()}");
+
+        ResultSet rs = cStmt.executeQuery();
+
+        while (rs.next()) {
+            String[] info = {rs.getString(1), rs.getString(2), rs.getString(3)};
+            lobbyInfo.add(info);
+        }
+
+        releaseConnection();
+
+        return lobbyInfo;
     }
 }

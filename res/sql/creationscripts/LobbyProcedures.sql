@@ -8,18 +8,15 @@ CREATE PROCEDURE new_lobby(IN username VARCHAR(30), OUT lobby_id INT)
     DECLARE lobby_id INT;
     DECLARE account_id INT;
 
-    SET lobby_id = (IFNULL(SELECT (MAX(room_id)+1) FROM lobby), 1);
+    SET lobby_id = (SELECT (MAX(room_id)+1) FROM lobby);
     SET account_id = (SELECT a.user_id FROM account a WHERE a.username LIKE username LIMIT 1);
-
-    IF (lobby_id IS NULL) THEN
-      SET lobby_id = 1;
-    END IF;
 
     INSERT INTO lobby (room_id, user_id)
     VALUES (lobby_id, account_id);
   END;
 
-
+CA
+LL new_lobby('giske', loby_id);
 /**
 Procedure to add user to a lobby
  */
@@ -130,5 +127,15 @@ CREATE PROCEDURE lobby_get_users_in_lobby(IN room_id INT)
     FROM lobby l
     JOIN account a ON a.user_id=l.user_id
     WHERE l.room_id=room_id;
+  END;
+-- END$$
+
+-- DELIMITER $$
+DROP PROCEDURE getAllLobbies;
+
+CREATE PROCEDURE getAllLobbies()
+  BEGIN
+    SELECT l.room_id, a.username, l.ready FROM account a, lobby l
+    WHERE a.user_id = l.user_id;
   END;
 -- END$$

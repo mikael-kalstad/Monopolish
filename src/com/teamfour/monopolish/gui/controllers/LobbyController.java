@@ -2,22 +2,21 @@ package com.teamfour.monopolish.gui.controllers;
 
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.fxml.FXML;
-import javafx.geometry.HPos;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * Controller class for lobby view
+ * Controller class for lobby view,
+ * handles all the logic for the lobbyList.
+ * Note: some gui elements are created in LobbyDrawFx class.
  *
  * @author Mikael Kalstad
- * @version 1.1
+ * @version 1.3
  */
 public class LobbyController {
     @FXML private FlowPane lobbiesContainer;
@@ -26,25 +25,9 @@ public class LobbyController {
     @FXML private TextField newLobbyNameInput;
     @FXML private Text newLobbyMsg;
 
-    /*
-    -- SYNTAX --
-
-    [
-        [lobby_id, username, ready],
-        [lobby_id, username, ready]
-    ]
-     */
-    private String[][] fakeData = {
-//            {"1234", "Mikael", "0", "true"},
-//            {"1234", "Bård", "1", "false"},
-//            {"1235", "Torbjørn", "0","false"},
-//            {"1235", "Eirik", "1","false"},
-//            {"1236", "Lisa", "0","false"}
-    };
-
-    private ArrayList<Pane> lobbies = new ArrayList<>();
-    private String username = Handler.getAccount().getUsername();
-    private int current_lobby_id = -1;
+    private ArrayList<Pane> lobbyList = new ArrayList<>(); // List over all lobby container elements
+    private final String USERNAME = Handler.getAccount().getUsername();
+    private int current_lobby_id = -1; // Default when user is not in any lobby = -1
 
     //  Status msg constants
     private final String STATUS_OPEN = "OPEN";
@@ -52,8 +35,8 @@ public class LobbyController {
     private final String STATUS_STARTED = "IN GAME";
 
     // Btn msg constants
-    private final String BTN_JOIN = "Join";
     private final String BTN_LEAVE = "Leave";
+    private final String BTN_JOIN = "Join";
 
     // Player colors
     private final String PLAYER_COLOR_BLUE = "#03A9F4";
@@ -66,81 +49,130 @@ public class LobbyController {
     private final String INPUT_COLOR_REQUIRED = "orange";
     private final String INPUT_COLOR_WARNING = "red";
 
-    // Testing purposes
-    @FXML public void initialize() {
-        // -- FAKEDATA SHOULD BE DATA FROM DATABASE! --
+    // Ids for gui elements
+    private final String PLAYER_CONTAINER_ID = "playerContainer";
+    private final String BUTTON_JOIN_ID = "join";
+    private final String STATUS_VALUE_ID = "statusValue";
 
-//        if (fakeData.length == 0) {
-//            createLobby("myLobby");
-//        } else {
-//            for (String[] data : fakeData) {
-//                Pane container;
-//                int lobby_id = Integer.valueOf(data[0]);
-//                String username = data[1];
-//                int index = Integer.valueOf(data[2]);
-//                boolean ready = Boolean.valueOf(data[3]);
-//
-//                if ((container = getLobbyContainer(lobby_id)) != null) {
-//                    addPlayer(username, container, lobby_id, index);
-//                } else {
-//                    createLobby("myLobby");
-//                    container = getLobbyContainer(lobby_id);
-//                    addPlayer(username, container, lobby_id, index);
-//                }
-//            }
-//        }
+
+    @FXML public void initialize() {
+        ArrayList<String[]> lobbyInfo = new ArrayList<>();
+        try {
+            lobbyInfo = Handler.getLobbyDAO().getAllLobbies();
+        }
+        catch (SQLException e) { e.printStackTrace(); }
+
+        for (String[] data : lobbyInfo) {
+            Pane container;
+            int lobby_id = Integer.valueOf(data[0]);
+            String username = data[1];
+            boolean ready = Boolean.valueOf(data[2]);
+
+            // Add player to lobby if lobby already exists
+            if ((container = getLobbyContainer(lobby_id)) != null) {
+                System.out.println("Lobby already exists!");
+                addPlayer(username, container, lobby_id);
+            }
+            // Create a new lobby and add player
+            else {
+                container = LobbyDrawFx.drawNewLobby(data[1]);
+                addLobby(container, String.valueOf(lobby_id));
+                addPlayer(username, container, lobby_id);
+            }
+
+            if (username.equals(this.USERNAME))
+                current_lobby_id = lobby_id;
+        }
     }
 
+    /**
+     * This method will take care of everything when making a new lobby
+     * <br/><br/>
+     * Note: lobby container is the gui container element of a lobby
+     * <br/><br/>
+     * <b>It will do the following:</b>
+     * <br/>
+     * <ul>
+     *     <li>1. Set the a lobby_id to the lobby container</li>
+     *     <li>2. Set on action for join button in lobby container</li>
+     *     <li>3. Add lobby to a lobby list</li>
+     *     <li>4. Add lobby container to the lobby view</li>
+     * </ul>
+     *
+     * @param lobbyContainer the lobby that will be added
+     */
+    private void addLobby(Pane lobbyContainer, String lobby_id) {
+        lobbyContainer.setId(lobby_id);
+        setBtnOnAction(lobbyContainer);
+        lobbyList.add(lobbyContainer);
+        lobbiesContainer.getChildren().add(lobbyContainer);
+    }
+
+    /**
+     * Get container for the actual lobby given lobby_id
+     *
+     * @param lobby_id id for the lobby
+     * @return lobby container if found
+     */
     private Pane getLobbyContainer(int lobby_id) {
-        for (Pane container : lobbies) {
+        for (Pane container : lobbyList) {
             if (container.getId().equals(String.valueOf(lobby_id))) return container;
         }
         return null;
     }
 
-    // Used by newLobbyDialog
-    private void setBorderStyle(TextField element, String color) {
-        element.setStyle(
-                "-fx-border-color: " + color + ";" +
-                "-fx-border-width: 0 0 2 0;" +
-                "-fx-background-color: white;" +
-                "-fx-text-inner-color: black;");
+    /**
+     * Get container element for players given a lobby container and id
+     * @param lobby actual lobby
+     * @return Players Container for actual lobby
+     */
+    private Pane getContainerById(Pane lobby, String id) {
+        Object[] elements = lobby.getChildren().toArray();
+        for (Object elem : elements) {
+            if (elem == null) continue;
+
+            // If container is a pane and has the right id
+            if (elem instanceof Pane && ((Pane) elem).getId() != null && ((Pane) elem).getId().equals(id)) {
+                return (Pane)elem;
+            }
+        }
+        return null;
     }
 
     /**
-     * Will change between two different styles
-     * 1. Join - user can join lobby - if join is true
-     * 2. Leave - user can leave lobby - if join is false
-     * @param btn Button target for style change
-     * @param join Should button be a join or leave button
+     * Get button element for a given lobby container and id
+     *
+     * @param lobby actual lobby
+     * @return a button of class Button
      */
-    private void changeBtnStyle(Button btn, boolean join) {
-        // If the user is in the actual lobby
-        if (join) {
-            btn.setText(BTN_LEAVE);
-            btn.setStyle(
-                    "-fx-text-fill: white;" +
-                    "-fx-font-size: 15;" +
-                    "-fx-background-color: red; " +
-                    "-fx-background-radius: 0;" +
-                    "-fx-padding: 8 35;"
-            );
+    private Button getBtnById(Pane lobby, String id) {
+        Object[] elements = lobby.getChildren().toArray();
+        for (Object elem : elements) {
+            if (elem == null) continue;
+
+            // If element is a button and has the right id
+            if (elem instanceof Button && ((Button) elem).getId() != null && ((Button) elem).getId().equals(id)) {
+                return (Button) elem;
+            }
         }
-        // If the user is not in the actual lobby
-        else {
-            btn.setText(BTN_JOIN);
-            btn.setStyle(
-                    "-fx-text-fill: white;" +
-                    "-fx-font-size: 15;" +
-                    "-fx-background-color: #FF9800; " +
-                    "-fx-background-radius: 0;" +
-                    "-fx-padding: 8 35;"
-            );
-        }
+        return null;
     }
 
-    private void setTextColor(Text element, String color) {
-        element.setFill(Paint.valueOf(color));
+    /**
+     * Get text element for a given lobby container and id
+     *
+     * @param lobby actual lobby
+     * @return a button of class Button
+     */
+    private Text getTextById(Pane lobby, String id) {
+        Object[] elements = lobby.getChildren().toArray();
+        for (Object elem : elements) {
+            // If element is a button and has the right id
+            if (elem instanceof Text && ((Text) elem).getId() != null && ((Text) elem).getId().equals(id)) {
+                return (Text) elem;
+            }
+        }
+        return null;
     }
 
     /**
@@ -169,19 +201,47 @@ public class LobbyController {
     public void createNewLobby() {
         // Change input styling if input is empty
         if (newLobbyNameInput.getText().trim().isEmpty()) {
-            setBorderStyle(newLobbyNameInput, INPUT_COLOR_REQUIRED);
+            LobbyDrawFx.setBorderStyle(newLobbyNameInput, INPUT_COLOR_REQUIRED);
             newLobbyMsg.setVisible(true);
-            setTextColor(newLobbyMsg, INPUT_COLOR_REQUIRED);
+            LobbyDrawFx.setTextColor(newLobbyMsg, INPUT_COLOR_REQUIRED);
         }
         // If input is not empty create new lobby
         else {
-            setBorderStyle(newLobbyNameInput, INPUT_COLOR_NORMAL);
+            LobbyDrawFx.setBorderStyle(newLobbyNameInput, INPUT_COLOR_NORMAL);
             newLobbyMsg.setVisible(false);
             newLobbyDialog.setVisible(false);
             newLobbyBackground.setVisible(false);
-            createLobby(newLobbyNameInput.getText());
+
+            int lobby_id = -1;
+
+            try {
+                lobby_id = Handler.getLobbyDAO().newLobby(USERNAME);
+            }
+            catch (SQLException e) { e.printStackTrace(); }
+            System.out.println("lobby id" + lobby_id);
+
+            // Add new lobby if lobby is registered to database successfully
+            if (lobby_id > 0) {
+                Pane lobby = LobbyDrawFx.drawNewLobby(newLobbyNameInput.getText());
+                addLobby(lobby, String.valueOf(lobby_id));
+                addPlayer(USERNAME, lobby, lobby_id);
+
+                // If user is already in a lobby
+                if (current_lobby_id > 0) {
+                    removePlayer(getLobbyContainer(current_lobby_id), current_lobby_id, 0); // CHAAAAAAAAAANGE THIS!
+                }
+            }
             newLobbyNameInput.setText(""); // Reset text
         }
+    }
+
+    private void startGame(int lobby_id, String[] users) {
+        int game_id = 0;
+        try {
+            game_id = Handler.getGameDAO().insertGame(lobby_id);
+        }
+        catch (SQLException e) { e.printStackTrace(); }
+        Handler.getPlayerDAO().createPlayers(game_id, users);
     }
 
     /**
@@ -189,16 +249,28 @@ public class LobbyController {
      *
      * @param username
      * @param container Node target, which lobby to join
-     * @param index where to place the row
      */
-    private void addPlayer(String username, Pane container, int lobby_id, int index) {
-        // Should be larger than 0
+    private void addPlayer(String username, Pane container, int lobby_id) {
+        // Lobby id should be larger than 0
         if (lobby_id < 0) return;
 
-        // Change color based on index
-        String color = PLAYER_COLOR_BLUE;
+        boolean exists = false;
+        try {
+            if (Handler.getLobbyDAO().getUsersInLobby(lobby_id).indexOf(username) != -1) {
+                exists = true;
+            }
+        }
+        catch (SQLException e) { e.printStackTrace(); }
 
-        switch (index) {
+        // Change color based on index
+        String color = PLAYER_COLOR_BLUE; // Default if numOfPlayers = 0
+
+        Pane playerContainer = getContainerById(container, PLAYER_CONTAINER_ID);
+        int numOfPlayers = 0;
+        if (playerContainer != null)
+            numOfPlayers = playerContainer.getChildren().size();
+
+        switch (numOfPlayers) {
             case 1:
                 color = PLAYER_COLOR_RED;
                 break;
@@ -210,15 +282,18 @@ public class LobbyController {
                 break;
         }
 
-        try {
-            // Try to register player to the lobby, and add player in GUI if response is okay.
-            boolean res = Handler.getLobbyDAO().addPlayer(username, lobby_id);
-            if (res) {
-                container.getChildren().add(createPlayerRow(color, username, index));
-                Handler.getPlayerDAO().createPlayer(lobby_id, username);
+        // If player does not exists make a new player
+        if (!exists) {
+            // Try to register player to the lobby
+            try {
+                Handler.getLobbyDAO().addPlayer(username, lobby_id);
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
-        catch (SQLException e) { e.printStackTrace(); }
+
+        // Render player in container
+        container.getChildren().add(LobbyDrawFx.drawPlayerRow(color, username, numOfPlayers));
     }
 
     /**
@@ -228,186 +303,74 @@ public class LobbyController {
      * @param index player position in lobby
      */
     private void removePlayer(Pane container, int lobby_id, int index) {
+        Pane playerContainer = getContainerById(container, PLAYER_CONTAINER_ID);
 
         try {
-            boolean res = Handler.getLobbyDAO().removePlayer(username, lobby_id);
-            if (res) {
-                container.getChildren().remove(index);
-                Handler.getPlayerDAO().removePlayer(lobby_id, username);
-            }
+            boolean res = Handler.getLobbyDAO().removePlayer(USERNAME, lobby_id);
+            if (res && playerContainer != null)
+                playerContainer.getChildren().remove(index);
         }
-
         catch (SQLException e) { e.printStackTrace(); }
 
+        // If lobby is empty, remove it
+        if (container.getChildren().size() == 0)
+            lobbiesContainer.getChildren().remove(container);
     }
 
-    /**
-     * Will return a player row that can be used in a lobby element
-     * Includes a color and the username of the player
-     *
-     * @param color of the box beside the user
-     * @param username
-     * @param index where to place the user
-     * @return a playerRow inside a GridPane element
-     */
-    private GridPane createPlayerRow(String color, String username, int index) {
-        GridPane container = new GridPane();
-        container.setPrefSize(220, 35);
-        container.setMaxSize(220, 35);
+    private void setBtnOnAction(Pane container) {
+        // Find the player container and the button
+        Pane playersContainer = getContainerById(container, PLAYER_CONTAINER_ID);
+        Button btn = getBtnById(container, BUTTON_JOIN_ID);
+        Text statusValue = getTextById(container, STATUS_VALUE_ID);
 
-        String backgroundColor = "#EEEEEE";
-        if (index % 2 != 0) backgroundColor = "white";
+        // If any of these elements are null return to avoid nullpointerexception
+        if (btn == null || playersContainer == null || statusValue == null) return;
 
-        container.setStyle(
-                "-fx-background-color: " + backgroundColor + ";" +
-                "-fx-effect: dropshadow(three-pass-box, derive(lightgrey, -20%), 10, 0, 4, 4);"
-        );
-
-        // The color box
-        Pane colorContainer = new Pane();
-        colorContainer.setPrefSize(35, 35);
-        colorContainer.setStyle("-fx-background-color: " + color + ";");
-        container.add(colorContainer, 0, 0);
-
-        // Spacing between color box and username
-        Pane spacing = new Pane();
-        spacing.setPrefWidth(30);
-        container.add(spacing, 1, 0);
-
-        // Username
-        Text player = new Text(username);
-        player.setStyle("-fx-font-size: 15px;");
-        container.add(player, 2,0);
-
-        // Move down according to the index
-        container.setTranslateY(35 * index);
-
-        return container;
-    }
-
-    /**
-     * Will create a lobby and add the player that made it to the lobby
-     */
-    private void createLobby(String lobbyName) {
-        // Grid layout within the container
-        GridPane grid = new GridPane();
-        grid.setAlignment(Pos.CENTER);
-        grid.setPrefWidth(290);
-        grid.setPrefHeight(330);
-        grid.setVgap(10);
-        grid.setStyle(
-            "-fx-background-color: #e5e5e8;" +
-            "-fx-padding: 20;"
-        );
-
-        // Row layout for grid
-        RowConstraints titleRow = new RowConstraints(75);
-        RowConstraints playersRow = new RowConstraints(155);
-        RowConstraints statusRow = new RowConstraints(50);
-        RowConstraints btnRow = new RowConstraints(65);
-        grid.getRowConstraints().addAll(titleRow, playersRow, statusRow, btnRow);
-
-        // Title / lobby name
-        Text title = new Text(lobbyName);
-        title.setStyle(
-                "-fx-font-size: 24px; " +
-                "-fx-font-weight: bold"
-        );
-        GridPane.setHalignment(title, HPos.CENTER); // Center horizontally
-
-        // Status of the lobby
-        Text status = new Text("Status");
-        status.setStyle(
-                "-fx-font-size: 17px; " +
-                "-fx-font-weight: bold;"
-        );
-
-        Text statusValue = new Text(STATUS_OPEN);
-        statusValue.setStyle(
-                "-fx-font-size: 17px;" +
-                "-fx-font-weight: bold;"
-        );
-        setTextColor(statusValue, PLAYER_COLOR_GREEN);
-
-        // Status container
-        GridPane statusGrid = new GridPane();
-        ColumnConstraints col1 = new ColumnConstraints();
-        col1.setPercentWidth(50);
-        ColumnConstraints col2 = new ColumnConstraints();
-        col2.setPercentWidth(50);
-        statusGrid.getColumnConstraints().addAll(col1, col2);
-
-        statusGrid.add(status, 0, 0);
-        statusGrid.add(statusValue, 1, 0);
-
-        // "Join" button in the lobby
-        Button btn = new Button("Join");
-        btn.setStyle(
-                "-fx-text-fill: white;" +
-                "-fx-font-size: 15;" +
-                "-fx-background-color: #FF9800; " +
-                "-fx-background-radius: 0;" +
-                "-fx-padding: 8 35;"
-        );
-        GridPane.setHalignment(btn, HPos.CENTER);
-
-        // Container for playersContainer, fits MAXIMUM 4 playersContainer
-        Pane playersContainer = new Pane();
-        playersContainer.setPrefSize(220, 35 * 4);
-
-        // Add elements to grid
-        grid.add(title, 0, 0);
-        grid.add(playersContainer, 0, 1);
-        grid.add(statusGrid, 0, 2);
-        grid.add(btn, 0, 3);
-
-        // Id of the current lobby
         int lobby_id = -1;
 
         try {
             // Make a new lobby in the database
-            lobby_id = Handler.getLobbyDAO().newLobby(username);
-
-            // Set id of container to the value of lobby_id
-            playersContainer.setId(String.valueOf(lobby_id));
+            lobby_id = Handler.getLobbyDAO().newLobby(USERNAME);
 
             // Add btn to the lobby arraylist
-            lobbies.add(playersContainer);
+            lobbyList.add(playersContainer);
         }
         catch (SQLException e) { e.printStackTrace(); }
 
+        if (current_lobby_id == lobby_id) {
+            LobbyDrawFx.changeBtnStyle(btn, BTN_LEAVE, BTN_JOIN);
+        }
+
         int finalLobby_id = lobby_id;
 
-        // Set logic when player uses button (i.e. joins or leaves the lobby)
+        //Set logic when player uses button (i.e. joins or leaves the lobby)
         btn.setOnAction(click -> {
+            System.out.println("Button click!");
             int numOfPlayers = playersContainer.getChildren().size();
 
             // If user is in the actual lobby
             if (current_lobby_id == finalLobby_id) {
-                changeBtnStyle(btn, false);
+                LobbyDrawFx.changeBtnStyle(btn, BTN_LEAVE, BTN_JOIN);
                 removePlayer(playersContainer, finalLobby_id, numOfPlayers-1);
             }
 
             // If the user is not in the actual lobby
             else {
-                changeBtnStyle(btn, true);
-                addPlayer(Handler.getAccount().getUsername(), playersContainer, finalLobby_id, numOfPlayers);
+                LobbyDrawFx.changeBtnStyle(btn, BTN_LEAVE, BTN_JOIN);
+                addPlayer(Handler.getAccount().getUsername(), playersContainer, finalLobby_id);
             }
 
             // Disable join btn if lobby is full
-            if (numOfPlayers == 4 && current_lobby_id != finalLobby_id) {
+                if (numOfPlayers == 4 && current_lobby_id != finalLobby_id) {
                 btn.setDisable(true);
                 statusValue.setText(STATUS_FULL);
-                setTextColor(statusValue, PLAYER_COLOR_RED);
+                LobbyDrawFx.setTextColor(statusValue, PLAYER_COLOR_RED);
             } else {
                 btn.setDisable(false);
                 statusValue.setText(STATUS_OPEN);
-                setTextColor(statusValue, "white");
+                LobbyDrawFx.setTextColor(statusValue, "white");
             }
         });
-
-        // Add grid to the lobby view
-        lobbiesContainer.getChildren().add(grid);
     }
 
     /**
@@ -417,4 +380,3 @@ public class LobbyController {
         Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
     }
 }
-// SNOOOOOOP DOOOOOOG!

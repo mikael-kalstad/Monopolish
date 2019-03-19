@@ -2,6 +2,7 @@ package com.teamfour.monopolish.gui.controllers;
 
 import com.teamfour.monopolish.account.Account;
 import com.teamfour.monopolish.account.AccountDAO;
+import com.teamfour.monopolish.game.GameDAO;
 import com.teamfour.monopolish.game.entities.player.PlayerDAO;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import com.teamfour.monopolish.lobby.LobbyDAO;
@@ -17,6 +18,7 @@ public class Handler extends Application {
     private static AccountDAO accountDAO = new AccountDAO();
     private static PlayerDAO playerDAO = new PlayerDAO();
     private static LobbyDAO lobbyDAO = new LobbyDAO();
+    private static GameDAO gameDAO = new GameDAO();
 
     private final String APPLICATION_TITLE = "Monopoly";
     private final double ASPECT_RATIO = 16.0/9.0;
@@ -89,4 +91,6 @@ public class Handler extends Application {
 
     public static PlayerDAO getPlayerDAO() { return playerDAO; }
     public static LobbyDAO getLobbyDAO() { return lobbyDAO; }
+
+    public static GameDAO getGameDAO() { return gameDAO; }
 }
