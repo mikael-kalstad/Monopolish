@@ -6,20 +6,22 @@ import com.teamfour.monopolish.gui.controllers.Handler;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
- *
+ * This class manages all Entities in the game session. Entities are classified by players and the bank object.
+ * This class uses its arraylist of players and the bank object to handle the communication between this objects,
+ * as well as acting as an abstraction layer between all the objects and the rest of the application
  *
  * @author      eirikhem
- * @version     1.0
+ * @version     1.3
  */
 
 public class EntityManager {
-    int gameId;
-    ArrayList<Player> players = new ArrayList<>();
-    PlayerDAO playerDAO = new PlayerDAO();
-    Bank bank;
+    // Attributes
+    int gameId;                                         // ID for the game that contains this manager
+    ArrayList<Player> players = new ArrayList<>();      // All players in the game
+    PlayerDAO playerDAO = new PlayerDAO();              // Player database connection
+    Bank bank;                                          // Bank object for handling available money and properties
 
     /**
      * Constructor
@@ -28,11 +30,6 @@ public class EntityManager {
     public EntityManager(int gameId) {
         this.gameId = gameId;
         this.bank = new Bank(gameId);
-    }
-
-    public ArrayList<Player> getPlayers() {
-        //kanskje like lurt?
-        return (players);
     }
 
     public Player getPlayer(String username) {
@@ -150,6 +147,10 @@ public class EntityManager {
         }
     }
 
+    /**
+     * Returns the current player
+     * @return You object
+     */
     public Player getYou() {
         for(Player p : players) {
             if (p.getUsername().equals(Handler.getAccount().getUsername())) {
@@ -160,6 +161,9 @@ public class EntityManager {
         return null;
     }
 
+    /**
+     * Cycles through all players and updates their bankruptcy according to their value
+     */
     public void updateBankruptcy() {
         for (Player p : players) {
             if (p.getMoney() <= 0) {
@@ -168,16 +172,23 @@ public class EntityManager {
         }
     }
 
+    /**
+     * Check if there's a winner
+     * @return The winner username
+     */
     public String findWinner() {
         String result = null;
+        // Count the number of not bankrupt players
         int notBankrupt = 0;
         for (Player p : players) {
             if (!p.isBankrupt()) {
                 notBankrupt++;
+                // If only one player is not bankrupt, this will be the winner
                 result = p.getUsername();
             }
         }
 
+        // If there are more or less than one not bankrupt, no winner was found
         if (notBankrupt == 1) {
             return result;
         } else {
@@ -185,6 +196,10 @@ public class EntityManager {
         }
     }
 
+    /**
+     * Generates a string array with the turn order of the players, based on their Player ID's
+     * @return String array with the play order
+     */
     public String[] generateTurnOrder() {
         String[] turns = new String[players.size()];
         for (int i = 0; i < turns.length; i++) {
@@ -194,12 +209,24 @@ public class EntityManager {
         return turns;
     }
 
+    /**
+     * Returns a string presentation of all the entities
+     * @return
+     */
     public String toString() {
-        String result = "Properties: \n";
-        for (Property p : bank.getProperties()) {
-            result += p.toString() + "\n";
+        String result = "Entities: \n";
+        for (Player p : players) {
+            result += "Name: " + p.getUsername() + "; " + p.toString();
         }
 
+        result += bank.toString();
+
         return result;
+    }
+
+    // GETTERS & SETTERS
+
+    public ArrayList<Player> getPlayers() {
+        return (players);
     }
 }
