@@ -181,7 +181,7 @@ public class LobbyDAO extends DataAccessObject {
             rs = cStmt.executeQuery();
 
             rs.next();
-            rs.getInt("COUNT(*)");
+            num = rs.getInt("COUNT(*)");
         }
         catch (SQLException e) { e.printStackTrace(); }
         return num;
