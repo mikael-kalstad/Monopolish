@@ -174,7 +174,7 @@ public class LobbyDAO extends DataAccessObject {
      * @param roomId
      * @return
      */
-    public ArrayList<String> getUsersInLobby(int roomId) throws SQLException {
+    public ArrayList<String> getUsersInLobby(int roomId) {
         ArrayList<String> users = new ArrayList<>();
         try {
 
