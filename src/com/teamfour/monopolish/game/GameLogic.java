@@ -89,13 +89,8 @@ public class GameLogic {
         System.out.println("Game is starting!");
     }
 
-    public int throwDice() {
-        int[] throwResult = dice.throwDice();
-        int result = throwResult[0] + throwResult[1];
-        if (throwResult[0] == throwResult[2])
-            return -result;
-
-        return result;
+    public int[] throwDice() {
+        return dice.throwDice();
     }
 
     // TODO: Remove throws exception
