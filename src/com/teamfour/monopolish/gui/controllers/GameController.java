@@ -45,8 +45,9 @@ public class GameController {
         }
 
         // Draw players based on the number of players
-        for (int i = 0; i < gameLogic.getTurns().length; i++) {
-            playerList.add(new FxPlayer(FxPlayer.getMAX(), FxPlayer.getMAX()));
+        String[] playerTurns = gameLogic.getTurns();
+        for (int i = 0; i < playerTurns.length; i++) {
+            playerList.add(new FxPlayer(playerTurns[i], FxPlayer.getMAX(), FxPlayer.getMAX()));
         }
 
         drawPlayers();
@@ -63,16 +64,6 @@ public class GameController {
             String s = "Threw dice:  "+ dice1 + ",  " + dice2;
             addToEventlog(s);
             movePlayer(playerList.get(0), dice1+dice2);
-    }
-
-    public void moveffs() {
-        Random rand = new Random();
-        movePlayer(playerList.get(0), rand.nextInt(11)+1);
-    }
-
-    public void moveffs2() {
-        Random rand = new Random();
-        movePlayer(playerList.get(1), rand.nextInt(11)+1);
     }
 
     public void drawPlayers() {
