@@ -37,19 +37,11 @@ public class LobbyDAOTest {
 
     @Test
     public void testDeleteLobby() {
-        try {
-            assertTrue(instance.deleteLobby(1));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
+        assertTrue(instance.deleteLobby(1));
+    }
     @Test
     public void testGetUsersInLobby() {
-        try {
             assertEquals(0, instance.getUsersInLobby(1).size());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 }

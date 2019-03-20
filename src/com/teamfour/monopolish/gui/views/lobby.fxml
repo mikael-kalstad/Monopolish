@@ -45,12 +45,12 @@
             <Image url="file:res/gui/add.png" />
          </image>
       </ImageView>
-      <Text fill="#949494" layoutX="820.0" layoutY="942.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New lobby" wrappingWidth="302.000114440918">
+      <Text fill="#4ab24c" layoutX="820.0" layoutY="942.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New lobby" wrappingWidth="302.000114440918">
          <font>
             <Font name="System Bold" size="49.0" />
          </font>
       </Text>
-      <Text layoutX="763.0" layoutY="997.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create your own lobby for you and your friends!">
+      <Text fill="#959595" layoutX="763.0" layoutY="997.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create your own lobby for you and your friends!">
          <font>
             <Font size="15.0" />
          </font>
@@ -147,7 +147,7 @@
             <Font name="System Bold" size="42.0" />
          </font>
       </Text>
-      <Text fill="#959595" layoutX="148.0" layoutY="1008.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tips: use enter or space to refresh the lobbies">
+      <Text fill="#959595" layoutX="208.0" layoutY="997.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Refresh to see the newest lobbies ">
          <font>
             <Font size="18.0" />
          </font>
