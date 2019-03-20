@@ -11,6 +11,13 @@ import com.teamfour.monopolish.gui.controllers.Handler;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
+/**
+ * Contains all the gameplay logic for the game
+ *
+ * @author      eirikhem
+ * @version     1.1
+ */
+
 public class GameLogic {
     // Read-only variables
     private final int START_MONEY = 5000;
@@ -80,6 +87,15 @@ public class GameLogic {
 
         // Main game loop
         System.out.println("Game is starting!");
+    }
+
+    public int throwDice() {
+        int[] throwResult = dice.throwDice();
+        int result = throwResult[0] + throwResult[1];
+        if (throwResult[0] == throwResult[2])
+            return -result;
+
+        return result;
     }
 
     // TODO: Remove throws exception
