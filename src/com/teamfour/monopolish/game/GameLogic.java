@@ -88,7 +88,7 @@ public class GameLogic {
         // Load yourPlayer
         yourPlayer = entityManager.getYou();
 
-        currentPlayer = "";
+        currentPlayer = turns[0];
         // Main game loop
         System.out.println("Game is starting!");
     }
@@ -103,7 +103,7 @@ public class GameLogic {
             moveYourPlayer(steps);
         }
 
-        return dice.throwDice();
+        return throwResult;
     }
 
     public void moveYourPlayer(int steps) throws SQLException {
@@ -312,7 +312,8 @@ public class GameLogic {
         }
 
         // Update current player
-        gameDAO.setCurrentPlayer(gameId, turns[turnNumber]);
+        currentPlayer = turns[turnNumber];
+        gameDAO.setCurrentPlayer(gameId, currentPlayer);
     }
 
     // SETTERS & GETTERS
@@ -339,7 +340,8 @@ public class GameLogic {
 
     public String[] getTurns() { return turns; }
 
-    public boolean isYourTurn() {
-        return turns[turnNumber].equals(Handler.getAccount().getUsername());
+    public boolean isYourTurn() throws SQLException {
+        String newCurrentUser = gameDAO.getCurrentPlayer(gameId);
+        return newCurrentUser.equals(Handler.getAccount().getUsername());
     }
 }

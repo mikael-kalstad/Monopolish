@@ -126,7 +126,6 @@ public class PlayerDAO extends DataAccessObject {
      */
     public ArrayList<Player> getPlayersInGame(int gameId) throws SQLException {
         ArrayList<Player> players = new ArrayList<>();
-
         try {
             getConnection();
             cStmt = connection.prepareCall("{call player_getByGameId(?)}");

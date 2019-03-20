@@ -66,8 +66,6 @@ public class GameDAO extends DataAccessObject {
             releaseConnection();
         }
 
-        releaseConnection();
-
         return player;
     }
 

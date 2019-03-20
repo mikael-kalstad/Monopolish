@@ -11,6 +11,8 @@ import javafx.scene.text.TextFlow;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Controller class for game view
@@ -20,6 +22,9 @@ import java.util.ArrayList;
  */
 
 public class GameController {
+    // Timers
+
+    private Timer timer = new Timer();
 
     private GameLogic gameLogic = new GameLogic(1);
     private ArrayList<Text> eventList = new ArrayList<>();
@@ -51,12 +56,44 @@ public class GameController {
 
         drawPlayers();
 
-        if (!gameLogic.isYourTurn()) {
-            rolldice.setDisable(true);
-        }
+        waitForTurn();
+    }
+
+    private void waitForTurn() {
+        // Create a timer object
+        timer = new Timer();
+        // We'll schedule a task that will check against the database
+        // if it's your turn every 1 second
+        timer.scheduleAtFixedRate(new TimerTask()
+        {
+            public void run()
+            {
+                try {
+                    // If it's your turn, break out of the timer
+                    if (gameLogic.isYourTurn()) {
+                        System.out.println("Your turn");
+                        yourTurn();
+                    } else {
+                        System.out.println("Not your turn");
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, 0l, 1000l);
+        rolldice.setDisable(true);
+    }
+
+    public void yourTurn() {
+        timer.cancel();
+        rolldice.setDisable(false);
     }
 
     private void drawDice(){
+
+    }
+
+    private void newTurn() {
 
     }
 
@@ -72,6 +109,10 @@ public class GameController {
         String s = "Threw dice:  "+ dice1 + ",  " + dice2;
         addToEventlog(s);
         movePlayer(playerList.get(0), dice1+dice2);
+        waitForTurn();
+    }
+
+    public void waitForYourTurn() {
     }
 
     public void drawPlayers() {
