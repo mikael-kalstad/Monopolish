@@ -152,3 +152,10 @@ CREATE PROCEDURE getALlReadyInLobby(IN lobby_id INT)
     WHERE lobby_id = room_id
     AND ready = 1;
   END;
+
+DROP PROCEDURE IF EXISTS lobby_removeEmptyLobbies;
+
+CREATE PROCEDURE lobby_removeEmptyLobbies()
+  BEGIN
+    DELETE FROM lobbyname where not lobby_id = (select room_id from lobbyname join lobby on room_id = lobby_id) as finnes;
+  end;
