@@ -161,7 +161,7 @@ public class LobbyDAO extends DataAccessObject {
         ResultSet rs = cStmt.executeQuery();
 
         while (rs.next()) {
-            String[] info = {rs.getString(1), rs.getString(2), rs.getString(3)};
+            String[] info = {rs.getString(1), rs.getString(2), String.valueOf(rs.getBoolean(3))};
             lobbyInfo.add(info);
         }
 

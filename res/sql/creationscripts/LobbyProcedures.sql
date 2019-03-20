@@ -79,7 +79,7 @@ CREATE PROCEDURE lobby_set_player_ready(IN room_id INT, IN username VARCHAR(30),
   BEGIN
     SET user_id = (SELECT a.user_id FROM account a WHERE a.username LIKE username LIMIT 1);
     UPDATE lobby l
-    SET l.ready=ready
+    SET l.ready=1
     WHERE l.room_id=room_id AND l.user_id=user_id;
   END;
 -- END$$
@@ -133,7 +133,8 @@ DROP PROCEDURE getAllLobbies;
 
 CREATE PROCEDURE getAllLobbies()
   BEGIN
-    SELECT l.room_id, a.username, l.ready FROM account a, lobby l
+    SELECT l.room_id, a.username, l.ready FROM lobby l
+    JOIN account a ON l.user_id = a.user_id
     WHERE a.user_id = l.user_id;
   END;
 -- END$$
