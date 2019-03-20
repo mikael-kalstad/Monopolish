@@ -632,7 +632,7 @@
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <Button mnemonicParsing="false" onAction="#moveffs" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #FF9800;" text="View" textFill="#fafafa">
+                                    <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #FF9800;" text="View" textFill="#fafafa">
                                        <font>
                                           <Font size="16.0" />
                                        </font>
@@ -656,7 +656,7 @@
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <Button mnemonicParsing="false" onAction="#moveffs2" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #FF9800;" text="View" textFill="#fafafa">
+                                    <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #FF9800;" text="View" textFill="#fafafa">
                                        <font>
                                           <Font size="16.0" />
                                        </font>
@@ -740,10 +740,14 @@
                   <TextFlow fx:id="propertycard" layoutY="50.0" prefHeight="190.0" prefWidth="180.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
                </children>
             </AnchorPane>
-            <Rectangle arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="100.0" layoutX="182.0" layoutY="448.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
-            <AnchorPane fx:id="dice1" layoutX="192.0" layoutY="458.0" prefHeight="80.0" prefWidth="80.0" />
-            <Rectangle arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="100.0" layoutX="311.0" layoutY="448.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
-            <AnchorPane fx:id="dice2" layoutX="321.0" layoutY="458.0" prefHeight="80.0" prefWidth="80.0" />
+            <AnchorPane layoutX="210.0" layoutY="408.0" prefHeight="200.0" prefWidth="301.0">
+               <children>
+                  <Rectangle arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="100.0" layoutX="14.0" layoutY="50.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
+                  <AnchorPane fx:id="dice1" layoutX="24.0" layoutY="60.0" prefHeight="80.0" prefWidth="80.0" />
+                  <Rectangle arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="100.0" layoutX="188.0" layoutY="50.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
+                  <AnchorPane fx:id="dice2" layoutX="198.0" layoutY="60.0" prefHeight="80.0" prefWidth="80.0" />
+               </children>
+            </AnchorPane>
          </children>
       </AnchorPane>
    </children>
