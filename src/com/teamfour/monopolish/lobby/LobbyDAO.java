@@ -100,6 +100,7 @@ public class LobbyDAO extends DataAccessObject {
      */
     public boolean setReady(int roomId, String username, boolean ready) throws SQLException {
         getConnection();
+        System.out.println("Setting ready in procedure.. " + ready);
         cStmt = connection.prepareCall("{call lobby_set_player_ready(?, ?, ?)}");
 
         cStmt.setInt(1, roomId);
@@ -180,8 +181,7 @@ public class LobbyDAO extends DataAccessObject {
             cStmt.setInt(1, lobby_id);
             rs = cStmt.executeQuery();
 
-            rs.next();
-            rs.getInt("COUNT(*)");
+            if (rs.next()) num = rs.getInt(1);
         }
         catch (SQLException e) { e.printStackTrace(); }
         return num;

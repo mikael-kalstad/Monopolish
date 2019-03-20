@@ -10,6 +10,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 
+import javax.sound.midi.SysexMessage;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -384,14 +385,13 @@ public class LobbyController {
         joinBtn.setOnAction(click -> {
             // If user joins lobby
             if (joinBtn.getText().equals(BTN_JOIN)) {
-                try {
-                    Handler.getLobbyDAO().addPlayer(USERNAME, lobby_id);
-                } catch (SQLException e) { e.printStackTrace(); }
+                try { Handler.getLobbyDAO().addPlayer(USERNAME, lobby_id); }
+                catch (SQLException e) { e.printStackTrace(); }
 
                 // Remove player if already in a lobby
                 if (current_lobby_id > 0) {
-                    try { Handler.getLobbyDAO().removePlayer(USERNAME, current_lobby_id);
-                    } catch (SQLException e) { e.printStackTrace(); }
+                    try { Handler.getLobbyDAO().removePlayer(USERNAME, current_lobby_id); }
+                    catch (SQLException e) { e.printStackTrace(); }
                 }
             }
 
@@ -406,6 +406,7 @@ public class LobbyController {
 
         // Set logic when player uses the "userReady" button (i.e. sets userReady or not)
         readyBtn.setOnAction(click -> {
+            System.out.println(" CLICK! READYBTN " + readyBtn.getText().equals(BTN_READY));
             try { Handler.getLobbyDAO().setReady(lobby_id, USERNAME, readyBtn.getText().equals(BTN_READY)); }
             catch (SQLException e) { e.printStackTrace(); }
 
