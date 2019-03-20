@@ -1,5 +1,6 @@
 package com.teamfour.monopolish.gui.controllers;
 
+import com.teamfour.monopolish.game.entities.player.Player;
 import javafx.geometry.Pos;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -8,7 +9,7 @@ import javafx.scene.shape.Circle;
 public class FxPlayer extends StackPane{
 
     private static int MAX = 9;
-    int retning;
+    int direction;
 
     private int posX, posY;
 
@@ -33,29 +34,29 @@ public class FxPlayer extends StackPane{
 
     public void getDirection() {
         if (posX > 0 && posY == MAX) {
-            retning = 1; //venstre
+            direction = 1; //venstre
         }
         if (posX == 0 && posY > 0) {
-            retning = 2; //opp
+            direction = 2; //opp
         }
         if (posX < MAX && posY == 0) {
-            retning = 3; //høyre
+            direction = 3; //høyre
         }
         if (posX == MAX && posY < MAX) {
-            retning = 4; //ned
+            direction = 4; //ned
         }
     }
 
     public void move(int steps) {
         getDirection();
         while (steps != 0) {
-            switch (retning) {
+            switch (direction) {
                 case 1:
                     while (posX >= 0 && steps!= 0) {
                         posX--;
                         steps--;
                         if (posX == 0) {
-                            retning = 2;
+                            direction = 2;
                             break;
                         }
                     }
@@ -64,7 +65,7 @@ public class FxPlayer extends StackPane{
                         posY--;
                         steps--;
                         if (posY == 0) {
-                            retning = 3;
+                            direction = 3;
                             break;
                         }
                     }
@@ -73,7 +74,7 @@ public class FxPlayer extends StackPane{
                         posX++;
                         steps--;
                         if (posX == MAX) {
-                            retning = 4;
+                            direction = 4;
                             break;
                         }
                     }
@@ -82,7 +83,7 @@ public class FxPlayer extends StackPane{
                         posY++;
                         steps--;
                         if (posY == MAX) {
-                            retning = 1;
+                            direction = 1;
                             break;
                         }
                     }
