@@ -47,7 +47,7 @@ public class LobbyDAO extends DataAccessObject {
         cStmt.registerOutParameter(3, Types.INTEGER);
 
         int lobby_id = -1;
-        if (cStmt.executeUpdate() > 0) lobby_id = cStmt.getInt(2);
+        if (cStmt.executeUpdate() > 0) lobby_id = cStmt.getInt(3);
 
         return lobby_id+1;
     }

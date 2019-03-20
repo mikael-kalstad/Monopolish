@@ -65,9 +65,18 @@ public class LobbyController {
 
     @FXML public void initialize() {
         // Refresh page with enter or space key
-        Handler.getSceneManager().getWindow().getScene().setOnKeyPressed(event -> {
+//        Handler.getSceneManager().getWindow().getScene().setOnKeyPressed(event -> {
+//            System.out.println("key pressed! " + event.getCode());
+//            if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.SPACE) {
+//
+//                refresh();
+//            }
+//        });
+
+        lobbiesContainer.setOnKeyPressed(event -> {
+            System.out.println("key pressed! " + event.getCode());
             if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.SPACE) {
-                System.out.println("REFRESH!!!");
+
                 refresh();
             }
         });
@@ -98,12 +107,13 @@ public class LobbyController {
             int lobby_id = Integer.valueOf(data[0]);
             String username = data[1];
             boolean ready = Boolean.valueOf(data[2]);
+            String lobbyName = data[3];
 
             Pane container = getLobbyContainer(lobby_id);
 
             // Create lobby if it does not exists
             if (container == null) {
-                container = LobbyDrawFx.drawNewLobby("myLobby");
+                container = LobbyDrawFx.drawNewLobby(lobbyName);
                 container.setId(String.valueOf(lobby_id));
                 lobbyList.add(container);
                 lobbiesContainer.getChildren().add(container);
@@ -243,7 +253,7 @@ public class LobbyController {
             int lobby_id = -1;
 
             try {
-                lobby_id = Handler.getLobbyDAO().newLobby(USERNAME);
+                lobby_id = Handler.getLobbyDAO().newLobby(USERNAME, newLobbyNameInput.getText());
             }
             catch (SQLException e) { e.printStackTrace(); }
             System.out.println("lobby id" + lobby_id);
