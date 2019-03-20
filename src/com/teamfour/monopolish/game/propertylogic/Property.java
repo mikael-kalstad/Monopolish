@@ -35,7 +35,7 @@ public class Property {
         return result;
     }
 
-    public int getID() {
+    public int getId() {
         return ID;
     }
 
@@ -93,6 +93,6 @@ public class Property {
         if(this == otherP){
             return (true);
         }
-        return(otherP.getID() == this.ID);
+        return(otherP.getId() == this.ID);
     }
 }
