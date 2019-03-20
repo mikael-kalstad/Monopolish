@@ -26,7 +26,7 @@
                   <Font size="19.0" />
                </font>
             </TextField>
-            <Button fx:id="loginBtn" layoutX="146.0" layoutY="463.0" mnemonicParsing="false" onAction="#login" prefHeight="55.0" prefWidth="245.0" style="-fx-background-color: #FF9800; -fx-background-radius: 0;" text="Sign in" textAlignment="CENTER" textFill="WHITE">
+            <Button fx:id="loginBtn" focusTraversable="false" layoutX="146.0" layoutY="463.0" mnemonicParsing="false" onAction="#login" prefHeight="55.0" prefWidth="245.0" style="-fx-background-color: #FF9800; -fx-background-radius: 0;" text="Sign in" textAlignment="CENTER" textFill="WHITE">
                <font>
                   <Font size="21.0" />
                </font>
@@ -56,7 +56,7 @@
             </ImageView>
          </children>
       </Pane>
-      <Button fx:id="registerBtn" layoutX="178.0" layoutY="858.0" mnemonicParsing="false" onAction="#register" prefHeight="77.0" prefWidth="375.0" style="-fx-background-color: #FF9800; -fx-background-radius: 0;" text="Sign up" textAlignment="CENTER" textFill="WHITE">
+      <Button fx:id="registerBtn" focusTraversable="false" layoutX="178.0" layoutY="858.0" mnemonicParsing="false" onAction="#register" prefHeight="77.0" prefWidth="375.0" style="-fx-background-color: #FF9800; -fx-background-radius: 0;" text="Sign up" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font size="28.0" />
          </font>
@@ -81,7 +81,7 @@
             <Image url="@../../../../../../res/gui/man.png" />
          </image>
       </ImageView>
-      <Button layoutX="1244.0" layoutY="931.0" mnemonicParsing="false" onAction="#bypassToDashboard" prefHeight="55.0" prefWidth="245.0" style="-fx-background-color: red; -fx-background-radius: 0;" text="Bypass (dashboard)" textAlignment="CENTER" textFill="WHITE">
+      <Button focusTraversable="false" layoutX="1244.0" layoutY="931.0" mnemonicParsing="false" onAction="#bypassToDashboard" prefHeight="55.0" prefWidth="245.0" style="-fx-background-color: red; -fx-background-radius: 0;" text="Bypass (dashboard)" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font size="21.0" />
          </font>
@@ -89,7 +89,7 @@
             <Cursor fx:constant="CLOSED_HAND" />
          </cursor>
       </Button>
-      <Button layoutX="1496.0" layoutY="931.0" mnemonicParsing="false" onAction="#bypassToGame" prefHeight="55.0" prefWidth="245.0" style="-fx-background-color: green; -fx-background-radius: 0;" text="Bypass (game)" textAlignment="CENTER" textFill="WHITE">
+      <Button focusTraversable="false" layoutX="1496.0" layoutY="931.0" mnemonicParsing="false" onAction="#bypassToGame" prefHeight="55.0" prefWidth="245.0" style="-fx-background-color: green; -fx-background-radius: 0;" text="Bypass (game)" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font size="21.0" />
          </font>
