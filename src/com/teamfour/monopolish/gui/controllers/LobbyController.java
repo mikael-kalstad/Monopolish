@@ -4,6 +4,7 @@ import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 
@@ -13,10 +14,10 @@ import java.util.ArrayList;
 /**
  * Controller class for lobby view,
  * handles all the logic for the lobbyList.
- * Note: some gui elements are created in LobbyDrawFx class.
+ * <b>Note: the gui elements are created in the LobbyDrawFx class.</b>
  *
  * @author Mikael Kalstad
- * @version 1.3
+ * @version 1.5
  */
 public class LobbyController {
     @FXML private FlowPane lobbiesContainer;
@@ -47,7 +48,6 @@ public class LobbyController {
     // Input colors
     private final String INPUT_COLOR_NORMAL = "white";
     private final String INPUT_COLOR_REQUIRED = "orange";
-    private final String INPUT_COLOR_WARNING = "red";
 
     // Ids for gui elements
     private final String PLAYER_CONTAINER_ID = "playerContainer";
@@ -55,55 +55,65 @@ public class LobbyController {
     private final String STATUS_VALUE_ID = "statusValue";
 
     @FXML public void initialize() {
+        // Refresh page with enter or space key
+        Handler.getSceneManager().getWindow().getScene().setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.SPACE) {
+                System.out.println("REFRESH!!!");
+                refresh();
+            }
+        });
+
+        // Update lobbies
+        refresh();
+    }
+
+    /**
+     * This method will get data from database about all the lobbies,
+     * and then refresh all the gui elements to be up to date.
+     *
+     * By using this method one can separate the actual gui "drawing" and the data that should be displayed. <br/>
+     * <b>This method should be called whenever some data is changed in the database to update the gui.</b>
+     */
+    public void refresh() {
+        // Clear all lobbies
+        lobbiesContainer.getChildren().clear();
+        lobbyList.clear();
+        current_lobby_id = -1;
+
+        // Get data from database about all lobbies
         ArrayList<String[]> lobbyInfo = new ArrayList<>();
-        try {
-            lobbyInfo = Handler.getLobbyDAO().getAllLobbies();
-        }
+        try { lobbyInfo = Handler.getLobbyDAO().getAllLobbies(); }
         catch (SQLException e) { e.printStackTrace(); }
 
         for (String[] data : lobbyInfo) {
-            Pane container;
             int lobby_id = Integer.valueOf(data[0]);
             String username = data[1];
             boolean ready = Boolean.valueOf(data[2]);
 
-            // Add player to lobby if lobby already exists
-            if ((container = getLobbyContainer(lobby_id)) != null) {
-                addPlayer(username, container, lobby_id);
+            System.out.println("LobbyID: " + lobby_id + " username: " + username + " ready: " + ready);
+            Pane container = getLobbyContainer(lobby_id);
+
+            // Create lobby if it does not exists
+            if (container == null) {
+                container = LobbyDrawFx.drawNewLobby("myLobby");
+                container.setId(String.valueOf(lobby_id));
+                lobbyList.add(container);
+                lobbiesContainer.getChildren().add(container);
             }
-            // Create a new lobby and add player
-            else {
-                container = LobbyDrawFx.drawNewLobby(data[1]);
-                addLobby(container, String.valueOf(lobby_id));
-                addPlayer(username, container, lobby_id);
-            }
+
+            // Draw player in the lobby
+            drawPlayer(username, container, lobby_id);
 
             if (username.equals(this.USERNAME))
                 current_lobby_id = lobby_id;
-        }
-    }
 
-    /**
-     * This method will take care of everything when making a new lobby
-     * <br/><br/>
-     * Note: lobby container is the gui container element of a lobby
-     * <br/><br/>
-     * <b>It will do the following:</b>
-     * <br/>
-     * <ul>
-     *     <li>1. Set the a lobby_id to the lobby container</li>
-     *     <li>2. Set on action for join button in lobby container</li>
-     *     <li>3. Add lobby to a lobby list</li>
-     *     <li>4. Add lobby container to the lobby view</li>
-     * </ul>
-     *
-     * @param lobbyContainer the lobby that will be added
-     */
-    private void addLobby(Pane lobbyContainer, String lobby_id) {
-        lobbyContainer.setId(lobby_id);
-        setBtnOnAction(lobbyContainer);
-        lobbyList.add(lobbyContainer);
-        lobbiesContainer.getChildren().add(lobbyContainer);
+            System.out.println("Current lobby id: " + current_lobby_id);
+        }
+
+        // Go through all lobbies and update btn action and styling
+        for (Pane lobby: lobbyList) {
+            updateElements(lobby);
+        }
     }
 
     /**
@@ -218,18 +228,15 @@ public class LobbyController {
             catch (SQLException e) { e.printStackTrace(); }
             System.out.println("lobby id" + lobby_id);
 
-            // Add new lobby if lobby is registered to database successfully
-            if (lobby_id > 0) {
-                Pane lobby = LobbyDrawFx.drawNewLobby(newLobbyNameInput.getText());
-                addLobby(lobby, String.valueOf(lobby_id));
-                addPlayer(USERNAME, lobby, lobby_id);
-
-                // If user is already in a lobby
-                if (current_lobby_id > 0) {
-                    removePlayer(getLobbyContainer(current_lobby_id), current_lobby_id, 0); // CHAAAAAAAAAANGE THIS!
-                }
+            // If user is already in a lobby
+            if (current_lobby_id > 0) {
+                try {
+                    Handler.getLobbyDAO().removePlayer(USERNAME, current_lobby_id);
+                } catch (SQLException e) { e.printStackTrace(); }
             }
+
             newLobbyNameInput.setText(""); // Reset text
+            refresh();
         }
     }
 
@@ -248,25 +255,13 @@ public class LobbyController {
      * @param username
      * @param container Node target, which lobby to join
      */
-    private void addPlayer(String username, Pane container, int lobby_id) {
-        // Lobby id should be larger than 0
-        if (lobby_id < 0) return;
-
-        boolean exists = false;
-        try {
-            if (Handler.getLobbyDAO().getUsersInLobby(lobby_id).indexOf(username) != -1) {
-                exists = true;
-            }
-        }
-        catch (SQLException e) { e.printStackTrace(); }
+    private void drawPlayer(String username, Pane container, int lobby_id) {
+        Pane playerContainer = getContainerById(container, PLAYER_CONTAINER_ID);
+        if (playerContainer == null) return;
 
         // Change color based on index
         String color = PLAYER_COLOR_BLUE; // Default if numOfPlayers = 0
-
-        Pane playerContainer = getContainerById(container, PLAYER_CONTAINER_ID);
-        int numOfPlayers = 0;
-        if (playerContainer != null)
-            numOfPlayers = playerContainer.getChildren().size();
+        int numOfPlayers = playerContainer.getChildren().size();
 
         switch (numOfPlayers) {
             case 1:
@@ -280,42 +275,11 @@ public class LobbyController {
                 break;
         }
 
-        // If player does not exists make a new player
-        if (!exists) {
-            // Try to register player to the lobby
-            try {
-                Handler.getLobbyDAO().addPlayer(username, lobby_id);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
         // Render player in container
-        container.getChildren().add(LobbyDrawFx.drawPlayerRow(color, username, numOfPlayers));
+        playerContainer.getChildren().add(LobbyDrawFx.drawPlayerRow(color, username, numOfPlayers));
     }
 
-    /**
-     * Remove player from a lobby
-     *
-     * @param container Node target, which lobby to remove player from
-     * @param index player position in lobby
-     */
-    private void removePlayer(Pane container, int lobby_id, int index) {
-        Pane playerContainer = getContainerById(container, PLAYER_CONTAINER_ID);
-
-        try {
-            boolean res = Handler.getLobbyDAO().removePlayer(USERNAME, lobby_id);
-            if (res && playerContainer != null)
-                playerContainer.getChildren().remove(index);
-        }
-        catch (SQLException e) { e.printStackTrace(); }
-
-        // If lobby is empty, remove it
-        if (container.getChildren().size() == 0)
-            lobbiesContainer.getChildren().remove(container);
-    }
-
-    private void setBtnOnAction(Pane container) {
+    private void updateElements(Pane container) {
         // Find the player container and the button
         Pane playersContainer = getContainerById(container, PLAYER_CONTAINER_ID);
         Button btn = getBtnById(container, BUTTON_JOIN_ID);
@@ -325,34 +289,50 @@ public class LobbyController {
         if (btn == null || playersContainer == null || statusValue == null) return;
 
         int lobby_id = Integer.valueOf(container.getId());
+        System.out.println("lobby_id: "+ lobby_id);
 
+        // Change button to leave if the user is in the current lobby
         if (current_lobby_id == lobby_id) {
-            LobbyDrawFx.changeBtnStyle(btn, BTN_LEAVE, BTN_JOIN);
+            LobbyDrawFx.changeBtnStyle(btn, BTN_LEAVE, BTN_JOIN, false);
+        } else {
+            LobbyDrawFx.changeBtnStyle(btn, BTN_LEAVE, BTN_JOIN, true);
+        }
+
+        int numOfPlayers = playersContainer.getChildren().size();
+
+        // Disable join btn if lobby is full
+        if (numOfPlayers == 4 && current_lobby_id != lobby_id) {
+            btn.setDisable(true);
+            statusValue.setText(STATUS_FULL);
+            LobbyDrawFx.setTextColor(statusValue, PLAYER_COLOR_RED);
+        } else {
+            btn.setDisable(false);
+            statusValue.setText(STATUS_OPEN);
+            LobbyDrawFx.setTextColor(statusValue, PLAYER_COLOR_GREEN);
         }
 
         //Set logic when player uses button (i.e. joins or leaves the lobby)
         btn.setOnAction(click -> {
-            System.out.println("Button click!");
-            int numOfPlayers = playersContainer.getChildren().size();
+            // If user joins lobby
+            if (btn.getText().equals(BTN_JOIN)) {
+                try {
+                    Handler.getLobbyDAO().addPlayer(USERNAME, lobby_id);
+                } catch (SQLException e) { e.printStackTrace(); }
 
-            // If user is in the actual lobby
-            if (current_lobby_id == lobby_id) {
-                LobbyDrawFx.changeBtnStyle(btn, BTN_LEAVE, BTN_JOIN);
-                removePlayer(playersContainer, lobby_id, numOfPlayers-1);
+                if (current_lobby_id > 0) {
+                    try {
+                        Handler.getLobbyDAO().removePlayer(USERNAME, current_lobby_id);
+                    } catch (SQLException e) { e.printStackTrace(); }
+                }
             }
 
-            LobbyDrawFx.changeBtnStyle(btn, BTN_LEAVE, BTN_JOIN);
-
-            // Disable join btn if lobby is full
-            if (numOfPlayers == 4 && current_lobby_id != lobby_id) {
-                btn.setDisable(true);
-                statusValue.setText(STATUS_FULL);
-                LobbyDrawFx.setTextColor(statusValue, PLAYER_COLOR_RED);
-            } else {
-                btn.setDisable(false);
-                statusValue.setText(STATUS_OPEN);
-                LobbyDrawFx.setTextColor(statusValue, "white");
+            // If user leaves lobby
+            else if (btn.getText().equals(BTN_LEAVE)) {
+                try {
+                    Handler.getLobbyDAO().removePlayer(USERNAME, lobby_id);
+                } catch (SQLException e) { e.printStackTrace(); }
             }
+            refresh();
         });
     }
 

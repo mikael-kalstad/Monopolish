@@ -36,9 +36,6 @@ public class SceneManager {
      */
     SceneManager(Stage stage, String initial_view) {
        this.window = stage;
-
-
-
        setScene(initial_view);
     }
 
@@ -106,5 +103,9 @@ public class SceneManager {
 
         Scale scale = new Scale(sw/STANDARD_SCENE_WIDTH, sh/STANDARD_SCENE_HEIGHT, 0, 0);
         window.getScene().getRoot().getTransforms().setAll(scale);
+    }
+
+    public Stage getWindow() {
+        return window;
     }
 }

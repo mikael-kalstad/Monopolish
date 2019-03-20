@@ -12,8 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane prefHeight="1040.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.monopolish.gui.controllers.LobbyController">
+<AnchorPane prefHeight="1040.0" prefWidth="1920.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.monopolish.gui.controllers.LobbyController">
    <children>
       <Text layoutX="850.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lobbies" wrappingWidth="217.00011444091803">
          <font>
@@ -21,9 +20,9 @@
          </font>
       </Text>
       <Line endX="304.0000305175781" layoutX="897.0" layoutY="138.0" startX="-179.0" />
-      <ScrollPane layoutX="220.0" layoutY="265.0" prefHeight="606.0" prefWidth="1479.0" style="-fx-hbar-policy: NEVER; -fx-background-color: transparent;">
+      <ScrollPane layoutX="220.0" layoutY="265.0" prefHeight="606.0" prefWidth="1479.0" style="-fx-hbar-policy: NEVER; -fx-background-color: white;">
          <content>
-            <FlowPane fx:id="lobbiesContainer" prefHeight="604.0" prefWidth="1477.0" style="-fx-padding: 20; -fx-vgap: 40; -fx-hgap: 60;" />
+            <FlowPane fx:id="lobbiesContainer" prefHeight="604.0" prefWidth="1477.0" style="-fx-padding: 20; -fx-vgap: 40; -fx-hgap: 60; -fx-background-color: white;" />
          </content>
       </ScrollPane>
       <Button layoutX="88.0" layoutY="63.0" mnemonicParsing="false" onAction="#leave" prefHeight="27.0" prefWidth="120.0" style="-fx-background-color: ef5350; -fx-background-radius: 0;" text="Leave" textAlignment="CENTER" textFill="WHITE">
@@ -138,5 +137,20 @@
             </Pane>
          </children>
       </Pane>
+      <ImageView layoutX="188.0" layoutY="897.0" onMouseClicked="#refresh">
+         <image>
+            <Image url="file:res/gui/refresh.png" />
+         </image>
+      </ImageView>
+      <Text fill="#344e5d" layoutX="272.0" layoutY="946.0" onMouseClicked="#refresh" strokeType="OUTSIDE" strokeWidth="0.0" text="Refresh" wrappingWidth="302.000114440918">
+         <font>
+            <Font name="System Bold" size="42.0" />
+         </font>
+      </Text>
+      <Text fill="#959595" layoutX="148.0" layoutY="1008.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tips: use enter or space to refresh the lobbies">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>
