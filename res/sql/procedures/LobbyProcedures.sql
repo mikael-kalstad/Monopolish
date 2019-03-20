@@ -3,14 +3,14 @@ Procedure to create a new lobby
  */
 DROP PROCEDURE if exists new_lobby;
 
-CREATE PROCEDURE new_lobby(IN username VARCHAR(30), OUT lobby_id INT)
+CREATE PROCEDURE new_lobby(IN username VARCHAR(30), IN lobby_name varchar(30), OUT lobby_id INT)
   BEGIN
     DECLARE lobby_id INT;
     DECLARE account_id INT;
 
     SET lobby_id = (SELECT (MAX(room_id)+1) FROM lobby);
     SET account_id = (SELECT a.user_id FROM account a WHERE a.username LIKE username LIMIT 1);
-
+    INSERT INTO lobbyname(lobby_id, lobbyname) values (lobby_id, lobby_name);
     INSERT INTO lobby (room_id, user_id)
     VALUES (lobby_id, account_id);
   END;
@@ -137,8 +137,8 @@ DROP PROCEDURE getAllLobbies;
 
 CREATE PROCEDURE getAllLobbies()
   BEGIN
-    SELECT l.room_id, a.username, l.ready FROM lobby l
-    JOIN account a ON l.user_id = a.user_id
+    SELECT l.room_id, a.username, l.ready, lobbyname FROM lobby l
+    JOIN account a ON l.user_id = a.user_id join lobbyname l2 on l.room_id = l2.lobby_id
     WHERE a.user_id = l.user_id;
   END;
 -- END$$
