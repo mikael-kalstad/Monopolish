@@ -52,6 +52,9 @@ public class GameLogic {
      * @throws SQLException
      */
     public void setupGame() throws SQLException {
+
+        Handler.setAccount(new Account("giske", "giske@damer.no", LocalDate.now(), 0));
+
         // Load board, graphics, etc.
         ConnectionPool.create();
 
@@ -83,7 +86,7 @@ public class GameLogic {
         // 6. Start!
 
         // Load yourPlayer
-        //yourPlayer = entityManager.getYou();
+        yourPlayer = entityManager.getYou();
 
         currentPlayer = "";
         // Main game loop
