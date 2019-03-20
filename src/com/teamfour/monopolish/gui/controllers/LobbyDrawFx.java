@@ -39,7 +39,7 @@ public class LobbyDrawFx {
                 "-fx-font-size: 13;" +
                 "-fx-background-color: " + backgroundColor + ";" +
                 "-fx-background-radius: 0;" +
-                "-fx-padding: 8 35;"
+                "-fx-padding: 8 20;"
         );
     }
 

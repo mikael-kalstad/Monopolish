@@ -169,4 +169,21 @@ public class LobbyDAO extends DataAccessObject {
 
         return lobbyInfo;
     }
+
+    public int getAllReadyInLobby(int lobby_id) {
+        int num = 0;
+        getConnection();
+
+        try {
+            ResultSet rs;
+            cStmt = connection.prepareCall("{CALL getALlReadyInLobby(?)}");
+            cStmt.setInt(1, lobby_id);
+            rs = cStmt.executeQuery();
+
+            rs.next();
+            rs.getInt("COUNT(*)");
+        }
+        catch (SQLException e) { e.printStackTrace(); }
+        return num;
+    }
 }

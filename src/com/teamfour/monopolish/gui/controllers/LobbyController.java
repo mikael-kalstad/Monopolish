@@ -31,6 +31,7 @@ public class LobbyController {
     private ArrayList<Pane> lobbyList = new ArrayList<>(); // List over all lobby container elements
     private final String USERNAME = Handler.getAccount().getUsername();
     private int current_lobby_id = -1; // Default when user is not in any lobby = -1
+    private boolean READY = false;
 
     //  Status msg constants
     private final String STATUS_OPEN = "OPEN";
@@ -96,9 +97,7 @@ public class LobbyController {
             int lobby_id = Integer.valueOf(data[0]);
             String username = data[1];
             boolean ready = Boolean.valueOf(data[2]);
-//            System.out.println("Ready? " + data[2]);
 
-//            System.out.println("LobbyID: " + lobby_id + " username: " + username + " userReady: " + ready);
             Pane container = getLobbyContainer(lobby_id);
 
             // Create lobby if it does not exists
@@ -114,17 +113,15 @@ public class LobbyController {
 
             if (username.equals(this.USERNAME)) {
                 current_lobby_id = lobby_id;
+                READY = ready;
             }
-
-            updateElements(container, username, ready);
-
-//            System.out.println("Current lobby id: " + current_lobby_id);
+            updatePlayerElements(container, username, ready);
         }
 
         // Go through all lobbies and update btn action and styling
-//        for (Pane lobby: lobbyList) {
-//
-//        }
+        for (Pane lobby: lobbyList) {
+            updateLobbyElements(lobby);
+        }
     }
 
     /**
@@ -303,13 +300,16 @@ public class LobbyController {
         playerContainer.getChildren().add(playerRow);
     }
 
-    private void updateElements(Pane container, String username, boolean playerReady) {
-//        System.out.println("playerReady" + playerReady);
-        // Find the player container and the button
+    /**
+     * This method will update player elements in the gui for an individual user.
+     *
+     * @param container lobby-container
+     * @param username the target user
+     * @param playerReady is the player ready to play?
+     */
+    private void updatePlayerElements(Pane container, String username, boolean playerReady) {
+        // Find the player container
         Pane playersContainer = getContainerById(container, PLAYER_CONTAINER_ID);
-        Button joinBtn = getBtnById(container, BUTTON_JOIN_ID);
-        Button readyBtn = getBtnById(container, BUTTON_READY_ID);
-        Text statusValue = getTextById(container, STATUS_VALUE_ID);
 
         // Getting ready image-view
         // Location: lobbyContainer > playerContainer > playerRow > imageView
@@ -317,33 +317,7 @@ public class LobbyController {
         Pane playerRow = null;
         if (playersContainer != null) playerRow = getContainerById(playersContainer, username);
         if (playerRow != null) readyImg = getImageById(playerRow, IMAGE_READY_ID);
-
-
-        // If any of these elements are null return to avoid nullpointerexception
-        if (joinBtn == null || statusValue == null || readyBtn == null || readyImg == null) return;
-
-        int lobby_id = Integer.valueOf(container.getId());
-//        System.out.println("lobby_id: "+ lobby_id);
-
-        // Set join button styling
-        if (current_lobby_id == lobby_id) {
-            LobbyDrawFx.setBtnStyle(joinBtn, BTN_LEAVE, PLAYER_COLOR_RED);
-            readyBtn.setDisable(false);
-        } else {
-            LobbyDrawFx.setBtnStyle(joinBtn, BTN_JOIN, "#FF9800");
-            readyBtn.setDisable(true);
-        }
-
-        // Set ready button styling
-        if (current_lobby_id == lobby_id && username.equals(USERNAME)) {
-            if (playerReady) {
-                LobbyDrawFx.setBtnStyle(readyBtn, BTN_NOT_READY, PLAYER_COLOR_RED);
-                System.out.println("BTN should be not ready" + "USER " + USERNAME + "user " + username);
-            } else {
-                LobbyDrawFx.setBtnStyle(readyBtn, BTN_READY, PLAYER_COLOR_GREEN);
-                System.out.println("BTN should be ready");
-            }
-        }
+        if (readyImg == null) return; // Avoid exception
 
         // Set ready images
         if (playerReady) {
@@ -351,15 +325,56 @@ public class LobbyController {
         } else {
             readyImg.setImage(new Image("file:res/gui/notReady.png"));
         }
+    }
+
+    /**
+     * This method will update elements in the lobby,
+     * excluding individual player elements which are updated in the method updatePlayerElements.
+     *
+     * @param container lobby-container
+     */
+    private void updateLobbyElements(Pane container) {
+        // Find gui elements
+        Pane playersContainer = getContainerById(container, PLAYER_CONTAINER_ID);
+        Button joinBtn = getBtnById(container, BUTTON_JOIN_ID);
+        Button readyBtn = getBtnById(container, BUTTON_READY_ID);
+        Text statusValue = getTextById(container, STATUS_VALUE_ID);
+
+        // If any of these elements are null return to avoid nullpointerexception
+        if (playersContainer == null || joinBtn == null || statusValue == null || readyBtn == null) return;
+
 
         int numOfPlayers = playersContainer.getChildren().size();
+        int lobby_id = Integer.valueOf(container.getId());
+        int numOfReady = Handler.getLobbyDAO().getAllReadyInLobby(lobby_id);
+        System.out.println("lobby " + lobby_id + " numofready " + numOfReady);
+        System.out.println("current lobby " + current_lobby_id);
+
+        // If the user is in the actual lobby
+        if (current_lobby_id == lobby_id) {
+            LobbyDrawFx.setBtnStyle(joinBtn, BTN_LEAVE, PLAYER_COLOR_RED);
+            statusValue.setText(numOfReady + " / " + numOfPlayers + " ready");
+            readyBtn.setDisable(false);
+            System.out.println("is user ready? " + READY);
+
+            // Check if user is ready or not and change btn accordingly
+            if (READY) {
+                LobbyDrawFx.setBtnStyle(readyBtn, BTN_NOT_READY, PLAYER_COLOR_RED);
+            } else {
+                LobbyDrawFx.setBtnStyle(readyBtn, BTN_READY, PLAYER_COLOR_GREEN);
+            }
+
+        } else {
+            LobbyDrawFx.setBtnStyle(joinBtn, BTN_JOIN, "#FF9800");
+            readyBtn.setDisable(true);
+        }
 
         // Disable join btn if lobby is full
         if (numOfPlayers == 4 && current_lobby_id != lobby_id) {
             joinBtn.setDisable(true);
             statusValue.setText(STATUS_FULL);
             LobbyDrawFx.setTextColor(statusValue, PLAYER_COLOR_RED);
-        } else {
+        } else if (current_lobby_id != lobby_id) {
             joinBtn.setDisable(false);
             statusValue.setText(STATUS_OPEN);
             LobbyDrawFx.setTextColor(statusValue, PLAYER_COLOR_GREEN);
@@ -373,33 +388,26 @@ public class LobbyController {
                     Handler.getLobbyDAO().addPlayer(USERNAME, lobby_id);
                 } catch (SQLException e) { e.printStackTrace(); }
 
+                // Remove player if already in a lobby
                 if (current_lobby_id > 0) {
-                    try {
-                        Handler.getLobbyDAO().removePlayer(USERNAME, current_lobby_id);
+                    try { Handler.getLobbyDAO().removePlayer(USERNAME, current_lobby_id);
                     } catch (SQLException e) { e.printStackTrace(); }
                 }
             }
 
-            // If user leaves lobby
-            else if (joinBtn.getText().equals(BTN_LEAVE)) {
-                try {
-                    Handler.getLobbyDAO().removePlayer(USERNAME, lobby_id);
+            // If player leaves lobby
+            else {
+                try { Handler.getLobbyDAO().removePlayer(USERNAME, lobby_id);
                 } catch (SQLException e) { e.printStackTrace(); }
             }
+
             refresh();
         });
 
         // Set logic when player uses the "userReady" button (i.e. sets userReady or not)
         readyBtn.setOnAction(click -> {
-            if (readyBtn.getText().equals(BTN_READY)) {
-                try { Handler.getLobbyDAO().setReady(lobby_id, USERNAME, true); }
-                catch (SQLException e) { e.printStackTrace(); }
-                System.out.println("Setting true!!");
-            } else {
-                try { Handler.getLobbyDAO().setReady(lobby_id, USERNAME, false); }
-                catch (SQLException e) { e.printStackTrace(); }
-                System.out.println("Setting false!!");
-            }
+            try { Handler.getLobbyDAO().setReady(lobby_id, USERNAME, readyBtn.getText().equals(BTN_READY)); }
+            catch (SQLException e) { e.printStackTrace(); }
 
             refresh();
         });
@@ -411,4 +419,4 @@ public class LobbyController {
     public void leave() {
         Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
     }
-}
+} // SNOOOOP DOOOOG! :O ================~~~~~~~~

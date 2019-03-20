@@ -138,3 +138,14 @@ CREATE PROCEDURE getAllLobbies()
     WHERE a.user_id = l.user_id;
   END;
 -- END$$
+
+DROP PROCEDURE getALlReadyInLobby;
+
+CREATE PROCEDURE getALlReadyInLobby(IN lobby_id INT)
+  BEGIN
+    DECLARE lobby_id INT;
+    
+    SELECT COUNT(*) FROM lobby
+    WHERE lobby_id = room_id
+    AND ready = 1;
+  END;
