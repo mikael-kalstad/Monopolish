@@ -3,9 +3,11 @@ package com.teamfour.monopolish.gui.controllers;
 import com.teamfour.monopolish.game.GameLogic;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -20,10 +22,14 @@ import java.util.Random;
 
 public class GameController {
 
-    private GameLogic gameLogic;
+    private GameLogic gameLogic = new GameLogic(1);
     private ArrayList<Text> eventList = new ArrayList<>();
     private ArrayList<FxPlayer> playerList = new ArrayList<>(); //hentes fra et annet sted, lobby?
     //@FXML private Label p1name, p1money, p2name, p2money, p3name, p3money;
+    @FXML
+    private Button rolldice;
+    @FXML
+    private TextFlow propertycard;
     @FXML
     private GridPane gamegrid;
     @FXML
@@ -32,7 +38,6 @@ public class GameController {
     @FXML
     public void initialize() {
         // Load gamelogic and initialize the game setup
-        gameLogic = new GameLogic(1);
         try {
             gameLogic.setupGame();
         } catch (SQLException e) {
@@ -45,6 +50,21 @@ public class GameController {
         }
 
         drawPlayers();
+    }
+
+    private void drawDice(){
+
+    }
+
+    public void setRolldice(){
+        rolldice.setOnAction(event -> {
+            int[] dice = gameLogic.throwDice();
+            int dice1 = dice[0];
+            int dice2 = dice[1];
+            String s = "Threw dice:  "+ dice1 + ",  " + dice2;
+            addToEventlog(s);
+            movePlayer(playerList.get(0), dice1+dice2);
+        });
     }
 
     public void moveffs() {
@@ -111,7 +131,7 @@ public class GameController {
         }
     }
 
-    private void addToEventlog(String s) {
+    public void addToEventlog(String s) {
         eventList.add(new Text(s));
 
         int focus = eventList.size();

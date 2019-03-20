@@ -6,6 +6,13 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+/**
+ * Class for drawing players and player position on the board
+ *
+ * @author Bård Hestmark
+ * @version 1.4
+ */
+
 public class FxPlayer extends StackPane{
 
     private static int MAX = 9;

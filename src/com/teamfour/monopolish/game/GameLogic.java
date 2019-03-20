@@ -83,7 +83,7 @@ public class GameLogic {
         // 6. Start!
 
         // Load yourPlayer
-        yourPlayer = entityManager.getYou();
+        //yourPlayer = entityManager.getYou();
 
         currentPlayer = "";
         // Main game loop
