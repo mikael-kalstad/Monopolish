@@ -7,6 +7,62 @@
  */
 USe monopolish;
 -- DELIMITER $$
+
+-- ------------------OLD----------------------------------
+create procedure account_insert_user(IN uname    varchar(30), IN mail varchar(50), IN password varchar(30),
+                                     IN reg_date datetime, OUT error_code int)
+  BEGIN
+    DECLARE salt_pw BINARY(32);
+    DECLARE hashed_pwd VARCHAR(64);
+    DECLARE test_username VARCHAR(30);
+    DECLARE test_email VARCHAR(50);
+    DECLARE user_error INT;
+    -- error_code
+    -- DECLARE EXIT HANDLER FOR 1062 SELECT 1 AS error_code;
+
+    DECLARE EXIT HANDLER FOR 1062
+    BEGIN
+      SELECT LOWER(username) FROM account WHERE LOWER(username = uname) INTO test_username;
+      SET error_code = 1;
+    END;
+
+    /*
+    DECLARE EXIT HANDLER FOR 1062
+      BEGIN
+        SELECT LOWER(email) FROM account WHERE LOWER(email = mail) INTO test_email;
+        SET error_code = 2;
+      END;
+      */
+
+    -- SET salt_pw = RANDOM_BYTES(32);
+    SET salt_pw = RAND();
+    SET hashed_pwd = SHA2(CONCAT(password, salt_pw), 256);
+
+    /*
+        SELECT LOWER(username) FROM account WHERE LOWER(username = uname) INTO test_username;
+        SELECT COUNT(*) FROM account WHERE LOWER(username = 'testman3') INTO;
+        SELECT LOWER(email) FROM account WHERE LOWER(email = mail) INTO test_email;
+        SELECT LOWER()
+        */
+    /*
+
+    IF LOWER(test_username = uname) THEN
+      SET error_code = 1;
+    ELSEIF LOWER(test_email = mail) THEN
+      SET error_code = 2;
+    ELSEIF LOWER()
+    ELSE
+      SET error_code = 0;
+    END IF;
+    */
+
+    SELECT @error_code;
+    INSERT INTO account VALUES(DEFAULT, uname, mail, hashed_pwd, salt_pw, reg_date);
+
+  END;
+
+
+-- ------------------------------------------------------
 DROP PROCEDURE account_insert_user;
 
 -- (username, email, password, salt, regdate)
@@ -27,13 +83,13 @@ CREATE PROCEDURE account_insert_user(
     DECLARE user_error INT;
     -- error_code
     -- DECLARE EXIT HANDLER FOR 1062 SELECT 1 AS error_code;
-
+    /*
     DECLARE EXIT HANDLER FOR 1062
       BEGIN
         SELECT LOWER(username) FROM account WHERE LOWER(username = uname) INTO test_username;
         SET error_code = 1;
       END;
-
+    */
     /*
     DECLARE EXIT HANDLER FOR 1062
       BEGIN
@@ -55,16 +111,15 @@ CREATE PROCEDURE account_insert_user(
     /*
 
     IF LOWER(test_username = uname) THEN
-      SET error_code = 1;
+      SET error_code := error_code + 1;
     ELSEIF LOWER(test_email = mail) THEN
-      SET error_code = 2;
-    ELSEIF LOWER()
+      SET error_code := error_code + 1;
     ELSE
       SET error_code = 0;
     END IF;
     */
 
-    SELECT @error_code;
+    SELECT error_code;
     INSERT INTO account VALUES(DEFAULT, uname, mail, hashed_pwd, salt_pw, reg_date);
 
   END;
