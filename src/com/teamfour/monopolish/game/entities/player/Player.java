@@ -14,7 +14,7 @@ import java.sql.SQLException;
 
 public class Player extends Entity {
     // Attributes
-    private final String username;
+    private final String USERNAME;
     private int position = 0;
     private boolean inJail = false;
     private boolean bankrupt = false;
@@ -23,11 +23,11 @@ public class Player extends Entity {
 
     /**
      * Constructor
-     * @param username
+     * @param USERNAME
      */
-    public Player(String username) {
+    public Player(String USERNAME) {
         super();
-        this.username = username;
+        this.USERNAME = USERNAME;
         this.position = 0;
     }
 
@@ -44,7 +44,7 @@ public class Player extends Entity {
     public Player(String username, int money, int position, boolean inJail,
                   boolean bankrupt, int active, int score) {
         super(money);
-        this.username = username;
+        this.USERNAME = username;
         this.position = position;
         this.inJail = inJail;
         this.bankrupt = bankrupt;
@@ -66,7 +66,7 @@ public class Player extends Entity {
     @Override
     public void updatePropertiesFromDatabase(int gameId) throws SQLException {
         properties.clear();
-        properties = propertyDAO.getPropertiesByOwner(gameId, username);
+        properties = propertyDAO.getPropertiesByOwner(gameId, USERNAME);
     }
 
     /**
@@ -80,16 +80,12 @@ public class Player extends Entity {
         this.position = position;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUSERNAME() {
+        return USERNAME;
     }
 
     public int getPosition() {
         return position;
-    }
-
-    public void setPosition(int position) {
-        this.position = position;
     }
 
     public void setInJail(boolean inJail) {

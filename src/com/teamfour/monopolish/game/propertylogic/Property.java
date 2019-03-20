@@ -1,9 +1,7 @@
 package com.teamfour.monopolish.game.propertylogic;
 
 /**
- * Represents all properties in a game
- *
- *
+ * Represents the properties in a game
  * @author      lisawil
  * @version     1.0
  */
@@ -11,34 +9,34 @@ package com.teamfour.monopolish.game.propertylogic;
 public class Property {
 
     //Attributes
-    private final int id;
-    private final String name;
+    private final int ID;
+    private final String NAME;
     private int price;
     private int position;
     private boolean pawned = false;
     private String owner;
-    private final String categorycolor;
+    private final String CATEGORYCOLOR;
 
 
     /**
      * Constructor
      */
     public Property(int p_id, String name, int price, int position, String categorycolor, String owner){
-        this.id = p_id;
-        this.name = name;
+        this.ID = p_id;
+        this.NAME = name;
         this.price = price;
         this.position = position;
-        this.categorycolor = categorycolor;
+        this.CATEGORYCOLOR = categorycolor;
         this.owner = owner;
     }
 
     public String toString() {
-        String result = "Name: " + name + "; Price: " + price + "; Position: " + position;
+        String result = "name: " + NAME + "; Price: " + price + "; Position: " + position;
         return result;
     }
 
-    public int getId() {
-        return id;
+    public int getID() {
+        return ID;
     }
 
     public int getPosition() {
@@ -46,7 +44,7 @@ public class Property {
     }
 
     public String getName() {
-        return name;
+        return NAME;
     }
 
     public int getPrice() {
@@ -54,7 +52,7 @@ public class Property {
     }
 
     public String getCategorycolor(){
-        return categorycolor;
+        return CATEGORYCOLOR;
     }
 
     public boolean isPawned() {
@@ -95,6 +93,6 @@ public class Property {
         if(this == otherP){
             return (true);
         }
-        return(otherP.getId() == this.id);
+        return(otherP.getID() == this.ID);
     }
 }
