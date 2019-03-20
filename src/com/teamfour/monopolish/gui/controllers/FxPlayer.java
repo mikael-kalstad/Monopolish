@@ -1,6 +1,5 @@
 package com.teamfour.monopolish.gui.controllers;
 
-import com.teamfour.monopolish.game.entities.player.Player;
 import javafx.geometry.Pos;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -14,13 +13,16 @@ import javafx.scene.shape.Circle;
  */
 
 public class FxPlayer extends StackPane{
-
+    // Attributes
     private static int MAX = 9;
     int direction;
 
+    private int tilePosition = 0;
     private int posX, posY;
+    private String username;
 
-    public FxPlayer(int posX, int posY) {
+    public FxPlayer(String username, int posX, int posY) {
+        this.username = username;
         this.posX = posX;
         this.posY = posY;
 
@@ -30,13 +32,6 @@ public class FxPlayer extends StackPane{
 
         setAlignment(Pos.CENTER);
         getChildren().addAll(spiller);
-    }
-
-    public static void main(String[] args) {
-        FxPlayer p = new FxPlayer(9, 9);
-        p.move(18);
-
-        System.out.println(p);
     }
 
     public void getDirection() {
