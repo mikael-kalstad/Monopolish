@@ -412,14 +412,14 @@ public class LobbyController {
     }
 
     private void startGame(int lobby_id) {
-        int game_id = -1;
-        String[] players = null;
-        try {
-            game_id = Handler.getGameDAO().insertGame(lobby_id);
-            //players = Handler.getLobbyDAO().getUsersInLobby(lobby_id).toArray();
-        }
-        catch (SQLException e) { e.printStackTrace(); }
-        Handler.getPlayerDAO().createPlayers(game_id, players);
+//        int game_id = -1;
+//        String[] players = null;
+//        try {
+//            game_id = Handler.getGameDAO().insertGame(lobby_id);
+//            //players = Handler.getLobbyDAO().getUsersInLobby(lobby_id).toArray();
+//        }
+//        catch (SQLException e) { e.printStackTrace(); }
+        //Handler.getPlayerDAO().createPlayers(game_id, players);
 
         Handler.getSceneManager().setScene(ViewConstants.GAME.getValue());
     }
