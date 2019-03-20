@@ -195,7 +195,7 @@ public class GameLogic {
 
             System.out.println("It is " + currentPlayer + "'s turn.");
 
-            Handler.setAccount(new Account("giske", "giske@damer.no", LocalDate.now(), 0));
+            Handler.setAccount(new Account("helgeingstad", "giske@damer.no", LocalDate.now(), 0));
 
             // Check to see if it's your turn
             if (!turns[turnNumber].equals(Handler.getAccount().getUsername())) {
