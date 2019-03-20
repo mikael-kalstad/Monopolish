@@ -390,7 +390,7 @@ public class LobbyController {
                 catch (SQLException e) { e.printStackTrace(); }
 
                 // Remove player if already in a lobby
-                if (current_lobby_id > 0) {
+                if (current_lobby_id > 0 ) {
                     try { Handler.getLobbyDAO().removePlayer(USERNAME, current_lobby_id); }
                     catch (SQLException e) { e.printStackTrace(); }
                 }
@@ -398,8 +398,15 @@ public class LobbyController {
 
             // If player leaves lobby
             else {
-                try { Handler.getLobbyDAO().removePlayer(USERNAME, lobby_id);
-                } catch (SQLException e) { e.printStackTrace(); }
+                try { Handler.getLobbyDAO().removePlayer(USERNAME, lobby_id); }
+                catch (SQLException e) { e.printStackTrace(); }
+
+                // If there are no players left, delete the lobby
+                if (numOfPlayers == 1) {
+                    try { Handler.getLobbyDAO().deleteLobby(lobby_id);
+                    } catch (SQLException e) { e.printStackTrace(); }
+                    System.out.println("deleting lobby....");
+                }
             }
 
             refresh();
