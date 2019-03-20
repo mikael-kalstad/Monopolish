@@ -260,15 +260,6 @@ public class LobbyController {
         }
     }
 
-    private void startGame(int lobby_id, String[] users) {
-        int game_id = 0;
-        try {
-            game_id = Handler.getGameDAO().insertGame(lobby_id);
-        }
-        catch (SQLException e) { e.printStackTrace(); }
-        Handler.getPlayerDAO().createPlayers(game_id, users);
-    }
-
     /**
      * Add player to a lobby
      *
@@ -410,8 +401,27 @@ public class LobbyController {
             try { Handler.getLobbyDAO().setReady(lobby_id, USERNAME, readyBtn.getText().equals(BTN_READY)); }
             catch (SQLException e) { e.printStackTrace(); }
 
+            if (numOfPlayers > 1 && numOfReady == numOfPlayers) {
+                statusValue.setText(STATUS_STARTED);
+                LobbyDrawFx.setTextColor(statusValue, PLAYER_COLOR_RED);
+                startGame(lobby_id);
+            }
+
             refresh();
         });
+    }
+
+    private void startGame(int lobby_id) {
+        int game_id = -1;
+        String[] players = null;
+        try {
+            game_id = Handler.getGameDAO().insertGame(lobby_id);
+            //players = Handler.getLobbyDAO().getUsersInLobby(lobby_id).toArray();
+        }
+        catch (SQLException e) { e.printStackTrace(); }
+        Handler.getPlayerDAO().createPlayers(game_id, players);
+
+        Handler.getSceneManager().setScene(ViewConstants.GAME.getValue());
     }
 
     /**
