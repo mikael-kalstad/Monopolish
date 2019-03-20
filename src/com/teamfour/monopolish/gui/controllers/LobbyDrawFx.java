@@ -4,6 +4,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -29,6 +30,17 @@ public class LobbyDrawFx {
 
     public static void setTextColor(Text element, String color) {
         element.setFill(Paint.valueOf(color));
+    }
+
+    public static void setBtnStyle(Button btn, String msg, String backgroundColor) {
+        btn.setText(msg);
+        btn.setStyle(
+                "-fx-text-fill: white;" +
+                "-fx-font-size: 13;" +
+                "-fx-background-color: " + backgroundColor + ";" +
+                "-fx-background-radius: 0;" +
+                "-fx-padding: 8 20;"
+        );
     }
 
     /**
@@ -121,16 +133,17 @@ public class LobbyDrawFx {
         statusGrid.add(statusValue, 1, 0);
 
         // "Join" button in the lobby
-        Button btn = new Button("Join");
-        btn.setStyle(
-                "-fx-text-fill: white;" +
-                "-fx-font-size: 15;" +
-                "-fx-background-color: #FF9800; " +
-                "-fx-background-radius: 0;" +
-                "-fx-padding: 8 35;"
-        );
-        btn.setId("join"); // Used to find element
-        GridPane.setHalignment(btn, HPos.CENTER);
+        Button joinBtn = new Button();
+        setBtnStyle(joinBtn, "Join", "#FF9800");
+        joinBtn.setPrefWidth(110);
+        joinBtn.setId("join"); // Used to find element
+
+        // "Ready" button in the lobby
+        Button readyBtn = new Button();
+        setBtnStyle(readyBtn, "Ready", "green");
+        readyBtn.setMinWidth(110);
+        readyBtn.setId("ready"); // Used to find element
+        readyBtn.setDisable(true); // Disable by default
 
         // Container for playersContainer, fits MAXIMUM 4 playersContainer
         Pane playersContainer = new Pane();
@@ -142,7 +155,8 @@ public class LobbyDrawFx {
         grid.add(playersContainer, 0, 1);
         grid.add(status, 0, 2);
         grid.add(statusValue, 1, 2);
-        grid.add(btn, 0, 3);
+        grid.add(joinBtn, 0, 3);
+        grid.add(readyBtn, 1, 3);
 
         return grid;
     }
@@ -160,6 +174,21 @@ public class LobbyDrawFx {
         GridPane container = new GridPane();
         container.setPrefSize(220, 35);
         container.setMaxSize(220, 35);
+        container.setId("playerRow");
+
+        // Setting up columns
+        ColumnConstraints colorCol = new ColumnConstraints();
+        ColumnConstraints spaceCol = new ColumnConstraints();
+        ColumnConstraints userCol = new ColumnConstraints();
+        ColumnConstraints imgCol = new ColumnConstraints();
+        colorCol.setPrefWidth(35);
+        spaceCol.setPrefWidth(30);
+        userCol.setPrefWidth(130);
+        userCol.setHalignment(HPos.LEFT);
+        imgCol.setPrefWidth(25);
+        imgCol.setHalignment(HPos.RIGHT);
+        container.getColumnConstraints().addAll(colorCol, spaceCol, userCol, imgCol);
+
 
         String backgroundColor = "#EEEEEE";
         if (index % 2 != 0) backgroundColor = "white";
@@ -177,7 +206,6 @@ public class LobbyDrawFx {
 
         // Spacing between color box and username
         Pane spacing = new Pane();
-        spacing.setPrefWidth(30);
         container.add(spacing, 1, 0);
 
         // Username
@@ -185,9 +213,15 @@ public class LobbyDrawFx {
         player.setStyle("-fx-font-size: 15px;");
         container.add(player, 2,0);
 
+        // Ready or not image
+        ImageView img = new ImageView("file:res/gui/notReady.png");
+        img.setPreserveRatio(true);
+        img.setFitHeight(30);
+        img.setId("readyImg");
+        container.add(img, 3, 0);
+
         // Move down according to the index
         container.setTranslateY(35 * index);
-
         return container;
     }
 }
