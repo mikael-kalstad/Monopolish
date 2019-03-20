@@ -83,7 +83,7 @@ CREATE PROCEDURE lobby_set_player_ready(IN room_id INT, IN username VARCHAR(30),
     declare user_id int;
     SET user_id = (SELECT a.user_id FROM account a WHERE a.username LIKE username LIMIT 1);
     UPDATE lobby l
-    SET l.ready=1
+    SET l.ready=ready
     WHERE l.room_id=room_id AND l.user_id=user_id;
   END;
 -- END$$
@@ -147,7 +147,6 @@ DROP PROCEDURE getALlReadyInLobby;
 
 CREATE PROCEDURE getALlReadyInLobby(IN lobby_id INT)
   BEGIN
-    DECLARE lobby_id INT;
 
     SELECT COUNT(*) FROM lobby
     WHERE lobby_id = room_id
