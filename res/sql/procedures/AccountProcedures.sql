@@ -97,7 +97,8 @@ CREATE PROCEDURE account_insert_user(
         SET error_code = 2;
       END;
       */
-
+    -- SELECT COUNT(*) FROM account WHERE LOWER(account.username = uname) INTO test_username;
+    -- SELECT COUNT(*) FROM account WHERE LOWER(account.email = mail) INTO test_email;
     -- SET salt_pw = RANDOM_BYTES(32);
     SET salt_pw = RAND();
     SET hashed_pwd = SHA2(CONCAT(password, salt_pw), 256);
@@ -109,17 +110,16 @@ CREATE PROCEDURE account_insert_user(
     SELECT LOWER()
     */
     /*
-
-    IF LOWER(test_username = uname) THEN
+    IF test_username > 1 THEN
       SET error_code := error_code + 1;
-    ELSEIF LOWER(test_email = mail) THEN
+    ELSEIF test_email > 1 THEN
       SET error_code := error_code + 1;
     ELSE
       SET error_code = 0;
     END IF;
     */
 
-    SELECT error_code;
+    SELECT @error_code;
     INSERT INTO account VALUES(DEFAULT, uname, mail, hashed_pwd, salt_pw, reg_date);
 
   END;
@@ -187,7 +187,7 @@ CREATE PROCEDURE account_reset_password(
     -- SELECT username FROM account WHERE uname = account.username;
     -- UPDATE old_pwd_hashed
     UPDATE account SET hashed_password = new_pwd_hashed AND salt = new_salt WHERE uname = account.username;
-    SELECT username, email, regdate, highscore FROM account WHERE new_pwd_hashed = account.hashed_password;
+    SELECT username, email, regdate FROM account WHERE new_pwd_hashed = account.hashed_password;
   END;
 
 CREATE PROCEDURE player_get_highscore(IN name VARCHAR(30))
