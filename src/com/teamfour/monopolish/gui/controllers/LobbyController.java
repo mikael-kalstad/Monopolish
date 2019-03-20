@@ -100,8 +100,7 @@ public class LobbyController {
 
         // Get data from database about all lobbies
         ArrayList<String[]> lobbyInfo = new ArrayList<>();
-        try { lobbyInfo = Handler.getLobbyDAO().getAllLobbies(); }
-        catch (SQLException e) { e.printStackTrace(); }
+        lobbyInfo = Handler.getLobbyDAO().getAllLobbies();
 
         for (String[] data : lobbyInfo) {
             int lobby_id = Integer.valueOf(data[0]);

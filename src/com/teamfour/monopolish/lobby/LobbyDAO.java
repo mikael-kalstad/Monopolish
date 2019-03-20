@@ -196,7 +196,7 @@ public class LobbyDAO extends DataAccessObject {
         return users;
     }
 
-    public ArrayList<String[]> getAllLobbies() throws SQLException {
+    public ArrayList<String[]> getAllLobbies() {
         ArrayList<String[]> lobbyInfo = new ArrayList<>();
         try {
 
