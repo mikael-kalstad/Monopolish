@@ -37,6 +37,21 @@ public class LobbyDAO extends DataAccessObject {
         return roomId;
     }
 
+    public int insertLobby(String username, String lobbyName) throws SQLException {
+        getConnection();
+        cStmt = connection.prepareCall("{call lobby_insert(?, ?, ?)}");
+
+        cStmt.setString(1, username);
+        cStmt.setString(2, lobbyName);
+        cStmt.registerOutParameter(3, Types.INTEGER);
+
+        int roomId = -1;
+        if (cStmt.executeUpdate() > 0)
+            roomId = cStmt.getInt(2);
+
+        return roomId;
+    }
+
     public int newLobby(String username) throws SQLException {
         getConnection();
         cStmt = connection.prepareCall("{call new_lobby(?, ?)}");

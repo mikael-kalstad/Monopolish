@@ -10,6 +10,7 @@ SET FOREIGN_KEY_CHECKS=0;
 
 -- Drop tables
 DROP TABLE IF EXISTS account;
+DROP TABLE IF EXISTS lobbyname;
 DROP TABLE IF EXISTS lobby;
 DROP TABLE IF EXISTS game;
 DROP TABLE IF EXISTS player;
@@ -32,6 +33,14 @@ CREATE TABLE account
   hashed_password VARCHAR(64) NOT NULL,
   salt BINARY(32) NOT NULL,
   regdate DATETIME NOT NULL
+);
+
+-- lobbynavn
+CREATE TABLE lobbyname
+(
+  lobby_id INT NOT NULL,
+  lobbyname VARCHAR(30),
+  CONSTRAINT pk_lobbname PRIMARY KEY(lobby_id)
 );
 
 -- Lobby
@@ -94,6 +103,8 @@ ADD FOREIGN KEYS
 
 ALTER TABLE game
 ADD foreign key(winner) references account(user_id);
+ALTER TABLE lobby
+  ADD FOREIGN KEY (room_id) REFERENCES lobbyname(lobby_id) ;
 ALTER TABLE lobby
 ADD FOREIGN KEY (user_id) REFERENCES account(user_id);
 
