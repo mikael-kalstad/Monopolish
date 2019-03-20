@@ -83,8 +83,8 @@ public class LobbyDrawFx {
         // Grid layout within the container
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
-        grid.setPrefWidth(290);
-        grid.setPrefHeight(330);
+        grid.setPrefSize(270, 330);
+        grid.setMaxSize(270, 330);
         grid.setVgap(10);
         grid.setStyle(
                 "-fx-background-color: #e5e5e8;" +
@@ -101,10 +101,12 @@ public class LobbyDrawFx {
         // Title / lobby name
         Text title = new Text(lobbyName);
         title.setStyle(
-                "-fx-font-size: 24px; " +
-                "-fx-font-weight: bold"
+                "-fx-font-size: 20px; " +
+                "-fx-font-weight: bold;"
         );
+        title.setWrappingWidth(150);
         GridPane.setHalignment(title, HPos.CENTER); // Center horizontally
+
 
         // Status of the lobby
         Text status = new Text("Status");
@@ -149,6 +151,7 @@ public class LobbyDrawFx {
         Pane playersContainer = new Pane();
         playersContainer.setPrefSize(220, 35 * 4);
         playersContainer.setId("playerContainer"); // Used to find element
+        GridPane.setHalignment(playersContainer, HPos.CENTER);
 
         // Add elements to grid
         grid.add(title, 0, 0);
@@ -158,6 +161,7 @@ public class LobbyDrawFx {
         grid.add(joinBtn, 0, 3);
         grid.add(readyBtn, 1, 3);
 
+        System.out.println(" width " + grid.getWidth());
         return grid;
     }
 
@@ -174,7 +178,6 @@ public class LobbyDrawFx {
         GridPane container = new GridPane();
         container.setPrefSize(220, 35);
         container.setMaxSize(220, 35);
-        container.setId("playerRow");
 
         // Setting up columns
         ColumnConstraints colorCol = new ColumnConstraints();
