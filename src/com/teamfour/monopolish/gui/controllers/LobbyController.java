@@ -345,12 +345,16 @@ public class LobbyController {
         // If any of these elements are null return to avoid nullpointerexception
         if (playersContainer == null || joinBtn == null || statusValue == null || readyBtn == null) return;
 
-
         int numOfPlayers = playersContainer.getChildren().size();
         int lobby_id = Integer.valueOf(container.getId());
         int numOfReady = Handler.getLobbyDAO().getAllReadyInLobby(lobby_id);
-        System.out.println("lobby " + lobby_id + " numofready " + numOfReady);
-        System.out.println("current lobby " + current_lobby_id);
+
+        // Check if game should start
+        if (current_lobby_id == lobby_id && numOfPlayers > 1 && numOfReady == numOfPlayers) {
+            statusValue.setText(STATUS_STARTED);
+            LobbyDrawFx.setTextColor(statusValue, PLAYER_COLOR_RED);
+            startGame(lobby_id);
+        }
 
         // If the user is in the actual lobby
         if (current_lobby_id == lobby_id) {
@@ -390,11 +394,8 @@ public class LobbyController {
                 catch (SQLException e) { e.printStackTrace(); }
 
                 // Remove player if already in a lobby
-                if (current_lobby_id > 0) {
+                if (current_lobby_id > 0 ) {
                     try { Handler.getLobbyDAO().removePlayer(USERNAME, current_lobby_id); }
-                    catch (SQLException e) { e.printStackTrace(); }
-                } else if (current_lobby_id > 0 && numOfPlayers == 1) {
-                    try { Handler.getLobbyDAO().deleteLobby(lobby_id); }
                     catch (SQLException e) { e.printStackTrace(); }
                 }
             }
@@ -403,6 +404,13 @@ public class LobbyController {
             else {
                 try { Handler.getLobbyDAO().removePlayer(USERNAME, lobby_id); }
                 catch (SQLException e) { e.printStackTrace(); }
+
+                // If there are no players left, delete the lobby
+                if (numOfPlayers == 1) {
+                    try { Handler.getLobbyDAO().deleteLobby(lobby_id);
+                    } catch (SQLException e) { e.printStackTrace(); }
+                    System.out.println("deleting lobby....");
+                }
             }
 
             refresh();
@@ -410,15 +418,8 @@ public class LobbyController {
 
         // Set logic when player uses the "userReady" button (i.e. sets userReady or not)
         readyBtn.setOnAction(click -> {
-            System.out.println(" CLICK! READYBTN " + readyBtn.getText().equals(BTN_READY));
             try { Handler.getLobbyDAO().setReady(lobby_id, USERNAME, readyBtn.getText().equals(BTN_READY)); }
             catch (SQLException e) { e.printStackTrace(); }
-
-            if (numOfPlayers > 1 && numOfReady == numOfPlayers) {
-                statusValue.setText(STATUS_STARTED);
-                LobbyDrawFx.setTextColor(statusValue, PLAYER_COLOR_RED);
-                startGame(lobby_id);
-            }
 
             refresh();
         });

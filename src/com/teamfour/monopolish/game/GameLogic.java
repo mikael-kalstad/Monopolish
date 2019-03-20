@@ -338,4 +338,8 @@ public class GameLogic {
     }
 
     public String[] getTurns() { return turns; }
+
+    public boolean isYourTurn() {
+        return turns[turnNumber].equals(Handler.getAccount().getUsername());
+    }
 }

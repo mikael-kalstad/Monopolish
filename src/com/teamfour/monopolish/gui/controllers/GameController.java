@@ -50,6 +50,10 @@ public class GameController {
         }
 
         drawPlayers();
+
+        if (!gameLogic.isYourTurn()) {
+            rolldice.setDisable(true);
+        }
     }
 
     private void drawDice(){
