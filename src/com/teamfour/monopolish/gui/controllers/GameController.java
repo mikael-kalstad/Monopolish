@@ -124,7 +124,7 @@ public class GameController {
         }
     }
 
-    public void addToEventlog(String s) {
+    private void addToEventlog(String s) {
         eventList.add(new Text(s));
 
         int focus = eventList.size();
