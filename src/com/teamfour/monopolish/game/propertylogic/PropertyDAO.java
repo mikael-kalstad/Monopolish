@@ -49,6 +49,12 @@ public class PropertyDAO extends DataAccessObject {
         return (props);
     }
 
+    /**
+     * gets gameproperties from the database and generates Property objects related to the parameter username.
+     * @param gameId the game_id the id of the current game
+     * @param username the username of the player whose properties are returned
+     */
+
     public ArrayList<Property> getPropertiesByOwner(int gameId, String username) throws SQLException {
         ArrayList<Property> properties = new ArrayList<>();
 
@@ -77,9 +83,9 @@ public class PropertyDAO extends DataAccessObject {
     }
 
     /**
-     * updates owner and/or pawned-state of a property
-     *
-     *
+     * updates the property in the database
+     * @param prop the property that is updated
+     * @param game_id the id of the current game
      */
 
     public void updateProperty(Property prop, int game_id){
@@ -100,7 +106,7 @@ public class PropertyDAO extends DataAccessObject {
 
     /**
      * deletes all gameProperties for the given game_id
-     *
+     * @param game_id the game_id the id of the current game
      *
      */
     public void endGame(int game_id){

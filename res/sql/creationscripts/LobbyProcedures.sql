@@ -1,7 +1,7 @@
 /**
 Procedure to create a new lobby
  */
-DROP PROCEDURE new_lobby;
+DROP PROCEDURE if exists new_lobby;
 
 CREATE PROCEDURE new_lobby(IN username VARCHAR(30), OUT lobby_id INT)
   BEGIN
@@ -18,10 +18,12 @@ CREATE PROCEDURE new_lobby(IN username VARCHAR(30), OUT lobby_id INT)
 /**
 Procedure to add user to a lobby
  */
-DROP PROCEDURE join_lobby;
+DROP PROCEDURE if exists join_lobby;
 
 CREATE PROCEDURE join_lobby(IN username VARCHAR(30), IN lobby_id INT, OUT ok BIT)
   BEGIN
+    declare num_of_players int;
+    declare account_id int;
     SET num_of_players = (SELECT COUNT(*) FROM lobby WHERE lobby_id = room_id);
     SET account_id = (SELECT a.user_id FROM account a WHERE a.username LIKE username LIMIT 1);
     SET ok = false;
@@ -39,10 +41,11 @@ Procedure to join or create lobby
  */
 
 -- DELIMITER $$
-DROP PROCEDURE lobby_insert;
+DROP PROCEDURE if exists lobby_insert;
 
 CREATE PROCEDURE lobby_insert(IN username VARCHAR(30), OUT lobby_id INT)
   BEGIN
+    declare account_id int;
     -- Create a view of all current lobbies, with total players in each session
     CREATE OR REPLACE VIEW lobbies AS
       SELECT l.room_id, COUNT(*) AS players
@@ -59,7 +62,7 @@ CREATE PROCEDURE lobby_insert(IN username VARCHAR(30), OUT lobby_id INT)
                           ORDER BY players DESC
                           LIMIT 1), IFNULL((SELECT (MAX(room_id)+1) FROM lobby), 1)));
 
-    DROP VIEW lobbies;
+    DROP VIEW if exists lobbies;
 
     SET account_id = (SELECT a.user_id FROM account a WHERE a.username LIKE username LIMIT 1);
 
@@ -73,10 +76,11 @@ Procedure to set ready status
  */
 
 -- DELIMITER $$
-DROP PROCEDURE lobby_set_player_ready;
+DROP PROCEDURE if exists lobby_set_player_ready;
 
 CREATE PROCEDURE lobby_set_player_ready(IN room_id INT, IN username VARCHAR(30), IN ready BIT)
   BEGIN
+    declare user_id int;
     SET user_id = (SELECT a.user_id FROM account a WHERE a.username LIKE username LIMIT 1);
     UPDATE lobby l
     SET l.ready=1
@@ -144,7 +148,7 @@ DROP PROCEDURE getALlReadyInLobby;
 CREATE PROCEDURE getALlReadyInLobby(IN lobby_id INT)
   BEGIN
     DECLARE lobby_id INT;
-    
+
     SELECT COUNT(*) FROM lobby
     WHERE lobby_id = room_id
     AND ready = 1;
