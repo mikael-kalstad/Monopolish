@@ -252,21 +252,18 @@ public class LobbyController {
 
             int lobby_id = -1;
 
-            try {
-                lobby_id = Handler.getLobbyDAO().newLobby(USERNAME, newLobbyNameInput.getText());
-            }
-            catch (SQLException e) { e.printStackTrace(); }
+            lobby_id = Handler.getLobbyDAO().newLobby(USERNAME, newLobbyNameInput.getText());
+
             System.out.println("lobby id" + lobby_id);
 
             // If user is already in a lobby
             if (current_lobby_id > 0) {
-                try {
-                    Handler.getLobbyDAO().removePlayer(USERNAME, current_lobby_id);
-                } catch (SQLException e) { e.printStackTrace(); }
-            }
 
-            newLobbyNameInput.setText(""); // Reset text
-            refresh();
+                Handler.getLobbyDAO().removePlayer(USERNAME, current_lobby_id);
+
+                newLobbyNameInput.setText(""); // Reset text
+                refresh();
+            }
         }
     }
 
@@ -390,25 +387,24 @@ public class LobbyController {
         joinBtn.setOnAction(click -> {
             // If user joins lobby
             if (joinBtn.getText().equals(BTN_JOIN)) {
-                try { Handler.getLobbyDAO().addPlayer(USERNAME, lobby_id); }
-                catch (SQLException e) { e.printStackTrace(); }
+                Handler.getLobbyDAO().addPlayer(USERNAME, lobby_id);
+
 
                 // Remove player if already in a lobby
                 if (current_lobby_id > 0 ) {
-                    try { Handler.getLobbyDAO().removePlayer(USERNAME, current_lobby_id); }
-                    catch (SQLException e) { e.printStackTrace(); }
+                    Handler.getLobbyDAO().removePlayer(USERNAME, current_lobby_id);
                 }
             }
 
             // If player leaves lobby
             else {
-                try { Handler.getLobbyDAO().removePlayer(USERNAME, lobby_id); }
-                catch (SQLException e) { e.printStackTrace(); }
+               Handler.getLobbyDAO().removePlayer(USERNAME, lobby_id);
+
 
                 // If there are no players left, delete the lobby
                 if (numOfPlayers == 1) {
-                    try { Handler.getLobbyDAO().deleteLobby(lobby_id);
-                    } catch (SQLException e) { e.printStackTrace(); }
+                     Handler.getLobbyDAO().deleteLobby(lobby_id);
+
                     System.out.println("deleting lobby....");
                 }
             }
@@ -418,9 +414,7 @@ public class LobbyController {
 
         // Set logic when player uses the "userReady" button (i.e. sets userReady or not)
         readyBtn.setOnAction(click -> {
-            try { Handler.getLobbyDAO().setReady(lobby_id, USERNAME, readyBtn.getText().equals(BTN_READY)); }
-            catch (SQLException e) { e.printStackTrace(); }
-
+             Handler.getLobbyDAO().setReady(lobby_id, USERNAME, readyBtn.getText().equals(BTN_READY));
             refresh();
         });
     }
