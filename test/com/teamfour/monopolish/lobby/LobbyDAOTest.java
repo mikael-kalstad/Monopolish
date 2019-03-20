@@ -42,10 +42,6 @@ public class LobbyDAOTest {
     }
     @Test
     public void testGetUsersInLobby() {
-        try {
             assertEquals(0, instance.getUsersInLobby(1).size());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 }

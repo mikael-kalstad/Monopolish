@@ -15,7 +15,6 @@ import javafx.scene.shape.Circle;
 public class FxPlayer extends StackPane {
     // Attributes
     private static int MAX = 9;
-    int direction;
 
     private int tilePosition = 0;
     private int posX, posY;
@@ -40,91 +39,25 @@ public class FxPlayer extends StackPane {
 
     public static void main(String[] args) {
         FxPlayer p = new FxPlayer("k", 9, 9);
-        p.posToXY(36);
+        p.move(37);
         System.out.println(p);
     }
 
-    public void getDirection() {
-        if (posX > 0 && posY == MAX) {
-            direction = 1; //venstre
-        }
-        if (posX == 0 && posY > 0) {
-            direction = 2; //opp
-        }
-        if (posX < MAX && posY == 0) {
-            direction = 3; //høyre
-        }
-        if (posX == MAX && posY < MAX) {
-            direction = 4; //ned
-        }
-    }
-
-    public void move(int steps) {
-        getDirection();
-        while (steps != 0) {
-            switch (direction) {
-                case 1:
-                    while (posX >= 0 && steps != 0) {
-                        posX--;
-                        steps--;
-                        if (posX == 0) {
-                            direction = 2;
-                            break;
-                        }
-                    }
-                case 2:
-                    while (posY >= 0 && steps != 0) {
-                        posY--;
-                        steps--;
-                        if (posY == 0) {
-                            direction = 3;
-                            break;
-                        }
-                    }
-                case 3:
-                    while (posX <= MAX && steps != 0) {
-                        posX++;
-                        steps--;
-                        if (posX == MAX) {
-                            direction = 4;
-                            break;
-                        }
-                    }
-                case 4:
-                    while (posY <= MAX && steps != 0) {
-                        posY++;
-                        steps--;
-                        if (posY == MAX) {
-                            direction = 1;
-                            break;
-                        }
-                    }
+    public void move (int steps) {
+        while (true) {
+            tilePosition++;
+            steps--;
+            if (tilePosition == MAX*4) {
+                tilePosition = 0;
+            }
+            if (steps == 0) {
+                break;
             }
         }
+        posToXY(tilePosition);
     }
 
-    private int[][] positionGenerator() {
-        int[][] position = new int[36][2];
-        int x = 9;
-        int y = 9;
-        for (int i = 0; i < 36; i++) {
-            position[i][0] = x;
-            position[i][1] = y;
-
-            if (x > 0 && i < 9) {
-                x--;
-            } else if (x < 1 && y > 0) {
-                y--;
-            } else if (y < 1 && x < 9) {
-                x++;
-            } else if (x == 9 && i > 1) {
-                y++;
-            }
-        }
-        return (position);
-    }
-
-    public void posToXY(int pos) {
+    private void posToXY(int pos) {
         int p, x, y;
         if (pos > (MAX * 4) - 1 || pos < 0) {
             throw new IllegalArgumentException("Player position out of bounds");
@@ -193,6 +126,10 @@ public class FxPlayer extends StackPane {
 
     public String getUsername() {
         return username;
+    }
+
+    public int getTilePosition() {
+        return tilePosition;
     }
 
     public String toString() {

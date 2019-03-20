@@ -174,7 +174,7 @@ public class LobbyDAO extends DataAccessObject {
      * @param roomId
      * @return
      */
-    public ArrayList<String> getUsersInLobby(int roomId) throws SQLException {
+    public ArrayList<String> getUsersInLobby(int roomId) {
         ArrayList<String> users = new ArrayList<>();
         try {
 
@@ -196,7 +196,7 @@ public class LobbyDAO extends DataAccessObject {
         return users;
     }
 
-    public ArrayList<String[]> getAllLobbies() throws SQLException {
+    public ArrayList<String[]> getAllLobbies() {
         ArrayList<String[]> lobbyInfo = new ArrayList<>();
         try {
 
@@ -229,7 +229,25 @@ public class LobbyDAO extends DataAccessObject {
 
             if (rs.next()) num = rs.getInt(1);
         }
-        catch (SQLException e) { e.printStackTrace(); }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            releaseConnection();
+        }
         return num;
     }
+    public void removeEmptyLobbies() {
+        getConnection();
+
+        try {
+            cStmt = connection.prepareCall("{CALL lobby_removeEmptyLobbies()}");
+            cStmt.executeQuery();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            releaseConnection();
+        }
+    }
+
 }
