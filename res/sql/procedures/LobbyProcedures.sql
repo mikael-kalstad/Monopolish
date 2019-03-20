@@ -137,8 +137,8 @@ DROP PROCEDURE getAllLobbies;
 
 CREATE PROCEDURE getAllLobbies()
   BEGIN
-    SELECT l.room_id, a.username, l.ready FROM lobby l
-    JOIN account a ON l.user_id = a.user_id
+    SELECT l.room_id, a.username, l.ready, lobbyname FROM lobby l
+    JOIN account a ON l.user_id = a.user_id join lobbyname l2 on l.room_id = l2.lobby_id
     WHERE a.user_id = l.user_id;
   END;
 -- END$$
