@@ -91,7 +91,7 @@ public class GameController {
 
         checkForOthers(player);
 
-        String pos = "moved to X: " + player.getPosX() + " Y:" + player.getPosY();
+        String pos = player.getUsername() + " moved to X: " + player.getPosX() + " Y:" + player.getPosY();
         addToEventlog(pos);
     }
 

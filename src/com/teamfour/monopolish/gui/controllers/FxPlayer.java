@@ -191,6 +191,10 @@ public class FxPlayer extends StackPane {
         return posY;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
     public String toString() {
         String s = "Player moved to X: " + posX + ", Y: " + posY;
         return s;
