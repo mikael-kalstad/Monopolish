@@ -5,14 +5,24 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+/**
+ * Class for drawing players and player position on the board
+ *
+ * @author Bård Hestmark
+ * @version 1.4
+ */
+
 public class FxPlayer extends StackPane{
-
+    // Attributes
     private static int MAX = 9;
-    int retning;
+    int direction;
 
+    private int tilePosition = 0;
     private int posX, posY;
+    private String username;
 
-    public FxPlayer(int posX, int posY) {
+    public FxPlayer(String username, int posX, int posY) {
+        this.username = username;
         this.posX = posX;
         this.posY = posY;
 
@@ -24,38 +34,31 @@ public class FxPlayer extends StackPane{
         getChildren().addAll(spiller);
     }
 
-    public static void main(String[] args) {
-        FxPlayer p = new FxPlayer(9, 9);
-        p.move(18);
-
-        System.out.println(p);
-    }
-
     public void getDirection() {
         if (posX > 0 && posY == MAX) {
-            retning = 1; //venstre
+            direction = 1; //venstre
         }
         if (posX == 0 && posY > 0) {
-            retning = 2; //opp
+            direction = 2; //opp
         }
         if (posX < MAX && posY == 0) {
-            retning = 3; //høyre
+            direction = 3; //høyre
         }
         if (posX == MAX && posY < MAX) {
-            retning = 4; //ned
+            direction = 4; //ned
         }
     }
 
     public void move(int steps) {
         getDirection();
         while (steps != 0) {
-            switch (retning) {
+            switch (direction) {
                 case 1:
                     while (posX >= 0 && steps!= 0) {
                         posX--;
                         steps--;
                         if (posX == 0) {
-                            retning = 2;
+                            direction = 2;
                             break;
                         }
                     }
@@ -64,7 +67,7 @@ public class FxPlayer extends StackPane{
                         posY--;
                         steps--;
                         if (posY == 0) {
-                            retning = 3;
+                            direction = 3;
                             break;
                         }
                     }
@@ -73,7 +76,7 @@ public class FxPlayer extends StackPane{
                         posX++;
                         steps--;
                         if (posX == MAX) {
-                            retning = 4;
+                            direction = 4;
                             break;
                         }
                     }
@@ -82,7 +85,7 @@ public class FxPlayer extends StackPane{
                         posY++;
                         steps--;
                         if (posY == MAX) {
-                            retning = 1;
+                            direction = 1;
                             break;
                         }
                     }

@@ -5,12 +5,12 @@ package com.teamfour.monopolish.game.board;
  * an Id to tell what kind of tile it is.
  *
  * @author      eirikhem
- * @version     1.0
+ * @version     1.2
  */
 
 public class Board {
     // Static variables
-    public static final int BOARD_LENGTH = 32;
+    public static final int BOARD_LENGTH = 36;
     public static final int START = 0;
     public static final int PROPERTY = 1;
     public static final int GO_TO_JAIL = 2;

@@ -1,5 +1,10 @@
 package com.teamfour.monopolish.game;
 
+import javafx.geometry.Pos;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -24,6 +29,26 @@ public class Dice {
         this.numOfDices = numOfDices;
         this.numOfEyes = numOfEyes;
     }
+
+    public void draw(int numOfEyes){
+        ArrayList<Circle> dots = new ArrayList<>();
+        dots.add(new Circle());
+        dots.add(new Circle());
+        dots.add(new Circle());
+        dots.add(new Circle());
+        dots.add(new Circle());
+        dots.add(new Circle());
+
+        //switch(numOfEyes){
+            //case 1:
+                //dots.get(0).setFill(Color.BLACK);
+                //dots.get(0).setStroke(Color.BLACK);
+
+
+                //dots.get(0).setAlignment();
+
+        }
+    //}
 
     /**
      * Helper method that will give a random number within some boundaries

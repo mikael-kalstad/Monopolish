@@ -11,6 +11,13 @@ import com.teamfour.monopolish.gui.controllers.Handler;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
+/**
+ * Contains all the gameplay logic for the game
+ *
+ * @author      eirikhem
+ * @version     1.1
+ */
+
 public class GameLogic {
     // Read-only variables
     private final int START_MONEY = 5000;
@@ -45,6 +52,9 @@ public class GameLogic {
      * @throws SQLException
      */
     public void setupGame() throws SQLException {
+
+        Handler.setAccount(new Account("giske", "giske@damer.no", LocalDate.now(), 0));
+
         // Load board, graphics, etc.
         ConnectionPool.create();
 
@@ -78,8 +88,59 @@ public class GameLogic {
         // Load yourPlayer
         yourPlayer = entityManager.getYou();
 
+        currentPlayer = "";
         // Main game loop
         System.out.println("Game is starting!");
+    }
+
+    public int[] throwDice() {
+        int[] throwResult = dice.throwDice();
+        int steps = throwResult[0] + throwResult[1];
+        if (yourPlayer.isInJail()) {
+            if (throwResult[0] == throwResult[1])
+                yourPlayer.move(steps);
+        } else {
+            yourPlayer.move(steps);
+        }
+
+        return dice.throwDice();
+    }
+
+    /**
+     * Checks to see if it's your turn
+     * @return True if it's your turn
+     * @throws SQLException
+     */
+    public int checkForYourTurn() throws SQLException {
+        String newCurrentPlayer = gameDAO.getCurrentPlayer(gameId);
+        // CHeck if the current player has changed
+        if (currentPlayer.equals(newCurrentPlayer)) {
+            // If not, wait a second before returning
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return -1;
+        }
+        // If the current player has changed, get the new current player and update all data from the database
+        currentPlayer = newCurrentPlayer;
+        entityManager.updateFromDatabase();
+
+        System.out.println("It is " + currentPlayer + "'s turn.");
+
+        // Check to see if it's your turn
+        if (!turns[turnNumber].equals(Handler.getAccount().getUsername())) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return 0;
+        }
+
+        // If it is, yay!
+        return 1;
     }
 
     // TODO: Remove throws exception
