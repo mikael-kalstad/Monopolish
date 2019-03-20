@@ -393,13 +393,16 @@ public class LobbyController {
                 if (current_lobby_id > 0) {
                     try { Handler.getLobbyDAO().removePlayer(USERNAME, current_lobby_id); }
                     catch (SQLException e) { e.printStackTrace(); }
+                } else if (current_lobby_id > 0 && numOfPlayers == 1) {
+                    try { Handler.getLobbyDAO().deleteLobby(lobby_id); }
+                    catch (SQLException e) { e.printStackTrace(); }
                 }
             }
 
             // If player leaves lobby
             else {
-                try { Handler.getLobbyDAO().removePlayer(USERNAME, lobby_id);
-                } catch (SQLException e) { e.printStackTrace(); }
+                try { Handler.getLobbyDAO().removePlayer(USERNAME, lobby_id); }
+                catch (SQLException e) { e.printStackTrace(); }
             }
 
             refresh();

@@ -98,6 +98,7 @@ DROP PROCEDURE lobby_delete;
 CREATE PROCEDURE lobby_delete(IN room_id INT)
   BEGIN
     DELETE FROM lobby WHERE lobby.room_id=room_id;
+    DELETE FROM lobbyname WHERE lobby_id = room_id;
   END;
 -- END$$
 
