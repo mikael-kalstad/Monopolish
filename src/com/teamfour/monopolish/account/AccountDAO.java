@@ -13,7 +13,6 @@ import java.sql.*;
 
 public class AccountDAO extends DataAccessObject {
 
-
     /**
      * Inserts an account object into the account table
      * @param account Object to insert
@@ -36,7 +35,7 @@ public class AccountDAO extends DataAccessObject {
                 status = cStmt.getInt(5);
 
         } catch (SQLException e) {
-            //return 1; Is this useful?
+            e.printStackTrace();
             throw new SQLException();
         } finally {
             releaseConnection();
@@ -52,7 +51,7 @@ public class AccountDAO extends DataAccessObject {
      * @param newPassword
      * @return 1 if successful, 0 if no user, -1 if wrong password
      */
-    public int resetPassword(String username, String currentPassword, String newPassword) {
+    public int resetPassword(String username, String currentPassword, String newPassword) throws SQLException {
         int status = 0;
         try {
             getConnection();
@@ -68,6 +67,7 @@ public class AccountDAO extends DataAccessObject {
             status = cStmt.getInt(4);
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new SQLException();
         } finally {
             releaseConnection();
         }

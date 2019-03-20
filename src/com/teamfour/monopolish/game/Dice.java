@@ -1,7 +1,5 @@
 package com.teamfour.monopolish.game;
 
-import javafx.geometry.Pos;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 import java.util.ArrayList;

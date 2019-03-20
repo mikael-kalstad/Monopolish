@@ -25,26 +25,30 @@ public class PropertyDAO extends DataAccessObject {
      */
     public ArrayList<Property> getAllProperties(int game_id) throws SQLException {
         ArrayList<Property> props = new ArrayList<>();
+        try {
+            getConnection();
+            cStmt = connection.prepareCall("{call property_get_all(?)}");
 
-        getConnection();
-        cStmt = connection.prepareCall("{call property_get_all(?)}");
+            cStmt.setInt(1, game_id);
 
-        cStmt.setInt(1, game_id);
+            ResultSet rs = cStmt.executeQuery();
 
-        ResultSet rs = cStmt.executeQuery();
+            while (rs.next()) {
+                int propertyId = rs.getInt(1);
+                String name = rs.getString(2);
+                int price = rs.getInt(3);
+                int position = rs.getInt(4);
+                String categoryColor = rs.getString(5);
+                String owner = rs.getString(6);
 
-        while(rs.next()) {
-            int propertyId = rs.getInt(1);
-            String name = rs.getString(2);
-            int price = rs.getInt(3);
-            int position = rs.getInt(4);
-            String categoryColor = rs.getString(5);
-            String owner = rs.getString(6);
-
-            props.add(new Property(propertyId, name, price, position, categoryColor, owner));
+                props.add(new Property(propertyId, name, price, position, categoryColor, owner));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLException();
+        } finally {
+            releaseConnection();
         }
-
-        releaseConnection();
 
         return (props);
     }
@@ -58,26 +62,31 @@ public class PropertyDAO extends DataAccessObject {
     public ArrayList<Property> getPropertiesByOwner(int gameId, String username) throws SQLException {
         ArrayList<Property> properties = new ArrayList<>();
 
-        getConnection();
-        cStmt = connection.prepareCall("{CALL property_get_by_owner(?, ?)}");
+        try {
+            getConnection();
+            cStmt = connection.prepareCall("{CALL property_get_by_owner(?, ?)}");
 
-        cStmt.setInt(1, gameId);
-        cStmt.setString(2, username);
+            cStmt.setInt(1, gameId);
+            cStmt.setString(2, username);
 
-        ResultSet rs = cStmt.executeQuery();
+            ResultSet rs = cStmt.executeQuery();
 
-        while (rs.next()) {
-            int propertyId = rs.getInt(1);
-            String name = rs.getString(2);
-            int price = rs.getInt(3);
-            int position = rs.getInt(4);
-            String categoryColor = rs.getString(5);
-            String owner = rs.getString(6);
+            while (rs.next()) {
+                int propertyId = rs.getInt(1);
+                String name = rs.getString(2);
+                int price = rs.getInt(3);
+                int position = rs.getInt(4);
+                String categoryColor = rs.getString(5);
+                String owner = rs.getString(6);
 
-            properties.add(new Property(propertyId, name, price, position, categoryColor, owner));
+                properties.add(new Property(propertyId, name, price, position, categoryColor, owner));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLException();
+        } finally {
+            releaseConnection();
         }
-
-        releaseConnection();
 
         return properties;
     }
@@ -88,7 +97,7 @@ public class PropertyDAO extends DataAccessObject {
      * @param game_id the id of the current game
      */
 
-    public void updateProperty(Property prop, int game_id){
+    public void updateProperty(Property prop, int game_id) throws SQLException {
         try {
             getConnection();
             cStmt = connection.prepareCall("{call property_update(?, ?, ?, ?)}");
@@ -99,6 +108,7 @@ public class PropertyDAO extends DataAccessObject {
                 cStmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new SQLException();
         } finally {
             releaseConnection();
         }
@@ -109,7 +119,7 @@ public class PropertyDAO extends DataAccessObject {
      * @param game_id the game_id the id of the current game
      *
      */
-    public void endGame(int game_id){
+    public void endGame(int game_id) throws SQLException {
         try {
             connection = ConnectionPool.getMainConnectionPool().getConnection();
             cStmt = connection.prepareCall("{call property_clean(?)}");
@@ -119,20 +129,10 @@ public class PropertyDAO extends DataAccessObject {
 
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new SQLException();
         } finally {
             releaseConnection();
         }
     }
-
-/*
-    public ArrayList<Property> getAvailableProperties(){
-        return null;
-    }
-
-    public ArrayList<Property> getPlayerProperties(){
-        return null;
-    }
-*/
 }
-
 

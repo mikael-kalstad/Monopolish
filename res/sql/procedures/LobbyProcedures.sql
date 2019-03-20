@@ -147,7 +147,6 @@ DROP PROCEDURE getALlReadyInLobby;
 
 CREATE PROCEDURE getALlReadyInLobby(IN lobby_id INT)
   BEGIN
-
     SELECT COUNT(*) FROM lobby
     WHERE lobby_id = room_id
     AND ready = 1;

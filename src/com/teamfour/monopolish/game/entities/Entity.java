@@ -94,7 +94,7 @@ public abstract class Entity {
         return true;
     }
 
-    public void updatePropertiesToDatabase(int gameId) {
+    public void updatePropertiesToDatabase(int gameId) throws SQLException {
         for (Property prop : properties) {
             propertyDAO.updateProperty(prop, gameId);
         }
