@@ -80,7 +80,7 @@ public class Player extends Entity {
         this.position = position;
     }
 
-    public String getUSERNAME() {
+    public String getUsername() {
         return USERNAME;
     }
 
