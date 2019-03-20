@@ -350,7 +350,7 @@ public class LobbyController {
         int numOfReady = Handler.getLobbyDAO().getAllReadyInLobby(lobby_id);
 
         // Check if game should start
-        if (numOfPlayers > 1 && numOfReady == numOfPlayers) {
+        if (current_lobby_id == lobby_id && numOfPlayers > 1 && numOfReady == numOfPlayers) {
             statusValue.setText(STATUS_STARTED);
             LobbyDrawFx.setTextColor(statusValue, PLAYER_COLOR_RED);
             startGame(lobby_id);
