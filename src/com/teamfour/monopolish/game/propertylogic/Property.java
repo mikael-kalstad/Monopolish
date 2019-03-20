@@ -17,7 +17,6 @@ public class Property {
     private String owner;
     private final String CATEGORYCOLOR;
 
-
     /**
      * Constructor
      */

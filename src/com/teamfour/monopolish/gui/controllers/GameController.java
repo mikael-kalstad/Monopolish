@@ -58,12 +58,17 @@ public class GameController {
     }
 
     public void setRolldice(){
-            int[] dice = gameLogic.throwDice();
-            int dice1 = dice[0];
-            int dice2 = dice[1];
-            String s = "Threw dice:  "+ dice1 + ",  " + dice2;
-            addToEventlog(s);
-            movePlayer(playerList.get(0), dice1+dice2);
+        int[] dice = null;
+        try {
+            dice = gameLogic.throwDice();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        int dice1 = dice[0];
+        int dice2 = dice[1];
+        String s = "Threw dice:  "+ dice1 + ",  " + dice2;
+        addToEventlog(s);
+        movePlayer(playerList.get(0), dice1+dice2);
     }
 
     public void drawPlayers() {
