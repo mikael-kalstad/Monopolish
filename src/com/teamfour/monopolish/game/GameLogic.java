@@ -93,17 +93,22 @@ public class GameLogic {
         System.out.println("Game is starting!");
     }
 
-    public int[] throwDice() {
+    public int[] throwDice() throws SQLException {
         int[] throwResult = dice.throwDice();
         int steps = throwResult[0] + throwResult[1];
         if (yourPlayer.isInJail()) {
             if (throwResult[0] == throwResult[1])
-                yourPlayer.move(steps);
+                moveYourPlayer(steps);
         } else {
-            yourPlayer.move(steps);
+            moveYourPlayer(steps);
         }
 
         return dice.throwDice();
+    }
+
+    public void moveYourPlayer(int steps) throws SQLException {
+        yourPlayer.move(steps);
+        newTurn();
     }
 
     /**
