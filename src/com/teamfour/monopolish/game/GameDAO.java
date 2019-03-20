@@ -21,15 +21,22 @@ public class GameDAO extends DataAccessObject {
      * @throws SQLException
      */
     public int insertGame(int lobbyId) throws SQLException {
-        getConnection();
-        cStmt = connection.prepareCall("{call game_insert(?, ?)}");
-
-        cStmt.setInt(1, lobbyId);
-        cStmt.registerOutParameter(2, Types.INTEGER);
-
         int gameId = -1;
-        if (cStmt.executeUpdate() > 0)
-            gameId = cStmt.getInt(2);
+        try {
+            getConnection();
+            cStmt = connection.prepareCall("{call game_insert(?, ?)}");
+
+            cStmt.setInt(1, lobbyId);
+            cStmt.registerOutParameter(2, Types.INTEGER);
+
+            if (cStmt.executeUpdate() > 0)
+                gameId = cStmt.getInt(2);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLException();
+        } finally {
+            releaseConnection();
+        }
 
         return gameId;
     }
@@ -41,19 +48,27 @@ public class GameDAO extends DataAccessObject {
      * @throws SQLException
      */
     public String getCurrentPlayer(int gameId) throws SQLException {
-        getConnection();
-        cStmt = connection.prepareCall("{call game_get_current_player(?)}");
+        String player = "";
+        try {
+            getConnection();
+            cStmt = connection.prepareCall("{call game_get_current_player(?)}");
 
-        cStmt.setInt(1, gameId);
+            cStmt.setInt(1, gameId);
 
-        ResultSet rs = cStmt.executeQuery();
+            ResultSet rs = cStmt.executeQuery();
 
-        if (rs.next())
-            return rs.getString(1);
+            if (rs.next())
+                player = rs.getString(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLException();
+        } finally {
+            releaseConnection();
+        }
 
         releaseConnection();
 
-        return "";
+        return player;
     }
 
     /**
@@ -64,15 +79,21 @@ public class GameDAO extends DataAccessObject {
      * @throws SQLException
      */
     public boolean setCurrentPlayer(int gameId, String currentPlayer) throws SQLException {
-        getConnection();
-        cStmt = connection.prepareCall("{call game_set_current_player(?, ?)}");
+        int count = 0;
+        try {
+            getConnection();
+            cStmt = connection.prepareCall("{call game_set_current_player(?, ?)}");
 
-        cStmt.setInt(1, gameId);
-        cStmt.setString(2, currentPlayer);
+            cStmt.setInt(1, gameId);
+            cStmt.setString(2, currentPlayer);
 
-        int count = cStmt.executeUpdate();
-
-        releaseConnection();
+            count = cStmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLException();
+        } finally {
+            releaseConnection();
+        }
 
         return (count > 0);
     }
@@ -85,15 +106,21 @@ public class GameDAO extends DataAccessObject {
      * @throws SQLException
      */
     public boolean finishGame(int gameId, int winnerId) throws SQLException {
-        getConnection();
-        cStmt = connection.prepareCall("{call game_close(?, ?)}");
+        int count = 0;
+        try {
+            getConnection();
+            cStmt = connection.prepareCall("{call game_close(?, ?)}");
 
-        cStmt.setInt(1, gameId);
-        cStmt.setInt(2, winnerId);
+            cStmt.setInt(1, gameId);
+            cStmt.setInt(2, winnerId);
 
-        int count = cStmt.executeUpdate();
-
-        releaseConnection();
+            count = cStmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLException();
+        } finally {
+            releaseConnection();
+        }
 
         return (count > 0);
     }
@@ -105,17 +132,23 @@ public class GameDAO extends DataAccessObject {
      * @throws SQLException
      */
     public int getWinner(int gameId) throws SQLException {
-        getConnection();
-        cStmt = connection.prepareCall("{call game_get_winner(?, ?)}");
-
-        cStmt.setInt(1, gameId);
-        cStmt.registerOutParameter(2, Types.INTEGER);
-
         int winnerId = -1;
-        if (cStmt.execute())
-            winnerId = cStmt.getInt(2);
+        try {
+            getConnection();
+            cStmt = connection.prepareCall("{call game_get_winner(?, ?)}");
 
-        releaseConnection();
+            cStmt.setInt(1, gameId);
+            cStmt.registerOutParameter(2, Types.INTEGER);
+
+            winnerId = -1;
+            if (cStmt.execute())
+                winnerId = cStmt.getInt(2);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLException();
+        } finally {
+            releaseConnection();
+        }
 
         return winnerId;
     }
