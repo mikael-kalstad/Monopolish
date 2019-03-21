@@ -36,7 +36,6 @@ public class GameLogic {
     private int roundNumber = 0;
     private String currentPlayer;
     private boolean finished = false;       // Is the game finished?
-    private Player yourPlayer;
 
     /**
      * Constructor
@@ -86,7 +85,6 @@ public class GameLogic {
         // 6. Start!
 
         // Load yourPlayer
-        yourPlayer = entityManager.getYou();
 
         currentPlayer = turns[0];
         // Main game loop
@@ -96,7 +94,7 @@ public class GameLogic {
     public int[] throwDice() throws SQLException {
         int[] throwResult = dice.throwDice();
         int steps = throwResult[0] + throwResult[1];
-        if (yourPlayer.isInJail()) {
+        if (entityManager.getYou().isInJail()) {
             if (throwResult[0] == throwResult[1])
                 moveYourPlayer(steps);
         } else {
@@ -107,45 +105,8 @@ public class GameLogic {
     }
 
     public void moveYourPlayer(int steps) throws SQLException {
-        yourPlayer.move(steps);
+        entityManager.getYou().move(steps);
         finishYourTurn();
-    }
-
-    /**
-     * Checks to see if it's your turn
-     * @return True if it's your turn
-     * @throws SQLException
-     */
-    public int checkForYourTurn() throws SQLException {
-        String newCurrentPlayer = gameDAO.getCurrentPlayer(gameId);
-        // CHeck if the current player has changed
-        if (currentPlayer.equals(newCurrentPlayer)) {
-            // If not, wait a second before returning
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return -1;
-        }
-        // If the current player has changed, get the new current player and update all data from the database
-        currentPlayer = newCurrentPlayer;
-        entityManager.updateFromDatabase();
-
-        System.out.println("It is " + currentPlayer + "'s turn.");
-
-        // Check to see if it's your turn
-        if (!turns[turnNumber].equals(Handler.getAccount().getUsername())) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return 0;
-        }
-
-        // If it is, yay!
-        return 1;
     }
 
     // TODO: Remove throws exception
@@ -305,7 +266,7 @@ public class GameLogic {
     public void newTurn() throws SQLException {
         System.out.println("New turn!");
         // If this was not your turn, get the new current player and update database
-        if (!currentPlayer.equals(yourPlayer.getUsername())) {
+        if (!currentPlayer.equals(entityManager.getYou().getUsername())) {
             String newCurrentPlayer = gameDAO.getCurrentPlayer(gameId);
             for (int i = 0; i < turns.length; i++) {
                 if (turns[i].equals(newCurrentPlayer)) {
@@ -347,8 +308,9 @@ public class GameLogic {
         } else {
             turnNumber++;
         }
+        System.out.println(entityManager.getYou().getPosition());
 
-        String currentPlayer = turns[turnNumber];
+        currentPlayer = turns[turnNumber];
         updateToDatabase();
     }
 
