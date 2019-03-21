@@ -1,5 +1,8 @@
 package com.teamfour.monopolish.game;
 
+import javafx.geometry.Pos;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 import java.util.ArrayList;
@@ -12,7 +15,7 @@ import java.util.Random;
  * @version 1.0
  */
 
-public class Dice {
+public class Dice extends StackPane {
     private Random random = new Random();
     private int numOfDices;
     private int numOfEyes;
@@ -28,25 +31,16 @@ public class Dice {
         this.numOfEyes = numOfEyes;
     }
 
-    public void draw(int numOfEyes){
+    public ArrayList<Circle> getDots(int numOfEyes){
         ArrayList<Circle> dots = new ArrayList<>();
-        dots.add(new Circle());
-        dots.add(new Circle());
-        dots.add(new Circle());
-        dots.add(new Circle());
-        dots.add(new Circle());
-        dots.add(new Circle());
 
-        //switch(numOfEyes){
-            //case 1:
-                //dots.get(0).setFill(Color.BLACK);
-                //dots.get(0).setStroke(Color.BLACK);
-
-
-                //dots.get(0).setAlignment();
-
+        for (int i  = 0; i <= numOfEyes; i++) {
+            dots.add(new Circle(10));
+            dots.get(i).setFill(Color.BLACK);
+            dots.get(i).setStroke(Color.BLACK);
         }
-    //}
+        return dots;
+    }
 
     /**
      * Helper method that will give a random number within some boundaries

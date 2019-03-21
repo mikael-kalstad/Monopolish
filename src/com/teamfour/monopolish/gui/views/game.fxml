@@ -706,7 +706,7 @@
       <AnchorPane layoutY="14.0" prefHeight="394.0" prefWidth="240.0" AnchorPane.bottomAnchor="642.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1680.0" AnchorPane.topAnchor="14.0">
          <children>
             <Button layoutX="53.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #FF9800;" text="Leave" textFill="#fafafa" />
-            <Button layoutX="53.0" layoutY="61.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #FF9800;" text="Hmm" textFill="#fafafa" />
+            <Button layoutX="53.0" layoutY="61.0" mnemonicParsing="false" onAction="#drawthing" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #FF9800;" text="Hmm" textFill="#fafafa" />
             <Label layoutX="53.0" layoutY="165.0" text="Round:">
                <font>
                   <Font size="26.0" />
@@ -740,12 +740,18 @@
                   <TextFlow fx:id="propertycard" layoutY="50.0" prefHeight="190.0" prefWidth="180.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
                </children>
             </AnchorPane>
-            <AnchorPane layoutX="210.0" layoutY="408.0" prefHeight="200.0" prefWidth="301.0" visible="false">
+            <AnchorPane layoutX="210.0" layoutY="408.0" prefHeight="200.0" prefWidth="301.0">
                <children>
                   <Rectangle arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="100.0" layoutX="14.0" layoutY="50.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
-                  <AnchorPane fx:id="dice1" layoutX="24.0" layoutY="60.0" prefHeight="80.0" prefWidth="80.0" />
                   <Rectangle arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="100.0" layoutX="188.0" layoutY="50.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
-                  <AnchorPane fx:id="dice2" layoutX="198.0" layoutY="60.0" prefHeight="80.0" prefWidth="80.0" />
+                  <GridPane fx:id="showdicepane" layoutX="23.0" layoutY="63.0" prefHeight="75.0" prefWidth="75.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="87.60003662109375" minWidth="10.0" prefWidth="80.13336181640625" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                  </GridPane>
                </children>
             </AnchorPane>
          </children>
