@@ -69,7 +69,7 @@ public class GameController {
         waitForTurn();
 
         // Set default alert box for leaving
-        Alert alertDialog = AlertBox.display (
+        alertDialog = AlertBox.display (
                 Alert.AlertType.CONFIRMATION,
                 "Warning", "Do you want to leave?",
                 "You will not be able to join later if you leave"
@@ -95,6 +95,8 @@ public class GameController {
     }
 
     public void leave() {
+        alertDialog.showAndWait();
+
         if (alertDialog.getResult().getButtonData().isDefaultButton()) {
             timer.cancel(); // Stop timer thread
 
