@@ -55,11 +55,23 @@ public class Player extends Entity {
      * Moves a specified amount
      * @param steps
      */
-    public void move(int steps){
+    public void move(int steps) {
+        /*
         if(position + steps > (Board.BOARD_LENGTH - 1)){
             position = position + steps - (Board.BOARD_LENGTH - 1);
         }
         position += steps;
+        */
+        while (true) {
+            position++;
+            steps--;
+            if (position == Board.BOARD_LENGTH) {
+                position = 0;
+            }
+            if (steps == 0) {
+                break;
+            }
+        }
     }
 
     @Override
