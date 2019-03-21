@@ -7,7 +7,10 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
@@ -38,6 +41,16 @@ public class GameController {
     @FXML private TextFlow propertycard;
     @FXML private GridPane gamegrid;
     @FXML private ListView eventlog;
+    @FXML
+    private Button rolldice;
+    @FXML
+    private TextFlow propertycard;
+    @FXML
+    private GridPane gamegrid, showdicepane;
+    @FXML
+    private ListView eventlog;
+    @FXML
+    private AnchorPane showdice1, showdice2;
 
     @FXML
     public void initialize() {
@@ -97,7 +110,7 @@ public class GameController {
                 // Change view to dashboard
                 Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
             }
-        }
+        });
     }
 
     /**
@@ -143,7 +156,26 @@ public class GameController {
         rolldice.setDisable(false);
     }
 
-    private void drawDice(){
+    public ArrayList<Circle> getDots(int numOfEyes){
+        ArrayList<Circle> dots = new ArrayList<>();
+
+        for (int i  = 0; i <= numOfEyes; i++) {
+            dots.add(new Circle(10));
+            dots.get(i).setFill(Color.BLACK);
+            dots.get(i).setStroke(Color.BLACK);
+            GridPane.setConstraints(dots.get(i), 0, 0);
+        }
+        if (dots.size() == 2){
+        }
+        return dots;
+    }
+
+    private void drawDice(int dice1, int dice2) {
+        showdicepane.getChildren().addAll(getDots(dice1));
+    }
+
+    public void drawthing(){
+        drawDice(2, 1);
     }
 
     public void setRolldice(){
@@ -187,6 +219,7 @@ public class GameController {
     }
 
     private void checkForOthers(FxPlayer player) {
+
         ArrayList<FxPlayer> checklist = new ArrayList<>();
 
         for (FxPlayer p : playerList) {
