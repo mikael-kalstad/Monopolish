@@ -25,7 +25,7 @@ import java.util.TimerTask;
  * <b>Note: the gui elements are created in the LobbyDrawFx class.</b>
  *
  * @author Mikael Kalstad
- * @version 1.5
+ * @version 1.6giskgisggg
  */
 public class LobbyController {
     @FXML private FlowPane lobbiesContainer;
@@ -35,7 +35,7 @@ public class LobbyController {
     @FXML private TextField newLobbyNameInput;
     @FXML private Text newLobbyMsg;
     @FXML private Text countdownText;
-    @FXML private Text getCountdownValue;
+    @FXML private Text countdownValue;
 
     private ArrayList<Pane> lobbyList = new ArrayList<>(); // List over all lobby container elements
     private final String USERNAME = Handler.getAccount().getUsername();
@@ -76,8 +76,6 @@ public class LobbyController {
     private final String COUNTDOWN_TEXT = "Game starting in";
 
     @FXML public void initialize() {
-        refresh();
-
         // Update lobbies periodically
         TimerTask task = new TimerTask() {
             @Override
@@ -90,6 +88,8 @@ public class LobbyController {
         long delay = 2000L; // Delay before update timer starts
         long period = 1000L; // Delay between each update/refresh
         timer.scheduleAtFixedRate(task, delay, period);
+
+        refresh();
 
         // When window is closed
         Handler.getSceneManager().getWindow().setOnCloseRequest(e -> {
@@ -446,24 +446,29 @@ public class LobbyController {
 
         // Countdown timer when game start
         Timer countDownTimer = new Timer();
+        countdownText.setVisible(true);
+        countdownValue.setVisible(true);
         countdownText.setText(COUNTDOWN_TEXT);
 
         TimerTask countDownTask = new TimerTask() {
             int time = COUNTDOWN_TIME;
+
             @Override
             public void run() {
-                // Logic when game should start
-                if (time == 0) {
-                    countDownTimer.cancel();
+                Platform.runLater(() -> {
+                    // Logic when game should start
+                    if (time == 0) {
+                        countDownTimer.cancel();
 
-                    // Switch to game scene
-                    Handler.getSceneManager().setScene(ViewConstants.GAME.getValue());
-                } else {
-                    time--;
+                        // Switch to game scene
+                        Handler.getSceneManager().setScene(ViewConstants.GAME.getValue());
+                    } else {
+                        time--;
 
-                    // Update countdown value
-                    getCountdownValue.setText(String.valueOf(time));
-                }
+                        // Update countdown value
+                        countdownValue.setText(String.valueOf(time));
+                    }
+                });
             }
         };
 
