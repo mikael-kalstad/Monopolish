@@ -14,12 +14,12 @@
 
 <AnchorPane prefHeight="1040.0" prefWidth="1920.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.monopolish.gui.controllers.LobbyController">
    <children>
-      <Text layoutX="850.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lobbies" wrappingWidth="217.00011444091803">
+      <Text layoutX="813.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lobbies" wrappingWidth="291.333311018394">
          <font>
-            <Font name="System Bold" size="49.0" />
+            <Font name="System Bold" size="66.0" />
          </font>
       </Text>
-      <Line endX="304.0000305175781" layoutX="897.0" layoutY="138.0" startX="-179.0" />
+      <Line endX="304.0000305175781" layoutX="896.0" layoutY="152.0" startX="-179.0" />
       <ScrollPane layoutX="220.0" layoutY="265.0" prefHeight="606.0" prefWidth="1479.0" style="-fx-hbar-policy: NEVER; -fx-background-color: white;">
          <content>
             <FlowPane fx:id="lobbiesContainer" prefHeight="604.0" prefWidth="1477.0" style="-fx-padding: 20; -fx-vgap: 40; -fx-hgap: 60; -fx-background-color: white;">
@@ -33,7 +33,7 @@
             <Font size="20.0" />
          </font>
       </Button>
-      <Text layoutX="836.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A lobby can have maximum 4 players">
+      <Text fill="#717171" layoutX="837.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A lobby can have maximum 4 players">
          <font>
             <Font size="15.0" />
          </font>
@@ -43,7 +43,7 @@
             <Font size="38.0" />
          </font>
       </Text>
-      <Text layoutX="796.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select a lobby to start playing">
+      <Text layoutX="807.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select a lobby to start playing">
          <font>
             <Font size="25.0" />
          </font>
@@ -150,25 +150,39 @@
             <Image url="file:res/gui/refresh.png" />
          </image>
       </ImageView>
-      <Text fill="#344e5d" layoutX="272.0" layoutY="946.0" onMouseClicked="#refresh" strokeType="OUTSIDE" strokeWidth="0.0" text="Refresh" wrappingWidth="302.000114440918">
+      <Text fill="#344e5d" layoutX="272.0" layoutY="946.0" onMouseClicked="#refresh" strokeType="OUTSIDE" strokeWidth="0.0" text="Refresh" visible="false" wrappingWidth="302.000114440918">
          <font>
             <Font name="System Bold" size="42.0" />
          </font>
       </Text>
-      <Text fill="#959595" layoutX="208.0" layoutY="997.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Refresh to see the newest lobbies ">
+      <Text fill="#959595" layoutX="208.0" layoutY="997.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Refresh to see the newest lobbies " visible="false">
          <font>
             <Font size="18.0" />
          </font>
       </Text>
-      <Text fx:id="countdownText" layoutX="1383.0" layoutY="118.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Game starting in" visible="false">
-         <font>
-            <Font size="34.0" />
-         </font>
-      </Text>
-      <Text fx:id="countdownValue" fill="RED" layoutX="1659.0" layoutY="130.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5" visible="false">
-         <font>
-            <Font size="59.0" />
-         </font>
-      </Text>
+      <Pane fx:id="countdown" layoutX="549.0" layoutY="50.0" prefHeight="186.0" prefWidth="735.0" style="-fx-background-color: EEEEEE; -fx-background-radius: 15;" visible="false">
+         <children>
+            <Text fill="#6a6a6a" layoutX="166.0" layoutY="107.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Game starting in" wrappingWidth="428.3334884643555">
+               <font>
+                  <Font name="System Bold" size="49.0" />
+               </font>
+            </Text>
+            <Text fx:id="countdownValue" fill="RED" layoutX="621.0" layoutY="126.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5">
+               <font>
+                  <Font size="96.0" />
+               </font>
+            </Text>
+            <ImageView layoutX="33.0" layoutY="37.0">
+               <image>
+                  <Image url="file:res/gui/countdown.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <ImageView fitHeight="143.0" fitWidth="142.0" layoutX="1528.0" layoutY="50.0">
+         <image>
+            <Image url="file:res/gui/lobby.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
