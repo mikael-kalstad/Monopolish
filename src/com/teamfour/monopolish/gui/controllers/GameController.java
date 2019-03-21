@@ -2,6 +2,7 @@ package com.teamfour.monopolish.gui.controllers;
 
 import com.teamfour.monopolish.game.GameLogic;
 import com.teamfour.monopolish.gui.views.ViewConstants;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
@@ -31,7 +32,6 @@ public class GameController {
     // Timers
 
     private Timer timer = new Timer();
-    private Alert alertDialog;
 
     private GameLogic gameLogic = new GameLogic(1);
     private ArrayList<Text> eventList = new ArrayList<>();
@@ -69,16 +69,18 @@ public class GameController {
         waitForTurn();
 
         // Set default alert box for leaving
-        alertDialog = AlertBox.display (
-                Alert.AlertType.CONFIRMATION,
-                "Warning", "Do you want to leave?",
-                "You will not be able to join later if you leave"
-        );
+
 
         // When window is closed
         Handler.getSceneManager().getWindow().setOnCloseRequest(e -> {
-            alertDialog.showAndWait();
             e.consume(); // Override default closing method
+
+            Alert alertDialog = AlertBox.display (
+                    Alert.AlertType.CONFIRMATION,
+                    "Warning", "Do you want to leave?",
+                    "You will not be able to join later if you leave"
+            );
+            alertDialog.showAndWait();
 
             // Check if yes button is pressed
             if (alertDialog.getResult().getButtonData().isDefaultButton()) {
@@ -95,6 +97,11 @@ public class GameController {
     }
 
     public void leave() {
+        Alert alertDialog = AlertBox.display (
+                Alert.AlertType.CONFIRMATION,
+                "Warning", "Do you want to leave?",
+                "You will not be able to join later if you leave"
+        );
         alertDialog.showAndWait();
 
         if (alertDialog.getResult().getButtonData().isDefaultButton()) {
@@ -129,17 +136,19 @@ public class GameController {
         {
             public void run()
             {
-                try {
-                    // If it's your turn, break out of the timer
-                    if (gameLogic.isYourTurn()) {
-                        System.out.println("Your turn");
-                        yourTurn();
-                    } else {
-                        System.out.println("Not your turn");
+                Platform.runLater(() -> {
+                    try {
+                        // If it's your turn, break out of the timer
+                        if (gameLogic.isYourTurn()) {
+                            System.out.println("Your turn");
+                            yourTurn();
+                        } else {
+                            System.out.println("Not your turn");
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
                     }
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                });
             }
         }, 0l, 1000l);
     }
