@@ -24,14 +24,6 @@ public class Handler extends Application {
     private final double ASPECT_RATIO = 16.0/9.0;
     private final String INITIAL_VIEW = ViewConstants.LOGIN.getValue();
 
-    private boolean hasWord(String str, String matchingWord) {
-        String arr[] = str.split(" ");
-        for (String word : arr) {
-            if (word.equals(matchingWord)) return true;
-        }
-        return false;
-    }
-
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle(APPLICATION_TITLE);
@@ -62,10 +54,10 @@ public class Handler extends Application {
         //primaryStage.setX((primaryStage.getWidth() - screen.getWidth()) / 2);
         //primaryStage.setX((primaryStage.getHeight() - screen.getHeight()) / 2);
 
-        System.out.println("visualbounds width: " + screen.getWidth()); // screens usable width (no task bars etc.)
-        System.out.println("visualbounds height: " + screen.getHeight()); // screens usable height
-        System.out.println("Actual res width: " + primaryStage.getWidth());
-        System.out.println("Actual res height: " + primaryStage.getHeight());
+//        System.out.println("visualbounds width: " + screen.getWidth()); // screens usable width (no task bars etc.)
+//        System.out.println("visualbounds height: " + screen.getHeight()); // screens usable height
+//        System.out.println("Actual res width: " + primaryStage.getWidth());
+//        System.out.println("Actual res height: " + primaryStage.getHeight());
     }
 
     public static void main(String[] args) {
@@ -76,21 +68,16 @@ public class Handler extends Application {
     public static SceneManager getSceneManager() {
         return sceneManager;
     }
-
     public static Account getAccount() {
         return account;
     }
-
     public static void setAccount(Account newAccount) {
         account = newAccount;
     }
-
     public static AccountDAO getAccountDAO() {
         return accountDAO;
     }
-
     public static PlayerDAO getPlayerDAO() { return playerDAO; }
     public static LobbyDAO getLobbyDAO() { return lobbyDAO; }
-
     public static GameDAO getGameDAO() { return gameDAO; }
 }

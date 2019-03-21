@@ -39,7 +39,7 @@ CREATE TABLE account
 CREATE TABLE lobbyname
 (
   lobby_id INT NOT NULL,
-  lobbyname VARCHAR(30),
+  lobbyname VARCHAR(30) NOT NULL,
   CONSTRAINT pk_lobbname PRIMARY KEY(lobby_id)
 );
 

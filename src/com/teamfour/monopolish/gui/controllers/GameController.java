@@ -1,16 +1,24 @@
 package com.teamfour.monopolish.gui.controllers;
 
 import com.teamfour.monopolish.game.GameLogic;
+import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
+import javax.net.ssl.SNIHostName;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Controller class for game view
@@ -20,6 +28,10 @@ import java.util.ArrayList;
  */
 
 public class GameController {
+    // Timers
+
+    private Timer timer = new Timer();
+    private Alert alertDialog;
 
     private GameLogic gameLogic = new GameLogic(1);
     private ArrayList<Text> eventList = new ArrayList<>();
@@ -30,9 +42,11 @@ public class GameController {
     @FXML
     private TextFlow propertycard;
     @FXML
-    private GridPane gamegrid;
+    private GridPane gamegrid, showdicepane;
     @FXML
     private ListView eventlog;
+    @FXML
+    private AnchorPane showdice1, showdice2;
 
     @FXML
     public void initialize() {
@@ -51,13 +65,115 @@ public class GameController {
 
         drawPlayers();
 
-        if (!gameLogic.isYourTurn()) {
-            rolldice.setDisable(true);
+        // Start the game!
+        waitForTurn();
+
+        // Set default alert box for leaving
+        alertDialog = AlertBox.display (
+                Alert.AlertType.CONFIRMATION,
+                "Warning", "Do you want to leave?",
+                "You will not be able to join later if you leave"
+        );
+
+        // When window is closed
+        Handler.getSceneManager().getWindow().setOnCloseRequest(e -> {
+            alertDialog.showAndWait();
+            e.consume(); // Override default closing method
+
+            // Check if yes button is pressed
+            if (alertDialog.getResult().getButtonData().isDefaultButton()) {
+                // Remove player from lobby
+                final String USERNAME = Handler.getAccount().getUsername();
+                Handler.getLobbyDAO().removePlayer(USERNAME, Handler.getLobbyDAO().getLobbyId(USERNAME));
+
+                timer.cancel(); // Stop timer thread
+
+                // Close the window
+                Handler.getSceneManager().getWindow().close();
+            }
+        });
+    }
+
+    public void leave() {
+        alertDialog.showAndWait();
+
+        if (alertDialog.getResult().getButtonData().isDefaultButton()) {
+            timer.cancel(); // Stop timer thread
+
+            if (alertDialog.getResult().getButtonData().isDefaultButton()) {
+                // Remove player from lobby
+                final String USERNAME = Handler.getAccount().getUsername();
+                Handler.getLobbyDAO().removePlayer(USERNAME, Handler.getLobbyDAO().getLobbyId(USERNAME));
+
+                // Change view to dashboard
+                Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
+            }
         }
     }
 
-    private void drawDice(){
+    /**
+     * Initiates a clock that runs on a separate thread. This clock
+     * checks the database each second to see if you are the current player.
+     * You will not be able to roll the dice while this clock runs. When
+     * it's registered that you are the current player, the clock stops
+     * and re-enables the 'roll dice' button. At the end of your turn, the
+     * clock will start again
+     */
+    private void waitForTurn() {
+        rolldice.setDisable(true);
+        // Create a timer object
+        timer = new Timer();
+        // We'll schedule a task that will check against the database
+        // if it's your turn every 1 second
+        timer.scheduleAtFixedRate(new TimerTask()
+        {
+            public void run()
+            {
+                try {
+                    // If it's your turn, break out of the timer
+                    if (gameLogic.isYourTurn()) {
+                        System.out.println("Your turn");
+                        yourTurn();
+                    } else {
+                        System.out.println("Not your turn");
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, 0l, 1000l);
+    }
 
+    public void yourTurn() {
+        try {
+            gameLogic.startYourTurn();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        timer.cancel();
+        rolldice.setDisable(false);
+    }
+
+    public ArrayList<Circle> getDots(int numOfEyes){
+        ArrayList<Circle> dots = new ArrayList<>();
+
+        for (int i  = 0; i <= numOfEyes; i++) {
+            dots.add(new Circle(10));
+            dots.get(i).setFill(Color.BLACK);
+            dots.get(i).setStroke(Color.BLACK);
+            GridPane.setConstraints(dots.get(i), 0, 0);
+        }
+        if (dots.size() == 2){
+        }
+        return dots;
+    }
+
+    private void drawDice(int dice1, int dice2) {
+        showdicepane.getChildren().addAll(getDots(dice1));
+    }
+
+    public void drawthing(){
+        drawDice(2, 1);
     }
 
     public void setRolldice(){
@@ -71,7 +187,8 @@ public class GameController {
         int dice2 = dice[1];
         String s = "Threw dice:  "+ dice1 + ",  " + dice2;
         addToEventlog(s);
-        movePlayer(playerList.get(0), dice1+dice2);
+        movePlayer(playerList.get(gameLogic.getTurnNumber()), dice1+dice2);
+        waitForTurn();
     }
 
     public void drawPlayers() {

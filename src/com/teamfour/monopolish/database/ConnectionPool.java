@@ -89,7 +89,7 @@ public class ConnectionPool {
      */
     public Connection getConnection() throws SQLException {
         if (connectionPool.isEmpty()) {
-            if (connectionPool.size() < MAX_POOL_SIZE) {
+            if (usedConnections.size() < MAX_POOL_SIZE) {
                 connectionPool.add(createConnection(url, username, password));
             } else {
                 throw new RuntimeException("Maximum pool size reached, no available connections!");
@@ -97,10 +97,13 @@ public class ConnectionPool {
         }
         Connection connection = connectionPool.remove(connectionPool.size() - 1);
         usedConnections.add(connection);
+        System.out.println("Available connections: " + connectionPool.size());
         return connection;
     }
 
     public boolean releaseConnection(Connection connection) {
+        if (connection == null)
+            return false;
         connectionPool.add(connection);
         return usedConnections.remove(connection);
     }

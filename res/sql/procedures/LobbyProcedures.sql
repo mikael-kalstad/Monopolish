@@ -152,3 +152,21 @@ CREATE PROCEDURE getALlReadyInLobby(IN lobby_id INT)
     WHERE lobby_id = room_id
     AND ready = 1;
   END;
+
+DROP PROCEDURE IF EXISTS lobby_removeEmptyLobbies;
+
+CREATE PROCEDURE lobby_removeEmptyLobbies()
+  BEGIN
+    DELETE FROM lobbyname where lobby_id not in (select room_id from lobby);
+  end;
+
+
+DROP PROCEDURE IF EXISTS lobby_get_id;
+CREATE PROCEDURE lobby_get_id(
+  in username varchar(30)
+  )
+  BEGIN
+    declare u_id integer;
+    select user_id  into u_id from account where u_name = username;
+    SELECT room_id from lobby where user_id = u_id;
+  end;

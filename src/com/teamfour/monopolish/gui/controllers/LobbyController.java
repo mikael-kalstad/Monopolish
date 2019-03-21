@@ -1,18 +1,23 @@
 package com.teamfour.monopolish.gui.controllers;
 
 import com.teamfour.monopolish.gui.views.ViewConstants;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
-import javax.sound.midi.SysexMessage;
-import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Controller class for lobby view,
@@ -23,6 +28,7 @@ import java.util.ArrayList;
  * @version 1.5
  */
 public class LobbyController {
+    @FXML private AnchorPane root;
     @FXML private FlowPane lobbiesContainer;
     @FXML private Pane newLobbyDialog;
     @FXML private Pane newLobbyBackground;
@@ -33,6 +39,7 @@ public class LobbyController {
     private final String USERNAME = Handler.getAccount().getUsername();
     private int current_lobby_id = -1; // Default when user is not in any lobby = -1
     private boolean READY = false;
+    private Timer timer;
 
     //  Status msg constants
     private final String STATUS_OPEN = "OPEN";
@@ -57,32 +64,53 @@ public class LobbyController {
 
     // Ids for gui elements
     private final String PLAYER_CONTAINER_ID = "playerContainer";
-    private final String PLAYER_ROW_ID = "playerRow";
     private final String BUTTON_JOIN_ID = "join";
     private final String BUTTON_READY_ID = "ready";
     private final String IMAGE_READY_ID = "readyImg";
     private final String STATUS_VALUE_ID = "statusValue";
 
     @FXML public void initialize() {
-        // Refresh page with enter or space key
-//        Handler.getSceneManager().getWindow().getScene().setOnKeyPressed(event -> {
-//            System.out.println("key pressed! " + event.getCode());
-//            if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.SPACE) {
-//
-//                refresh();
-//            }
-//        });
+        refresh();
 
-        lobbiesContainer.setOnKeyPressed(event -> {
-            System.out.println("key pressed! " + event.getCode());
-            if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.SPACE) {
+        // Update lobbies periodically
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> refresh());
+            }
+        };
 
-                refresh();
+        timer = new Timer();
+        long delay = 2000L; // Delay before update timer starts
+        long period = 1000L; // Delay between each update/refresh
+        timer.scheduleAtFixedRate(task, delay, period);
+
+        // When window is closed
+        Handler.getSceneManager().getWindow().setOnCloseRequest(e -> {
+            // If the user is in a lobby
+            if (current_lobby_id > 0) {
+                e.consume(); // Override default closing method
+
+                Alert alertDialog = AlertBox.display(
+                        Alert.AlertType.CONFIRMATION,
+                        "Warning", "Do you want to leave?",
+                        "If you leave, you will lose you position in the current lobby"
+                );
+
+                alertDialog.showAndWait();
+
+                // Check if yes button is pressed
+                if (alertDialog.getResult().getButtonData().isDefaultButton()) {
+                    // Remove user if in a lobby
+                    Handler.getLobbyDAO().removePlayer(USERNAME, current_lobby_id);
+
+                    timer.cancel(); // Stop timer thread
+
+                    // Close the window
+                    Handler.getSceneManager().getWindow().close();
+                }
             }
         });
-
-        // Update lobbies
-        refresh();
     }
 
     /**
@@ -93,6 +121,9 @@ public class LobbyController {
      * <b>This method should be called whenever some data is changed in the database to update the gui.</b>
      */
     public void refresh() {
+        // Check if any lobbies in database are empty
+        Handler.getLobbyDAO().removeEmptyLobbies();
+
         // Clear all lobbies
         lobbiesContainer.getChildren().clear();
         lobbyList.clear();
@@ -100,8 +131,7 @@ public class LobbyController {
 
         // Get data from database about all lobbies
         ArrayList<String[]> lobbyInfo = new ArrayList<>();
-        try { lobbyInfo = Handler.getLobbyDAO().getAllLobbies(); }
-        catch (SQLException e) { e.printStackTrace(); }
+        lobbyInfo = Handler.getLobbyDAO().getAllLobbies();
 
         for (String[] data : lobbyInfo) {
             int lobby_id = Integer.valueOf(data[0]);
@@ -120,7 +150,7 @@ public class LobbyController {
             }
 
             // Draw player in the lobby
-            drawPlayer(username, container, lobby_id);
+            drawPlayer(username, container);
 
             if (username.equals(this.USERNAME)) {
                 current_lobby_id = lobby_id;
@@ -212,7 +242,6 @@ public class LobbyController {
         return null;
     }
 
-
     /**
      * Will make a dialog for making a new lobby appear
      */
@@ -249,25 +278,15 @@ public class LobbyController {
             newLobbyMsg.setVisible(false);
             newLobbyDialog.setVisible(false);
             newLobbyBackground.setVisible(false);
-
-            int lobby_id = -1;
-
-            try {
-                lobby_id = Handler.getLobbyDAO().newLobby(USERNAME, newLobbyNameInput.getText());
-            }
-            catch (SQLException e) { e.printStackTrace(); }
-            System.out.println("lobby id" + lobby_id);
+            int lobby_id = Handler.getLobbyDAO().newLobby(USERNAME, newLobbyNameInput.getText());
 
             // If user is already in a lobby
             if (current_lobby_id > 0) {
-                try {
-                    Handler.getLobbyDAO().removePlayer(USERNAME, current_lobby_id);
-                } catch (SQLException e) { e.printStackTrace(); }
+                Handler.getLobbyDAO().removePlayer(USERNAME, current_lobby_id);
+                newLobbyNameInput.setText(""); // Reset text
             }
-
-            newLobbyNameInput.setText(""); // Reset text
-            refresh();
         }
+        refresh();
     }
 
     /**
@@ -276,7 +295,7 @@ public class LobbyController {
      * @param username
      * @param container Node target, which lobby to join
      */
-    private void drawPlayer(String username, Pane container, int lobby_id) {
+    private void drawPlayer(String username, Pane container) {
         Pane playerContainer = getContainerById(container, PLAYER_CONTAINER_ID);
         if (playerContainer == null) return;
 
@@ -322,11 +341,8 @@ public class LobbyController {
         if (readyImg == null) return; // Avoid exception
 
         // Set ready images
-        if (playerReady) {
-            readyImg.setImage(new Image("file:res/gui/ready.png"));
-        } else {
-            readyImg.setImage(new Image("file:res/gui/notReady.png"));
-        }
+        if (playerReady) readyImg.setImage(new Image("file:res/gui/ready.png"));
+        else readyImg.setImage(new Image("file:res/gui/notReady.png"));
     }
 
     /**
@@ -358,74 +374,65 @@ public class LobbyController {
 
         // If the user is in the actual lobby
         if (current_lobby_id == lobby_id) {
-            LobbyDrawFx.setBtnStyle(joinBtn, BTN_LEAVE, PLAYER_COLOR_RED);
-            statusValue.setText(numOfReady + " / " + numOfPlayers + " ready");
-            readyBtn.setDisable(false);
-            System.out.println("is user ready? " + READY);
-
             // Check if user is ready or not and change btn accordingly
-            if (READY) {
-                LobbyDrawFx.setBtnStyle(readyBtn, BTN_NOT_READY, PLAYER_COLOR_RED);
+            if (READY) LobbyDrawFx.setBtnStyle(readyBtn, BTN_NOT_READY, PLAYER_COLOR_RED);
+            else LobbyDrawFx.setBtnStyle(readyBtn, BTN_READY, PLAYER_COLOR_GREEN);
+
+            // Check if game has started
+            if (statusValue.getText().equals(STATUS_STARTED)) {
+                joinBtn.setDisable(true);
+                readyBtn.setDisable(true);
+                statusValue.setText(STATUS_STARTED);
+                LobbyDrawFx.setTextColor(statusValue, PLAYER_COLOR_RED);
             } else {
-                LobbyDrawFx.setBtnStyle(readyBtn, BTN_READY, PLAYER_COLOR_GREEN);
+                LobbyDrawFx.setBtnStyle(joinBtn, BTN_LEAVE, PLAYER_COLOR_RED);
+                statusValue.setText(numOfReady + " / " + numOfPlayers + " ready");
+                readyBtn.setDisable(false);
             }
 
+        // User is not in the actual lobby
         } else {
             LobbyDrawFx.setBtnStyle(joinBtn, BTN_JOIN, "#FF9800");
             readyBtn.setDisable(true);
-        }
-
-        // Disable join btn if lobby is full
-        if (numOfPlayers == 4 && current_lobby_id != lobby_id) {
-            joinBtn.setDisable(true);
-            statusValue.setText(STATUS_FULL);
-            LobbyDrawFx.setTextColor(statusValue, PLAYER_COLOR_RED);
-        } else if (current_lobby_id != lobby_id) {
             joinBtn.setDisable(false);
             statusValue.setText(STATUS_OPEN);
             LobbyDrawFx.setTextColor(statusValue, PLAYER_COLOR_GREEN);
+
+            // Check if game is full
+            if (numOfPlayers == 4) {
+                joinBtn.setDisable(true);
+                statusValue.setText(STATUS_FULL);
+                LobbyDrawFx.setTextColor(statusValue, PLAYER_COLOR_RED);
+            }
         }
 
         //Set logic when player uses the "join" button (i.e. joins or leaves the lobby)
         joinBtn.setOnAction(click -> {
             // If user joins lobby
             if (joinBtn.getText().equals(BTN_JOIN)) {
-                try { Handler.getLobbyDAO().addPlayer(USERNAME, lobby_id); }
-                catch (SQLException e) { e.printStackTrace(); }
+                Handler.getLobbyDAO().addPlayer(USERNAME, lobby_id);
 
                 // Remove player if already in a lobby
                 if (current_lobby_id > 0 ) {
-                    try { Handler.getLobbyDAO().removePlayer(USERNAME, current_lobby_id); }
-                    catch (SQLException e) { e.printStackTrace(); }
+                    Handler.getLobbyDAO().removePlayer(USERNAME, current_lobby_id);
                 }
             }
 
             // If player leaves lobby
-            else {
-                try { Handler.getLobbyDAO().removePlayer(USERNAME, lobby_id); }
-                catch (SQLException e) { e.printStackTrace(); }
-
-                // If there are no players left, delete the lobby
-                if (numOfPlayers == 1) {
-                    try { Handler.getLobbyDAO().deleteLobby(lobby_id);
-                    } catch (SQLException e) { e.printStackTrace(); }
-                    System.out.println("deleting lobby....");
-                }
-            }
+            else { Handler.getLobbyDAO().removePlayer(USERNAME, lobby_id); }
 
             refresh();
         });
 
         // Set logic when player uses the "userReady" button (i.e. sets userReady or not)
         readyBtn.setOnAction(click -> {
-            try { Handler.getLobbyDAO().setReady(lobby_id, USERNAME, readyBtn.getText().equals(BTN_READY)); }
-            catch (SQLException e) { e.printStackTrace(); }
-
+            Handler.getLobbyDAO().setReady(lobby_id, USERNAME, readyBtn.getText().equals(BTN_READY));
             refresh();
         });
     }
 
     private void startGame(int lobby_id) {
+        timer.cancel(); // Stop timer thread;
 //        int game_id = -1;
 //        String[] players = null;
 //        try {
@@ -434,7 +441,6 @@ public class LobbyController {
 //        }
 //        catch (SQLException e) { e.printStackTrace(); }
         //Handler.getPlayerDAO().createPlayers(game_id, players);
-
         Handler.getSceneManager().setScene(ViewConstants.GAME.getValue());
     }
 
@@ -443,5 +449,6 @@ public class LobbyController {
      */
     public void leave() {
         Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
+        timer.cancel(); // Stop timer thread
     }
 } // SNOOOOP DOOOOG! :O ================~~~~~~~~
