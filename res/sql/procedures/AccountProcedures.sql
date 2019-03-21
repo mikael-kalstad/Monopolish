@@ -7,18 +7,10 @@
  */
 USe monopolish;
 -- DELIMITER $$
-DROP PROCEDURE account_insert_user;
 
--- (username, email, password, salt, regdate)
--- Error/exit codes:
--- 0 = no errors, 1 = username allredy taken, 2 = email already taken
-CREATE PROCEDURE account_insert_user(
-    IN uname VARCHAR(30),
-    IN mail VARCHAR(50),
-    IN password VARCHAR(30),
-    IN reg_date DATETIME,
-    OUT error_code INT
-  )
+-- ------------------OLD----------------------------------
+create procedure account_insert_user(IN uname    varchar(30), IN mail varchar(50), IN password varchar(30),
+                                     IN reg_date datetime, OUT error_code int)
   BEGIN
     DECLARE salt_pw BINARY(32);
     DECLARE hashed_pwd VARCHAR(64);
@@ -29,10 +21,10 @@ CREATE PROCEDURE account_insert_user(
     -- DECLARE EXIT HANDLER FOR 1062 SELECT 1 AS error_code;
 
     DECLARE EXIT HANDLER FOR 1062
-      BEGIN
-        SELECT LOWER(username) FROM account WHERE LOWER(username = uname) INTO test_username;
-        SET error_code = 1;
-      END;
+    BEGIN
+      SELECT LOWER(username) FROM account WHERE LOWER(username = uname) INTO test_username;
+      SET error_code = 1;
+    END;
 
     /*
     DECLARE EXIT HANDLER FOR 1062
@@ -46,12 +38,12 @@ CREATE PROCEDURE account_insert_user(
     SET salt_pw = RAND();
     SET hashed_pwd = SHA2(CONCAT(password, salt_pw), 256);
 
-/*
-    SELECT LOWER(username) FROM account WHERE LOWER(username = uname) INTO test_username;
-    SELECT COUNT(*) FROM account WHERE LOWER(username = 'testman3') INTO;
-    SELECT LOWER(email) FROM account WHERE LOWER(email = mail) INTO test_email;
-    SELECT LOWER()
-    */
+    /*
+        SELECT LOWER(username) FROM account WHERE LOWER(username = uname) INTO test_username;
+        SELECT COUNT(*) FROM account WHERE LOWER(username = 'testman3') INTO;
+        SELECT LOWER(email) FROM account WHERE LOWER(email = mail) INTO test_email;
+        SELECT LOWER()
+        */
     /*
 
     IF LOWER(test_username = uname) THEN
@@ -68,6 +60,30 @@ CREATE PROCEDURE account_insert_user(
     INSERT INTO account VALUES(DEFAULT, uname, mail, hashed_pwd, salt_pw, reg_date);
 
   END;
+
+
+-- ------------------------------------------------------
+DROP PROCEDURE account_insert_user;
+
+-- (username, email, password, salt, regdate)
+-- Error/exit codes:
+-- 0 = no errors, 1 = username allredy taken, 2 = email already taken
+CREATE PROCEDURE account_insert_user(
+    IN uname VARCHAR(30),
+    IN mail VARCHAR(50),
+    IN password VARCHAR(30),
+    IN reg_date DATETIME
+  )
+  BEGIN
+    DECLARE salt_pw BINARY(32);
+    DECLARE hashed_pwd VARCHAR(64);
+
+    SET salt_pw = RAND();
+    SET hashed_pwd = SHA2(CONCAT(password, salt_pw), 256);
+
+    INSERT INTO account VALUES(DEFAULT, uname, mail, hashed_pwd, salt_pw, reg_date);
+  END;
+
 -- END$$
 
 -- TEST:
@@ -132,7 +148,7 @@ CREATE PROCEDURE account_reset_password(
     -- SELECT username FROM account WHERE uname = account.username;
     -- UPDATE old_pwd_hashed
     UPDATE account SET hashed_password = new_pwd_hashed AND salt = new_salt WHERE uname = account.username;
-    SELECT username, email, regdate, highscore FROM account WHERE new_pwd_hashed = account.hashed_password;
+    SELECT username, email, regdate FROM account WHERE new_pwd_hashed = account.hashed_password;
   END;
 
 CREATE PROCEDURE player_get_highscore(IN name VARCHAR(30))
