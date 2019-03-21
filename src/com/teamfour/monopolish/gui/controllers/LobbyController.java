@@ -3,13 +3,11 @@ package com.teamfour.monopolish.gui.controllers;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -34,7 +32,7 @@ public class LobbyController {
     @FXML private Pane newLobbyBackground;
     @FXML private TextField newLobbyNameInput;
     @FXML private Text newLobbyMsg;
-    @FXML private Text countdownText;
+    @FXML private Pane countdown;
     @FXML private Text countdownValue;
 
     private ArrayList<Pane> lobbyList = new ArrayList<>(); // List over all lobby container elements
@@ -430,7 +428,9 @@ public class LobbyController {
             }
 
             // If player leaves lobby
-            else { Handler.getLobbyDAO().removePlayer(USERNAME, lobby_id); }
+            else {
+                Handler.getLobbyDAO().removePlayer(USERNAME, lobby_id);
+            }
 
             refresh();
         });
@@ -447,9 +447,8 @@ public class LobbyController {
 
         // Countdown timer when game start
         Timer countDownTimer = new Timer();
-        countdownText.setVisible(true);
+        countdown.setVisible(true);
         countdownValue.setVisible(true);
-        countdownText.setText(COUNTDOWN_TEXT);
 
         TimerTask countDownTask = new TimerTask() {
             int time = COUNTDOWN_TIME;
@@ -457,8 +456,13 @@ public class LobbyController {
             @Override
             public void run() {
                 Platform.runLater(() -> {
+                    // Check if player left the lobby
+                    if (current_lobby_id == -1) {
+                        countDownTimer.cancel();
+                        countdown.setVisible(false);
+                    }
                     // Logic when game should start
-                    if (time == 0) {
+                    else if (time == 0) {
                         countDownTimer.cancel();
 
                         // Switch to game scene

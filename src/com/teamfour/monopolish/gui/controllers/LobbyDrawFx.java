@@ -176,8 +176,8 @@ public class LobbyDrawFx {
      */
     public static GridPane drawPlayerRow(String color, String username, int index) {
         GridPane container = new GridPane();
-        container.setPrefSize(220, 35);
-        container.setMaxSize(220, 35);
+        container.setPrefSize(250, 35);
+        container.setMaxSize(250, 35);
 
         // Setting up columns
         ColumnConstraints colorCol = new ColumnConstraints();
@@ -191,7 +191,6 @@ public class LobbyDrawFx {
         imgCol.setPrefWidth(25);
         imgCol.setHalignment(HPos.RIGHT);
         container.getColumnConstraints().addAll(colorCol, spaceCol, userCol, imgCol);
-
 
         String backgroundColor = "#EEEEEE";
         if (index % 2 != 0) backgroundColor = "white";

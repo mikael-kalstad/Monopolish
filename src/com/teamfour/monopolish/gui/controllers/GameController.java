@@ -104,6 +104,8 @@ public class GameController {
             if (alertDialog.getResult().getButtonData().isDefaultButton()) {
                 // Remove player from lobby
                 final String USERNAME = Handler.getAccount().getUsername();
+                int lobbyId = Handler.getLobbyDAO().getLobbyId(USERNAME);
+                System.out.println("lobby id when leaving... " + lobbyId);
                 Handler.getLobbyDAO().removePlayer(USERNAME, Handler.getLobbyDAO().getLobbyId(USERNAME));
 
                 // Change view to dashboard
