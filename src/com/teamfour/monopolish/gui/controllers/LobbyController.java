@@ -257,6 +257,7 @@ public class LobbyController {
      */
     public void showNewLobbyDialog() {
         // Set the background to visible and transparent grey'ish
+        noLobbyText.setVisible(false);
         newLobbyBackground.setVisible(true);
         newLobbyBackground.setStyle("-fx-background-color: rgba(160,160,160,0.4)");
 
