@@ -10,6 +10,7 @@ import com.teamfour.monopolish.gui.controllers.Handler;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 /**
  * Contains all the gameplay logic for the game
@@ -52,7 +53,7 @@ public class GameLogic {
      */
     public void setupGame() throws SQLException {
 
-        Handler.setAccount(new Account("helgeingstad", "giske@damer.no", LocalDate.now(), 0));
+        Handler.setAccount(new Account("giske", "giske@damer.no", LocalDate.now(), 0));
 
         // Load board, graphics, etc.
         ConnectionPool.create();
@@ -346,5 +347,15 @@ public class GameLogic {
     public boolean isYourTurn() throws SQLException {
         String newCurrentUser = gameDAO.getCurrentPlayer(gameId);
         return newCurrentUser.equals(Handler.getAccount().getUsername());
+    }
+
+    public int[] getPlayerPositions() {
+        ArrayList<Player> players = entityManager.getPlayers();
+        int[] positions = new int[players.size()];
+        for (int i = 0; i < positions.length; i++) {
+            positions[i] = players.get(i).getPosition();
+        }
+
+        return positions;
     }
 }

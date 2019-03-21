@@ -153,9 +153,18 @@ public class GameController {
         }, 0l, 1000l);
     }
 
+    public void updatePlayerPositions() {
+        int[] positions = gameLogic.getPlayerPositions();
+        for (int i = 0; i < positions.length; i++) {
+            movePlayer(playerList.get(i), positions[i]);
+        }
+    }
+
     public void yourTurn() {
+        // Beginning of your turn
         try {
             gameLogic.startYourTurn();
+            updatePlayerPositions();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -196,7 +205,8 @@ public class GameController {
         int dice2 = dice[1];
         String s = "Threw dice:  "+ dice1 + ",  " + dice2;
         addToEventlog(s);
-        movePlayer(playerList.get(gameLogic.getTurnNumber()), dice1+dice2);
+        updatePlayerPositions();
+        //movePlayer(playerList.get(gameLogic.getTurnNumber()), dice1+dice2);
         waitForTurn();
     }
 
@@ -212,7 +222,7 @@ public class GameController {
     }
 
     public void movePlayer(FxPlayer player, int steps) {
-        player.move(steps);
+        player.posToXY(steps);
         player.setAlignment(Pos.CENTER);
         GridPane.setConstraints(player, player.getPosX(), player.getPosY());
 

@@ -57,7 +57,7 @@ public class FxPlayer extends StackPane {
         posToXY(tilePosition);
     }
 
-    private void posToXY(int pos) {
+    public void posToXY(int pos) {
         int p, x, y;
         if (pos > (MAX * 4) - 1 || pos < 0) {
             throw new IllegalArgumentException("Player position out of bounds");
