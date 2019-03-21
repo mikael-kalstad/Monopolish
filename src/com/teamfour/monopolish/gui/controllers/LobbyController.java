@@ -3,16 +3,18 @@ package com.teamfour.monopolish.gui.controllers;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
-import javax.sound.midi.SysexMessage;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -26,6 +28,7 @@ import java.util.TimerTask;
  * @version 1.5
  */
 public class LobbyController {
+    @FXML private AnchorPane root;
     @FXML private FlowPane lobbiesContainer;
     @FXML private Pane newLobbyDialog;
     @FXML private Pane newLobbyBackground;
@@ -36,6 +39,7 @@ public class LobbyController {
     private final String USERNAME = Handler.getAccount().getUsername();
     private int current_lobby_id = -1; // Default when user is not in any lobby = -1
     private boolean READY = false;
+    private Timer timer;
 
     //  Status msg constants
     private final String STATUS_OPEN = "OPEN";
@@ -68,29 +72,42 @@ public class LobbyController {
     @FXML public void initialize() {
         refresh();
 
-        lobbiesContainer.setOnKeyPressed(event -> {
-            System.out.println("key pressed! " + event.getCode());
-            if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.SPACE) {
-                refresh();
-            }
-        });
-
         // Update lobbies periodically
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                Platform.runLater(() -> {
-                    refresh();
-                    System.out.println("refreshing!");
-                });
-
+                Platform.runLater(() -> refresh());
             }
         };
-        Timer timer = new Timer();
 
-        long delay = 2000L;
-        long period = 1000L;
+        timer = new Timer();
+
+        long delay = 2000L; // Delay before update timer starts
+        long period = 1000L; // Delay between each update/refresh
         timer.scheduleAtFixedRate(task, delay, period);
+
+        Handler.getSceneManager().getWindow().setOnCloseRequest(e -> {
+            e.consume(); // Override default closing method
+            timer.cancel(); // Stop timer thread
+
+            // If the user is in a lobby
+            if (current_lobby_id > 0) {
+                Alert alertDialog = AlertBox.display(
+                        Alert.AlertType.CONFIRMATION,
+                        "Warning", "Do you want to leave?",
+                        "If you leave, you will lose you position in the current lobby"
+                );
+
+                // Check if yes button is pressed
+                if (alertDialog.getResult().getButtonData().isDefaultButton()) {
+                    // Remove user if in a lobby
+                    Handler.getLobbyDAO().removePlayer(USERNAME, current_lobby_id);
+
+                    // Close the window
+                    Handler.getSceneManager().getWindow().close();
+                }
+            }
+        });
     }
 
     /**
@@ -221,21 +238,6 @@ public class LobbyController {
         }
         return null;
     }
-
-//    private void checkLobby(int lobby_id) {
-//        Pane container = getLobbyContainer(lobby_id);
-//        if (container == null) return;
-//
-//        Pane playersContainer = getContainerById(container, PLAYER_CONTAINER_ID);
-//        if (playersContainer == null) return;
-//
-//        int numOfPlayers = playersContainer.getChildren().size();
-//
-//        if (numOfPlayers == 0) {
-//            Handler.getLobbyDAO().deleteLobby(lobby_id);
-//        }
-//        refresh();
-//    }
 
     /**
      * Will make a dialog for making a new lobby appear
@@ -427,6 +429,7 @@ public class LobbyController {
     }
 
     private void startGame(int lobby_id) {
+        timer.cancel(); // Stop timer thread;
 //        int game_id = -1;
 //        String[] players = null;
 //        try {
@@ -435,7 +438,6 @@ public class LobbyController {
 //        }
 //        catch (SQLException e) { e.printStackTrace(); }
         //Handler.getPlayerDAO().createPlayers(game_id, players);
-
         Handler.getSceneManager().setScene(ViewConstants.GAME.getValue());
     }
 
@@ -444,5 +446,6 @@ public class LobbyController {
      */
     public void leave() {
         Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
+        timer.cancel(); // Stop timer thread
     }
 } // SNOOOOP DOOOOG! :O ================~~~~~~~~

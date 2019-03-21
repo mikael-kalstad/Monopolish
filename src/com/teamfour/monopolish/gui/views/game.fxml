@@ -705,7 +705,7 @@
       </AnchorPane>
       <AnchorPane layoutY="14.0" prefHeight="394.0" prefWidth="240.0" AnchorPane.bottomAnchor="642.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1680.0" AnchorPane.topAnchor="14.0">
          <children>
-            <Button layoutX="53.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #FF9800;" text="Leave" textFill="#fafafa" />
+            <Button layoutX="53.0" mnemonicParsing="false" onAction="#leave" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #FF9800;" text="Leave" textFill="#fafafa" />
             <Button layoutX="53.0" layoutY="61.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #FF9800;" text="Hmm" textFill="#fafafa" />
             <Label layoutX="53.0" layoutY="165.0" text="Round:">
                <font>
