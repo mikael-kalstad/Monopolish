@@ -69,8 +69,8 @@ public class FxPlayer extends StackPane {
                 x--;
                 p++;
                 if (p == pos) {
-                    posY = MAX;
-                    posX = x;
+                    this.posY = MAX;
+                    this.posX = x;
                     break;
                 }
             }
@@ -82,8 +82,8 @@ public class FxPlayer extends StackPane {
                 y--;
                 p++;
                 if (p == pos) {
-                    posY = y;
-                    posX = 0;
+                    this.posY = y;
+                    this.posX = 0;
                     break;
                 }
             }
@@ -95,8 +95,8 @@ public class FxPlayer extends StackPane {
                 x++;
                 p++;
                 if (p == pos) {
-                    posY = 0;
-                    posX = x;
+                    this.posY = 0;
+                    this.posX = x;
                     break;
                 }
             }
