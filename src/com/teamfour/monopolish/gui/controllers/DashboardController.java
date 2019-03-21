@@ -47,8 +47,9 @@ public class DashboardController {
         if (Handler.getAccount() != null) {
             username.setText(Handler.getAccount().getUsername());
             personalHighscore.setText(formatWithThousandDecimal(String.valueOf(Handler.getAccount().getHighscore())));
-
         }
+
+        //String[][] data = Handler.getPlayerDAO()
         setLeaderBoard(highscoreData);
     }
 
