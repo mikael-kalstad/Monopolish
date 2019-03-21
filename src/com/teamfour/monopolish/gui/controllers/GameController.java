@@ -1,8 +1,10 @@
 package com.teamfour.monopolish.gui.controllers;
 
 import com.teamfour.monopolish.game.GameLogic;
+import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
@@ -12,6 +14,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
+import javax.net.ssl.SNIHostName;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -63,6 +66,25 @@ public class GameController {
 
         // Start the game!
         waitForTurn();
+    }
+
+    public void leave() {
+        Handler.getSceneManager().getWindow().setOnCloseRequest(e -> {
+            Alert alertDialog = AlertBox.display(
+                    Alert.AlertType.CONFIRMATION,
+                    "Warning", "Do you want to leave?",
+                    "You will not be able to join later if you leave"
+            );
+
+            if (alertDialog.getResult().getButtonData().isDefaultButton()) {
+                // Remove player from lobby
+                final String USERNAME = Handler.getAccount().getUsername();
+                Handler.getLobbyDAO().removePlayer(USERNAME, Handler.getLobbyDAO().getLobbyId(USERNAME));
+
+                // Change view to dashboard
+                Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
+            }
+        });
     }
 
     /**
