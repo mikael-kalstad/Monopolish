@@ -81,27 +81,30 @@ public class LobbyController {
         };
 
         timer = new Timer();
-
         long delay = 2000L; // Delay before update timer starts
         long period = 1000L; // Delay between each update/refresh
         timer.scheduleAtFixedRate(task, delay, period);
 
+        // When window is closed
         Handler.getSceneManager().getWindow().setOnCloseRequest(e -> {
-            e.consume(); // Override default closing method
-            timer.cancel(); // Stop timer thread
-
             // If the user is in a lobby
             if (current_lobby_id > 0) {
+                e.consume(); // Override default closing method
+
                 Alert alertDialog = AlertBox.display(
                         Alert.AlertType.CONFIRMATION,
                         "Warning", "Do you want to leave?",
                         "If you leave, you will lose you position in the current lobby"
                 );
 
+                alertDialog.showAndWait();
+
                 // Check if yes button is pressed
                 if (alertDialog.getResult().getButtonData().isDefaultButton()) {
                     // Remove user if in a lobby
                     Handler.getLobbyDAO().removePlayer(USERNAME, current_lobby_id);
+
+                    timer.cancel(); // Stop timer thread
 
                     // Close the window
                     Handler.getSceneManager().getWindow().close();

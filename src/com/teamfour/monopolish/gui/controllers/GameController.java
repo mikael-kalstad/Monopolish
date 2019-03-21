@@ -28,19 +28,16 @@ public class GameController {
     // Timers
 
     private Timer timer = new Timer();
+    private Alert alertDialog;
 
     private GameLogic gameLogic = new GameLogic(1);
     private ArrayList<Text> eventList = new ArrayList<>();
     private ArrayList<FxPlayer> playerList = new ArrayList<>(); //hentes fra et annet sted, lobby?
     //@FXML private Label p1name, p1money, p2name, p2money, p3name, p3money;
-    @FXML
-    private Button rolldice;
-    @FXML
-    private TextFlow propertycard;
-    @FXML
-    private GridPane gamegrid;
-    @FXML
-    private ListView eventlog;
+    @FXML private Button rolldice;
+    @FXML private TextFlow propertycard;
+    @FXML private GridPane gamegrid;
+    @FXML private ListView eventlog;
 
     @FXML
     public void initialize() {
@@ -61,15 +58,36 @@ public class GameController {
 
         // Start the game!
         waitForTurn();
+
+        // Set default alert box for leaving
+        Alert alertDialog = AlertBox.display (
+                Alert.AlertType.CONFIRMATION,
+                "Warning", "Do you want to leave?",
+                "You will not be able to join later if you leave"
+        );
+
+        // When window is closed
+        Handler.getSceneManager().getWindow().setOnCloseRequest(e -> {
+            alertDialog.showAndWait();
+            e.consume(); // Override default closing method
+
+            // Check if yes button is pressed
+            if (alertDialog.getResult().getButtonData().isDefaultButton()) {
+                // Remove player from lobby
+                final String USERNAME = Handler.getAccount().getUsername();
+                Handler.getLobbyDAO().removePlayer(USERNAME, Handler.getLobbyDAO().getLobbyId(USERNAME));
+
+                timer.cancel(); // Stop timer thread
+
+                // Close the window
+                Handler.getSceneManager().getWindow().close();
+            }
+        });
     }
 
     public void leave() {
-        Handler.getSceneManager().getWindow().setOnCloseRequest(e -> {
-            Alert alertDialog = AlertBox.display(
-                    Alert.AlertType.CONFIRMATION,
-                    "Warning", "Do you want to leave?",
-                    "You will not be able to join later if you leave"
-            );
+        if (alertDialog.getResult().getButtonData().isDefaultButton()) {
+            timer.cancel(); // Stop timer thread
 
             if (alertDialog.getResult().getButtonData().isDefaultButton()) {
                 // Remove player from lobby
@@ -79,7 +97,7 @@ public class GameController {
                 // Change view to dashboard
                 Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
             }
-        });
+        }
     }
 
     /**

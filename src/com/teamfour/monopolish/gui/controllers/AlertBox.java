@@ -8,13 +8,12 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Text;
 
 public class AlertBox {
-
     public static Alert display(Alert.AlertType alertType, String title, String header, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(message);
-        alert.showAndWait();
+        //alert.showAndWait();
         return alert;
     }
 
