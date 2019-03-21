@@ -117,7 +117,7 @@ public class GameController {
 
     public void yourTurn() {
         try {
-            gameLogic.newTurn();
+            gameLogic.startYourTurn();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -126,7 +126,6 @@ public class GameController {
     }
 
     private void drawDice(){
-
     }
 
     public void setRolldice(){
@@ -170,7 +169,6 @@ public class GameController {
     }
 
     private void checkForOthers(FxPlayer player) {
-
         ArrayList<FxPlayer> checklist = new ArrayList<>();
 
         for (FxPlayer p : playerList) {

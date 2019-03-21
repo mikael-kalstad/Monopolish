@@ -102,6 +102,7 @@ public class PlayerDAO extends DataAccessObject {
 
             cStmt.setString(1, player.getUsername());
             cStmt.setInt(2, game_id);
+            System.out.println("Position: " + player.getPosition());
             cStmt.setInt(3, player.getPosition());
             cStmt.setInt(4, player.getMoney());
             cStmt.setBoolean(5, player.isInJail());
