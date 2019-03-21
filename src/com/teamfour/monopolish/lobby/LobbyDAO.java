@@ -236,6 +236,7 @@ public class LobbyDAO extends DataAccessObject {
         }
         return num;
     }
+
     public void removeEmptyLobbies() {
         getConnection();
 
@@ -249,5 +250,4 @@ public class LobbyDAO extends DataAccessObject {
             releaseConnection();
         }
     }
-
 }
