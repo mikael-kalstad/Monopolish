@@ -108,7 +108,7 @@ public class GameController {
         int dice2 = dice[1];
         String s = "Threw dice:  "+ dice1 + ",  " + dice2;
         addToEventlog(s);
-        movePlayer(playerList.get(0), dice1+dice2);
+        movePlayer(playerList.get(gameLogic.getTurnNumber()), dice1+dice2);
         waitForTurn();
     }
 
