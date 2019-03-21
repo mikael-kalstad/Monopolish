@@ -302,18 +302,31 @@ public class GameLogic {
     /**
      * Increments the turn number
      */
-    private void newTurn() throws SQLException {
+    public void newTurn() throws SQLException {
         System.out.println("New turn!");
-        if (turnNumber == entityManager.getPlayers().size() - 1) {
-            roundNumber++;
-            turnNumber = 0;
+        if (!currentPlayer.equals(yourPlayer.getUsername())) {
+            String newCurrentPlayer = gameDAO.getCurrentPlayer(gameId);
+            for (int i = 0; i < turns.length; i++) {
+                if (turns[i].equals(newCurrentPlayer)) {
+                    turnNumber = i;
+                }
+            }
+            currentPlayer = turns[turnNumber];
+            entityManager.updateFromDatabase();
         } else {
-            turnNumber++;
-        }
+            if (turnNumber >= entityManager.getPlayers().size() - 1) {
+                roundNumber++;
+                turnNumber = 0;
+            } else {
+                turnNumber++;
+            }
 
-        // Update current player
+            // Update current player
+            gameDAO.setCurrentPlayer(gameId, turns[turnNumber]);
+            entityManager.updateToDatabase();
+        }
         currentPlayer = turns[turnNumber];
-        gameDAO.setCurrentPlayer(gameId, currentPlayer);
+        System.out.println("Turn " + turnNumber + ": " + currentPlayer);
     }
 
     // SETTERS & GETTERS
