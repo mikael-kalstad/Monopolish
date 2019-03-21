@@ -23,7 +23,6 @@ public class LobbyDAO extends DataAccessObject {
      * create a new one
      * @param username Username
      * @return The lobby id
-     * @throws SQLException
      */
     public int insertLobby(String username) {
         int roomId = -1;
@@ -46,7 +45,12 @@ public class LobbyDAO extends DataAccessObject {
         return roomId;
     }
 
-
+    /**
+     * creates a new lobby with the given lobbyname, with the user in it
+     * @param username Username
+     * @param lobbyname Lobbyname
+     * @return The lobby id
+     */
     public int newLobby(String username, String lobbyname) {
         int lobby_id = -1;
         try {
@@ -260,7 +264,8 @@ public class LobbyDAO extends DataAccessObject {
             cStmt = connection.prepareCall("{CALL lobby_get_id(?)}");
             cStmt.setString(1, username);
             rs = cStmt.executeQuery();
-            lobby = rs.getInt(1 );
+            lobby = rs.getInt(1);
+            rs.close();
         }
         catch (SQLException e) {
             e.printStackTrace();

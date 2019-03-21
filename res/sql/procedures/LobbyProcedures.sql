@@ -163,10 +163,16 @@ CREATE PROCEDURE lobby_removeEmptyLobbies()
 
 DROP PROCEDURE IF EXISTS lobby_get_id;
 CREATE PROCEDURE lobby_get_id(
-  in username varchar(30)
+  in user_name varchar(30)
   )
   BEGIN
     declare u_id integer;
-    Set u_id = (Select user_id from account where username = username);
+
+    declare exit handler for SQLEXCEPTION
+      begin
+        select 100000;
+      end;
+
+    Set u_id = (Select user_id from account where user_name = username);
     SELECT room_id from lobby where user_id = u_id;
   end;
