@@ -37,10 +37,6 @@ public class GameController {
     private ArrayList<Text> eventList = new ArrayList<>();
     private ArrayList<FxPlayer> playerList = new ArrayList<>(); //hentes fra et annet sted, lobby?
     //@FXML private Label p1name, p1money, p2name, p2money, p3name, p3money;
-    @FXML private Button rolldice;
-    @FXML private TextFlow propertycard;
-    @FXML private GridPane gamegrid;
-    @FXML private ListView eventlog;
     @FXML
     private Button rolldice;
     @FXML
