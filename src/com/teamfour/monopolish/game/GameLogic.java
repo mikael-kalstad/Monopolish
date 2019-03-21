@@ -108,7 +108,7 @@ public class GameLogic {
 
     public void moveYourPlayer(int steps) throws SQLException {
         yourPlayer.move(steps);
-        newTurn();
+        finishYourTurn();
     }
 
     /**
@@ -328,6 +328,33 @@ public class GameLogic {
         }
         currentPlayer = turns[turnNumber];
         System.out.println("Turn " + turnNumber + ": " + currentPlayer);
+    }
+
+    public void startYourTurn() throws SQLException {
+        currentPlayer = gameDAO.getCurrentPlayer(gameId);
+        entityManager.updateFromDatabase();
+        for (int i = 0; i < turns.length; i++) {
+            if (turns[i].equals(currentPlayer)) {
+                turnNumber = i;
+            }
+        }
+    }
+
+    public void finishYourTurn() throws SQLException {
+        if (turnNumber >= entityManager.getPlayers().size() - 1) {
+            roundNumber++;
+            turnNumber = 0;
+        } else {
+            turnNumber++;
+        }
+
+        String currentPlayer = turns[turnNumber];
+        updateToDatabase();
+    }
+
+    public void updateToDatabase() throws SQLException {
+        gameDAO.setCurrentPlayer(gameId, currentPlayer);
+        entityManager.updateToDatabase();
     }
 
     // SETTERS & GETTERS

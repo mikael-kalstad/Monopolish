@@ -104,7 +104,6 @@ public class GameController {
     }
 
     private void drawDice(){
-
     }
 
     public void setRolldice(){
@@ -148,7 +147,6 @@ public class GameController {
     }
 
     private void checkForOthers(FxPlayer player) {
-
         ArrayList<FxPlayer> checklist = new ArrayList<>();
 
         for (FxPlayer p : playerList) {
