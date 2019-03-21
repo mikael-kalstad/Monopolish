@@ -23,13 +23,14 @@ public class AccountDAO extends DataAccessObject {
         int status = 0;
         try {
             getConnection();
-            cStmt = connection.prepareCall("{call account_insert_user(?, ?, ?, ?, ?)}");
+            //cStmt = connection.prepareCall("{call account_insert_user(?, ?, ?, ?, ?)}");
+            cStmt = connection.prepareCall("{call account_insert_user(?, ?, ?, ?)}");
 
             cStmt.setString(1, account.getUsername());
             cStmt.setString(2, account.getEmail());
             cStmt.setString(3, password);
             cStmt.setDate(4, Date.valueOf(account.getRegDate()));
-            cStmt.registerOutParameter(5, Types.INTEGER);
+            //cStmt.registerOutParameter(5, Types.INTEGER);
 
             if (cStmt.execute())
                 //status = cStmt.getInt(5);

@@ -72,57 +72,18 @@ CREATE PROCEDURE account_insert_user(
     IN uname VARCHAR(30),
     IN mail VARCHAR(50),
     IN password VARCHAR(30),
-    IN reg_date DATETIME,
-    OUT error_code INT
+    IN reg_date DATETIME
   )
   BEGIN
     DECLARE salt_pw BINARY(32);
     DECLARE hashed_pwd VARCHAR(64);
-    DECLARE test_username VARCHAR(30);
-    DECLARE test_email VARCHAR(50);
-    DECLARE user_error INT;
-    -- error_code
-    -- DECLARE EXIT HANDLER FOR 1062 SELECT 1 AS error_code;
-    /*
-    DECLARE EXIT HANDLER FOR 1062
-      BEGIN
-        SELECT LOWER(username) FROM account WHERE LOWER(username = uname) INTO test_username;
-        SET error_code = 1;
-      END;
-    */
-    /*
-    DECLARE EXIT HANDLER FOR 1062
-      BEGIN
-        SELECT LOWER(email) FROM account WHERE LOWER(email = mail) INTO test_email;
-        SET error_code = 2;
-      END;
-      */
-    SELECT COUNT(*) FROM account WHERE LOWER(account.username = uname) INTO test_username;
-    SELECT COUNT(*) FROM account WHERE LOWER(account.email = mail) INTO test_email;
-    -- SET salt_pw = RANDOM_BYTES(32);
+
     SET salt_pw = RAND();
     SET hashed_pwd = SHA2(CONCAT(password, salt_pw), 256);
 
-/*
-    SELECT LOWER(username) FROM account WHERE LOWER(username = uname) INTO test_username;
-    SELECT COUNT(*) FROM account WHERE LOWER(username = 'testman3') INTO;
-    SELECT LOWER(email) FROM account WHERE LOWER(email = mail) INTO test_email;
-    SELECT LOWER()
-    */
-
-    IF test_username > 1 THEN
-      SET error_code := error_code + 1;
-    ELSEIF test_email > 1 THEN
-      SET error_code := error_code + 1;
-    ELSE
-      SET error_code = 0;
-    END IF;
-
-
-    SELECT error_code;
     INSERT INTO account VALUES(DEFAULT, uname, mail, hashed_pwd, salt_pw, reg_date);
-
   END;
+
 -- END$$
 
 -- TEST:
