@@ -157,5 +157,5 @@ DROP PROCEDURE IF EXISTS lobby_removeEmptyLobbies;
 
 CREATE PROCEDURE lobby_removeEmptyLobbies()
   BEGIN
-    DELETE FROM lobbyname where not lobby_id = (select room_id from lobbyname join lobby on room_id = lobby_id);
+    DELETE FROM lobbyname where lobby_id not in (select room_id from lobby);
   end;
