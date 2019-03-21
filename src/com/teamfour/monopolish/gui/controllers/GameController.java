@@ -56,10 +56,20 @@ public class GameController {
 
         drawPlayers();
 
+        // Start the game!
         waitForTurn();
     }
 
+    /**
+     * Initiates a clock that runs on a separate thread. This clock
+     * checks the database each second to see if you are the current player.
+     * You will not be able to roll the dice while this clock runs. When
+     * it's registered that you are the current player, the clock stops
+     * and re-enables the 'roll dice' button. At the end of your turn, the
+     * clock will start again
+     */
     private void waitForTurn() {
+        rolldice.setDisable(true);
         // Create a timer object
         timer = new Timer();
         // We'll schedule a task that will check against the database
@@ -81,7 +91,6 @@ public class GameController {
                 }
             }
         }, 0l, 1000l);
-        rolldice.setDisable(true);
     }
 
     public void yourTurn() {
@@ -90,10 +99,6 @@ public class GameController {
     }
 
     private void drawDice(){
-
-    }
-
-    private void newTurn() {
 
     }
 
@@ -110,9 +115,6 @@ public class GameController {
         addToEventlog(s);
         movePlayer(playerList.get(0), dice1+dice2);
         waitForTurn();
-    }
-
-    public void waitForYourTurn() {
     }
 
     public void drawPlayers() {
