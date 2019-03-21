@@ -152,6 +152,7 @@ public class EntityManager {
      * @return You object
      */
     public Player getYou() {
+
         for(Player p : players) {
             if (p.getUsername().equals(Handler.getAccount().getUsername())) {
                 return p;

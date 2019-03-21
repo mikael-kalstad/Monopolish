@@ -28,7 +28,6 @@ public class Player extends Entity {
     public Player(String USERNAME) {
         super();
         this.USERNAME = USERNAME;
-        this.position = 0;
     }
 
     /**
@@ -60,7 +59,7 @@ public class Player extends Entity {
         if(position + steps > (Board.BOARD_LENGTH - 1)){
             position = position + steps - (Board.BOARD_LENGTH - 1);
         }
-        position+=steps;
+        position += steps;
     }
 
     @Override
