@@ -304,6 +304,7 @@ public class GameLogic {
      */
     public void newTurn() throws SQLException {
         System.out.println("New turn!");
+        // If this was not your turn, get the new current player and update database
         if (!currentPlayer.equals(yourPlayer.getUsername())) {
             String newCurrentPlayer = gameDAO.getCurrentPlayer(gameId);
             for (int i = 0; i < turns.length; i++) {

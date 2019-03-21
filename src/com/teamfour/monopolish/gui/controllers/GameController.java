@@ -94,6 +94,11 @@ public class GameController {
     }
 
     public void yourTurn() {
+        try {
+            gameLogic.newTurn();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         timer.cancel();
         rolldice.setDisable(false);
     }
