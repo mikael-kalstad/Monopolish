@@ -97,8 +97,8 @@ CREATE PROCEDURE account_insert_user(
         SET error_code = 2;
       END;
       */
-    -- SELECT COUNT(*) FROM account WHERE LOWER(account.username = uname) INTO test_username;
-    -- SELECT COUNT(*) FROM account WHERE LOWER(account.email = mail) INTO test_email;
+    SELECT COUNT(*) FROM account WHERE LOWER(account.username = uname) INTO test_username;
+    SELECT COUNT(*) FROM account WHERE LOWER(account.email = mail) INTO test_email;
     -- SET salt_pw = RANDOM_BYTES(32);
     SET salt_pw = RAND();
     SET hashed_pwd = SHA2(CONCAT(password, salt_pw), 256);
@@ -109,7 +109,7 @@ CREATE PROCEDURE account_insert_user(
     SELECT LOWER(email) FROM account WHERE LOWER(email = mail) INTO test_email;
     SELECT LOWER()
     */
-    /*
+
     IF test_username > 1 THEN
       SET error_code := error_code + 1;
     ELSEIF test_email > 1 THEN
@@ -117,9 +117,9 @@ CREATE PROCEDURE account_insert_user(
     ELSE
       SET error_code = 0;
     END IF;
-    */
 
-    SELECT @error_code;
+
+    SELECT error_code;
     INSERT INTO account VALUES(DEFAULT, uname, mail, hashed_pwd, salt_pw, reg_date);
 
   END;

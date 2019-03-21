@@ -101,3 +101,44 @@ begin
   commit;
 end $$
 delimiter ;
+
+DROP PROCEDURE player_get_highscore;
+
+CREATE PROCEDURE player_get_highscore()
+BEGIN
+
+  SELECT username, score
+  FROM account
+  LEFT JOIN player p on account.user_id = p.user_id
+  ORDER BY IFNULL(p.score, 0)
+  DESC LIMIT 10;
+
+END;
+
+CAlL player_get_highscore();
+
+-- TESTING: -----------
+SELECT score FROM player ORDER BY IFNULL(score, 0);
+
+SELECT IFNULL(score, 0) FROM player;
+SELECT
+       CASE
+         WHEN score IS NULL THEN 'N/A'
+         ELSE score
+           END AS Result
+FROM player;
+
+CREATE PROCEDURE fisk()
+  BEGIN
+    DECLARE variabel INT;
+  SELECT username, score
+  FROM account
+    LEFT JOIN player p on account.user_id = p.user_id
+    ORDER BY score DESC LIMIT 10 INTO variabel;
+    SELECT CASE WHEN variabel IS NULL THEN 0 END AS score;
+
+    CREATE VIEW v AS SELECT variabel, score AS value FROM player;
+    SELECT * FROM v;
+
+  END;
+-- ---------------

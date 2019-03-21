@@ -31,8 +31,17 @@ public class AccountDAO extends DataAccessObject {
             cStmt.setDate(4, Date.valueOf(account.getRegDate()));
             cStmt.registerOutParameter(5, Types.INTEGER);
 
-            if(cStmt.execute())
-                status = cStmt.getInt(5);
+            if (cStmt.execute())
+                //status = cStmt.getInt(5);
+                status = 0;
+        } catch (SQLIntegrityConstraintViolationException sql) {
+            if (sql.getMessage().contains(account.getUsername())) {
+                System.out.println("Brukernavn ikke unikt");
+                status = 1;
+            } else if (sql.getMessage().contains(account.getEmail())) {
+                System.out.println("Email ikke unik");
+                status = 2;
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
