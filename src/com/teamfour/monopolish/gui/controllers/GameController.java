@@ -110,7 +110,7 @@ public class GameController {
                 // Change view to dashboard
                 Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
             }
-        });
+        }
     }
 
     /**
