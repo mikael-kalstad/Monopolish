@@ -28,12 +28,14 @@ import java.util.TimerTask;
  * @version 1.5
  */
 public class LobbyController {
-    @FXML private AnchorPane root;
     @FXML private FlowPane lobbiesContainer;
+    @FXML private Text noLobbyText;
     @FXML private Pane newLobbyDialog;
     @FXML private Pane newLobbyBackground;
     @FXML private TextField newLobbyNameInput;
     @FXML private Text newLobbyMsg;
+    @FXML private Text countdownText;
+    @FXML private Text getCountdownValue;
 
     private ArrayList<Pane> lobbyList = new ArrayList<>(); // List over all lobby container elements
     private final String USERNAME = Handler.getAccount().getUsername();
@@ -68,6 +70,10 @@ public class LobbyController {
     private final String BUTTON_READY_ID = "ready";
     private final String IMAGE_READY_ID = "readyImg";
     private final String STATUS_VALUE_ID = "statusValue";
+
+    // Countdown constants
+    private final int COUNTDOWN_TIME = 5;
+    private final String COUNTDOWN_TEXT = "Game starting in";
 
     @FXML public void initialize() {
         refresh();
@@ -130,9 +136,13 @@ public class LobbyController {
         current_lobby_id = -1;
 
         // Get data from database about all lobbies
-        ArrayList<String[]> lobbyInfo = new ArrayList<>();
-        lobbyInfo = Handler.getLobbyDAO().getAllLobbies();
+        ArrayList<String[]> lobbyInfo = Handler.getLobbyDAO().getAllLobbies();
 
+        // Check if there are any lobbies and set "placeholder" text
+        if (lobbyInfo.isEmpty()) noLobbyText.setVisible(true);
+        else noLobbyText.setVisible(false);
+
+        // Go through all the data and update content
         for (String[] data : lobbyInfo) {
             int lobby_id = Integer.valueOf(data[0]);
             String username = data[1];
@@ -433,6 +443,35 @@ public class LobbyController {
 
     private void startGame(int lobby_id) {
         timer.cancel(); // Stop timer thread;
+
+        // Countdown timer when game start
+        Timer countDownTimer = new Timer();
+        countdownText.setText(COUNTDOWN_TEXT);
+
+        TimerTask countDownTask = new TimerTask() {
+            int time = COUNTDOWN_TIME;
+            @Override
+            public void run() {
+                // Logic when game should start
+                if (time == 0) {
+                    countDownTimer.cancel();
+
+                    // Switch to game scene
+                    Handler.getSceneManager().setScene(ViewConstants.GAME.getValue());
+                } else {
+                    time--;
+
+                    // Update countdown value
+                    getCountdownValue.setText(String.valueOf(time));
+                }
+            }
+        };
+
+        long delay = 2000L; // Delay before update timer starts
+        long period = 1000L; // Delay between each update/refresh
+        countDownTimer.scheduleAtFixedRate(countDownTask, delay, period);
+
+
 //        int game_id = -1;
 //        String[] players = null;
 //        try {
@@ -440,8 +479,9 @@ public class LobbyController {
 //            //players = Handler.getLobbyDAO().getUsersInLobby(lobby_id).toArray();
 //        }
 //        catch (SQLException e) { e.printStackTrace(); }
-        //Handler.getPlayerDAO().createPlayers(game_id, players);
-        Handler.getSceneManager().setScene(ViewConstants.GAME.getValue());
+            //Handler.getPlayerDAO().createPlayers(game_id, players);
+
+
     }
 
     /**

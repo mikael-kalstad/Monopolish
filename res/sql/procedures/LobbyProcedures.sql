@@ -167,6 +167,6 @@ CREATE PROCEDURE lobby_get_id(
   )
   BEGIN
     declare u_id integer;
-    select user_id  into u_id from account where u_name = username;
+    Set u_id = (Select user_id from account where username = username);
     SELECT room_id from lobby where user_id = u_id;
   end;

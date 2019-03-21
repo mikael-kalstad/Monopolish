@@ -22,7 +22,10 @@
       <Line endX="304.0000305175781" layoutX="897.0" layoutY="138.0" startX="-179.0" />
       <ScrollPane layoutX="220.0" layoutY="265.0" prefHeight="606.0" prefWidth="1479.0" style="-fx-hbar-policy: NEVER; -fx-background-color: white;">
          <content>
-            <FlowPane fx:id="lobbiesContainer" prefHeight="604.0" prefWidth="1477.0" style="-fx-padding: 20; -fx-vgap: 40; -fx-hgap: 60; -fx-background-color: white;" />
+            <FlowPane fx:id="lobbiesContainer" prefHeight="604.0" prefWidth="1477.0" style="-fx-padding: 20; -fx-vgap: 40; -fx-hgap: 60; -fx-background-color: white;">
+               <children>
+                  <Pane prefHeight="330.0" prefWidth="220.0" />
+               </children></FlowPane>
          </content>
       </ScrollPane>
       <Button layoutX="88.0" layoutY="63.0" mnemonicParsing="false" onAction="#leave" prefHeight="27.0" prefWidth="120.0" style="-fx-background-color: ef5350; -fx-background-radius: 0;" text="Leave" textAlignment="CENTER" textFill="WHITE">
@@ -150,6 +153,21 @@
       <Text fill="#959595" layoutX="208.0" layoutY="997.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Refresh to see the newest lobbies ">
          <font>
             <Font size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="noLobbyText" fill="#c6c6c6" layoutY="539.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No lobbies available, create one!" textAlignment="CENTER" wrappingWidth="1920.0000000000002">
+         <font>
+            <Font size="38.0" />
+         </font>
+      </Text>
+      <Text fx:id="countdownText" layoutX="1383.0" layoutY="118.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Game starting in">
+         <font>
+            <Font size="34.0" />
+         </font>
+      </Text>
+      <Text fx:id="countdownValue" fill="RED" layoutX="1659.0" layoutY="130.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5">
+         <font>
+            <Font size="59.0" />
          </font>
       </Text>
    </children>
