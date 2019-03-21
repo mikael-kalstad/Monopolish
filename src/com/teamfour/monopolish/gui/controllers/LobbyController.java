@@ -1,6 +1,7 @@
 package com.teamfour.monopolish.gui.controllers;
 
 import com.teamfour.monopolish.gui.views.ViewConstants;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -78,13 +79,17 @@ public class LobbyController {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                refresh();
+                Platform.runLater(() -> {
+                    refresh();
+                    System.out.println("refreshing!");
+                });
+
             }
         };
         Timer timer = new Timer();
 
-        long delay = 5000L;
-        long period = 5000L;
+        long delay = 2000L;
+        long period = 1000L;
         timer.scheduleAtFixedRate(task, delay, period);
     }
 
@@ -97,7 +102,7 @@ public class LobbyController {
      */
     public void refresh() {
         // Check if any lobbies in database are empty
-//        Handler.getLobbyDAO().removeEmptyLobbies();
+        Handler.getLobbyDAO().removeEmptyLobbies();
 
         // Clear all lobbies
         lobbiesContainer.getChildren().clear();
