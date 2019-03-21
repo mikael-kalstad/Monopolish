@@ -95,7 +95,7 @@ public class GameController {
 
     public void yourTurn() {
         try {
-            gameLogic.newTurn();
+            gameLogic.startYourTurn();
         } catch (SQLException e) {
             e.printStackTrace();
         }
