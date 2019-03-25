@@ -39,7 +39,10 @@ public class GameController {
     private GameLogic gameLogic = new GameLogic(Handler.getCurrentGameId());
     private ArrayList<Text> eventList = new ArrayList<>();
     private ArrayList<FxPlayer> playerList = new ArrayList<>();
-    //@FXML private Label p1name, p1money, p2name, p2money, p3name, p3money;
+    @FXML
+    private Label p1name, p1money, p2name, p2money, p3name, p3money;
+    @FXML
+    private HBox player1view, player2view, player3view;
     @FXML
     private VBox playerInfo;
     @FXML
@@ -53,7 +56,6 @@ public class GameController {
 
     @FXML
     public void initialize() {
-        drawplayerinfo("Jarle", 10000);
         // Load gamelogic and initialize the game setup
         try {
             gameLogic.setupGame();
@@ -98,6 +100,7 @@ public class GameController {
                 Handler.getSceneManager().getWindow().close();
             }
         });
+        System.out.println(playerList.size());
     }
 
     public void leave() {
@@ -263,26 +266,5 @@ public class GameController {
         eventlog.getItems().clear();
         eventlog.getItems().addAll(eventList);
         eventlog.scrollTo(focus);
-    }
-
-    public void drawplayerinfo(String playername, int money) {
-        HBox box = new HBox();
-        box.setId(playername);
-        box.setSpacing(80);
-        box.setAlignment(Pos.CENTER);
-        //box.setBackground(Background.EMPTY);
-
-        Rectangle playercolor = new Rectangle(50, 50);
-        playercolor.setFill(Color.web( "#212121"));
-        Label pname = new Label(playername);
-        //pname.setFont(Font.font("Arial", 15));
-
-        Button viewplayer = new Button("View");
-        String moneystring = Integer.toString(money);
-        Label moneylabel = new Label(moneystring);
-        moneylabel.setId("cash");
-
-        box.getChildren().addAll(playercolor, pname, viewplayer, moneylabel);
-        playerInfo.getChildren().add(box);
     }
 }
