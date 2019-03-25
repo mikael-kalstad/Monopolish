@@ -9,8 +9,13 @@ CREATE PROCEDURE game_insert(IN lobby_id int, OUT game_id INT)
   proc_label:BEGIN
     IF ((SELECT p.user_id
         FROM lobby l
-        LEFT JOIN player p ON l.user_id=p.user_id LIMIT 1) IS NOT NULL) THEN
-      LEAVE proc_label;
+        LEFT JOIN player p ON l.user_id=p.user_id WHERE l.room_id=lobby_id LIMIT 1) IS NOT NULL) THEN
+      -- DO SLEEP(1);
+      SET game_id=(SELECT game_id
+      FROM lobby l
+      LEFT JOIN player p ON l.user_id=p.user_id
+      WHERE l.room_id=lobby_id LIMIT 1);
+      COMMIT;
     end if;
 
     -- If no lobby with this ID exists, abort
@@ -43,6 +48,20 @@ CREATE PROCEDURE game_get_current_player(IN gameid int)
     JOIN player p on g.currentplayer = p.player_id
     JOIN account a on p.user_id = a.user_id
     WHERE g.game_id=gameid;
+  END;
+-- END$$
+
+
+/**
+Procedure to retrieve the current player
+ */
+
+-- DELIMITER $$
+DROP PROCEDURE game_exists;
+
+CREATE PROCEDURE game_exists(IN gameid int)
+  BEGIN
+    SELECT IFNULL(game_id, 0) FROM game WHERE game_id=gameid;
   END;
 -- END$$
 

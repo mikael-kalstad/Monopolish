@@ -62,6 +62,7 @@ public class GameLogic {
         // 2. Load all properties from database into bank's properties
         // Initialize board and get players from database
         System.out.println("Loading board...");
+        System.out.println("Gameid: " + gameId);
         board = new Board();
         System.out.println("Loading players...");
         entityManager = new EntityManager(gameId);
@@ -73,7 +74,6 @@ public class GameLogic {
         // 4. Generate random turn order
         System.out.println("Getting turn order...");
         turns = entityManager.generateTurnOrder();
-        System.out.println(entityManager.getPlayers().size());
         for (int i = 0; i < turns.length; i++) {
             System.out.println((i + 1) + ": " + turns[i]);
         }
