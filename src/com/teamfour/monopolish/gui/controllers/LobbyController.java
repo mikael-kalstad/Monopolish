@@ -20,17 +20,17 @@ import java.util.TimerTask;
 /**
  * Controller class for lobby view,
  * handles all the logic for the lobbyList.
- * <b>Note: the gui elements are created in the LobbyDrawFx class.</b>
+ * <b>Note: some gui elements are created in the LobbyDrawFx class.</b>
  *
  * @author Mikael Kalstad
- * @version 1.6
+ * @version 1.7
  */
 public class LobbyController {
     private ArrayList<Pane> lobbyList = new ArrayList<>(); // List over all lobby container elements
     private final String USERNAME = Handler.getAccount().getUsername();
     private int current_lobby_id = -1; // Default when user is not in any lobby = -1
     private boolean READY = false;
-    private Timer timer;
+    private Timer refreshTimer;
 
     // GUI FXML elements
     @FXML private FlowPane lobbiesContainer;
@@ -83,10 +83,10 @@ public class LobbyController {
             }
         };
 
-        timer = new Timer();
-        long delay = 1000L; // Delay before update timer starts
+        refreshTimer = new Timer();
+        long delay = 1000L; // Delay before update refreshTimer starts
         long period = 1000L; // Delay between each update/refresh
-        timer.scheduleAtFixedRate(task, delay, period);
+        refreshTimer.scheduleAtFixedRate(task, delay, period);
 
         refresh();
 
@@ -108,7 +108,7 @@ public class LobbyController {
                     // Remove user if in a lobby
                     Handler.getLobbyDAO().removePlayer(USERNAME, current_lobby_id);
 
-                    timer.cancel(); // Stop timer thread
+                    refreshTimer.cancel(); // Stop refreshTimer thread
 
                     // Close the window
                     Handler.getSceneManager().getWindow().close();
@@ -474,9 +474,7 @@ public class LobbyController {
 //     * @param statusValue Target statusValue text
      */
     private void startGame(int lobby_id) {
-        timer.cancel(); // Stop timer thread;
-
-        // Countdown timer when game start
+        // Countdown refreshTimer when game start
         Timer countDownTimer = new Timer();
         countdown.setVisible(true);
         countdownValue.setVisible(true);
@@ -498,7 +496,8 @@ public class LobbyController {
                     }
                     // Logic when game should start
                     else if (time == 0) {
-                        // Stop timer
+                        // Stop timers
+                        refreshTimer.cancel();
                         countDownTimer.cancel();
 
                         // Make a new game in database
@@ -517,7 +516,7 @@ public class LobbyController {
             }
         };
 
-        long delay = 2000L; // Delay before update timer starts
+        long delay = 2000L; // Delay before update refreshTimer starts
         long period = 1000L; // Delay between each update/refresh
         countDownTimer.scheduleAtFixedRate(countDownTask, delay, period);
     }
@@ -533,7 +532,7 @@ public class LobbyController {
         // Switch to dashboard
         Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
 
-        // Stop timer thread
-        timer.cancel();
+        // Stop refreshTimer thread
+        refreshTimer.cancel();
     }
 }
