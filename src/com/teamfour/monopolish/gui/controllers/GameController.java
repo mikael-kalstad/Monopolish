@@ -186,10 +186,12 @@ public class GameController {
                 Platform.runLater(() -> {
                     try {
                         // If it's your turn, break out of the timer
-                        if (gameLogic.isYourTurn() == 1) {
+                        int result = gameLogic.isYourTurn();
+                        if (result == 1) {
                             System.out.println("Your turn");
                             yourTurn();
-                        } else if (gameLogic.isYourTurn() == 0) {
+                        } else if (result == 0) {
+                            System.out.println("Updated board");
                             updateBoard();
                         }
                     } catch (SQLException e) {
