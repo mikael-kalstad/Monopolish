@@ -52,6 +52,7 @@ public class GameController {
 
     // Chat
     @FXML private Pane chatContainer;
+    @FXML private Pane chatMessages;
     private boolean chatOpen = false;
 
     @FXML
@@ -99,6 +100,9 @@ public class GameController {
         });
     }
 
+    /**
+     * Method that will run when the user wants to leave the game.
+     */
     public void leave() {
         Alert alertDialog = AlertBox.display (
                 Alert.AlertType.CONFIRMATION,
@@ -127,6 +131,10 @@ public class GameController {
         // Some voting gui and logic here...
     }
 
+    /**
+     * This method will open or close the chat,
+     * depending if the chat is open or closed.
+     */
     public void toggleChat() {
         // Open chat
         if (chatOpen) {
