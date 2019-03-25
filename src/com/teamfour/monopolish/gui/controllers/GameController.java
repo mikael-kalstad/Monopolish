@@ -100,7 +100,6 @@ public class GameController {
                 Handler.getSceneManager().getWindow().close();
             }
         });
-        System.out.println(playerList.size());
     }
 
     public void leave() {
@@ -181,7 +180,7 @@ public class GameController {
         rolldice.setDisable(false);
     }
 
-    public void setRolldice(){
+    public void rollDice(){
         int[] dice = null;
         try {
             dice = gameLogic.throwDice();
@@ -266,5 +265,17 @@ public class GameController {
         eventlog.getItems().clear();
         eventlog.getItems().addAll(eventList);
         eventlog.scrollTo(focus);
+    }
+
+    public void drawPlayerInfo(){
+        if (playerList.size() > 2) {
+            if (playerList.size() == 3) {
+                player2view.setVisible(true);
+            }
+            if (playerList.size() == 4) {
+                player2view.setVisible(true);
+                player3view.setVisible(true);
+            }
+        }
     }
 }
