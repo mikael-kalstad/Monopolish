@@ -9,6 +9,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -45,6 +47,9 @@ public class GameController {
     @FXML private TextFlow propertycard;
     @FXML private GridPane gamegrid;
     @FXML private ListView eventlog;
+
+    // Dice elements
+    @FXML ImageView dice1_img, dice2_img;
 
     // Elements in sidebar
     @FXML private Button rolldiceBtn, buyBtn, claimrentBtn;
@@ -207,16 +212,24 @@ public class GameController {
         rolldiceBtn.setDisable(false);
     }
 
+    /**
+     * Will roll two dices and get random values between 1-6.
+     * This method will also update corresponding dice images in the GUI.
+     */
     public void rollDice(){
-        int[] dice = null;
-        try {
-            dice = gameLogic.throwDice();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        int dice1 = dice[0];
-        int dice2 = dice[1];
-        String s = "Threw dice:  "+ dice1 + ",  " + dice2;
+        // Get values for two dices
+        int[] diceValues = null;
+        try { diceValues = gameLogic.throwDice(); }
+        catch (SQLException e) { e.printStackTrace(); }
+
+        // Check if diceValues array is initialized or length is less than two
+        if (diceValues == null || diceValues.length < 2) return;
+
+        // Update dice images on board
+        dice1_img.setImage(new Image(("file:res/gui/dices/dice"+ diceValues[0] +".png")));
+        dice2_img.setImage(new Image(("file:res/gui/dices/dice"+ diceValues[1] +".png")));
+
+        String s = "Threw dice:  "+ diceValues[0] + ",  " + diceValues[1];
         addToEventlog(s);
         updatePlayerPositions();
         //movePlayer(playerList.get(gameLogic.getTurnNumber()), dice1+dice2);
@@ -224,7 +237,6 @@ public class GameController {
     }
 
     public void drawPlayers() {
-
         for (FxPlayer player : playerList) {
             GridPane.setConstraints(player, player.getPosX(), player.getPosY());
         }
