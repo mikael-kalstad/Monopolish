@@ -142,7 +142,7 @@ public class GameController {
     public void toggleChat() {
         // Open chat
         if (chatOpen) {
-            chatContainer.setTranslateY(-275); // Move down
+            chatContainer.setTranslateY(0); // Move down
             chatOpen = false;
         }
 
