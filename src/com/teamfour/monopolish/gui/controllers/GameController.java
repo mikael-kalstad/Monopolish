@@ -70,7 +70,7 @@ public class GameController {
         }
 
         drawPlayers();
-
+        drawPlayerInfo();
         // Start the game!
         waitForTurn();
 
@@ -267,10 +267,11 @@ public class GameController {
         eventlog.scrollTo(focus);
     }
 
-    public void drawPlayerInfo(){
-        if (playerList.size() > 2) {
+    private void drawPlayerInfo(){
+        if (playerList.size() >= 2) {
             if (playerList.size() == 3) {
                 player2view.setVisible(true);
+                p1name.setText(playerList.get(0).getUsername());
             }
             if (playerList.size() == 4) {
                 player2view.setVisible(true);

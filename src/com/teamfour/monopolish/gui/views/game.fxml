@@ -647,7 +647,7 @@
                                     </Label>
                                  </children>
                               </HBox>
-                              <HBox fx:id="player2view" alignment="CENTER" prefHeight="80.0" prefWidth="600.0" spacing="40.0" style="-fx-background-color: #212121;">
+                              <HBox fx:id="player2view" alignment="CENTER" prefHeight="80.0" prefWidth="600.0" spacing="40.0" style="-fx-background-color: #212121;" visible="false">
                                  <children>
                                     <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="50.0" stroke="BLACK" strokeType="INSIDE" width="50.0">
                                        <HBox.margin>
@@ -671,7 +671,7 @@
                                     </Label>
                                  </children>
                               </HBox>
-                              <HBox fx:id="player3view" alignment="CENTER" prefHeight="80.0" prefWidth="600.0" spacing="40.0" style="-fx-background-color: #212121;">
+                              <HBox fx:id="player3view" alignment="CENTER" prefHeight="80.0" prefWidth="600.0" spacing="40.0" style="-fx-background-color: #212121;" visible="false">
                                  <children>
                                     <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="50.0" stroke="BLACK" strokeType="INSIDE" width="50.0">
                                        <HBox.margin>
