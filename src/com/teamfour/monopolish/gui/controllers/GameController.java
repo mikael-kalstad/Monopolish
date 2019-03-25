@@ -131,6 +131,10 @@ public class GameController {
         // Some voting gui and logic here...
     }
 
+    public void showProperties() {
+        // Show the properties here...
+    }
+
     /**
      * This method will open or close the chat,
      * depending if the chat is open or closed.
@@ -275,6 +279,10 @@ public class GameController {
 
     public void buy() {
         addToEventlog("Æsj");
+    }
+
+    public void claimrent() {
+
     }
 
 
