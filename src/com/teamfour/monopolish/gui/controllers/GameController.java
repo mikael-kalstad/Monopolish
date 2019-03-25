@@ -179,11 +179,11 @@ public class GameController {
                 Platform.runLater(() -> {
                     try {
                         // If it's your turn, break out of the timer
-                        if (gameLogic.isYourTurn()) {
+                        if (gameLogic.isYourTurn() == 1) {
                             System.out.println("Your turn");
                             yourTurn();
-                        } else {
-                            System.out.println("Not your turn");
+                        } else if (gameLogic.isYourTurn() == 0) {
+                            updatePlayerPositions();
                         }
                     } catch (SQLException e) {
                         e.printStackTrace();

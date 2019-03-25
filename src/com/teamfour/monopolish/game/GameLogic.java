@@ -343,9 +343,17 @@ public class GameLogic {
 
     public String[] getTurns() { return turns; }
 
-    public boolean isYourTurn() throws SQLException {
+    public int isYourTurn() throws SQLException {
         String newCurrentUser = gameDAO.getCurrentPlayer(gameId);
-        return newCurrentUser.equals(Handler.getAccount().getUsername());
+        if (newCurrentUser != currentPlayer) {
+            currentPlayer = newCurrentUser;
+            if (newCurrentUser.equals(Handler.getAccount().getUsername()))
+                return 1;
+            else
+                return 0;
+        }
+
+        return -1;
     }
 
     public int[] getPlayerPositions() {
