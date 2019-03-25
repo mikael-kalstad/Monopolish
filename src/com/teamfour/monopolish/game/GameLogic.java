@@ -345,12 +345,12 @@ public class GameLogic {
 
     public int isYourTurn() throws SQLException {
         String newCurrentUser = gameDAO.getCurrentPlayer(gameId);
-        if (newCurrentUser != currentPlayer) {
+        if (newCurrentUser.equals(Handler.getAccount().getUsername())) {
             currentPlayer = newCurrentUser;
-            if (newCurrentUser.equals(Handler.getAccount().getUsername()))
-                return 1;
-            else
-                return 0;
+            return 1;
+        } else if (!newCurrentUser.equals(currentPlayer)) {
+            currentPlayer = newCurrentUser;
+            return 0;
         }
 
         return -1;
