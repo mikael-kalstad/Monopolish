@@ -5,33 +5,24 @@ Procedure to generate a new game
 -- DELIMITER $$
 DROP PROCEDURE game_insert;
 
-CREATE PROCEDURE game_insert(IN lobby_id int, OUT game_id INT)
+CREATE PROCEDURE game_insert(IN lobby_id int, OUT gameid INT)
   proc_label:BEGIN
-    IF ((SELECT p.user_id
-        FROM lobby l
-        LEFT JOIN player p ON l.user_id=p.user_id WHERE l.room_id=lobby_id LIMIT 1) IS NOT NULL) THEN
-      -- DO SLEEP(1);
-      SET game_id=(SELECT game_id
-      FROM lobby l
-      LEFT JOIN player p ON l.user_id=p.user_id
-      WHERE l.room_id=lobby_id LIMIT 1);
-      COMMIT;
+    SET gameid=(SELECT game_id
+    FROM lobby l
+    LEFT JOIN player p ON l.user_id=p.user_id
+    WHERE l.room_id=lobby_id LIMIT 1);
+
+    IF (gameid IS NULL) THEN
+      -- Create a new game
+      INSERT INTO game (starttime)
+      VALUES (NOW());
+      -- Get the new Game ID
+      SET gameid = LAST_INSERT_ID();
+
+      -- Get all players waiting in the lobby and put them in the player table
+      INSERT INTO player (game_id, user_id)
+      SELECT gameid, l.user_id FROM lobby l WHERE l.room_id=lobby_id;
     end if;
-
-    -- If no lobby with this ID exists, abort
-    IF (lobby_id NOT IN (SELECT room_id FROM lobby)) THEN
-      LEAVE proc_label;
-    end if;
-
-    -- Create a new game
-    INSERT INTO game (starttime)
-    VALUES (NOW());
-    -- Get the new Game ID
-    SET game_id = LAST_INSERT_ID();
-
-    -- Get all players waiting in the lobby and put them in the player table
-    INSERT INTO player (game_id, user_id)
-    SELECT game_id, l.user_id FROM lobby l WHERE l.room_id=lobby_id;
   END;
 -- END$$
 
