@@ -19,6 +19,7 @@ public class Handler extends Application {
     private static PlayerDAO playerDAO = new PlayerDAO();
     private static LobbyDAO lobbyDAO = new LobbyDAO();
     private static GameDAO gameDAO = new GameDAO();
+    private static int currentGameId;
 
     private final String APPLICATION_TITLE = "Monopoly";
     private final double ASPECT_RATIO = 16.0/9.0;
@@ -80,4 +81,6 @@ public class Handler extends Application {
     public static PlayerDAO getPlayerDAO() { return playerDAO; }
     public static LobbyDAO getLobbyDAO() { return lobbyDAO; }
     public static GameDAO getGameDAO() { return gameDAO; }
+    public static int getCurrentGameId() { return currentGameId; }
+    public static void setCurrentGameId(int currentGameId) { Handler.currentGameId = currentGameId; }
 }

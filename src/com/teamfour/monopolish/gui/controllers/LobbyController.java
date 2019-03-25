@@ -1,5 +1,6 @@
 package com.teamfour.monopolish.gui.controllers;
 
+import com.teamfour.monopolish.game.GameDAO;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -13,6 +14,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -464,6 +466,16 @@ public class LobbyController {
                     // Logic when game should start
                     else if (time == 0) {
                         countDownTimer.cancel();
+
+                        int gameId = 0;
+
+                        try {
+                            gameId = Handler.getGameDAO().insertGame(current_lobby_id);
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+
+                        Handler.setCurrentGameId(gameId);
 
                         // Switch to game scene
                         Handler.getSceneManager().setScene(ViewConstants.GAME.getValue());

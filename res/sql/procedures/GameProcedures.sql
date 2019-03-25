@@ -21,9 +21,6 @@ CREATE PROCEDURE game_insert(IN lobby_id int, OUT game_id INT)
     -- Get all players waiting in the lobby and put them in the player table
     INSERT INTO player (game_id, user_id)
     SELECT game_id, l.user_id FROM lobby l WHERE l.room_id=lobby_id;
-
-    -- Delete all players from the lobby when the game is started
-    DELETE FROM lobby WHERE room_id=lobby_id;
   END;
 -- END$$
 

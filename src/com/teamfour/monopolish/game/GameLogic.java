@@ -53,7 +53,7 @@ public class GameLogic {
      */
     public void setupGame() throws SQLException {
 
-        Handler.setAccount(new Account("helgeingstad", "giske@damer.no", LocalDate.now(), 0));
+        //Handler.setAccount(new Account("helgeingstad", "giske@damer.no", LocalDate.now(), 0));
 
         // Load board, graphics, etc.
         ConnectionPool.create();
