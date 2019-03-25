@@ -31,7 +31,7 @@ public class GameController {
 
     private GameLogic gameLogic = new GameLogic(1);
     private ArrayList<Text> eventList = new ArrayList<>();
-    private ArrayList<FxPlayer> playerList = new ArrayList<>(); //hentes fra et annet sted, lobby?
+    private ArrayList<FxPlayer> playerList = new ArrayList<>();
     //@FXML private Label p1name, p1money, p2name, p2money, p3name, p3money;
     @FXML
     private Button rolldice;
@@ -236,6 +236,14 @@ public class GameController {
                 checklist.get(3).setAlignment(Pos.BOTTOM_RIGHT);
             }
         }
+    }
+
+    public void setBuy() {
+        addToEventlog("Æsj");
+    }
+
+    public void setHome() {
+        addToEventlog("I'm afraid i can't do that...");
     }
 
     private void addToEventlog(String s) {
