@@ -138,7 +138,6 @@ class LobbyDrawFx {
         grid.add(joinBtn, 0, 3);
         grid.add(readyBtn, 1, 3);
 
-        System.out.println(" width " + grid.getWidth());
         return grid;
     }
 
