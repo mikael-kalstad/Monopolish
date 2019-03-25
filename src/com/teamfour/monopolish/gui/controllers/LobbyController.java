@@ -485,16 +485,11 @@ public class LobbyController {
                     }
                     // Logic when game should start
                     else if (time == 0) {
+                        // Stop timer
                         countDownTimer.cancel();
 
-                        int gameId = 0;
-
-                        try {
-                            gameId = Handler.getGameDAO().insertGame(current_lobby_id);
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
-
+                        // Make a new game in database
+                        int gameId = Handler.getGameDAO().insertGame(current_lobby_id);
                         Handler.setCurrentGameId(gameId);
 
                         // Switch to game scene
@@ -512,18 +507,6 @@ public class LobbyController {
         long delay = 2000L; // Delay before update timer starts
         long period = 1000L; // Delay between each update/refresh
         countDownTimer.scheduleAtFixedRate(countDownTask, delay, period);
-
-
-//        int game_id = -1;
-//        String[] players = null;
-//        try {
-//            game_id = Handler.getGameDAO().insertGame(lobby_id);
-//            //players = Handler.getLobbyDAO().getUsersInLobby(lobby_id).toArray();
-//        }
-//        catch (SQLException e) { e.printStackTrace(); }
-            //Handler.getPlayerDAO().createPlayers(game_id, players);
-
-
     }
 
     /**
@@ -533,4 +516,4 @@ public class LobbyController {
         Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
         timer.cancel(); // Stop timer thread
     }
-} // SNOOOOP DOOOOG! :O ================~~~~~~~~
+}

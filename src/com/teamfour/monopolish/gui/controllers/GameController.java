@@ -9,13 +9,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
@@ -28,40 +25,40 @@ import java.util.TimerTask;
  * Controller class for game view
  *
  * @author Bård Hestmark
- * @version 1.5
+ * @version 1.6
  */
 
 public class GameController {
-    // Timers
-
     private Timer timer = new Timer();
-
     private GameLogic gameLogic = new GameLogic(Handler.getCurrentGameId());
+
+    // Array for events in game
     private ArrayList<Text> eventList = new ArrayList<>();
+
+    // Array for players in game
     private ArrayList<FxPlayer> playerList = new ArrayList<>();
-    @FXML
-    private Label p1name, p1money, p2name, p2money, p3name, p3money;
-    @FXML
-    private HBox player1view, player2view, player3view;
-    @FXML
-    private VBox playerInfo;
-    @FXML
-    private Button rolldice;
-    @FXML
-    private TextFlow propertycard;
-    @FXML
-    private GridPane gamegrid;
-    @FXML
-    private ListView eventlog;
+
+    // Elements in board
+    @FXML private Label p1name, p1money, p2name, p2money, p3name, p3money;
+    @FXML private HBox player1view, player2view, player3view;
+    @FXML private VBox playerInfo;
+    @FXML private TextFlow propertycard;
+    @FXML private GridPane gamegrid;
+    @FXML private ListView eventlog;
+
+    // Elements in sidebar
+    @FXML private Button rolldiceBtn, buyBtn, claimrentBtn;
+    @FXML private Text moneyValue, roundValue, statusValue;
+
+    // Chat
+    @FXML private Pane chatContainer;
+    private boolean chatOpen = false;
 
     @FXML
     public void initialize() {
         // Load gamelogic and initialize the game setup
-        try {
-            gameLogic.setupGame();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        try { gameLogic.setupGame(); }
+        catch (SQLException e) { e.printStackTrace(); }
 
         // Draw players based on the number of players
         String[] playerTurns = gameLogic.getTurns();
@@ -126,6 +123,24 @@ public class GameController {
         }
     }
 
+    public void forfeit() {
+        // Some voting gui and logic here...
+    }
+
+    public void toggleChat() {
+        // Open chat
+        if (chatOpen) {
+            chatContainer.setTranslateY(-275); // Move down
+            chatOpen = false;
+        }
+
+        // Open chat
+        else {
+            chatContainer.setTranslateY(275); // Move up
+            chatOpen = true;
+        }
+    }
+
     /**
      * Initiates a clock that runs on a separate thread. This clock
      * checks the database each second to see if you are the current player.
@@ -135,7 +150,7 @@ public class GameController {
      * clock will start again
      */
     private void waitForTurn() {
-        rolldice.setDisable(true);
+        rolldiceBtn.setDisable(true);
         // Create a timer object
         timer = new Timer();
         // We'll schedule a task that will check against the database
@@ -177,7 +192,7 @@ public class GameController {
             e.printStackTrace();
         }
         timer.cancel();
-        rolldice.setDisable(false);
+        rolldiceBtn.setDisable(false);
     }
 
     public void rollDice(){
@@ -250,13 +265,10 @@ public class GameController {
         }
     }
 
-    public void setBuy() {
+    public void buy() {
         addToEventlog("Æsj");
     }
 
-    public void setHome() {
-        addToEventlog("I'm afraid i can't do that...");
-    }
 
     private void addToEventlog(String s) {
         eventList.add(new Text(s));
