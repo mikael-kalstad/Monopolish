@@ -1,7 +1,5 @@
 package com.teamfour.monopolish.lobby;
 
-import com.mysql.cj.protocol.Resultset;
-import com.mysql.cj.xdevapi.SqlDataResult;
 import com.teamfour.monopolish.database.DataAccessObject;
 
 import java.sql.ResultSet;
@@ -41,7 +39,6 @@ public class LobbyDAO extends DataAccessObject {
         }finally {
             releaseConnection();
         }
-
         return roomId;
     }
 
@@ -264,7 +261,8 @@ public class LobbyDAO extends DataAccessObject {
             cStmt = connection.prepareCall("{CALL lobby_get_id(?)}");
             cStmt.setString(1, username);
             rs = cStmt.executeQuery();
-            lobby = rs.getInt(1);
+            if (rs.next())
+                lobby = rs.getInt(1);
             rs.close();
         }
         catch (SQLException e) {
