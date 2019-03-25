@@ -293,12 +293,16 @@ public class GameLogic {
 
     public void startYourTurn() throws SQLException {
         currentPlayer = gameDAO.getCurrentPlayer(gameId);
-        entityManager.updateFromDatabase();
+        updateBoardFromDatabase();
         for (int i = 0; i < turns.length; i++) {
             if (turns[i].equals(currentPlayer)) {
                 turnNumber = i;
             }
         }
+    }
+
+    public void updateBoardFromDatabase() throws SQLException {
+        entityManager.updateFromDatabase();
     }
 
     public void finishYourTurn() throws SQLException {
@@ -356,7 +360,8 @@ public class GameLogic {
         return -1;
     }
 
-    public int[] getPlayerPositions() {
+    public int[] getPlayerPositions() throws SQLException {
+        updateBoardFromDatabase();
         ArrayList<Player> players = entityManager.getPlayers();
         int[] positions = new int[players.size()];
         for (int i = 0; i < positions.length; i++) {

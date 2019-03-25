@@ -189,7 +189,7 @@ public class GameController {
                             System.out.println("Your turn");
                             yourTurn();
                         } else if (gameLogic.isYourTurn() == 0) {
-                            updatePlayerPositions();
+                            updateBoard();
                         }
                     } catch (SQLException e) {
                         e.printStackTrace();
@@ -199,10 +199,14 @@ public class GameController {
         }, 0l, 1000l);
     }
 
-    public void updatePlayerPositions() {
-        int[] positions = gameLogic.getPlayerPositions();
-        for (int i = 0; i < positions.length; i++) {
-            movePlayer(playerList.get(i), positions[i]);
+    public void updateBoard() {
+        try {
+            int[] positions = gameLogic.getPlayerPositions();
+            for (int i = 0; i < positions.length; i++) {
+                movePlayer(playerList.get(i), positions[i]);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -210,7 +214,7 @@ public class GameController {
         // Beginning of your turn
         try {
             gameLogic.startYourTurn();
-            updatePlayerPositions();
+            updateBoard();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -237,7 +241,7 @@ public class GameController {
 
         String s = "Threw dice:  "+ diceValues[0] + ",  " + diceValues[1];
         addToEventlog(s);
-        updatePlayerPositions();
+        updateBoard();
         //movePlayer(playerList.get(gameLogic.getTurnNumber()), dice1+dice2);
         waitForTurn();
     }
