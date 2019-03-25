@@ -183,7 +183,7 @@ public class GameController {
         {
             public void run()
             {
-                //Platform.runLater(() -> {
+                Platform.runLater(() -> {
                     try {
                         // If it's your turn, break out of the timer
                         int result = gameLogic.isNewTurn();
@@ -197,7 +197,7 @@ public class GameController {
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
-                //});
+                });
             }
         }, 0l, 1000l);
     }

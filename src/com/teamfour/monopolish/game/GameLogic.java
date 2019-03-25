@@ -170,6 +170,7 @@ public class GameLogic {
     }
 
     public void newTurn(boolean yourTurn) throws SQLException {
+        System.out.println("Turn number: " + turnNumber);
         currentPlayer = gameDAO.getCurrentPlayer(gameId);
         updateFromDatabase();
         for (int i = 0; i < turns.length; i++) {
