@@ -8,16 +8,19 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
+import java.util.Random;
+
 /**
  * Controller class for dashboard view
  *
  * @author Mikael Kalstad
- * @version 1.2
+ * @version 1.3
  */
 
 public class DashboardController {
     // Profile info
     @FXML Text username;
+    @FXML Text gamesPlayed;
     @FXML Text personalHighscore;
 
     // Top 3 leaderboard
@@ -28,11 +31,11 @@ public class DashboardController {
     @FXML Text highscoreU3;
     @FXML Text highscoreS3;
 
-    // Container for remaining highscores in top 10 (4-10)
+    // Container for top 10 highscores
     @FXML Pane highscoreContainer;
 
     // Example data
-    private String[][] highscoreData = {
+    private String[][] fakeData = {
             {"Torbjørn", "10000"}, {"Lisa", "9000"}, {"Mikael", "8734"},
             {"giske777", "8500"}, {"Carlos", "7053"}, {"Siv jensen", "3223"},
             {"Giske", "2300"}, {"Carlos", "1233"}, {"Siv jensen", "1111"},
@@ -46,14 +49,16 @@ public class DashboardController {
         // Prevent exception
         if (Handler.getAccount() != null) {
             username.setText(Handler.getAccount().getUsername());
+            // Some DAO request goes here...
+            gamesPlayed.setText(String.valueOf(new Random().nextInt(10)));
             personalHighscore.setText(formatWithThousandDecimal(String.valueOf(Handler.getAccount().getHighscore())));
         }
 
-        //String[][] data = Handler.getPlayerDAO()
-        setLeaderBoard(highscoreData);
+        //String[][] data = Handler.getPlayerDAO().
+        setLeaderBoard(fakeData);
     }
 
-    public String formatWithThousandDecimal(String num) {
+    private String formatWithThousandDecimal(String num) {
         if (num.length() < 3) return num;
         int thousandIndex = num.length() - 3;
         return num.substring(0, thousandIndex) + "." + num.substring(thousandIndex);
@@ -68,6 +73,10 @@ public class DashboardController {
         for (int i = 0; i < highscoreData.length; i++) {
             // GUI breaks after ten highscores
             if (i > 9) break;
+
+            // Check if score is null, and set default as 0
+            // Can be null with result from database
+            if (highscoreData[i][1] == null) highscoreData[i][1] = String.valueOf(0);
 
             // Adding thousand format
             highscoreData[i][1] = formatWithThousandDecimal(highscoreData[i][1]);
@@ -84,7 +93,7 @@ public class DashboardController {
                 highscoreS3.setText(highscoreData[i][1]);
             }
 
-            // Setting rest of highscores
+            // Setting top 10 highscore board
             drawHighscoreRow(highscoreData[i][0], highscoreData[i][1], i);
         }
     }
@@ -155,10 +164,11 @@ public class DashboardController {
      */
     public void logout() {
         Handler.getSceneManager().setScene(ViewConstants.LOGIN.getValue());
+        Handler.resetAccount(); // Make sure account is reset when login out
     }
 
     /**
-     * Change view to game
+     * Change view to lobby
      */
     public void play() {
         Handler.getSceneManager().setScene(ViewConstants.LOBBY.getValue());

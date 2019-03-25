@@ -23,7 +23,7 @@ import java.util.TimerTask;
  * <b>Note: the gui elements are created in the LobbyDrawFx class.</b>
  *
  * @author Mikael Kalstad
- * @version 1.6giskgisggg
+ * @version 1.6
  */
 public class LobbyController {
     @FXML private FlowPane lobbiesContainer;
@@ -45,6 +45,7 @@ public class LobbyController {
     private final String STATUS_OPEN = "OPEN";
     private final String STATUS_FULL = "LOBBY FULL";
     private final String STATUS_STARTED = "IN GAME";
+//    private final String STATUS_TOO_FEW_PLAYERS = "Mi"
 
     // Btn msg constants
     private final String BTN_LEAVE = "Leave";
@@ -71,10 +72,9 @@ public class LobbyController {
 
     // Countdown constants
     private final int COUNTDOWN_TIME = 5;
-    private final String COUNTDOWN_TEXT = "Game starting in";
 
     @FXML public void initialize() {
-        // Update lobbies periodically
+        // Update lobbies periodically to display changes in the database
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
@@ -83,7 +83,7 @@ public class LobbyController {
         };
 
         timer = new Timer();
-        long delay = 2000L; // Delay before update timer starts
+        long delay = 1000L; // Delay before update timer starts
         long period = 1000L; // Delay between each update/refresh
         timer.scheduleAtFixedRate(task, delay, period);
 
@@ -100,7 +100,6 @@ public class LobbyController {
                         "Warning", "Do you want to leave?",
                         "If you leave, you will lose you position in the current lobby"
                 );
-
                 alertDialog.showAndWait();
 
                 // Check if yes button is pressed
@@ -123,12 +122,21 @@ public class LobbyController {
      *
      * By using this method one can separate the actual gui "drawing" and the data that should be displayed. <br/>
      * <b>This method should be called whenever some data is changed in the database to update the gui.</b>
+     * <br/><br/>
+     *
+     *  Expected data from the database about each player in the lobby:
+     *  <ul>
+     *      <li>1. Lobby id</li>
+     *      <li>2. Username</li>
+     *      <li>3. Ready (boolean)</li>
+     *      <li>4. lobby-name</li>
+     *  </ul>
      */
     public void refresh() {
         // Check if any lobbies in database are empty
         Handler.getLobbyDAO().removeEmptyLobbies();
 
-        // Clear all lobbies
+        // Clear all lobbies locally and set default variable values
         lobbiesContainer.getChildren().clear();
         lobbyList.clear();
         current_lobby_id = -1;
@@ -160,21 +168,24 @@ public class LobbyController {
             // Draw player in the lobby
             drawPlayer(username, container);
 
+            // Check if current data is for the user
             if (username.equals(this.USERNAME)) {
                 current_lobby_id = lobby_id;
                 READY = ready;
             }
+
+            // Update "local" player elements
             updatePlayerElements(container, username, ready);
         }
 
-        // Go through all lobbies and update btn action and styling
+        // Go through all lobbies and update "global" lobby elements
         for (Pane lobby: lobbyList) {
             updateLobbyElements(lobby);
         }
     }
 
     /**
-     * Get container for the actual lobby given lobby_id
+     * Get container element for the actual lobby given lobby_id
      *
      * @param lobby_id id for the lobby
      * @return lobby container if found
@@ -255,7 +266,6 @@ public class LobbyController {
      */
     public void showNewLobbyDialog() {
         // Set the background to visible and transparent grey'ish
-        //noLobbyText.setVisible(false);
         newLobbyBackground.setVisible(true);
         newLobbyBackground.setStyle("-fx-background-color: rgba(160,160,160,0.4)");
 
@@ -374,45 +384,55 @@ public class LobbyController {
         int lobby_id = Integer.valueOf(container.getId());
         int numOfReady = Handler.getLobbyDAO().getAllReadyInLobby(lobby_id);
 
-        // Check if game should start
-        if (current_lobby_id == lobby_id && numOfPlayers > 1 && numOfReady == numOfPlayers) {
-            statusValue.setText(STATUS_STARTED);
-            LobbyDrawFx.setTextColor(statusValue, PLAYER_COLOR_RED);
-            startGame(lobby_id);
-        }
-
         // If the user is in the actual lobby
         if (current_lobby_id == lobby_id) {
+            // Enable and change button style
+            readyBtn.setDisable(false);
+            joinBtn.setDisable(false);
+            LobbyDrawFx.setBtnStyle(joinBtn, BTN_LEAVE, PLAYER_COLOR_RED);
+
             // Check if user is ready or not and change btn accordingly
             if (READY) LobbyDrawFx.setBtnStyle(readyBtn, BTN_NOT_READY, PLAYER_COLOR_RED);
             else LobbyDrawFx.setBtnStyle(readyBtn, BTN_READY, PLAYER_COLOR_GREEN);
 
+            // Check if game should start
+            if (numOfPlayers > 1 && numOfReady == numOfPlayers) {
+                startGame(lobby_id);
+            }
+
             // Check if game has started
-            if (statusValue.getText().equals(STATUS_STARTED)) {
-                joinBtn.setDisable(true);
-                readyBtn.setDisable(true);
-                statusValue.setText(STATUS_STARTED);
-                LobbyDrawFx.setTextColor(statusValue, PLAYER_COLOR_RED);
-            } else {
+            if (numOfReady != numOfPlayers || numOfReady == 1) {
                 LobbyDrawFx.setBtnStyle(joinBtn, BTN_LEAVE, PLAYER_COLOR_RED);
                 statusValue.setText(numOfReady + " / " + numOfPlayers + " ready");
                 readyBtn.setDisable(false);
             }
+        }
 
-        // User is not in the actual lobby
-        } else {
-            LobbyDrawFx.setBtnStyle(joinBtn, BTN_JOIN, "#FF9800");
-            readyBtn.setDisable(true);
-            joinBtn.setDisable(false);
-            statusValue.setText(STATUS_OPEN);
-            LobbyDrawFx.setTextColor(statusValue, PLAYER_COLOR_GREEN);
-
+        // User not in any lobby
+        else {
             // Check if game is full
             if (numOfPlayers == 4) {
                 joinBtn.setDisable(true);
                 statusValue.setText(STATUS_FULL);
                 LobbyDrawFx.setTextColor(statusValue, PLAYER_COLOR_RED);
             }
+
+            // Lobby open to join
+            else {
+                LobbyDrawFx.setBtnStyle(joinBtn, BTN_JOIN, "#FF9800");
+                readyBtn.setDisable(true);
+                joinBtn.setDisable(false);
+                statusValue.setText(STATUS_OPEN);
+                LobbyDrawFx.setTextColor(statusValue, PLAYER_COLOR_GREEN);
+            }
+        }
+
+        // Check if game is started
+        if (numOfPlayers > 1 && numOfReady == numOfPlayers) {
+            joinBtn.setDisable(true);
+            readyBtn.setDisable(true);
+            statusValue.setText(STATUS_STARTED);
+            LobbyDrawFx.setTextColor(statusValue, PLAYER_COLOR_RED);
         }
 
         //Set logic when player uses the "join" button (i.e. joins or leaves the lobby)

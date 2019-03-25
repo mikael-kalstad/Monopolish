@@ -12,7 +12,12 @@ import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+/**
+ * This class will hold an instances of objects that will be used throughout the application. <br/>
+ * By using this Handler, all classes can refer to the same object more easily.
+ */
 public class Handler extends Application {
+    // Instances
     private static SceneManager sceneManager;
     private static Account account;
     private static AccountDAO accountDAO = new AccountDAO();
@@ -20,10 +25,17 @@ public class Handler extends Application {
     private static LobbyDAO lobbyDAO = new LobbyDAO();
     private static GameDAO gameDAO = new GameDAO();
 
+    // Constants for GUI
     private final String APPLICATION_TITLE = "Monopoly";
     private final double ASPECT_RATIO = 16.0/9.0;
     private final String INITIAL_VIEW = ViewConstants.LOGIN.getValue();
 
+    /**
+     * This method will start the GUI application
+     *
+     * @param primaryStage The target window
+     * @throws Exception
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle(APPLICATION_TITLE);
@@ -38,7 +50,7 @@ public class Handler extends Application {
         sceneManager = new SceneManager(primaryStage, INITIAL_VIEW);
         primaryStage.show();
 
-
+        // Event listener for resizing
         ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
             // Fixing scene scaling issues
             sceneManager.setSceneScale(primaryStage);
@@ -64,19 +76,37 @@ public class Handler extends Application {
         launch(args);
     }
 
-    // Get and set methods
+    /**
+     * Get scenemanager instance, takes care of all view switching
+     * @return Instance of scenemanager
+     */
     public static SceneManager getSceneManager() {
         return sceneManager;
     }
+
+    /**
+     * Get account object
+     * @return Account instance
+     */
     public static Account getAccount() {
         return account;
     }
+
+    /**
+     * Set account instance
+     * @param newAccount A new account instance with user info
+     */
     public static void setAccount(Account newAccount) {
         account = newAccount;
     }
-    public static AccountDAO getAccountDAO() {
-        return accountDAO;
-    }
+
+    /**
+     * Reset account to remove data of user
+     */
+    public static void resetAccount() { account = null; }
+
+    // Get DAO instances
+    public static AccountDAO getAccountDAO() { return accountDAO; }
     public static PlayerDAO getPlayerDAO() { return playerDAO; }
     public static LobbyDAO getLobbyDAO() { return lobbyDAO; }
     public static GameDAO getGameDAO() { return gameDAO; }
