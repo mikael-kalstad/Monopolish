@@ -9,10 +9,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
@@ -39,12 +38,15 @@ public class GameController {
     private ArrayList<FxPlayer> playerList = new ArrayList<>();
 
     // Elements in board
-    @FXML private Label p1name, p1money, p2name, p2money, p3name, p3money;
-    @FXML private HBox player1view, player2view, player3view;
+    @FXML private Label yourname, p1name, p1money, p2name, p2money, p3name, p3money, p4name, p4money;
+    @FXML private HBox player1view, player2view, player3view, player4view;
     @FXML private VBox playerInfo;
     @FXML private TextFlow propertycard;
     @FXML private GridPane gamegrid;
     @FXML private ListView eventlog;
+
+    // Dice elements
+    @FXML ImageView dice1_img, dice2_img;
 
     // Elements in sidebar
     @FXML private Button rolldiceBtn, buyBtn, claimrentBtn;
@@ -54,6 +56,9 @@ public class GameController {
     @FXML private Pane chatContainer;
     @FXML private Pane chatMessages;
     private boolean chatOpen = false;
+
+    // Properties dialog
+    @FXML private FlowPane propertyContainer;
 
     @FXML
     public void initialize() {
@@ -68,7 +73,7 @@ public class GameController {
         }
 
         drawPlayers();
-        drawPlayerInfo();
+        drawAllPlayersView();
         // Start the game!
         waitForTurn();
 
@@ -98,6 +103,7 @@ public class GameController {
                 Handler.getSceneManager().getWindow().close();
             }
         });
+        drawYourPlayerView();
     }
 
     /**
@@ -132,7 +138,13 @@ public class GameController {
     }
 
     public void showProperties() {
-        // Show the properties here...
+        propertyContainer.setVisible(true);
+        System.out.println("show properties!");
+    }
+
+    public void closePropertiesDialog() {
+        propertyContainer.setVisible(false);
+
     }
 
     /**
@@ -142,7 +154,7 @@ public class GameController {
     public void toggleChat() {
         // Open chat
         if (chatOpen) {
-            chatContainer.setTranslateY(-275); // Move down
+            chatContainer.setTranslateY(0); // Set to default position
             chatOpen = false;
         }
 
@@ -174,11 +186,11 @@ public class GameController {
                 Platform.runLater(() -> {
                     try {
                         // If it's your turn, break out of the timer
-                        if (gameLogic.isYourTurn()) {
+                        if (gameLogic.isYourTurn() == 1) {
                             System.out.println("Your turn");
                             yourTurn();
-                        } else {
-                            System.out.println("Not your turn");
+                        } else if (gameLogic.isYourTurn() == 0) {
+                            updateBoard();
                         }
                     } catch (SQLException e) {
                         e.printStackTrace();
@@ -188,10 +200,14 @@ public class GameController {
         }, 0l, 1000l);
     }
 
-    public void updatePlayerPositions() {
-        int[] positions = gameLogic.getPlayerPositions();
-        for (int i = 0; i < positions.length; i++) {
-            movePlayer(playerList.get(i), positions[i]);
+    public void updateBoard() {
+        try {
+            int[] positions = gameLogic.getPlayerPositions();
+            for (int i = 0; i < positions.length; i++) {
+                movePlayer(playerList.get(i), positions[i]);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -199,7 +215,7 @@ public class GameController {
         // Beginning of your turn
         try {
             gameLogic.startYourTurn();
-            updatePlayerPositions();
+            updateBoard();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -207,24 +223,31 @@ public class GameController {
         rolldiceBtn.setDisable(false);
     }
 
+    /**
+     * Will roll two dices and get random values between 1-6.
+     * This method will also update corresponding dice images in the GUI.
+     */
     public void rollDice(){
-        int[] dice = null;
-        try {
-            dice = gameLogic.throwDice();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        int dice1 = dice[0];
-        int dice2 = dice[1];
-        String s = "Threw dice:  "+ dice1 + ",  " + dice2;
+        // Get values for two dices
+        int[] diceValues = null;
+        try { diceValues = gameLogic.throwDice(); }
+        catch (SQLException e) { e.printStackTrace(); }
+
+        // Check if diceValues array is initialized or length is less than two
+        if (diceValues == null || diceValues.length < 2) return;
+
+        // Update dice images on board
+        dice1_img.setImage(new Image(("file:res/gui/dices/dice"+ diceValues[0] +".png")));
+        dice2_img.setImage(new Image(("file:res/gui/dices/dice"+ diceValues[1] +".png")));
+
+        String s = "Threw dice:  "+ diceValues[0] + ",  " + diceValues[1];
         addToEventlog(s);
-        updatePlayerPositions();
+        updateBoard();
         //movePlayer(playerList.get(gameLogic.getTurnNumber()), dice1+dice2);
         waitForTurn();
     }
 
     public void drawPlayers() {
-
         for (FxPlayer player : playerList) {
             GridPane.setConstraints(player, player.getPosX(), player.getPosY());
         }
@@ -295,16 +318,20 @@ public class GameController {
         eventlog.scrollTo(focus);
     }
 
-    private void drawPlayerInfo(){
-        if (playerList.size() >= 2) {
-            if (playerList.size() == 3) {
-                player2view.setVisible(true);
-                p1name.setText(playerList.get(0).getUsername());
-            }
-            if (playerList.size() == 4) {
-                player2view.setVisible(true);
-                player3view.setVisible(true);
-            }
+    private void drawYourPlayerView(){
+        yourname.setText(gameLogic.getYourPlayer().getUsername());
+    }
+
+    private void drawAllPlayersView(){
+        p1name.setText(playerList.get(0).getUsername());
+        p2name.setText(playerList.get(1).getUsername());
+        if (playerList.size() >= 3) {
+            player3view.setVisible(true);
+            p3name.setText(playerList.get(2).getUsername());
+        }
+        if (playerList.size() == 4) {
+            player4view.setVisible(true);
+            p4name.setText(playerList.get(3).getUsername());
         }
     }
 }

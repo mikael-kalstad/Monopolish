@@ -1,6 +1,5 @@
 package com.teamfour.monopolish.gui.controllers;
 
-import com.teamfour.monopolish.game.GameDAO;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -14,7 +13,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -22,12 +20,19 @@ import java.util.TimerTask;
 /**
  * Controller class for lobby view,
  * handles all the logic for the lobbyList.
- * <b>Note: the gui elements are created in the LobbyDrawFx class.</b>
+ * <b>Note: some gui elements are created in the LobbyDrawFx class.</b>
  *
  * @author Mikael Kalstad
- * @version 1.6
+ * @version 1.7
  */
 public class LobbyController {
+    private ArrayList<Pane> lobbyList = new ArrayList<>(); // List over all lobby container elements
+    private final String USERNAME = Handler.getAccount().getUsername();
+    private int current_lobby_id = -1; // Default when user is not in any lobby = -1
+    private boolean READY = false;
+    private Timer refreshTimer;
+
+    // GUI FXML elements
     @FXML private FlowPane lobbiesContainer;
     @FXML private Text noLobbyText;
     @FXML private Pane newLobbyDialog;
@@ -37,17 +42,11 @@ public class LobbyController {
     @FXML private Pane countdown;
     @FXML private Text countdownValue;
 
-    private ArrayList<Pane> lobbyList = new ArrayList<>(); // List over all lobby container elements
-    private final String USERNAME = Handler.getAccount().getUsername();
-    private int current_lobby_id = -1; // Default when user is not in any lobby = -1
-    private boolean READY = false;
-    private Timer timer;
-
     //  Status msg constants
     private final String STATUS_OPEN = "OPEN";
     private final String STATUS_FULL = "LOBBY FULL";
+    private final String STATUS_STARTING = "GAME STARTING";
     private final String STATUS_STARTED = "IN GAME";
-//    private final String STATUS_TOO_FEW_PLAYERS = "Mi"
 
     // Btn msg constants
     private final String BTN_LEAVE = "Leave";
@@ -84,10 +83,10 @@ public class LobbyController {
             }
         };
 
-        timer = new Timer();
-        long delay = 1000L; // Delay before update timer starts
+        refreshTimer = new Timer();
+        long delay = 1000L; // Delay before update refreshTimer starts
         long period = 1000L; // Delay between each update/refresh
-        timer.scheduleAtFixedRate(task, delay, period);
+        refreshTimer.scheduleAtFixedRate(task, delay, period);
 
         refresh();
 
@@ -109,7 +108,7 @@ public class LobbyController {
                     // Remove user if in a lobby
                     Handler.getLobbyDAO().removePlayer(USERNAME, current_lobby_id);
 
-                    timer.cancel(); // Stop timer thread
+                    refreshTimer.cancel(); // Stop refreshTimer thread
 
                     // Close the window
                     Handler.getSceneManager().getWindow().close();
@@ -397,23 +396,32 @@ public class LobbyController {
             if (READY) LobbyDrawFx.setBtnStyle(readyBtn, BTN_NOT_READY, PLAYER_COLOR_RED);
             else LobbyDrawFx.setBtnStyle(readyBtn, BTN_READY, PLAYER_COLOR_GREEN);
 
-            // Check if game should start
-            if (numOfPlayers > 1 && numOfReady == numOfPlayers) {
-                startGame(lobby_id);
-            }
-
             // Check if game has started
             if (numOfReady != numOfPlayers || numOfReady == 1) {
                 LobbyDrawFx.setBtnStyle(joinBtn, BTN_LEAVE, PLAYER_COLOR_RED);
                 statusValue.setText(numOfReady + " / " + numOfPlayers + " ready");
                 readyBtn.setDisable(false);
             }
+
+            // Check if game should start
+            if (numOfPlayers > 1 && numOfReady == numOfPlayers) {
+                statusValue.setText(STATUS_STARTING);
+                LobbyDrawFx.setTextColor(statusValue, PLAYER_COLOR_RED);
+                startGame(lobby_id);
+            }
         }
 
         // User not in any lobby
         else {
+            // Check if game is started
+            if (numOfPlayers > 1 && numOfReady == numOfPlayers) {
+                joinBtn.setDisable(true);
+                statusValue.setText(STATUS_STARTING);
+                LobbyDrawFx.setTextColor(statusValue, PLAYER_COLOR_RED);
+            }
+
             // Check if game is full
-            if (numOfPlayers == 4) {
+            else if (numOfPlayers == 4) {
                 joinBtn.setDisable(true);
                 statusValue.setText(STATUS_FULL);
                 LobbyDrawFx.setTextColor(statusValue, PLAYER_COLOR_RED);
@@ -427,14 +435,6 @@ public class LobbyController {
                 statusValue.setText(STATUS_OPEN);
                 LobbyDrawFx.setTextColor(statusValue, PLAYER_COLOR_GREEN);
             }
-        }
-
-        // Check if game is started
-        if (numOfPlayers > 1 && numOfReady == numOfPlayers) {
-            joinBtn.setDisable(true);
-            readyBtn.setDisable(true);
-            statusValue.setText(STATUS_STARTED);
-            LobbyDrawFx.setTextColor(statusValue, PLAYER_COLOR_RED);
         }
 
         //Set logic when player uses the "join" button (i.e. joins or leaves the lobby)
@@ -464,10 +464,17 @@ public class LobbyController {
         });
     }
 
+    /**
+     * This method will start the countdown, and then start the game after countdown is finished.
+     * It will also update some GUI elements when game is starting: <br/>
+     * - Ready button will be disabled
+     * -
+     *
+//     * @param readyBtn Target ready btn
+//     * @param statusValue Target statusValue text
+     */
     private void startGame(int lobby_id) {
-        timer.cancel(); // Stop timer thread;
-
-        // Countdown timer when game start
+        // Countdown refreshTimer when game start
         Timer countDownTimer = new Timer();
         countdown.setVisible(true);
         countdownValue.setVisible(true);
@@ -478,14 +485,19 @@ public class LobbyController {
             @Override
             public void run() {
                 Platform.runLater(() -> {
+                    int numOfPlayers = Handler.getLobbyDAO().getUsersInLobby(lobby_id).size();
+                    int numOfReady = Handler.getLobbyDAO().getAllReadyInLobby(lobby_id);
+
+
                     // Check if player left the lobby
-                    if (current_lobby_id == -1) {
+                    if (current_lobby_id == -1 || numOfReady != numOfPlayers) {
                         countDownTimer.cancel();
                         countdown.setVisible(false);
                     }
                     // Logic when game should start
                     else if (time == 0) {
-                        // Stop timer
+                        // Stop timers
+                        refreshTimer.cancel();
                         countDownTimer.cancel();
 
                         // Make a new game in database
@@ -504,7 +516,7 @@ public class LobbyController {
             }
         };
 
-        long delay = 2000L; // Delay before update timer starts
+        long delay = 2000L; // Delay before update refreshTimer starts
         long period = 1000L; // Delay between each update/refresh
         countDownTimer.scheduleAtFixedRate(countDownTask, delay, period);
     }
@@ -513,7 +525,14 @@ public class LobbyController {
      * Go back to the dashboard view
      */
     public void leave() {
+        // Remove player from lobby if user is in a lobby
+        if (current_lobby_id != -1)
+            Handler.getLobbyDAO().removePlayer(USERNAME, Handler.getLobbyDAO().getLobbyId(USERNAME));
+
+        // Switch to dashboard
         Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
-        timer.cancel(); // Stop timer thread
+
+        // Stop refreshTimer thread
+        refreshTimer.cancel();
     }
 }

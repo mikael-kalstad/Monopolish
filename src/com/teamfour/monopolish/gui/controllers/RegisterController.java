@@ -191,25 +191,26 @@ public class RegisterController {
         checkField(usernameInput, usernameMsg, MSG_USERNAME_REQUIREMENTS, usernameRequirement);
 
         // Check requirements (details in javadoc above method)
-        if (!inputsEmpty() && passwordMatch && !usernameRequirement) {
-            int res;
+        if (!inputsEmpty() && passwordRequirements && passwordMatch && !usernameRequirement) {
+            int res = -1; // Response from database
             Account user = new Account(usernameInput.getText().trim(), emailInput.getText().trim(), LocalDate.now(), 0);
 
             try {
-                System.out.println("registering...");
                 ConnectionPool.create();
                 res = Handler.getAccountDAO().insertAccount(user, passwordInput.getText().trim());
-                System.out.println("res" + res);
+
                 if (res == 3) usernameTaken = emailTaken = true;
                 else if (res == 1) usernameTaken = true;
                 else if (res == 2) emailTaken = true;
             }
-            catch (SQLException e) {
-                // TODO: Display database error
-                return;
-            }
+            catch (SQLException e) { e.printStackTrace(); }
 
+            // Registration is successful
             if (res == 0) {
+                // Set local account object
+                Handler.setAccount(user);
+
+                // Switch to dashboard view
                 Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
             }
         }

@@ -62,7 +62,7 @@ public class LoginController {
      * @return true if any inputs are empty, false if all inputs are not empty
      */
     private boolean inputsEmpty() {
-        return (!usernameInput.getText().trim().isEmpty() && !passwordInput.getText().trim().isEmpty());
+        return (usernameInput.getText().trim().isEmpty() && !passwordInput.getText().trim().isEmpty());
     }
 
     /**
@@ -89,7 +89,7 @@ public class LoginController {
             textElement.setVisible(true);
         }
         // Warning styling
-        else if (warning && inputsEmpty()) {
+        else if (warning) {
             setBorderStyle(input, COLOR_WARNING);
             textElement.setText(MSG_WARNING);
             setTextColor(textElement, COLOR_WARNING);
@@ -125,14 +125,17 @@ public class LoginController {
         boolean canLogin = false;
         boolean dbError = false;
 
-        // If inputs are not empty
-        // Database query for checking username/email and password combination
-        if (inputsEmpty()) {
+        // Try to register if inputs are not empty
+        if (!inputsEmpty()) {
             try {
                 ConnectionPool.create();
                 res = Handler.getAccountDAO().getAccountByCredentials(usernameInput.getText(), passwordInput.getText());
+
+                System.out.println("res from db: " + res);
+
+                // Username/email and password is correct
                 if (res != null) {
-                    Handler.setAccount(res);
+                    Handler.setAccount(res); // Set local account object
                     canLogin = true;
                     dbError = false;
                 }
