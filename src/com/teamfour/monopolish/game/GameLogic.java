@@ -109,6 +109,10 @@ public class GameLogic {
         finishYourTurn();
     }
 
+    public Player getYourPlayer() {
+        return entityManager.getYou();
+    }
+
     // TODO: Remove throws exception
     public void run() throws Exception {
         // Load board, graphics, etc.
