@@ -7,10 +7,15 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
@@ -35,16 +40,20 @@ public class GameController {
     private ArrayList<Text> eventList = new ArrayList<>();
     private ArrayList<FxPlayer> playerList = new ArrayList<>();
     //@FXML private Label p1name, p1money, p2name, p2money, p3name, p3money;
+    @FXML
+    private VBox playerInfo;
+    @FXML
+    private Button rolldice;
+    @FXML
+    private TextFlow propertycard;
+    @FXML
+    private GridPane gamegrid;
+    @FXML
+    private ListView eventlog;
 
-    @FXML private Button rolldice;
-    @FXML private TextFlow propertycard;
-    @FXML private GridPane gamegrid;
-    @FXML private ListView eventlog;
-
-    @FXML private ImageView dice1_img;
-    @FXML private ImageView dice2_img;
-
-    @FXML public void initialize() {
+    @FXML
+    public void initialize() {
+        drawplayerinfo("Jarle", 10000);
         // Load gamelogic and initialize the game setup
         try {
             gameLogic.setupGame();
@@ -79,11 +88,11 @@ public class GameController {
 
             // Check if yes button is pressed
             if (alertDialog.getResult().getButtonData().isDefaultButton()) {
-                timer.cancel(); // Stop timer thread
-
                 // Remove player from lobby
                 final String USERNAME = Handler.getAccount().getUsername();
                 Handler.getLobbyDAO().removePlayer(USERNAME, Handler.getLobbyDAO().getLobbyId(USERNAME));
+
+                timer.cancel(); // Stop timer thread
 
                 // Close the window
                 Handler.getSceneManager().getWindow().close();
@@ -169,52 +178,20 @@ public class GameController {
         rolldice.setDisable(false);
     }
 
-    /**
-     * This method will find two random number (0-6) and update dice images on the board.
-     */
-    public void rollDice(){
+    public void setRolldice(){
         int[] dice = null;
-        try { dice = gameLogic.throwDice(); }
-        catch (SQLException e) { e.printStackTrace(); }
-        if (dice == null || dice.length == 0) return;
-
-        updateDice(dice1_img, dice[0]);
-        updateDice(dice2_img, dice[1]);
-        String s = "Threw dice:  "+ dice[0] + ",  " + dice[1];
+        try {
+            dice = gameLogic.throwDice();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        int dice1 = dice[0];
+        int dice2 = dice[1];
+        String s = "Threw dice:  "+ dice1 + ",  " + dice2;
         addToEventlog(s);
         updatePlayerPositions();
         //movePlayer(playerList.get(gameLogic.getTurnNumber()), dice1+dice2);
         waitForTurn();
-    }
-
-    /**
-     * This method will update the dice image shown on the board
-     *
-     * @param diceImg Target ImageView
-     * @param diceNum Value of the dice
-     */
-    private void updateDice(ImageView diceImg, int diceNum) {
-        // Check value of the dice and change image accordingly
-        switch (diceNum) {
-            case 1:
-                diceImg.setImage(new Image("file:res/gui/dices/dice1.png"));
-                break;
-            case 2:
-                diceImg.setImage(new Image("file:res/gui/dices/dice2.png"));
-                break;
-            case 3:
-                diceImg.setImage(new Image("file:res/gui/dices/dice3.png"));
-                break;
-            case 4:
-                diceImg.setImage(new Image("file:res/gui/dices/dice4.png"));
-                break;
-            case 5:
-                diceImg.setImage(new Image("file:res/gui/dices/dice5.png"));
-                break;
-            case 6:
-                diceImg.setImage(new Image("file:res/gui/dices/dice6.png"));
-                break;
-        }
     }
 
     public void drawPlayers() {
@@ -286,5 +263,26 @@ public class GameController {
         eventlog.getItems().clear();
         eventlog.getItems().addAll(eventList);
         eventlog.scrollTo(focus);
+    }
+
+    public void drawplayerinfo(String playername, int money) {
+        HBox box = new HBox();
+        box.setId(playername);
+        box.setSpacing(80);
+        box.setAlignment(Pos.CENTER);
+        //box.setBackground(Background.EMPTY);
+
+        Rectangle playercolor = new Rectangle(50, 50);
+        playercolor.setFill(Color.web( "#212121"));
+        Label pname = new Label(playername);
+        //pname.setFont(Font.font("Arial", 15));
+
+        Button viewplayer = new Button("View");
+        String moneystring = Integer.toString(money);
+        Label moneylabel = new Label(moneystring);
+        moneylabel.setId("cash");
+
+        box.getChildren().addAll(playercolor, pname, viewplayer, moneylabel);
+        playerInfo.getChildren().add(box);
     }
 }
