@@ -51,7 +51,7 @@
                   <Font size="19.0" />
                </font>
             </Text>
-            <Text fill="WHITE" layoutX="215.0" layoutY="332.0" strokeType="OUTSIDE" strokeWidth="0.0" text="6" wrappingWidth="124.66666173934942">
+            <Text fx:id="gamesPlayed" fill="WHITE" layoutX="215.0" layoutY="332.0" strokeType="OUTSIDE" strokeWidth="0.0" text="6" wrappingWidth="124.66666173934942">
                <font>
                   <Font size="29.0" />
                </font>

@@ -95,9 +95,8 @@ public class GameLogic {
     public int[] throwDice() throws SQLException {
         int[] throwResult = dice.throwDice();
         int steps = throwResult[0] + throwResult[1];
-        if (entityManager.getYou().isInJail()) {
-            if (throwResult[0] == throwResult[1])
-                moveYourPlayer(steps);
+        if (entityManager.getYou().isInJail() && throwResult[0] == throwResult[1]) {
+            moveYourPlayer(steps);
         } else {
             moveYourPlayer(steps);
         }

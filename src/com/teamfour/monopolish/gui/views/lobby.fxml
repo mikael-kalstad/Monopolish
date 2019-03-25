@@ -150,12 +150,12 @@
             <Image url="file:res/gui/refresh.png" />
          </image>
       </ImageView>
-      <Text fill="#344e5d" layoutX="272.0" layoutY="946.0" onMouseClicked="#refresh" strokeType="OUTSIDE" strokeWidth="0.0" text="Refresh" visible="false" wrappingWidth="302.000114440918">
+      <Text fill="#344e5d" layoutX="272.0" layoutY="946.0" onMouseClicked="#refresh" strokeType="OUTSIDE" strokeWidth="0.0" text="Refresh" wrappingWidth="302.000114440918">
          <font>
             <Font name="System Bold" size="42.0" />
          </font>
       </Text>
-      <Text fill="#959595" layoutX="208.0" layoutY="997.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Refresh to see the newest lobbies " visible="false">
+      <Text fill="#959595" layoutX="208.0" layoutY="997.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Refresh to see the newest lobbies ">
          <font>
             <Font size="18.0" />
          </font>

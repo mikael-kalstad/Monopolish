@@ -17,9 +17,9 @@ import javafx.scene.text.Text;
  * separated from the logic of the lobby.
  */
 
-public class LobbyDrawFx {
+class LobbyDrawFx {
     // Used by newLobbyDialog
-    public static void setBorderStyle(TextField element, String color) {
+    static void setBorderStyle(TextField element, String color) {
         element.setStyle(
                 "-fx-border-color: " + color + ";" +
                 "-fx-border-width: 0 0 2 0;" +
@@ -28,11 +28,24 @@ public class LobbyDrawFx {
         );
     }
 
-    public static void setTextColor(Text element, String color) {
+    /**
+     * Change text color of a text element
+     *
+     * @param element Target text node
+     * @param color New color of the text
+     */
+    static void setTextColor(Text element, String color) {
         element.setFill(Paint.valueOf(color));
     }
 
-    public static void setBtnStyle(Button btn, String msg, String backgroundColor) {
+    /**
+     * Change btn style
+     *
+     * @param btn Target node
+     * @param msg Text on the btn
+     * @param backgroundColor Of the btn
+     */
+    static void setBtnStyle(Button btn, String msg, String backgroundColor) {
         btn.setText(msg);
         btn.setStyle(
                 "-fx-text-fill: white;" +
@@ -43,43 +56,7 @@ public class LobbyDrawFx {
         );
     }
 
-    /**
-     * Will change between two different styles
-     *
-     * <ul>
-     *     <li>1. Join - user can join lobby - if join is true</li>
-     *     <li>2. Leave - user can leave lobby - if join is false</li>
-     * </ul>
-     *
-     * @param btn Button target for style change
-     */
-    public static void changeBtnStyle(Button btn, String BTN_LEAVE, String BTN_JOIN, boolean join) {
-        // If the user is in the actual lobby
-        if (!join) {
-            btn.setText(BTN_LEAVE);
-            btn.setStyle(
-                    "-fx-text-fill: white;" +
-                    "-fx-font-size: 15;" +
-                    "-fx-background-color: red; " +
-                    "-fx-background-radius: 0;" +
-                    "-fx-padding: 8 35;"
-            );
-        }
-        // If the user is not in the actual lobby
-        else {
-            btn.setText(BTN_JOIN);
-            btn.setStyle(
-                    "-fx-text-fill: white;" +
-                    "-fx-font-size: 15;" +
-                    "-fx-background-color: #FF9800; " +
-                    "-fx-background-radius: 0;" +
-                    "-fx-padding: 8 35;"
-            );
-        }
-    }
-
-
-    public static GridPane drawNewLobby(String lobbyName) {
+    static GridPane drawNewLobby(String lobbyName) {
         // Grid layout within the container
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
@@ -170,11 +147,11 @@ public class LobbyDrawFx {
      * Includes a color and the username of the player
      *
      * @param color of the box beside the user
-     * @param username
+     * @param username of the player
      * @param index where to place the user
      * @return a playerRow inside a GridPane element
      */
-    public static GridPane drawPlayerRow(String color, String username, int index) {
+    static GridPane drawPlayerRow(String color, String username, int index) {
         GridPane container = new GridPane();
         container.setPrefSize(250, 35);
         container.setMaxSize(250, 35);
@@ -186,7 +163,7 @@ public class LobbyDrawFx {
         ColumnConstraints imgCol = new ColumnConstraints();
         colorCol.setPrefWidth(35);
         spaceCol.setPrefWidth(30);
-        userCol.setPrefWidth(130);
+        userCol.setPrefWidth(150);
         userCol.setHalignment(HPos.LEFT);
         imgCol.setPrefWidth(25);
         imgCol.setHalignment(HPos.RIGHT);
