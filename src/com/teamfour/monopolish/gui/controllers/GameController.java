@@ -38,8 +38,8 @@ public class GameController {
     private ArrayList<FxPlayer> playerList = new ArrayList<>();
 
     // Elements in board
-    @FXML private Label p1name, p1money, p2name, p2money, p3name, p3money;
-    @FXML private HBox player1view, player2view, player3view;
+    @FXML private Label yourname, p1name, p1money, p2name, p2money, p3name, p3money, p4name, p4money;
+    @FXML private HBox player1view, player2view, player3view, player4view;
     @FXML private VBox playerInfo;
     @FXML private TextFlow propertycard;
     @FXML private GridPane gamegrid;
@@ -73,7 +73,7 @@ public class GameController {
         }
 
         drawPlayers();
-        drawPlayerInfo();
+        drawAllPlayersView();
         // Start the game!
         waitForTurn();
 
@@ -103,6 +103,7 @@ public class GameController {
                 Handler.getSceneManager().getWindow().close();
             }
         });
+        drawYourPlayerView();
     }
 
     /**
@@ -313,16 +314,20 @@ public class GameController {
         eventlog.scrollTo(focus);
     }
 
-    private void drawPlayerInfo(){
-        if (playerList.size() >= 2) {
-            if (playerList.size() == 3) {
-                player2view.setVisible(true);
-                p1name.setText(playerList.get(0).getUsername());
-            }
-            if (playerList.size() == 4) {
-                player2view.setVisible(true);
-                player3view.setVisible(true);
-            }
+    private void drawYourPlayerView(){
+        yourname.setText(gameLogic.getYourPlayer().getUsername());
+    }
+
+    private void drawAllPlayersView(){
+        p1name.setText(playerList.get(0).getUsername());
+        p2name.setText(playerList.get(1).getUsername());
+        if (playerList.size() >= 3) {
+            player3view.setVisible(true);
+            p3name.setText(playerList.get(2).getUsername());
+        }
+        if (playerList.size() == 4) {
+            player4view.setVisible(true);
+            p4name.setText(playerList.get(3).getUsername());
         }
     }
 }

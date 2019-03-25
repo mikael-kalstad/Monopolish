@@ -604,7 +604,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <VBox layoutX="10.0" layoutY="699.6666870117188" spacing="5.0">
+            <VBox layoutX="10.0" layoutY="644.0" prefHeight="360.0" prefWidth="600.0" spacing="5.0">
                <children>
                   <HBox fx:id="player1view" alignment="CENTER" prefHeight="80.0" prefWidth="600.0" spacing="40.0" style="-fx-background-color: #212121;">
                      <children>
@@ -654,7 +654,7 @@
                         </Label>
                      </children>
                   </HBox>
-                  <HBox fx:id="player3view" alignment="CENTER" prefHeight="80.0" prefWidth="600.0" spacing="40.0" style="-fx-background-color: #212121;">
+                  <HBox fx:id="player3view" alignment="CENTER" prefHeight="80.0" prefWidth="600.0" spacing="40.0" style="-fx-background-color: #212121;" visible="false">
                      <children>
                         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="50.0" stroke="BLACK" strokeType="INSIDE" width="50.0">
                            <HBox.margin>
@@ -678,6 +678,30 @@
                         </Label>
                      </children>
                   </HBox>
+                  <HBox fx:id="player4view" alignment="CENTER" prefHeight="80.0" prefWidth="600.0" spacing="40.0" style="-fx-background-color: #212121;" visible="false">
+                     <children>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="50.0" stroke="BLACK" strokeType="INSIDE" width="50.0">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Rectangle>
+                        <Label fx:id="p4name" text="Playername" textFill="#fafafa">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #FF9800;" text="View" textFill="#fafafa">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Button>
+                        <Label fx:id="p4money" text="[money]" textFill="#fafafa">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
                </children>
             </VBox>
             <Line endX="406.0" endY="1.52587890625E-5" layoutX="169.0" layoutY="242.0" startX="-100.0" stroke="WHITE" />
@@ -689,7 +713,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Label layoutX="227.0" layoutY="590.0" text="Opponents" textFill="#fafafa">
+            <Label layoutX="256.0" layoutY="587.0" text="Players" textFill="#fafafa">
                <font>
                   <Font name="System Bold" size="32.0" />
                </font>
@@ -703,6 +727,11 @@
             <Label fx:id="roundValue" layoutX="203.0" layoutY="271.0" text="6" textFill="#e3e2e2">
                <font>
                   <Font size="31.0" />
+               </font>
+            </Label>
+            <Label fx:id="yourname" layoutX="259.0" layoutY="87.0" prefHeight="40.0" prefWidth="150.0" text="name" textFill="#fafafa">
+               <font>
+                  <Font name="System Bold" size="28.0" />
                </font>
             </Label>
          </children>
