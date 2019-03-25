@@ -9,7 +9,7 @@ CREATE PROCEDURE game_insert(IN lobby_id int, OUT game_id INT)
   proc_label:BEGIN
     IF ((SELECT p.user_id
         FROM lobby l
-        LEFT JOIN player p ON l.user_id=p.user_id LIMIT 1) IS NULL) THEN
+        LEFT JOIN player p ON l.user_id=p.user_id LIMIT 1) IS NOT NULL) THEN
       LEAVE proc_label;
     end if;
 

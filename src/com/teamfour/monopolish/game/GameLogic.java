@@ -73,7 +73,7 @@ public class GameLogic {
         // 4. Generate random turn order
         System.out.println("Getting turn order...");
         turns = entityManager.generateTurnOrder();
-
+        System.out.println(entityManager.getPlayers().size());
         for (int i = 0; i < turns.length; i++) {
             System.out.println((i + 1) + ": " + turns[i]);
         }
