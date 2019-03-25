@@ -48,7 +48,7 @@ public class GameController {
 
     // Elements in sidebar
     @FXML private Button rolldiceBtn, buyBtn, claimrentBtn;
-    @FXML private Text moneyValue, roundValue, statusValue;
+    @FXML private Label moneyValue, roundValue, statusValue;
 
     // Chat
     @FXML private Pane chatContainer;
