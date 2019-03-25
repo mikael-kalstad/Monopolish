@@ -103,9 +103,9 @@ class LobbyDrawFx {
         // Status container
         GridPane statusGrid = new GridPane();
         ColumnConstraints col1 = new ColumnConstraints();
-        col1.setPercentWidth(50);
+        col1.setPercentWidth(40);
         ColumnConstraints col2 = new ColumnConstraints();
-        col2.setPercentWidth(50);
+        col2.setPercentWidth(60);
         statusGrid.getColumnConstraints().addAll(col1, col2);
 
         statusGrid.add(status, 0, 0);

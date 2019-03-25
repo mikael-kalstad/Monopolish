@@ -11,10 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
@@ -59,6 +56,9 @@ public class GameController {
     @FXML private Pane chatContainer;
     @FXML private Pane chatMessages;
     private boolean chatOpen = false;
+
+    // Properties dialog
+    @FXML private FlowPane propertyContainer;
 
     @FXML
     public void initialize() {
@@ -137,7 +137,13 @@ public class GameController {
     }
 
     public void showProperties() {
-        // Show the properties here...
+        propertyContainer.setVisible(true);
+        System.out.println("show properties!");
+    }
+
+    public void closePropertiesDialog() {
+        propertyContainer.setVisible(false);
+
     }
 
     /**
@@ -147,7 +153,7 @@ public class GameController {
     public void toggleChat() {
         // Open chat
         if (chatOpen) {
-            chatContainer.setTranslateY(0); // Move down
+            chatContainer.setTranslateY(0); // Set to default position
             chatOpen = false;
         }
 
