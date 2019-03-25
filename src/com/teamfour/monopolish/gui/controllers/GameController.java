@@ -36,7 +36,7 @@ public class GameController {
 
     private Timer timer = new Timer();
 
-    private GameLogic gameLogic = new GameLogic(1);
+    private GameLogic gameLogic = new GameLogic(Handler.getCurrentGameId());
     private ArrayList<Text> eventList = new ArrayList<>();
     private ArrayList<FxPlayer> playerList = new ArrayList<>();
     //@FXML private Label p1name, p1money, p2name, p2money, p3name, p3money;
