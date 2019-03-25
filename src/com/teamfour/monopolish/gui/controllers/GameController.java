@@ -186,13 +186,13 @@ public class GameController {
                 Platform.runLater(() -> {
                     try {
                         // If it's your turn, break out of the timer
-                        int result = gameLogic.isYourTurn();
+                        int result = gameLogic.isNewTurn();
                         if (result == 1) {
                             System.out.println("Your turn");
-                            yourTurn();
+                            newTurn(true);
                         } else if (result == 0) {
                             System.out.println("Updated board");
-                            updateBoard();
+                            newTurn(false);
                         }
                     } catch (SQLException e) {
                         e.printStackTrace();
@@ -210,6 +210,20 @@ public class GameController {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void newTurn(boolean yourTurn) {
+        try {
+            gameLogic.newTurn(yourTurn);
+            updateBoard();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        if (yourTurn) {
+            timer.cancel();
+            rolldiceBtn.setDisable(false);
         }
     }
 

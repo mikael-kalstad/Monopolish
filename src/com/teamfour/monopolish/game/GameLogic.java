@@ -113,133 +113,6 @@ public class GameLogic {
         return entityManager.getYou();
     }
 
-    // TODO: Remove throws exception
-    public void run() throws Exception {
-        // Load board, graphics, etc.
-
-        // 1. Load players from database by gameid
-        // 2. Load all properties from database into bank's properties
-        // Initialize board and get players from database
-        System.out.println("Loading board...");
-        board = new Board();
-        System.out.println("Loading players...");
-        entityManager = new EntityManager(gameId);
-        entityManager.updateFromDatabase();
-
-        // 3. Transfer money from bank to players
-        System.out.println("Distributing money...");
-        entityManager.distributeMoneyFromBank(START_MONEY);
-        // 4. Generate random turn order
-        System.out.println("Getting turn order...");
-        turns = entityManager.generateTurnOrder();
-        gameDAO.setCurrentPlayer(gameId, turns[0]);
-
-        for (int i = 0; i < turns.length; i++) {
-            System.out.println((i + 1) + ": " + turns[i]);
-        }
-        System.out.println("\n");
-
-        // 5. Write current player and money amounts to database
-        System.out.println("Writing back to database...");
-        entityManager.updateToDatabase();
-        // 6. Start!
-
-        // Main game loop
-        System.out.println("Game is starting!");
-        while (!finished) {
-            currentPlayer = "";
-            // CHeck if the current player has changed
-            if (currentPlayer.equals(gameDAO.getCurrentPlayer(gameId))) {
-                // If not, wait a second before checking again
-                Thread.sleep(1000);
-                continue;
-            }
-            // Update data from database
-            currentPlayer = gameDAO.getCurrentPlayer(gameId);
-            entityManager.updateFromDatabase();
-
-            System.out.println("It is " + currentPlayer + "'s turn.");
-
-            Handler.setAccount(new Account("helgeingstad", "giske@damer.no", LocalDate.now(), 0));
-
-            // Check to see if it's your turn
-            if (!turns[turnNumber].equals(Handler.getAccount().getUsername())) {
-                Thread.sleep(1000);
-                continue;
-            }
-
-            int placesToMove = 0;
-
-            // If you are in jail, try to escape from jail through a bail
-            if (!entityManager.getYou().isInJail()) {
-                System.out.println("You are not in jail.");
-                // If not in jail, throw the dice!
-                int throwCounter = 0;
-                // jailDice indicates that if you get this result, you
-                // have to throw again
-                int[] throwResult = {1, 1};
-                do {
-                    // If you get jailDice three times in a row, move to jail!
-                    if (throwCounter < 2) {
-                        // TODO: Press button to throw dice
-                        throwResult = dice.throwDice();
-                        System.out.println("You got " + throwResult[0] + " and " + throwResult[1]);
-
-                        // Sum up the dices to placesToMove
-                        placesToMove = throwResult[0] + throwResult[1];
-
-                        // Move your player by placesToMove
-                        System.out.println("You're moving " + placesToMove + " places.");
-                        if (placesToMove + entityManager.getYou().getPosition() >= Board.BOARD_LENGTH) {
-                            System.out.println("You get money from bank");
-                            entityManager.transferMoneyFromBank(entityManager.getYou().getUsername(), START_MONEY);
-                        }
-                        entityManager.getYou().move(placesToMove);
-                        System.out.println("You are at " + entityManager.getYou().getPosition());
-
-                        // Time to check where you landed!
-                        int yourPosition = entityManager.getYou().getPosition();
-                        if (board.getTileType(yourPosition) == Board.GO_TO_JAIL) {
-                            // TODO: Gotojail
-                            System.out.println("You are going to jail!");
-                            entityManager.getYou().setInJail(true);
-                            entityManager.getYou().moveTo(board.getJailPosition());
-                            break;
-                        } else if (board.getTileType(yourPosition) == Board.PROPERTY) {
-                            // TODO: Property handling NOTE: Kill me
-                            propertyTransaction();
-                        }
-                    } else {
-                        // TODO: Go to jail
-                        entityManager.getYou().setInJail(true);
-                        entityManager.getYou().moveTo(board.getJailPosition());
-                    }
-                    // If dices are the same, continue
-                } while (throwResult[0] == throwResult[1]);
-            } else {
-                System.out.println("You are in jail.");
-                // CHOICE: Pay bail or roll dice to escape
-            }
-
-            // TURN FINISHED!!
-
-            System.out.println("Hello, the turn has ended for you.");
-            // Check if anyone is bankrupt and update accordingly
-            entityManager.updateBankruptcy();
-
-            // Write all changes to database
-            entityManager.updateToDatabase();
-
-            // TODO: Check if anyone has won
-            if (entityManager.findWinner() != null) {
-                System.out.println("How can the game be finished??");
-                finished = true;
-            } else {
-                newTurn();
-            }
-        }
-    }
-
     // HELPER METHODS
 
     private void propertyTransaction() {
@@ -262,37 +135,6 @@ public class GameLogic {
         } else {
             System.out.println("You don't own this property, prepare to get buried in debt.");
         }
-    }
-
-    /**
-     * Increments the turn number
-     */
-    public void newTurn() throws SQLException {
-        System.out.println("New turn!");
-        // If this was not your turn, get the new current player and update database
-        if (!currentPlayer.equals(entityManager.getYou().getUsername())) {
-            String newCurrentPlayer = gameDAO.getCurrentPlayer(gameId);
-            for (int i = 0; i < turns.length; i++) {
-                if (turns[i].equals(newCurrentPlayer)) {
-                    turnNumber = i;
-                }
-            }
-            currentPlayer = turns[turnNumber];
-            entityManager.updateFromDatabase();
-        } else {
-            if (turnNumber >= entityManager.getPlayers().size() - 1) {
-                roundNumber++;
-                turnNumber = 0;
-            } else {
-                turnNumber++;
-            }
-
-            // Update current player
-            gameDAO.setCurrentPlayer(gameId, turns[turnNumber]);
-            entityManager.updateToDatabase();
-        }
-        currentPlayer = turns[turnNumber];
-        System.out.println("Turn " + turnNumber + ": " + currentPlayer);
     }
 
     public void startYourTurn() throws SQLException {
@@ -327,6 +169,16 @@ public class GameLogic {
         entityManager.updateToDatabase();
     }
 
+    public void newTurn(boolean yourTurn) throws SQLException {
+        currentPlayer = gameDAO.getCurrentPlayer(gameId);
+        updateFromDatabase();
+        for (int i = 0; i < turns.length; i++) {
+            if (turns[i].equals(currentPlayer)) {
+                turnNumber = i;
+            }
+        }
+    }
+
     // SETTERS & GETTERS
 
     public int getGameId() {
@@ -351,13 +203,15 @@ public class GameLogic {
 
     public String[] getTurns() { return turns; }
 
-    public int isYourTurn() throws SQLException {
+    public int isNewTurn() throws SQLException {
         String newCurrentUser = gameDAO.getCurrentPlayer(gameId);
         if (newCurrentUser.equals(Handler.getAccount().getUsername())) {
             currentPlayer = newCurrentUser;
+            newTurn(true);
             return 1;
         } else if (!newCurrentUser.equals(currentPlayer)) {
             currentPlayer = newCurrentUser;
+            newTurn(false);
             return 0;
         }
 
