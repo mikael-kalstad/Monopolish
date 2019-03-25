@@ -130,7 +130,6 @@ public class EntityManager {
     public void updateFromDatabase() throws SQLException {
         players.clear();
         players = playerDAO.getPlayersInGame(gameId);
-        System.out.println("Hello I am updating");
         // TODO: Fix this shit
         while (players.size() <= 0) {
             players = playerDAO.getPlayersInGame(gameId);
