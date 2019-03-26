@@ -728,7 +728,7 @@
             </TextField>
          </children>
       </Pane>
-      <Pane fx:id="propertiescontainer" layoutX="257.0" layoutY="105.0" prefHeight="855.0" prefWidth="1477.0" style="-fx-background-color: ededed; -fx-background-radius: 20;">
+      <Pane fx:id="propertiescontainer" layoutX="257.0" layoutY="105.0" prefHeight="855.0" prefWidth="1477.0" style="-fx-background-color: ededed; -fx-background-radius: 20;" visible="false">
          <children>
             <Text layoutX="609.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Properties">
                <font>
@@ -737,7 +737,7 @@
             </Text>
             <ImageView fitHeight="50.0" fitWidth="52.0" layoutX="1387.0" layoutY="44.0" onMouseClicked="#closePropertiesDialog" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../../res/gui/close.png" />
+                  <Image url="file:res/gui/close.png" />
                </image>
             </ImageView>
             <Line endX="473.0" endY="1.52587890625E-5" layoutX="552.0" layoutY="138.0" startX="-100.0" />
