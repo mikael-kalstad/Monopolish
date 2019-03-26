@@ -226,6 +226,8 @@ public class GameLogic {
 
     public String[] getTurns() { return turns; }
 
+    public EntityManager getEntityManager() { return entityManager; }
+
     /**
      * Check if a turn has finished in another client. Returns an integer based on following situations:
      * 1 - It's a new turn, and it's your turn

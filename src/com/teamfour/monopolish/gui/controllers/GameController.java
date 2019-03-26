@@ -101,40 +101,13 @@ public class GameController {
                 // Remove player from lobby
                 final String USERNAME = Handler.getAccount().getUsername();
                 Handler.getLobbyDAO().removePlayer(USERNAME, Handler.getLobbyDAO().getLobbyId(USERNAME));
-
+                gameLogic.getEntityManager().removePlayer(USERNAME);
                 databaseTimer.cancel(); // Stop databaseTimer thread
 
                 // Close the window
                 Handler.getSceneManager().getWindow().close();
             }
         });
-    }
-
-    /**
-     * Method that will run when the user wants to leave the game.
-     */
-    public void leave() {
-        Alert alertDialog = AlertBox.display(
-                Alert.AlertType.CONFIRMATION,
-                "Warning", "Do you want to leave?",
-                "You will not be able to join later if you leave"
-        );
-        alertDialog.showAndWait();
-
-        if (alertDialog.getResult().getButtonData().isDefaultButton()) {
-            databaseTimer.cancel(); // Stop databaseTimer thread
-
-            if (alertDialog.getResult().getButtonData().isDefaultButton()) {
-                // Remove player from lobby
-                final String USERNAME = Handler.getAccount().getUsername();
-                int lobbyId = Handler.getLobbyDAO().getLobbyId(USERNAME);
-                System.out.println("lobby id when leaving... " + lobbyId);
-                Handler.getLobbyDAO().removePlayer(USERNAME, Handler.getLobbyDAO().getLobbyId(USERNAME));
-
-                // Change view to dashboard
-                Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
-            }
-        }
     }
 
     /**
@@ -240,6 +213,33 @@ public class GameController {
         if (yourTurn) {
             databaseTimer.cancel();
             rolldiceBtn.setDisable(false);
+        }
+    }
+
+    /**
+     * Method that will run when the user wants to leave the game.
+     */
+    public void leave() {
+        Alert alertDialog = AlertBox.display(
+                Alert.AlertType.CONFIRMATION,
+                "Warning", "Do you want to leave?",
+                "You will not be able to join later if you leave"
+        );
+        alertDialog.showAndWait();
+
+        if (alertDialog.getResult().getButtonData().isDefaultButton()) {
+            databaseTimer.cancel(); // Stop databaseTimer thread
+
+            if (alertDialog.getResult().getButtonData().isDefaultButton()) {
+                // Remove player from lobby
+                final String USERNAME = Handler.getAccount().getUsername();
+                int lobbyId = Handler.getLobbyDAO().getLobbyId(USERNAME);
+                gameLogic.getEntityManager().removePlayer(USERNAME);
+                Handler.getLobbyDAO().removePlayer(USERNAME, Handler.getLobbyDAO().getLobbyId(USERNAME));
+
+                // Change view to dashboard
+                Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
+            }
         }
     }
 

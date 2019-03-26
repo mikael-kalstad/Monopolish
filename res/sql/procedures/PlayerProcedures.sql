@@ -31,9 +31,8 @@ begin
 
   select user_id  into u_id from account where u_name = username;
 
-  update player set active = 2 where user_id = u_id and gameid = g_id;
+  update player set active = 2 where user_id = u_id and game_id = g_id;
   commit;
-
 end $$
 delimiter ;
 
@@ -96,7 +95,7 @@ begin
   select a.username, p.money, p.currentpos, p.injail, p.bankrupt, p.active, p.money
   from player p
   join account a on p.user_id = a.user_id
-  where game_id = p.game_id
+  where game_id = p.game_id AND p.active=1
   ORDER BY p.player_id ASC;
   commit;
 end $$

@@ -77,11 +77,9 @@ public class PlayerDAO extends DataAccessObject {
             connection = ConnectionPool.getMainConnectionPool().getConnection();
             cStmt = connection.prepareCall("{call player_remove(?, ?)}");
 
-            for (int i = 0; i < 10; i++) {
-                cStmt.setString(1, username);
-                cStmt.setInt(2, game_id);
-                cStmt.executeQuery();
-            }
+            cStmt.setString(1, username);
+            cStmt.setInt(2, game_id);
+            cStmt.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

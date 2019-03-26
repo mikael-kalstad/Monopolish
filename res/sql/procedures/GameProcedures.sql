@@ -10,7 +10,7 @@ CREATE PROCEDURE game_insert(IN lobby_id int, OUT gameid INT)
     SET gameid=(SELECT game_id
     FROM lobby l
     LEFT JOIN player p ON l.user_id=p.user_id
-    WHERE l.room_id=lobby_id LIMIT 1);
+    WHERE l.room_id=lobby_id AND p.active = 1 LIMIT 1);
 
     IF (gameid IS NULL) THEN
       -- Create a new game

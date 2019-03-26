@@ -5,7 +5,7 @@ package com.teamfour.monopolish.game.board;
  * an Id to tell what kind of tile it is.
  *
  * @author      eirikhem
- * @version     1.2
+ * @version     1.3
  */
 
 public class Board {
@@ -24,10 +24,6 @@ public class Board {
                             4, 1, 6, 1, 1, 1, 6, 1, 1,
                             3, 1, 5, 1, 1, 1, 1, 5, 1,
                             2, 1, 1, 6, 1, 5, 1, 6, 1};
-
-    public Board() {
-
-    }
 
     /**
      * Returns the tile type at the specified position
