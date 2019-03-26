@@ -7,12 +7,15 @@ DROP PROCEDURE game_insert;
 
 CREATE PROCEDURE game_insert(IN lobby_id int, IN user_name VARCHAR(30), OUT gameid INT)
   proc_label:BEGIN
+    -- If this game session already has been created, get that game ID
     SET gameid=(SELECT game_id
     FROM lobby l
     LEFT JOIN player p ON l.user_id=p.user_id
     LEFT JOIN account a on p.user_id = a.user_id
-    WHERE l.room_id=lobby_id AND p.active = 1 AND a.username LIKE user_name LIMIT 1);
+    LEFT JOIN game g on p.game_id = g.game_id
+    WHERE a.username LIKE user_name AND l.room_id=lobby_id AND (p.active=1 OR g.endtime IS NULL) LIMIT 1);
 
+    -- If not, be the one who creates the game session!
     IF (gameid IS NULL) THEN
       -- Create a new game
       INSERT INTO game (starttime)
