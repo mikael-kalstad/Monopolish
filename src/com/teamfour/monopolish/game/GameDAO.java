@@ -23,17 +23,18 @@ public class GameDAO extends DataAccessObject {
      * @return The Id of the new game
      * @throws SQLException
      */
-    public int insertGame(int lobbyId) {
+    public int insertGame(int lobbyId, String username) {
         int gameId = -1;
         try {
             getConnection();
-            cStmt = connection.prepareCall("{call game_insert(?, ?)}");
+            cStmt = connection.prepareCall("{call game_insert(?, ?, ?)}");
 
             cStmt.setInt(1, lobbyId);
-            cStmt.registerOutParameter(2, Types.INTEGER);
+            cStmt.setString(2, username);
+            cStmt.registerOutParameter(3, Types.INTEGER);
 
             cStmt.executeUpdate();
-            gameId = cStmt.getInt(2);
+            gameId = cStmt.getInt(3);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -153,7 +154,7 @@ public class GameDAO extends DataAccessObject {
         return winnerId;
     }
 
-    public ArrayList<String[]> getChat(int gameId) throws SQLException {
+    public ArrayList<String[]> getChat(int gameId) {
         String[] chatLine = new String[3];
         ArrayList<String[]> chatList= new ArrayList<String[]>();
         try {
@@ -172,11 +173,29 @@ public class GameDAO extends DataAccessObject {
             rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new SQLException();
         } finally {
             releaseConnection();
         }
         return chatList;
     }
+
+    public void addChatMessage(String username, String message){
+
+        try {
+            getConnection();
+            cStmt = connection.prepareCall("{call chat_add(?,?)}");
+            cStmt.setString(1, username);
+            cStmt.setString(2, message);
+
+            cStmt.executeQuery();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            releaseConnection();
+        }
+    }
+
+
 
 }

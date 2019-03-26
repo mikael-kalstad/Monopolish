@@ -27,16 +27,6 @@ public class GameDAOTest {
     }
 
     @Test
-    public void testInsert() {
-        assertEquals(1, instance.insertGame(1));
-    }
-
-    @Test
-    public void testInsertNoLobby() {
-        assertEquals(-1, instance.insertGame(8));
-    }
-
-    @Test
     public void testGetCurrentPlayer() {
         try {
             assertEquals(-1, instance.getCurrentPlayer(4));

@@ -9,7 +9,10 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
@@ -56,7 +59,8 @@ public class GameController {
 
     // Chat elements
     @FXML private Pane chatContainer;
-    @FXML private Pane chatMessages;
+    @FXML private Pane chatMessagesContainer;
+    @FXML private TextField chatInput;
     private boolean chatOpen = false;
 
     // Properties dialog
@@ -85,6 +89,30 @@ public class GameController {
         // Start the game!
         waitForTurn();
 
+        // Update chat messages periodically
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    ArrayList<String[]> chatContent = Handler.getGameDAO().getChat(gameLogic.getGameId());
+
+                    for (String[] message : chatContent) {
+                        GameControllerDrawFx.createChatRow(
+                                chatMessagesContainer,
+                                message[0].trim(),
+                                message[2].trim(),
+                                message[1].trim()
+                        );
+                    }
+                });
+            }
+        };
+
+        Timer chatTimer = new Timer();
+        long delay = 1000L; // Delay before update refreshTimer starts
+        long period = 1000L; // Delay between each update/refresh
+        chatTimer.scheduleAtFixedRate(task, delay, period);
+
         // Set default alert box for leaving when window is closed
         Handler.getSceneManager().getWindow().setOnCloseRequest(e -> {
             e.consume(); // Override default closing method
@@ -108,6 +136,81 @@ public class GameController {
                 Handler.getSceneManager().getWindow().close();
             }
         });
+    }
+
+    /**
+     * Method that will run when the user wants to leave the game.
+     */
+    public void leave() {
+        Alert alertDialog = AlertBox.display(
+                Alert.AlertType.CONFIRMATION,
+                "Warning", "Do you want to leave?",
+                "You will not be able to join later if you leave"
+        );
+        alertDialog.showAndWait();
+
+        if (alertDialog.getResult().getButtonData().isDefaultButton()) {
+            databaseTimer.cancel(); // Stop timer thread
+
+            if (alertDialog.getResult().getButtonData().isDefaultButton()) {
+                // Remove player from lobby
+                final String USERNAME = Handler.getAccount().getUsername();
+                int lobbyId = Handler.getLobbyDAO().getLobbyId(USERNAME);
+                System.out.println("lobby id when leaving... " + lobbyId);
+                Handler.getLobbyDAO().removePlayer(USERNAME, Handler.getLobbyDAO().getLobbyId(USERNAME));
+
+                // Change view to dashboard
+                Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
+            }
+        }
+    }
+
+    public void forfeit() {
+        // Some voting gui and logic here...
+    }
+
+    public void showProperties(String username) {
+        propertiescontainer.setVisible(true);
+        System.out.println("show properties to " + username);
+    }
+
+    public void closePropertiesDialog() {
+        propertiescontainer.setVisible(false);
+    }
+
+    /**
+     * This method will open or close the chat,
+     * depending if the chat is open or closed.
+     */
+    public void toggleChat() {
+        // Open chat
+        if (chatOpen) {
+            chatContainer.setTranslateY(0); // Set to default position
+            chatOpen = false;
+        }
+
+        // Open chat
+        else {
+            chatContainer.setTranslateY(275); // Move up
+            chatOpen = true;
+        }
+    }
+
+    public void addChatMessage() {
+        if (chatInput.getText().trim().isEmpty()) {
+            chatInput.setStyle("-fx-border-color: yellow;");
+        } else {
+            chatInput.setStyle("-fx-border-color: white;");
+            chatInput.setText(""); // Reset text
+
+            Handler.getGameDAO().addChatMessage(Handler.getAccount().getUsername(), chatInput.getText().trim());
+
+//            GameControllerDrawFx.createChatRow(
+//                    chatMessagesContainer,
+//                    ,
+//                    LocalDate.now().toString()
+//            );
+        }
     }
 
     /**
@@ -213,64 +316,6 @@ public class GameController {
         if (yourTurn) {
             databaseTimer.cancel();
             rolldiceBtn.setDisable(false);
-        }
-    }
-
-    /**
-     * Method that will run when the user wants to leave the game.
-     */
-    public void leave() {
-        Alert alertDialog = AlertBox.display(
-                Alert.AlertType.CONFIRMATION,
-                "Warning", "Do you want to leave?",
-                "You will not be able to join later if you leave"
-        );
-        alertDialog.showAndWait();
-
-        if (alertDialog.getResult().getButtonData().isDefaultButton()) {
-            databaseTimer.cancel(); // Stop databaseTimer thread
-
-            if (alertDialog.getResult().getButtonData().isDefaultButton()) {
-                // Remove player from lobby
-                final String USERNAME = Handler.getAccount().getUsername();
-                int lobbyId = Handler.getLobbyDAO().getLobbyId(USERNAME);
-                gameLogic.getEntityManager().removePlayer(USERNAME);
-                Handler.getLobbyDAO().removePlayer(USERNAME, Handler.getLobbyDAO().getLobbyId(USERNAME));
-
-                // Change view to dashboard
-                Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
-            }
-        }
-    }
-
-    public void forfeit() {
-        // Some voting gui and logic here...
-    }
-
-    public void showProperties(String username) {
-        propertiescontainer.setVisible(true);
-        System.out.println("show properties to " + username);
-    }
-
-    public void closePropertiesDialog() {
-        propertiescontainer.setVisible(false);
-    }
-
-    /**
-     * This method will open or close the chat,
-     * depending if the chat is open or closed.
-     */
-    public void toggleChat() {
-        // Open chat
-        if (chatOpen) {
-            chatContainer.setTranslateY(0); // Set to default position
-            chatOpen = false;
-        }
-
-        // Open chat
-        else {
-            chatContainer.setTranslateY(275); // Move up
-            chatOpen = true;
         }
     }
 
