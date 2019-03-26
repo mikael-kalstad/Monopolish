@@ -494,7 +494,7 @@ public class LobbyController {
                     // Logic when game should start
                     else if (time == 0) {
                         // Make a new game in database
-                        int gameId = Handler.getGameDAO().insertGame(current_lobby_id);
+                        int gameId = Handler.getGameDAO().insertGame(current_lobby_id, Handler.getAccount().getUsername());
                         Handler.setCurrentGameId(gameId);
 
                         // Switch to game scene

@@ -23,17 +23,18 @@ public class GameDAO extends DataAccessObject {
      * @return The Id of the new game
      * @throws SQLException
      */
-    public int insertGame(int lobbyId) {
+    public int insertGame(int lobbyId, String username) {
         int gameId = -1;
         try {
             getConnection();
-            cStmt = connection.prepareCall("{call game_insert(?, ?)}");
+            cStmt = connection.prepareCall("{call game_insert(?, ?, ?)}");
 
             cStmt.setInt(1, lobbyId);
-            cStmt.registerOutParameter(2, Types.INTEGER);
+            cStmt.setString(2, username);
+            cStmt.registerOutParameter(3, Types.INTEGER);
 
             cStmt.executeUpdate();
-            gameId = cStmt.getInt(2);
+            gameId = cStmt.getInt(3);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
