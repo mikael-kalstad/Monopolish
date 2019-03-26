@@ -96,6 +96,9 @@ public class GameController {
                 Platform.runLater(() -> {
                     ArrayList<String[]> chatContent = Handler.getGameDAO().getChat(gameLogic.getGameId());
 
+                    // Reset all chat messages
+                    chatMessagesContainer.getChildren().clear();
+
                     for (String[] message : chatContent) {
                         GameControllerDrawFx.createChatRow(
                                 chatMessagesContainer,
@@ -398,7 +401,7 @@ public class GameController {
 
         int focus = eventList.size();
         eventlog.getItems().clear();
-        eventlog.getItems().add(eventList);
+        eventlog.getItems().addAll(eventList);
         eventlog.scrollTo(focus);
     }
 
