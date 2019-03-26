@@ -179,4 +179,24 @@ public class GameDAO extends DataAccessObject {
         return chatList;
     }
 
+    public void addChatMessage(String username, String message) throws SQLException {
+
+        try {
+            getConnection();
+            cStmt = connection.prepareCall("{call chat_add(?,?)}");
+            cStmt.setString(1, username);
+            cStmt.setString(2, message);
+
+            cStmt.executeQuery();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLException();
+        } finally {
+            releaseConnection();
+        }
+    }
+
+
+
 }
