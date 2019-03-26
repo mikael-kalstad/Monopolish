@@ -2,9 +2,12 @@ package com.teamfour.monopolish.game;
 
 import com.teamfour.monopolish.database.DataAccessObject;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 /**
  * This class handles all database communication towards the 'Game' table in database
@@ -149,4 +152,32 @@ public class GameDAO extends DataAccessObject {
 
         return winnerId;
     }
+
+    public ArrayList<String[]> getChat(int gameId) throws SQLException {
+        String[] chatLine = new String[3];
+        ArrayList<String[]> chatList= new ArrayList<String[]>();
+        try {
+            getConnection();
+            cStmt = connection.prepareCall("{call chat_get(?)}");
+            cStmt.setInt(1, gameId);
+
+            ResultSet rs = cStmt.executeQuery();
+
+            if (rs.next()){
+                chatLine[0] = rs.getString("username");
+                chatLine[1] = rs.getString("time_String");
+                chatLine[2] = rs.getString("message");
+                chatList.add(chatLine);
+            }
+
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLException();
+        } finally {
+            releaseConnection();
+        }
+        return chatList;
+    }
+
 }

@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class PropertyDAO extends DataAccessObject {
     /**
      * creates gameproperties in the database and Property objects for the game.
-     * @param game_id the game_id the id of the current game
+     * @param game_id the id of the current game
      *
      */
     public ArrayList<Property> getAllProperties(int game_id) throws SQLException {
@@ -116,7 +116,7 @@ public class PropertyDAO extends DataAccessObject {
 
     /**
      * deletes all gameProperties for the given game_id
-     * @param game_id the game_id the id of the current game
+     * @param game_id the id of the current game
      *
      */
     public void endGame(int game_id) throws SQLException {

@@ -173,7 +173,7 @@ public class LobbyDAO extends DataAccessObject {
 
     /**
      * Retrieves all the active users in this lobby
-     * @param roomId
+     * @param roomId Id of the lobby session
      * @return
      */
     public ArrayList<String> getUsersInLobby(int roomId) {
@@ -197,7 +197,9 @@ public class LobbyDAO extends DataAccessObject {
         }
         return users;
     }
-
+    /**
+     * Retrieves all active lobbies
+     */
     public ArrayList<String[]> getAllLobbies() {
         ArrayList<String[]> lobbyInfo = new ArrayList<>();
         try {
@@ -218,7 +220,10 @@ public class LobbyDAO extends DataAccessObject {
         }
         return lobbyInfo;
     }
-
+    /**
+     * Retrieves all ready users in this lobby
+     * @param lobby_id Id of the lobby session
+     */
     public int getAllReadyInLobby(int lobby_id) {
         int num = 0;
         getConnection();
@@ -238,7 +243,9 @@ public class LobbyDAO extends DataAccessObject {
         }
         return num;
     }
-
+    /**
+     * removes any empty lobbies
+     */
     public void removeEmptyLobbies() {
         getConnection();
 
@@ -252,7 +259,10 @@ public class LobbyDAO extends DataAccessObject {
             releaseConnection();
         }
     }
-
+    /**
+     * Returns the id of the lobby in which the user is
+     * @param username Username
+     */
     public int getLobbyId(String username) {
         getConnection();
         int lobby = 0;
