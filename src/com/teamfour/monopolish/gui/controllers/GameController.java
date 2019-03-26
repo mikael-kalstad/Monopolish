@@ -82,9 +82,6 @@ public class GameController {
         // Start the game!
         waitForTurn();
 
-
-
-
         // Set default alert box for leaving when window is closed
         Handler.getSceneManager().getWindow().setOnCloseRequest(e -> {
             e.consume(); // Override default closing method
@@ -213,6 +210,7 @@ public class GameController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        roundValue.setText(String.valueOf(gameLogic.getRoundNumber()));
     }
 
     /**
