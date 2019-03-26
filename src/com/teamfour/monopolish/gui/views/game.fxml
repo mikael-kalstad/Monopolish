@@ -720,7 +720,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Pane>
-            <ScrollPane layoutY="40.0" prefHeight="240.0" prefWidth="235.0" style="-fx-hbar-policy: never;">
+            <ScrollPane fx:id="chatMessageScrollPane" layoutY="40.0" prefHeight="240.0" prefWidth="235.0" style="-fx-hbar-policy: never;">
                <content>
                   <FlowPane fx:id="chatMessagesContainer" prefHeight="238.0" prefWidth="235.0" />
                </content>

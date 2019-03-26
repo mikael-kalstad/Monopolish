@@ -60,6 +60,7 @@ public class GameController {
     // Chat elements
     @FXML private Pane chatContainer;
     @FXML private Pane chatMessagesContainer;
+    @FXML private ScrollPane chatMessageScrollPane;
     @FXML private TextField chatInput;
     private boolean chatOpen = false;
 
@@ -100,6 +101,7 @@ public class GameController {
                     chatMessagesContainer.getChildren().clear();
 
                     for (String[] message : chatContent) {
+                        System.out.println(message[0] + " " + message[2] + " " + message[1]);
                         GameControllerDrawFx.createChatRow(
                                 chatMessagesContainer,
                                 message[0].trim(),
@@ -107,13 +109,16 @@ public class GameController {
                                 message[1].trim()
                         );
                     }
+
+                    // Scroll to bottom
+                    chatMessageScrollPane.setVvalue(0);
                 });
             }
         };
 
         Timer chatTimer = new Timer();
         long delay = 1000L; // Delay before update refreshTimer starts
-        long period = 1000L; // Delay between each update/refresh
+        long period = 5000L; // Delay between each update/refresh
         chatTimer.scheduleAtFixedRate(task, delay, period);
 
         // Set default alert box for leaving when window is closed
@@ -204,16 +209,15 @@ public class GameController {
             chatInput.setStyle("-fx-border-color: yellow;");
         } else {
             chatInput.setStyle("-fx-border-color: white;");
-
-            System.out.println("CHAT INPUT: " + chatInput.getText().trim());
             Handler.getGameDAO().addChatMessage(Handler.getAccount().getUsername(), chatInput.getText().trim());
 
-            GameControllerDrawFx.createChatRow(
-                    chatMessagesContainer,
-                    Handler.getAccount().getUsername(),
-                    chatInput.getText().trim(),
-                    "tid"
-            );
+//            GameControllerDrawFx.createChatRow(
+//                    chatMessagesContainer,
+//                    Handler.getAccount().getUsername(),
+//                    chatInput.getText().trim(),
+//                    "tid"
+//            );
+
             chatInput.setText(""); // Reset text
         }
     }
