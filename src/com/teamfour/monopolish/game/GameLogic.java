@@ -1,6 +1,5 @@
 package com.teamfour.monopolish.game;
 
-import com.teamfour.monopolish.account.Account;
 import com.teamfour.monopolish.database.ConnectionPool;
 import com.teamfour.monopolish.game.board.Board;
 import com.teamfour.monopolish.game.entities.EntityManager;
@@ -9,7 +8,6 @@ import com.teamfour.monopolish.game.propertylogic.Property;
 import com.teamfour.monopolish.gui.controllers.Handler;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**

@@ -31,6 +31,7 @@ public class LobbyController {
     private int current_lobby_id = -1; // Default when user is not in any lobby = -1
     private boolean READY = false;
     private Timer refreshTimer;
+    private int time;
 
     // GUI FXML elements
     @FXML private FlowPane lobbiesContainer;
@@ -470,24 +471,23 @@ public class LobbyController {
      * - Ready button will be disabled
      * -
      *
-//     * @param readyBtn Target ready btn
-//     * @param statusValue Target statusValue text
+     //* @param readyBtn Target ready btn
+     //* @param statusValue Target statusValue text
      */
     private void startGame(int lobby_id) {
         // Countdown refreshTimer when game start
         Timer countDownTimer = new Timer();
         countdown.setVisible(true);
         countdownValue.setVisible(true);
+        time = COUNTDOWN_TIME;
 
         TimerTask countDownTask = new TimerTask() {
-            int time = COUNTDOWN_TIME;
 
             @Override
             public void run() {
                 Platform.runLater(() -> {
                     int numOfPlayers = Handler.getLobbyDAO().getUsersInLobby(lobby_id).size();
                     int numOfReady = Handler.getLobbyDAO().getAllReadyInLobby(lobby_id);
-
 
                     // Check if player left the lobby
                     if (current_lobby_id == -1 || numOfReady != numOfPlayers) {
@@ -496,16 +496,19 @@ public class LobbyController {
                     }
                     // Logic when game should start
                     else if (time == 0) {
-                        // Stop timers
-                        refreshTimer.cancel();
-                        countDownTimer.cancel();
-
                         // Make a new game in database
                         int gameId = Handler.getGameDAO().insertGame(current_lobby_id);
                         Handler.setCurrentGameId(gameId);
 
                         // Switch to game scene
                         Handler.getSceneManager().setScene(ViewConstants.GAME.getValue());
+
+                        // Switch so that the timers are turned off in the next run
+                        time = -1;
+                    } else if (time == -1) {
+                        // Stop the timers
+                        countDownTimer.cancel();
+                        refreshTimer.cancel();
                     } else {
                         time--;
 
@@ -534,5 +537,6 @@ public class LobbyController {
 
         // Stop refreshTimer thread
         refreshTimer.cancel();
+        refreshTimer.purge();
     }
 }
