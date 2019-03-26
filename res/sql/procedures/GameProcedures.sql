@@ -8,7 +8,7 @@ DROP PROCEDURE game_insert;
 CREATE PROCEDURE game_insert(IN lobby_id int, IN user_name VARCHAR(30), OUT gameid INT)
   proc_label:BEGIN
     -- If this game session already has been created, get that game ID
-    SET gameid=(SELECT game_id
+    SET gameid=(SELECT p.game_id
     FROM lobby l
     LEFT JOIN player p ON l.user_id=p.user_id
     LEFT JOIN account a on p.user_id = a.user_id

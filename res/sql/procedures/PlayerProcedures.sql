@@ -32,6 +32,10 @@ begin
   select user_id  into u_id from account where u_name = username;
 
   update player set active = 2 where user_id = u_id and game_id = g_id;
+
+  IF ((SELECT COUNT(*) FROM player p WHERE p.game_id=g_id AND active=2) < 1) THEN
+    UPDATE game SET game.endtime=NOW() WHERE game.game_id=g_id;
+  end if;
   commit;
 end $$
 delimiter ;

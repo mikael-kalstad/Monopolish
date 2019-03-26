@@ -161,7 +161,7 @@ public class GameController {
                 int lobbyId = Handler.getLobbyDAO().getLobbyId(USERNAME);
                 System.out.println("lobby id when leaving... " + lobbyId);
                 Handler.getLobbyDAO().removePlayer(USERNAME, Handler.getLobbyDAO().getLobbyId(USERNAME));
-
+                gameLogic.getEntityManager().removePlayer(USERNAME);
                 // Change view to dashboard
                 Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
             }
