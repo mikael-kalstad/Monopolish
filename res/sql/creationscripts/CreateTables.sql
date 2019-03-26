@@ -16,6 +16,8 @@ DROP TABLE IF EXISTS game;
 DROP TABLE IF EXISTS player;
 DROP TABLE IF EXISTS property;
 DROP TABLE IF EXISTS gameproperty;
+DROP TABLE IF EXISTS chatmessage;
+
 
 -- Enable again
 SET FOREIGN_KEY_CHECKS=1;
@@ -63,7 +65,8 @@ CREATE TABLE player
   injail BIT NOT NULL DEFAULT 0,
   bankrupt BIT NOT NULL DEFAULT 0,
   active int not null default 1,
-  score INT DEFAULT 0
+  score INT DEFAULT 0,
+  chat_id integer not null
 );
 
 -- active = 1 : aktiv,
@@ -96,6 +99,15 @@ create table gameproperty(
   constraint pk_gameproperty PRIMARY KEY (game_id, property_id)
 );
 
+
+create table chatmessage(
+  player_id integer not null,
+  message_id integer not null auto_increment,
+  time_in datetime not null,
+  message varchar(40),
+  primary key (message_id, player_id)
+);
+
 /*
 ADD FOREIGN KEYS
  */
@@ -116,3 +128,6 @@ ALTER TABLE gameproperty
   ADD foreign key (property_id) references property(property_id);
 ALTER TABLE gameproperty
   ADD foreign key (user_id) references player(user_id);
+
+ALTER TABLE chatmessage
+  ADD FOREIGN KEY (player_id) REFERENCES player(player_id) ;
