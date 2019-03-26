@@ -153,7 +153,7 @@ public class GameDAO extends DataAccessObject {
         return winnerId;
     }
 
-    public ArrayList<String[]> getChat(int gameId) throws SQLException {
+    public ArrayList<String[]> getChat(int gameId) {
         String[] chatLine = new String[3];
         ArrayList<String[]> chatList= new ArrayList<String[]>();
         try {
@@ -172,14 +172,13 @@ public class GameDAO extends DataAccessObject {
             rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new SQLException();
         } finally {
             releaseConnection();
         }
         return chatList;
     }
 
-    public void addChatMessage(String username, String message) throws SQLException {
+    public void addChatMessage(String username, String message){
 
         try {
             getConnection();
@@ -191,7 +190,6 @@ public class GameDAO extends DataAccessObject {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new SQLException();
         } finally {
             releaseConnection();
         }
