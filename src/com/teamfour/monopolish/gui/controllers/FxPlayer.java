@@ -63,17 +63,17 @@ public class FxPlayer extends StackPane {
     }
 
     public void posToXY(int pos) {
-        int p, x, y;
+        int position, x, y;
         if (pos > (MAX * 4) - 1 || pos < 0) {
             throw new IllegalArgumentException("Player position out of bounds");
         }
         if (pos >= 0 && pos < MAX) {
-            p = 0;
+            position = 0;
             x = MAX;
             while (true) {
                 x--;
-                p++;
-                if (p == pos) {
+                position++;
+                if (position == pos) {
                     this.posY = MAX;
                     this.posX = x;
                     break;
@@ -81,12 +81,12 @@ public class FxPlayer extends StackPane {
             }
         }
         if (pos >= MAX && pos < MAX * 2) {
-            p = MAX;
+            position = MAX;
             y = MAX;
             while (true) {
                 y--;
-                p++;
-                if (p == pos) {
+                position++;
+                if (position == pos) {
                     this.posY = y;
                     this.posX = 0;
                     break;
@@ -94,12 +94,12 @@ public class FxPlayer extends StackPane {
             }
         }
         if (pos >= MAX * 2 && pos < MAX * 3) {
-            p = MAX * 2;
+            position = MAX * 2;
             x = 0;
             while (true) {
                 x++;
-                p++;
-                if (p == pos) {
+                position++;
+                if (position == pos) {
                     this.posY = 0;
                     this.posX = x;
                     break;
@@ -107,12 +107,12 @@ public class FxPlayer extends StackPane {
             }
         }
         if (pos >= MAX * 3 && pos < MAX * 4) {
-            p = MAX * 3;
+            position = MAX * 3;
             y = 0;
             while(true) {
                 y++;
-                p++;
-                if (p == pos) {
+                position++;
+                if (position == pos) {
                     this.posY = y;
                     this.posX = MAX;
                     break;
