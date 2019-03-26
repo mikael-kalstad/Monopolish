@@ -106,6 +106,11 @@ public class GameLogic {
         return throwResult;
     }
 
+    public void setPlayerInJail(String username, boolean inJail) {
+        entityManager.getPlayer(username).setInJail(true);
+        entityManager.getPlayer(username).moveTo(Board.JAIL);
+    }
+
     // HELPER METHODS
 
     private void propertyTransaction() {
@@ -258,5 +263,9 @@ public class GameLogic {
         }
 
         return positions;
+    }
+
+    public int getPlayerPosition(String username) {
+        return entityManager.getPlayer(username).getPosition();
     }
 }

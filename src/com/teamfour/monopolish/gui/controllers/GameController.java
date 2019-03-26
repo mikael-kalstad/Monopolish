@@ -1,6 +1,7 @@
 package com.teamfour.monopolish.gui.controllers;
 
 import com.teamfour.monopolish.game.GameLogic;
+import com.teamfour.monopolish.game.board.Board;
 import com.teamfour.monopolish.game.entities.player.Player;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.application.Platform;
@@ -34,6 +35,8 @@ public class GameController {
 
     // GameLogic for handling more intricate game operations
     private GameLogic gameLogic = new GameLogic(Handler.getCurrentGameId());
+
+    private String yourUsername = Handler.getAccount().getUsername();
 
     // Array for events in game
     private ArrayList<Text> eventList = new ArrayList<>();
@@ -264,14 +267,15 @@ public class GameController {
 
         // Check if diceValues array is initialized or length is less than two
         if (diceValues == null || diceValues.length < 2) return;
-
-        // Update dice images on board
+        // Update dice images and log on board
         dice1_img.setImage(new Image(("file:res/gui/dices/dice" + diceValues[0] + ".png")));
         dice2_img.setImage(new Image(("file:res/gui/dices/dice" + diceValues[1] + ".png")));
-
         String s = "Threw dice:  " + diceValues[0] + ",  " + diceValues[1];
         addToEventlog(s);
+
+        // Dr
         updateBoard();
+        callTileEvent();
 
         // If the player didn't throw two equal dices, end the turn. If not, the player can throw dice again
         try {
@@ -282,6 +286,21 @@ public class GameController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Checks to see what form of tile you are on and call the event accordingly
+     */
+    private void callTileEvent() {
+        // If passed start, add start money
+
+        // If on property, enable button to buy property
+
+        // If on non-available property, send prompt (OR SOMETHING) to owner of property
+
+        // If go-to jail, go to jail!
+        if (gameLogic.getPlayerPosition(yourUsername) == Board.GO_TO_JAIL)
+            gameLogic.setPlayerInJail(yourUsername, true);
     }
 
     /**
