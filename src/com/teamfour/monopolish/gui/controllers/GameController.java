@@ -66,6 +66,9 @@ public class GameController {
     @FXML
     private FlowPane propertyContainer;
 
+    /**
+     * This method initializes the scene view and loads both object elements and graphical elements.
+     */
     @FXML
     public void initialize() {
         // Load gamelogic and initialize the game setup
@@ -81,6 +84,7 @@ public class GameController {
             playerList.add(new FxPlayer(playerTurns[i], FxPlayer.getMAX(), FxPlayer.getMAX()));
         }
 
+        // Draw players on the board
         drawPlayers();
         drawAllPlayersView();
         // Start the game!
@@ -209,6 +213,9 @@ public class GameController {
         }, 0l, 1000l);
     }
 
+    /**
+     * Updates all the scene's graphics to reflect the changes in the database
+     */
     public void updateBoard() {
         try {
             int[] positions = gameLogic.getPlayerPositions();
@@ -220,30 +227,27 @@ public class GameController {
         }
     }
 
+    /**
+     * This method runs at the start of each new turn, regardless if it's your turn or not
+     * A couple things needs to be updated at the start of each turn
+     *
+     * @param yourTurn Is it your turn?
+     */
     public void newTurn(boolean yourTurn) {
         try {
+            // Increment to a new turn in the gamelogic object
             gameLogic.newTurn(yourTurn);
+            // Update the playing board accordingly to database updates
             updateBoard();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+        // If this is your turn, stop the database check timer and enable the button to roll dice
         if (yourTurn) {
             timer.cancel();
             rolldiceBtn.setDisable(false);
         }
-    }
-
-    public void yourTurn() {
-        // Beginning of your turn
-        try {
-            gameLogic.startYourTurn();
-            updateBoard();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        timer.cancel();
-        rolldiceBtn.setDisable(false);
     }
 
     /**
@@ -273,6 +277,9 @@ public class GameController {
         waitForTurn();
     }
 
+    /**
+     * Draw all players on the board on their respective positions
+     */
     public void drawPlayers() {
         for (FxPlayer player : playerList) {
             GridPane.setConstraints(player, player.getPosX(), player.getPosY());
@@ -297,8 +304,12 @@ public class GameController {
         addToEventlog(pos);
     }
 
+    /**
+     * This method checks if there are other game pieces on the same place. If there are, position
+     * these pieces according to eachother
+     * @param player
+     */
     private void checkForOthers(FxPlayer player) {
-
         ArrayList<FxPlayer> checklist = new ArrayList<>();
 
         for (FxPlayer p : playerList) {

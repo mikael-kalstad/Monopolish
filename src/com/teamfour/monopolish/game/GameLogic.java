@@ -50,9 +50,6 @@ public class GameLogic {
      * @throws SQLException
      */
     public void setupGame() throws SQLException {
-
-        //Handler.setAccount(new Account("helgeingstad", "giske@damer.no", LocalDate.now(), 0));
-
         // Load board, graphics, etc.
         ConnectionPool.create();
 
@@ -90,25 +87,25 @@ public class GameLogic {
         System.out.println("Game is starting!");
     }
 
+    /**
+     * Throw the dice object and move the player accordingly
+     * @return The result from the dices
+     * @throws SQLException
+     */
     public int[] throwDice() throws SQLException {
+        // Throw dice and store in array
         int[] throwResult = dice.throwDice();
         int steps = throwResult[0] + throwResult[1];
+        // Check if player is in prison. If they are in prison, and they get matching dices, move out of jail
         if (entityManager.getYou().isInJail() && throwResult[0] == throwResult[1]) {
-            moveYourPlayer(steps);
+            entityManager.getYou().move(steps);
+            finishYourTurn();
         } else {
-            moveYourPlayer(steps);
+            entityManager.getYou().move(steps);
+            finishYourTurn();
         }
 
         return throwResult;
-    }
-
-    public void moveYourPlayer(int steps) throws SQLException {
-        entityManager.getYou().move(steps);
-        finishYourTurn();
-    }
-
-    public Player getYourPlayer() {
-        return entityManager.getYou();
     }
 
     // HELPER METHODS
@@ -135,6 +132,7 @@ public class GameLogic {
         }
     }
 
+    @Deprecated
     public void startYourTurn() throws SQLException {
         currentPlayer = gameDAO.getCurrentPlayer(gameId);
         updateFromDatabase();
@@ -145,10 +143,27 @@ public class GameLogic {
         }
     }
 
+    /**
+     * Update all data from database so that all game objects reflects the database
+     * @throws SQLException
+     */
     public void updateFromDatabase() throws SQLException {
         entityManager.updateFromDatabase();
     }
 
+    /**
+     * Update all data to the database
+     * @throws SQLException
+     */
+    public void updateToDatabase() throws SQLException {
+        gameDAO.setCurrentPlayer(gameId, currentPlayer);
+        entityManager.updateToDatabase();
+    }
+
+    /**
+     * Wrap up your own turn by incrementing the turn number and setting the proper currentPlayer
+     * @throws SQLException
+     */
     public void finishYourTurn() throws SQLException {
         if (turnNumber >= entityManager.getPlayers().size() - 1) {
             roundNumber++;
@@ -156,19 +171,19 @@ public class GameLogic {
         } else {
             turnNumber++;
         }
-        System.out.println(entityManager.getYou().getPosition());
 
         currentPlayer = turns[turnNumber];
         updateToDatabase();
     }
 
-    public void updateToDatabase() throws SQLException {
-        gameDAO.setCurrentPlayer(gameId, currentPlayer);
-        entityManager.updateToDatabase();
-    }
-
+    /**
+     * Indicates a new turn in the game. Retrieves all updates from the database and
+     * increments the turn number
+     * @param yourTurn
+     * @throws SQLException
+     */
     public void newTurn(boolean yourTurn) throws SQLException {
-        System.out.println("Turn number: " + turnNumber);
+        System.out.println("Turn number: " + (turnNumber + 1));
         currentPlayer = gameDAO.getCurrentPlayer(gameId);
         updateFromDatabase();
         for (int i = 0; i < turns.length; i++) {
@@ -198,6 +213,10 @@ public class GameLogic {
 
     public boolean isFinished() {
         return finished;
+    }
+
+    public Player getYourPlayer() {
+        return entityManager.getYou();
     }
 
     public String[] getTurns() { return turns; }
