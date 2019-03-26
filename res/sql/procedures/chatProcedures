@@ -1,7 +1,7 @@
 DROP PROCEDURE IF EXISTS chat_add;
 DROP PROCEDURE IF EXISTS chat_get;
 drop view if exists message_view;
-CREATE PROCEDURE chat_add(IN user_name INT, in message_in varchar(40))
+CREATE PROCEDURE chat_add(IN user_name varchar(30), in message_in varchar(40))
 BEGIN
   declare playerid int;
   select player_id into playerid from player join account a
@@ -23,5 +23,5 @@ create view message_view as(
 
 create procedure chat_get(in gameid int)
   begin
-  select username, cast(time_in as char) as time_String, message from message_view where game_id = gameid order by time_in asc;
+  select username, DATE_FORMAT(time_in, '%Y-%m-%d %T') as time_String, message from message_view where game_id = gameid order by time_in asc;
   end;

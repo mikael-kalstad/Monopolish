@@ -154,7 +154,7 @@ public class GameDAO extends DataAccessObject {
         return winnerId;
     }
 
-    public ArrayList<String[]> getChat(int gameId) throws SQLException {
+    public ArrayList<String[]> getChat(int gameId) {
         String[] chatLine = new String[3];
         ArrayList<String[]> chatList= new ArrayList<String[]>();
         try {
@@ -170,15 +170,32 @@ public class GameDAO extends DataAccessObject {
                 chatLine[2] = rs.getString("message");
                 chatList.add(chatLine);
             }
-
             rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new SQLException();
         } finally {
             releaseConnection();
         }
         return chatList;
     }
+
+    public void addChatMessage(String username, String message){
+
+        try {
+            getConnection();
+            cStmt = connection.prepareCall("{call chat_add(?,?)}");
+            cStmt.setString(1, username);
+            cStmt.setString(2, message);
+
+            cStmt.executeQuery();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            releaseConnection();
+        }
+    }
+
+
 
 }
