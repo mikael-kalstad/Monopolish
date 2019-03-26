@@ -96,14 +96,13 @@ public class GameLogic {
         int[] throwResult = dice.throwDice();
         int steps = throwResult[0] + throwResult[1];
         // Check if player is in prison. If they are in prison, and they get matching dices, move out of jail
-        if (entityManager.getYou().isInJail() && throwResult[0] == throwResult[1]) {
+        if (!entityManager.getYou().isInJail() || (entityManager.getYou().isInJail() && throwResult[0] == throwResult[1]))
             entityManager.getYou().move(steps);
-        } else {
-            entityManager.getYou().move(steps);
-        }
 
+        // Update position to database
         updateToDatabase();
 
+        // Return the results from the throw to be handled by GUI
         return throwResult;
     }
 
@@ -137,6 +136,8 @@ public class GameLogic {
         updateFromDatabase();
         for (int i = 0; i < turns.length; i++) {
             if (turns[i].equals(currentPlayer)) {
+                if (i < turnNumber)
+                    roundNumber++;
                 turnNumber = i;
             }
         }
@@ -187,9 +188,13 @@ public class GameLogic {
         updateFromDatabase();
         for (int i = 0; i < turns.length; i++) {
             if (turns[i].equals(currentPlayer)) {
+                if (i < turnNumber)
+                    roundNumber++;
                 turnNumber = i;
             }
         }
+        if (turnNumber == 0)
+            System.out.println("Round " + (roundNumber + 1));
         System.out.println("It is " + currentPlayer + "'s turn.");
     }
 

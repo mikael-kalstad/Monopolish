@@ -16,18 +16,17 @@ public class Board {
     public static final int GO_TO_JAIL = 2;
     public static final int FREE_PARKING = 3;
     public static final int JAIL = 4;
+    public static final int CHANCE = 5;
+    public static final int SPECIAL_PROPERTY = 6;
 
     // Attributes
-    private int[] tiles;
+    private int[] tiles = {0, 1, 6, 1, 6, 1, 5, 1, 1,
+                            4, 1, 6, 1, 1, 1, 6, 1, 1,
+                            3, 1, 5, 1, 1, 1, 1, 5, 1,
+                            2, 1, 1, 6, 1, 5, 1, 6, 1};
 
     public Board() {
-        tiles = new int[BOARD_LENGTH];
-        for (int i = 0; i < tiles.length; i++) {
-            tiles[i] = PROPERTY;
-        }
 
-        tiles[4] = GO_TO_JAIL;
-        tiles[16] = JAIL;
     }
 
     /**
