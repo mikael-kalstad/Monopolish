@@ -353,7 +353,7 @@ public class GameController {
 
         int focus = eventList.size();
         eventlog.getItems().clear();
-        eventlog.getItems().add(eventList);
+        eventlog.getItems().addAll(eventList);
         eventlog.scrollTo(focus);
     }
 
