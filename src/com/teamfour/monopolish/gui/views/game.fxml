@@ -620,7 +620,7 @@
                   <Font size="31.0" />
                </font>
             </Label>
-            <Label fx:id="username" layoutX="268.0" layoutY="23.0" prefHeight="68.0" prefWidth="317.0" text="name" textFill="#b4b4b4" wrapText="true">
+            <Label fx:id="username" layoutX="268.0" layoutY="23.0" prefHeight="68.0" prefWidth="317.0" text="username" textFill="#b4b4b4" wrapText="true">
                <font>
                   <Font size="28.0" />
                </font>
