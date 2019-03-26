@@ -26,7 +26,10 @@ import java.util.TimerTask;
  */
 
 public class GameController {
-    private Timer timer = new Timer();
+    // Timer for checking database updates
+    private Timer databaseTimer = new Timer();
+
+    // GameLogic for handling more intricate game operations
     private GameLogic gameLogic = new GameLogic(Handler.getCurrentGameId());
 
     // Array for events in game
@@ -82,9 +85,6 @@ public class GameController {
         // Start the game!
         waitForTurn();
 
-
-
-
         // Set default alert box for leaving when window is closed
         Handler.getSceneManager().getWindow().setOnCloseRequest(e -> {
             e.consume(); // Override default closing method
@@ -102,7 +102,7 @@ public class GameController {
                 final String USERNAME = Handler.getAccount().getUsername();
                 Handler.getLobbyDAO().removePlayer(USERNAME, Handler.getLobbyDAO().getLobbyId(USERNAME));
 
-                timer.cancel(); // Stop timer thread
+                databaseTimer.cancel(); // Stop databaseTimer thread
 
                 // Close the window
                 Handler.getSceneManager().getWindow().close();
@@ -122,7 +122,7 @@ public class GameController {
         alertDialog.showAndWait();
 
         if (alertDialog.getResult().getButtonData().isDefaultButton()) {
-            timer.cancel(); // Stop timer thread
+            databaseTimer.cancel(); // Stop databaseTimer thread
 
             if (alertDialog.getResult().getButtonData().isDefaultButton()) {
                 // Remove player from lobby
@@ -137,37 +137,6 @@ public class GameController {
         }
     }
 
-    public void forfeit() {
-        // Some voting gui and logic here...
-    }
-
-    public void showProperties(String username) {
-        propertiescontainer.setVisible(true);
-        System.out.println("show properties to " + username);
-    }
-
-    public void closePropertiesDialog() {
-        propertiescontainer.setVisible(false);
-    }
-
-    /**
-     * This method will open or close the chat,
-     * depending if the chat is open or closed.
-     */
-    public void toggleChat() {
-        // Open chat
-        if (chatOpen) {
-            chatContainer.setTranslateY(0); // Set to default position
-            chatOpen = false;
-        }
-
-        // Open chat
-        else {
-            chatContainer.setTranslateY(275); // Move up
-            chatOpen = true;
-        }
-    }
-
     /**
      * Initiates a clock that runs on a separate thread. This clock
      * checks the database each second to see if you are the current player.
@@ -178,15 +147,15 @@ public class GameController {
      */
     private void waitForTurn() {
         rolldiceBtn.setDisable(true);
-        // Create a timer object
-        timer = new Timer();
+        // Create a databaseTimer object
+        databaseTimer = new Timer();
         // We'll schedule a task that will check against the database
         // if it's your turn every 1 second
-        timer.scheduleAtFixedRate(new TimerTask() {
+        databaseTimer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
                 Platform.runLater(() -> {
                     try {
-                        // If it's your turn, break out of the timer
+                        // If it's your turn, break out of the databaseTimer
                         int result = gameLogic.isNewTurn();
                         if (result == 1) {
                             newTurn(true);
@@ -199,43 +168,6 @@ public class GameController {
                 });
             }
         }, 0l, 1000l);
-    }
-
-    /**
-     * Updates all the scene's graphics to reflect the changes in the database
-     */
-    public void updateBoard() {
-        try {
-            int[] positions = gameLogic.getPlayerPositions();
-            for (int i = 0; i < positions.length; i++) {
-                movePlayerPiece(playerList.get(i), positions[i]);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * This method runs at the start of each new turn, regardless if it's your turn or not
-     * A couple things needs to be updated at the start of each turn
-     *
-     * @param yourTurn Is it your turn?
-     */
-    public void newTurn(boolean yourTurn) {
-        try {
-            // Increment to a new turn in the gamelogic object
-            gameLogic.newTurn(yourTurn);
-            // Update the playing board accordingly to database updates
-            updateBoard();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        // If this is your turn, stop the database check timer and enable the button to roll dice
-        if (yourTurn) {
-            timer.cancel();
-            rolldiceBtn.setDisable(false);
-        }
     }
 
     /**
@@ -274,6 +206,75 @@ public class GameController {
     }
 
     /**
+     * Updates all the scene's graphics to reflect the changes in the database
+     */
+    public void updateBoard() {
+        try {
+            int[] positions = gameLogic.getPlayerPositions();
+            for (int i = 0; i < positions.length; i++) {
+                setPiecePosition(playerList.get(i), positions[i]);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        roundValue.setText(String.valueOf(gameLogic.getRoundNumber()));
+    }
+
+    /**
+     * This method runs at the start of each new turn, regardless if it's your turn or not
+     * A couple things needs to be updated at the start of each turn
+     *
+     * @param yourTurn Is it your turn?
+     */
+    public void newTurn(boolean yourTurn) {
+        try {
+            // Increment to a new turn in the gamelogic object
+            gameLogic.newTurn(yourTurn);
+            // Update the playing board accordingly to database updates
+            updateBoard();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // If this is your turn, stop the database check databaseTimer and enable the button to roll dice
+        if (yourTurn) {
+            databaseTimer.cancel();
+            rolldiceBtn.setDisable(false);
+        }
+    }
+
+    public void forfeit() {
+        // Some voting gui and logic here...
+    }
+
+    public void showProperties(String username) {
+        propertiescontainer.setVisible(true);
+        System.out.println("show properties to " + username);
+    }
+
+    public void closePropertiesDialog() {
+        propertiescontainer.setVisible(false);
+    }
+
+    /**
+     * This method will open or close the chat,
+     * depending if the chat is open or closed.
+     */
+    public void toggleChat() {
+        // Open chat
+        if (chatOpen) {
+            chatContainer.setTranslateY(0); // Set to default position
+            chatOpen = false;
+        }
+
+        // Open chat
+        else {
+            chatContainer.setTranslateY(275); // Move up
+            chatOpen = true;
+        }
+    }
+
+    /**
      * Draw all players on the board on their respective positions
      */
     public void drawPlayerPieces() {
@@ -286,18 +287,23 @@ public class GameController {
         gamegrid.getChildren().addAll(playerList);
     }
 
-    public void movePlayerPiece(GameControllerDrawFx player, int steps) {
-        player.posToXY(steps);
-        player.setAlignment(Pos.CENTER);
-        GridPane.setConstraints(player, player.getPosX(), player.getPosY());
+    /**
+     * Moves the specified player piece to the specified position.
+     * @param piece
+     * @param position
+     */
+    public void setPiecePosition(GameControllerDrawFx piece, int position) {
+        piece.posToXY(position);
+        piece.setAlignment(Pos.CENTER);
+        GridPane.setConstraints(piece, piece.getPosX(), piece.getPosY());
 
         gamegrid.getChildren().clear();
         gamegrid.getChildren().addAll(playerList);
 
-        checkForOthers(player);
+        checkForOthers(piece);
 
         //String pos = player.getUsername() + " moved to X: " + player.getPosX() + " Y:" + player.getPosY();
-        String pos = player.getUsername() + " is at position " + player.getTilePosition();
+        String pos = piece.getUsername() + " is at position " + piece.getTilePosition();
         addToEventlog(pos);
     }
 
@@ -307,7 +313,6 @@ public class GameController {
      * @param player
      */
     private void checkForOthers(GameControllerDrawFx player) {
-
         ArrayList<GameControllerDrawFx> checklist = new ArrayList<>();
 
         for (GameControllerDrawFx p : playerList) {
@@ -342,7 +347,6 @@ public class GameController {
     public void claimrent() {
 
     }
-
 
     private void addToEventlog(String msg) {
         eventList.add(new Text(msg));
