@@ -173,6 +173,7 @@ public class GameLogic {
 
         currentPlayer = turns[turnNumber];
         updateToDatabase();
+        System.out.println("It is " + currentPlayer + "'s turn.");
     }
 
     /**
@@ -183,13 +184,13 @@ public class GameLogic {
      */
     public void newTurn(boolean yourTurn) throws SQLException {
         currentPlayer = gameDAO.getCurrentPlayer(gameId);
-        System.out.println("It is " + currentPlayer + "'s turn.");
         updateFromDatabase();
         for (int i = 0; i < turns.length; i++) {
             if (turns[i].equals(currentPlayer)) {
                 turnNumber = i;
             }
         }
+        System.out.println("It is " + currentPlayer + "'s turn.");
     }
 
     // SETTERS & GETTERS
@@ -220,15 +221,21 @@ public class GameLogic {
 
     public String[] getTurns() { return turns; }
 
+    /**
+     * Check if a turn has finished in another client. Returns an integer based on following situations:
+     * 1 - It's a new turn, and it's your turn
+     * 0 - It's a new turn, but not your turn
+     * -1 - It's not a new turn
+     * @return
+     * @throws SQLException
+     */
     public int isNewTurn() throws SQLException {
         String newCurrentUser = gameDAO.getCurrentPlayer(gameId);
         if (newCurrentUser.equals(Handler.getAccount().getUsername())) {
             currentPlayer = newCurrentUser;
-            newTurn(true);
             return 1;
         } else if (!newCurrentUser.equals(currentPlayer)) {
             currentPlayer = newCurrentUser;
-            newTurn(false);
             return 0;
         }
 
