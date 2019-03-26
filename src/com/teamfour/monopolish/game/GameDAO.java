@@ -155,7 +155,6 @@ public class GameDAO extends DataAccessObject {
     }
 
     public ArrayList<String[]> getChat(int gameId) {
-        String[] chatLine = new String[3];
         ArrayList<String[]> chatList= new ArrayList<String[]>();
         try {
             getConnection();
@@ -165,6 +164,7 @@ public class GameDAO extends DataAccessObject {
             ResultSet rs = cStmt.executeQuery();
 
             while(rs.next()){
+                String[] chatLine = new String[3];
                 chatLine[0] = rs.getString("username");
                 chatLine[1] = rs.getString("time_String");
                 chatLine[2] = rs.getString("message");
