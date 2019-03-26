@@ -5,10 +5,7 @@ import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -198,10 +195,8 @@ public class GameController {
                         // If it's your turn, break out of the timer
                         int result = gameLogic.isNewTurn();
                         if (result == 1) {
-                            System.out.println("Your turn");
                             newTurn(true);
                         } else if (result == 0) {
-                            System.out.println("Updated board");
                             newTurn(false);
                         }
                     } catch (SQLException e) {
@@ -307,7 +302,8 @@ public class GameController {
 
         checkForOthers(player);
 
-        String pos = player.getUsername() + " moved to X: " + player.getPosX() + " Y:" + player.getPosY();
+        //String pos = player.getUsername() + " moved to X: " + player.getPosX() + " Y:" + player.getPosY();
+        String pos = player.getUsername() + " is at position " + player.getTilePosition();
         addToEventlog(pos);
     }
 
@@ -376,6 +372,21 @@ public class GameController {
         if (playerList.size() == 4) {
             player4view.setVisible(true);
             p4name.setText(playerList.get(3).getUsername());
+        }
+    }
+
+    public void buyPrompt() {
+        Alert buyprompt = new Alert(Alert.AlertType.CONFIRMATION, "This property is available,\n do you want to buy it?",
+                ButtonType.NO, ButtonType.YES);
+        buyprompt.showAndWait();
+
+        if (buyprompt.getResult() == ButtonType.YES) {
+            //TODO: do transaction, transfer property to player
+            buyprompt.close();
+        }
+
+        if (buyprompt.getResult() == ButtonType.NO) {
+            buyprompt.close();
         }
     }
 }
