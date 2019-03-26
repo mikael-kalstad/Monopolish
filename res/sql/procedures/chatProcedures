@@ -23,5 +23,5 @@ create view message_view as(
 
 create procedure chat_get(in gameid int)
   begin
-  select username, cast(time_in as char) as time_String, message from message_view where game_id = gameid order by time_in asc;
+  select username, DATE_FORMAT(time_in, '%Y-%m-%d %T') as time_String, message from message_view where game_id = gameid order by time_in asc;
   end;

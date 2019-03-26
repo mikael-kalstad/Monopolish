@@ -169,7 +169,6 @@ public class GameDAO extends DataAccessObject {
                 chatLine[2] = rs.getString("message");
                 chatList.add(chatLine);
             }
-
             rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
