@@ -382,7 +382,7 @@ public class GameController {
         buyprompt.showAndWait();
 
         if (buyprompt.getResult() == ButtonType.YES) {
-            //do transaction, transfer property to player
+            //TODO: do transaction, transfer property to player
             buyprompt.close();
         }
 
