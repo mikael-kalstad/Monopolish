@@ -101,24 +101,23 @@ public class GameController {
                     chatMessagesContainer.getChildren().clear();
 
                     for (String[] message : chatContent) {
-                        System.out.println(message[0] + " " + message[2] + " " + message[1]);
                         GameControllerDrawFx.createChatRow(
                                 chatMessagesContainer,
                                 message[0].trim(),
                                 message[2].trim(),
                                 message[1].trim()
                         );
-                    }
 
-                    // Scroll to bottom
-                    chatMessageScrollPane.setVvalue(0);
+                        // Scroll to bottom
+                        chatMessageScrollPane.setVvalue(1);
+                    }
                 });
             }
         };
 
         Timer chatTimer = new Timer();
         long delay = 1000L; // Delay before update refreshTimer starts
-        long period = 5000L; // Delay between each update/refresh
+        long period = 1000L; // Delay between each update/refresh
         chatTimer.scheduleAtFixedRate(task, delay, period);
 
         // Set default alert box for leaving when window is closed
