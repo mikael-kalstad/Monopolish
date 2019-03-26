@@ -9,13 +9,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
@@ -28,40 +24,47 @@ import java.util.TimerTask;
  * Controller class for game view
  *
  * @author Bård Hestmark
- * @version 1.5
+ * @version 1.6
  */
 
 public class GameController {
-    // Timers
-
     private Timer timer = new Timer();
-
     private GameLogic gameLogic = new GameLogic(Handler.getCurrentGameId());
+
+    // Array for events in game
     private ArrayList<Text> eventList = new ArrayList<>();
+
+    // Array for players in game
     private ArrayList<FxPlayer> playerList = new ArrayList<>();
-    @FXML
-    private Label p1name, p1money, p2name, p2money, p3name, p3money;
-    @FXML
-    private HBox player1view, player2view, player3view;
-    @FXML
-    private VBox playerInfo;
-    @FXML
-    private Button rolldice;
-    @FXML
-    private TextFlow propertycard;
-    @FXML
-    private GridPane gamegrid;
-    @FXML
-    private ListView eventlog;
+
+    // Elements in board
+    @FXML private Label yourname, p1name, p1money, p2name, p2money, p3name, p3money, p4name, p4money;
+    @FXML private HBox player1view, player2view, player3view, player4view;
+    @FXML private VBox playerInfo;
+    @FXML private TextFlow propertycard;
+    @FXML private GridPane gamegrid;
+    @FXML private ListView eventlog;
+
+    // Dice elements
+    @FXML ImageView dice1_img, dice2_img;
+
+    // Elements in sidebar
+    @FXML private Button rolldiceBtn, buyBtn, claimrentBtn;
+    @FXML private Label moneyValue, roundValue, statusValue;
+
+    // Chat
+    @FXML private Pane chatContainer;
+    @FXML private Pane chatMessages;
+    private boolean chatOpen = false;
+
+    // Properties dialog
+    @FXML private FlowPane propertyContainer;
 
     @FXML
     public void initialize() {
         // Load gamelogic and initialize the game setup
-        try {
-            gameLogic.setupGame();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        try { gameLogic.setupGame(); }
+        catch (SQLException e) { e.printStackTrace(); }
 
         // Draw players based on the number of players
         String[] playerTurns = gameLogic.getTurns();
@@ -70,7 +73,7 @@ public class GameController {
         }
 
         drawPlayers();
-
+        drawAllPlayersView();
         // Start the game!
         waitForTurn();
 
@@ -100,8 +103,12 @@ public class GameController {
                 Handler.getSceneManager().getWindow().close();
             }
         });
+        drawYourPlayerView();
     }
 
+    /**
+     * Method that will run when the user wants to leave the game.
+     */
     public void leave() {
         Alert alertDialog = AlertBox.display (
                 Alert.AlertType.CONFIRMATION,
@@ -126,6 +133,38 @@ public class GameController {
         }
     }
 
+    public void forfeit() {
+        // Some voting gui and logic here...
+    }
+
+    public void showProperties() {
+        propertyContainer.setVisible(true);
+        System.out.println("show properties!");
+    }
+
+    public void closePropertiesDialog() {
+        propertyContainer.setVisible(false);
+
+    }
+
+    /**
+     * This method will open or close the chat,
+     * depending if the chat is open or closed.
+     */
+    public void toggleChat() {
+        // Open chat
+        if (chatOpen) {
+            chatContainer.setTranslateY(0); // Set to default position
+            chatOpen = false;
+        }
+
+        // Open chat
+        else {
+            chatContainer.setTranslateY(275); // Move up
+            chatOpen = true;
+        }
+    }
+
     /**
      * Initiates a clock that runs on a separate thread. This clock
      * checks the database each second to see if you are the current player.
@@ -135,7 +174,7 @@ public class GameController {
      * clock will start again
      */
     private void waitForTurn() {
-        rolldice.setDisable(true);
+        rolldiceBtn.setDisable(true);
         // Create a timer object
         timer = new Timer();
         // We'll schedule a task that will check against the database
@@ -147,11 +186,13 @@ public class GameController {
                 Platform.runLater(() -> {
                     try {
                         // If it's your turn, break out of the timer
-                        if (gameLogic.isYourTurn()) {
+                        int result = gameLogic.isNewTurn();
+                        if (result == 1) {
                             System.out.println("Your turn");
-                            yourTurn();
-                        } else {
-                            System.out.println("Not your turn");
+                            newTurn(true);
+                        } else if (result == 0) {
+                            System.out.println("Updated board");
+                            newTurn(false);
                         }
                     } catch (SQLException e) {
                         e.printStackTrace();
@@ -161,10 +202,28 @@ public class GameController {
         }, 0l, 1000l);
     }
 
-    public void updatePlayerPositions() {
-        int[] positions = gameLogic.getPlayerPositions();
-        for (int i = 0; i < positions.length; i++) {
-            movePlayer(playerList.get(i), positions[i]);
+    public void updateBoard() {
+        try {
+            int[] positions = gameLogic.getPlayerPositions();
+            for (int i = 0; i < positions.length; i++) {
+                movePlayer(playerList.get(i), positions[i]);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void newTurn(boolean yourTurn) {
+        try {
+            gameLogic.newTurn(yourTurn);
+            updateBoard();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        if (yourTurn) {
+            timer.cancel();
+            rolldiceBtn.setDisable(false);
         }
     }
 
@@ -172,32 +231,39 @@ public class GameController {
         // Beginning of your turn
         try {
             gameLogic.startYourTurn();
-            updatePlayerPositions();
+            updateBoard();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         timer.cancel();
-        rolldice.setDisable(false);
+        rolldiceBtn.setDisable(false);
     }
 
+    /**
+     * Will roll two dices and get random values between 1-6.
+     * This method will also update corresponding dice images in the GUI.
+     */
     public void rollDice(){
-        int[] dice = null;
-        try {
-            dice = gameLogic.throwDice();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        int dice1 = dice[0];
-        int dice2 = dice[1];
-        String s = "Threw dice:  "+ dice1 + ",  " + dice2;
+        // Get values for two dices
+        int[] diceValues = null;
+        try { diceValues = gameLogic.throwDice(); }
+        catch (SQLException e) { e.printStackTrace(); }
+
+        // Check if diceValues array is initialized or length is less than two
+        if (diceValues == null || diceValues.length < 2) return;
+
+        // Update dice images on board
+        dice1_img.setImage(new Image(("file:res/gui/dices/dice"+ diceValues[0] +".png")));
+        dice2_img.setImage(new Image(("file:res/gui/dices/dice"+ diceValues[1] +".png")));
+
+        String s = "Threw dice:  "+ diceValues[0] + ",  " + diceValues[1];
         addToEventlog(s);
-        updatePlayerPositions();
+        updateBoard();
         //movePlayer(playerList.get(gameLogic.getTurnNumber()), dice1+dice2);
         waitForTurn();
     }
 
     public void drawPlayers() {
-
         for (FxPlayer player : playerList) {
             GridPane.setConstraints(player, player.getPosX(), player.getPosY());
         }
@@ -250,13 +316,14 @@ public class GameController {
         }
     }
 
-    public void setBuy() {
+    public void buy() {
         addToEventlog("Æsj");
     }
 
-    public void setHome() {
-        addToEventlog("I'm afraid i can't do that...");
+    public void claimrent() {
+
     }
+
 
     private void addToEventlog(String s) {
         eventList.add(new Text(s));
@@ -267,15 +334,20 @@ public class GameController {
         eventlog.scrollTo(focus);
     }
 
-    public void drawPlayerInfo(){
-        if (playerList.size() > 2) {
-            if (playerList.size() == 3) {
-                player2view.setVisible(true);
-            }
-            if (playerList.size() == 4) {
-                player2view.setVisible(true);
-                player3view.setVisible(true);
-            }
+    private void drawYourPlayerView(){
+        yourname.setText(gameLogic.getYourPlayer().getUsername());
+    }
+
+    private void drawAllPlayersView(){
+        p1name.setText(playerList.get(0).getUsername());
+        p2name.setText(playerList.get(1).getUsername());
+        if (playerList.size() >= 3) {
+            player3view.setVisible(true);
+            p3name.setText(playerList.get(2).getUsername());
+        }
+        if (playerList.size() == 4) {
+            player4view.setVisible(true);
+            p4name.setText(playerList.get(3).getUsername());
         }
     }
 }

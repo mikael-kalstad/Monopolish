@@ -28,20 +28,12 @@ public class GameDAOTest {
 
     @Test
     public void testInsert() {
-        try {
-            assertEquals(1, instance.insertGame(1));
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
+        assertEquals(1, instance.insertGame(1));
     }
 
     @Test
     public void testInsertNoLobby() {
-        try {
-            assertEquals(-1, instance.insertGame(8));
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
+        assertEquals(-1, instance.insertGame(8));
     }
 
     @Test

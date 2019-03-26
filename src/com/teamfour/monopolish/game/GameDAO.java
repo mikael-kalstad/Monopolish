@@ -20,7 +20,7 @@ public class GameDAO extends DataAccessObject {
      * @return The Id of the new game
      * @throws SQLException
      */
-    public int insertGame(int lobbyId) throws SQLException {
+    public int insertGame(int lobbyId) {
         int gameId = -1;
         try {
             getConnection();
@@ -29,11 +29,10 @@ public class GameDAO extends DataAccessObject {
             cStmt.setInt(1, lobbyId);
             cStmt.registerOutParameter(2, Types.INTEGER);
 
-            if (cStmt.executeUpdate() > 0)
-                gameId = cStmt.getInt(2);
+            cStmt.executeUpdate();
+            gameId = cStmt.getInt(2);
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new SQLException();
         } finally {
             releaseConnection();
         }
