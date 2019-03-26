@@ -728,7 +728,7 @@
             </TextField>
          </children>
       </Pane>
-      <Pane layoutX="257.0" layoutY="105.0" prefHeight="855.0" prefWidth="1477.0" style="-fx-background-color: ededed; -fx-background-radius: 20;" visible="false">
+      <Pane fx:id="propertiescontainer" layoutX="257.0" layoutY="105.0" prefHeight="855.0" prefWidth="1477.0" style="-fx-background-color: ededed; -fx-background-radius: 20;">
          <children>
             <Text layoutX="609.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Properties">
                <font>
@@ -743,7 +743,7 @@
             <Line endX="473.0" endY="1.52587890625E-5" layoutX="552.0" layoutY="138.0" startX="-100.0" />
             <ScrollPane layoutX="72.0" layoutY="163.0" prefHeight="643.0" prefWidth="1333.0" style="-fx-hbar-policy: NEVER; -fx-background-color: ededed;">
                <content>
-                  <FlowPane fx:id="propertyContainer" prefHeight="640.0" prefWidth="1331.0" style="-fx-padding: 20; -fx-vgap: 40; -fx-hgap: 60; -fx-background-color: ededed;" />
+                  <FlowPane fx:id="propertiesContentContainer" prefHeight="640.0" prefWidth="1331.0" style="-fx-padding: 20; -fx-vgap: 40; -fx-hgap: 60; -fx-background-color: ededed;" />
                </content>
             </ScrollPane>
          </children>

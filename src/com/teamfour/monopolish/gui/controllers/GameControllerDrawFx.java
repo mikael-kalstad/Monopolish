@@ -22,7 +22,7 @@ import javafx.scene.text.Text;
  * @version 1.6
  */
 
-public class FxPlayer extends StackPane {
+public class GameControllerDrawFx extends StackPane {
     // Attributes
     private static int MAX = 9;
 
@@ -30,17 +30,17 @@ public class FxPlayer extends StackPane {
     private int posX, posY;
     private String username;
 
-    public FxPlayer(String username, int posX, int posY) {
+    public GameControllerDrawFx(String username, int posX, int posY) {
         this.username = username;
         this.posX = posX;
         this.posY = posY;
 
-        Circle spiller = new Circle(10);
-        spiller.setFill(Color.BLUE);
-        spiller.setStroke(Color.BLUE);
+        Circle player = new Circle(10);
+        player.setFill(Color.BLUE);
+        player.setStroke(Color.BLUE);
 
         setAlignment(Pos.CENTER);
-        getChildren().addAll(spiller);
+        getChildren().addAll(player);
     }
 
     public static int getMAX() {
@@ -48,7 +48,7 @@ public class FxPlayer extends StackPane {
     }
 
     public static void main(String[] args) {
-        FxPlayer p = new FxPlayer("k", 9, 9);
+        GameControllerDrawFx p = new GameControllerDrawFx("k", 9, 9);
         p.move(37);
         System.out.println(p);
     }
@@ -143,8 +143,7 @@ public class FxPlayer extends StackPane {
     }
 
     public String toString() {
-        String s = "Player moved to X: " + posX + ", Y: " + posY;
-        return s;
+        return "Player moved to X: " + posX + ", Y: " + posY;
     }
 
     /**
@@ -188,8 +187,7 @@ public class FxPlayer extends StackPane {
         container.add(colorContainer, 0, 0);
 
         // Spacing between color box and username
-        Pane spacing = new Pane();
-        container.add(spacing, 1, 0);
+        Pane spacing = new Pane();container.add(spacing, 1, 0);
 
         // Set username
         Text user = new Text();

@@ -33,7 +33,7 @@ public class GameController {
     private ArrayList<Text> eventList = new ArrayList<>();
 
     // Array for players in game
-    private ArrayList<FxPlayer> playerList = new ArrayList<>();
+    private ArrayList<GameControllerDrawFx> playerList = new ArrayList<>();
 
     // Elements in board
     @FXML private VBox playerInfo;
@@ -57,7 +57,8 @@ public class GameController {
     private boolean chatOpen = false;
 
     // Properties dialog
-    @FXML private FlowPane propertyContainer;
+    @FXML private Pane propertiescontainer;
+    @FXML private FlowPane propertiesContentContainer;
 
     @FXML public void initialize() {
         // Load gamelogic and initialize the game setup
@@ -69,7 +70,7 @@ public class GameController {
 
         // Create FXPlayers and add to a list for later references
         for (String username : usernames) {
-            playerList.add(new FxPlayer(username, FxPlayer.getMAX(), FxPlayer.getMAX()));
+            playerList.add(new GameControllerDrawFx(username, GameControllerDrawFx.getMAX(), GameControllerDrawFx.getMAX()));
         }
 
         // Update opponents in sidebar
@@ -141,12 +142,12 @@ public class GameController {
     }
 
     public void showProperties(String username) {
-        propertyContainer.setVisible(true);
+        propertiescontainer.setVisible(true);
         System.out.println("show properties to " + username);
     }
 
     public void closePropertiesDialog() {
-        propertyContainer.setVisible(false);
+        propertiescontainer.setVisible(false);
     }
 
     /**
@@ -276,7 +277,7 @@ public class GameController {
      * Draw all players on the board on their respective positions
      */
     public void drawPlayerPieces() {
-        for (FxPlayer player : playerList) {
+        for (GameControllerDrawFx player : playerList) {
             GridPane.setConstraints(player, player.getPosX(), player.getPosY());
         }
         checkForOthers(playerList.get(0));
@@ -285,7 +286,7 @@ public class GameController {
         gamegrid.getChildren().addAll(playerList);
     }
 
-    public void movePlayerPiece(FxPlayer player, int steps) {
+    public void movePlayerPiece(GameControllerDrawFx player, int steps) {
         player.posToXY(steps);
         player.setAlignment(Pos.CENTER);
         GridPane.setConstraints(player, player.getPosX(), player.getPosY());
@@ -305,11 +306,11 @@ public class GameController {
      * these pieces according to eachother
      * @param player
      */
-    private void checkForOthers(FxPlayer player) {
+    private void checkForOthers(GameControllerDrawFx player) {
 
-        ArrayList<FxPlayer> checklist = new ArrayList<>();
+        ArrayList<GameControllerDrawFx> checklist = new ArrayList<>();
 
-        for (FxPlayer p : playerList) {
+        for (GameControllerDrawFx p : playerList) {
             if ((p.getPosX() == player.getPosX()) && (p.getPosY() == player.getPosY())) {
                 checklist.add(p);
             }
@@ -389,7 +390,7 @@ public class GameController {
             // Player is an opponent
             else {
                 // Render opponentRow in opponentsContainer and save the propertyIcon that is returned
-                Pane imgContainer = FxPlayer.createOpponentRow(
+                Pane imgContainer = GameControllerDrawFx.createOpponentRow(
                         player.getUsername(),
                         "red",
                         String.valueOf(player.getMoney()),
