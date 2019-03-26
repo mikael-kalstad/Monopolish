@@ -38,4 +38,16 @@ public class DiceTest {
                 && result[1] >= 1 && result[1] <= 7
                 && result[2] >= 1 && result[2] <= 7);
     }
+
+    @Test
+    public void testThrowDice() {
+        int[] result = null;
+
+        for (int i = 0; i < 1000; i++) {
+            result = instance.throwDice();
+            if (result[0] == result[1]) {
+                System.out.println("Two equal dices at i=" + i);
+            }
+        }
+    }
 }
