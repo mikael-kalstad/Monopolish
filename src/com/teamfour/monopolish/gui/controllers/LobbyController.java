@@ -46,7 +46,7 @@ public class LobbyController {
     //  Status msg constants
     private final String STATUS_OPEN = "OPEN";
     private final String STATUS_FULL = "LOBBY FULL";
-    private final String STATUS_STARTING = "GAME STARTING";
+    private final String STATUS_STARTING = "STARTING";
     private final String STATUS_STARTED = "IN GAME";
 
     // Btn msg constants
@@ -469,10 +469,7 @@ public class LobbyController {
      * This method will start the countdown, and then start the game after countdown is finished.
      * It will also update some GUI elements when game is starting: <br/>
      * - Ready button will be disabled
-     * -
      *
-     //* @param readyBtn Target ready btn
-     //* @param statusValue Target statusValue text
      */
     private void startGame(int lobby_id) {
         // Countdown refreshTimer when game start
@@ -523,6 +520,29 @@ public class LobbyController {
         long period = 1000L; // Delay between each update/refresh
         countDownTimer.scheduleAtFixedRate(countDownTask, delay, period);
     }
+
+//    private String[][] getPlayersInfo(int lobby_id) {
+//        // Get container for lobby
+//        Pane lobbyContainer = getLobbyContainer(lobby_id);
+//        if (lobbyContainer == null) return null;
+//
+//        // Get container for players
+//        Pane playerContainer = getContainerById(lobbyContainer, PLAYER_CONTAINER_ID);
+//        if (playerContainer == null) return null;
+//
+//        // Find number of players in lobby
+//        int numOfPlayers = playerContainer.getChildren().size();
+//
+//        // Set player info for each player
+//        String[][] playersInfo = new String[numOfPlayers][2];
+//
+//        for (int i = 0; i < numOfPlayers; i++) {
+//            getTextById()
+//            playersInfo[i][0] =
+//        }
+//
+//        return playersInfo;
+//    }
 
     /**
      * Go back to the dashboard view

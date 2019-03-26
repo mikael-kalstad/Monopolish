@@ -47,13 +47,8 @@ public class SceneManager {
      * @param filename the filename
      */
     public void setScene(String filename) {
-        // Only give exit prompt if the player is in the game view
-//        if (exit_prompt) {
-//            window.setOnCloseRequest(e -> {
-//                e.consume(); // Override default closing of window
-//                closeWindow(window); // Run closing method
-//            });
-//        }
+        // Reset close request for each scene to default
+        window.setOnCloseRequest(event -> window.close());
 
         try {
             Parent fxml = FXMLLoader.load(getClass().getResource(ViewConstants.FILE_PATH.getValue() + filename));
@@ -63,25 +58,6 @@ public class SceneManager {
         }
         catch (IOException e) { e.printStackTrace(); }
     }
-
-    /**
-     * This specifies the logic when closing the stage
-     *
-     * @param stage the target for the closing logic
-     */
-//    private void closeWindow(Stage stage) {
-//        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-//        alert.setTitle("Warning");
-//        alert.setContentText(exit_prompt_msg);
-//
-//        ButtonType okBtn = new ButtonType("Yes");
-//        ButtonType noBtn = new ButtonType("No");
-//        alert.getButtonTypes().setAll(okBtn, noBtn);
-//
-//        alert.showAndWait().ifPresent(type -> {
-//            if (type == okBtn) stage.close();
-//        });
-//    }
 
     /**
      * This method will scale the scene to fit within a stage
