@@ -1,13 +1,11 @@
 package com.teamfour.monopolish.gui.controllers;
 
+import com.mysql.cj.result.Row;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
@@ -225,5 +223,83 @@ public class GameControllerDrawFx extends StackPane {
         opponentsContainer.getChildren().add(container);
 
         return imgContainer;
+    }
+
+    /**
+     * Will create a chat-row and add it to a container,
+     * @param username of the user who sent the message
+     * @param message content of the chat-row
+     * @param time when the message was sent
+     */
+    public static void createChatRow(Pane chatMessageContainer,String username, String message, String time) {
+        GridPane container = new GridPane();
+        container.setPrefSize(235, 60);
+
+        // Creating row constraints for info- and message section
+        RowConstraints infoRow = new RowConstraints();
+        infoRow.setPrefHeight(15);
+        RowConstraints msgRow = new RowConstraints();
+        msgRow.setPrefHeight(45);
+        container.getRowConstraints().addAll(infoRow, msgRow);
+
+        // Creating own grid for info section
+        GridPane infoGrid = new GridPane();
+
+        // Creating column constraints for info section
+        ColumnConstraints usernameCol = new ColumnConstraints();
+        usernameCol.setPercentWidth(50);
+        ColumnConstraints timeCol = new ColumnConstraints();
+        timeCol.setPercentWidth(50);
+        infoGrid.getColumnConstraints().addAll(usernameCol, timeCol);
+
+        // Adding content to info section
+        Text usernameValue = new Text(username);
+        Text timeValue = new Text(time);
+
+        // Set text styling
+        setInfoTextStyling(usernameValue);
+        setInfoTextStyling(timeValue);
+
+        // Add info text to its grid
+        infoGrid.add(usernameValue, 0, 0);
+        infoGrid.add(timeValue, 1, 0);
+
+        // Add info grid to container
+        container.add(infoGrid, 0, 0);
+
+        // Adding content to message section
+        Text msg = new Text(message);
+        msg.setStyle(
+                "-fx-font-size: 12px;"
+        );
+        msg.setFill(Paint.valueOf("#1a1a1a"));
+        container.add(msg, 0, 1);
+
+        // Set background to give good contrast between different messages
+        int numOfMessages = chatMessageContainer.getChildren().size();
+
+        // If num of messages is even
+        if (numOfMessages % 2 == 0) {
+            container.setStyle(
+                    "-fx-background-color: #ededed;" +
+                    "-fx-padding: 15px;"
+            );
+        } else {
+            container.setStyle(
+                    "-fx-background-color: #fff;" +
+                    "-fx-padding: 15px;"
+            );
+        }
+
+        chatMessageContainer.getChildren().add(container);
+    }
+
+    /**
+     * Helper method for chat row, will set styling for text in info section
+     * @param element Target text element
+     */
+    private static void setInfoTextStyling(Text element) {
+        element.setStyle("-fx-font-size: 10px");
+        element.setFill(Paint.valueOf("#787878"));
     }
 }
