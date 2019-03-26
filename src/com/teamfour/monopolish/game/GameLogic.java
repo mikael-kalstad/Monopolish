@@ -103,6 +103,8 @@ public class GameLogic {
             entityManager.getYou().move(steps);
         }
 
+        updateToDatabase();
+
         return throwResult;
     }
 
