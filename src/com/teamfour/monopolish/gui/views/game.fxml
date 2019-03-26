@@ -539,27 +539,22 @@
       </AnchorPane>
       <Pane layoutX="1312.0" prefHeight="1050.0" prefWidth="608.0" style="-fx-background-color: #424242;">
          <children>
-            <Label layoutX="94.0" layoutY="33.0" text="Your stats" textFill="#fafafa">
+            <Label layoutX="126.0" layoutY="33.0" text="Your stats" textFill="#fafafa">
                <font>
                   <Font name="System Bold" size="32.0" />
                </font>
             </Label>
-            <Label layoutX="188.0" layoutY="124.0" text="Total" textFill="#fafafa">
-               <font>
-                  <Font size="29.0" />
-               </font>
-            </Label>
-            <Label fx:id="userMoney" layoutX="335.0" layoutY="118.0" text="10.000" textFill="#009e0f">
+            <Label fx:id="userMoney" layoutX="435.0" layoutY="120.0" text="10.000" textFill="#009e0f">
                <font>
                   <Font size="40.0" />
                </font>
             </Label>
-            <Label layoutX="293.0" layoutY="117.0" text="\$" textFill="#009e0f">
+            <Label layoutX="393.0" layoutY="119.0" text="\$" textFill="#009e0f">
                <font>
                   <Font size="40.0" />
                </font>
             </Label>
-            <Pane fx:id="userPropertiesIcon" layoutX="488.0" layoutY="108.0" prefHeight="75.0" prefWidth="77.0" style="-fx-border-color: white; -fx-border-radius: 15;">
+            <Pane fx:id="userPropertiesIcon" layoutX="110.0" layoutY="103.0" prefHeight="75.0" prefWidth="77.0" style="-fx-border-color: white; -fx-border-radius: 15;">
                <children>
                   <ImageView fitHeight="65.0" fitWidth="65.0" layoutX="7.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -571,7 +566,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Pane>
-            <Label layoutX="482.0" layoutY="200.0" text="Your properties" textFill="#b2b2b2">
+            <Label layoutX="104.0" layoutY="193.0" text="Your properties" textFill="#b2b2b2">
                <font>
                   <Font size="13.0" />
                </font>
@@ -620,12 +615,17 @@
                   <Font size="31.0" />
                </font>
             </Label>
-            <Label fx:id="username" layoutX="268.0" layoutY="23.0" prefHeight="68.0" prefWidth="317.0" text="name" textFill="#b4b4b4" wrapText="true">
+            <Label fx:id="username" layoutX="300.0" layoutY="23.0" prefHeight="68.0" prefWidth="317.0" text="username" textFill="#b4b4b4" wrapText="true">
                <font>
                   <Font size="28.0" />
                </font>
             </Label>
-            <Pane fx:id="userColor" layoutX="66.0" layoutY="108.0" prefHeight="90.0" prefWidth="90.0" style="-fx-background-color: lightblue;" />
+            <Pane fx:id="userColor" layoutX="67.0" layoutY="37.0" prefHeight="40.0" prefWidth="42.0" style="-fx-background-color: lightblue;" />
+            <Label layoutX="265.0" layoutY="126.0" text="Total" textFill="#fafafa">
+               <font>
+                  <Font name="System Bold" size="32.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
       <AnchorPane layoutX="360.0" layoutY="133.0" prefHeight="722.0" prefWidth="722.0" style="-fx-background-color: #DCEDC8;">
@@ -728,7 +728,7 @@
             </TextField>
          </children>
       </Pane>
-      <Pane fx:id="propertiescontainer" layoutX="257.0" layoutY="105.0" prefHeight="855.0" prefWidth="1477.0" style="-fx-background-color: ededed; -fx-background-radius: 20;">
+      <Pane fx:id="propertiescontainer" layoutX="257.0" layoutY="105.0" prefHeight="855.0" prefWidth="1477.0" style="-fx-background-color: ededed; -fx-background-radius: 20;" visible="false">
          <children>
             <Text layoutX="609.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Properties">
                <font>
@@ -737,8 +737,11 @@
             </Text>
             <ImageView fitHeight="50.0" fitWidth="52.0" layoutX="1387.0" layoutY="44.0" onMouseClicked="#closePropertiesDialog" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../../res/gui/close.png" />
+                  <Image url="file:res/gui/close.png" />
                </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </ImageView>
             <Line endX="473.0" endY="1.52587890625E-5" layoutX="552.0" layoutY="138.0" startX="-100.0" />
             <ScrollPane layoutX="72.0" layoutY="163.0" prefHeight="643.0" prefWidth="1333.0" style="-fx-hbar-policy: NEVER; -fx-background-color: ededed;">

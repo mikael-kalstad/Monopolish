@@ -217,6 +217,7 @@ public class GameController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        roundValue.setText(String.valueOf(gameLogic.getRoundNumber()));
     }
 
     /**
