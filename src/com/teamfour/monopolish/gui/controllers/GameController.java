@@ -204,15 +204,17 @@ public class GameController {
             chatInput.setStyle("-fx-border-color: yellow;");
         } else {
             chatInput.setStyle("-fx-border-color: white;");
-            chatInput.setText(""); // Reset text
 
+            System.out.println("CHAT INPUT: " + chatInput.getText().trim());
             Handler.getGameDAO().addChatMessage(Handler.getAccount().getUsername(), chatInput.getText().trim());
 
-//            GameControllerDrawFx.createChatRow(
-//                    chatMessagesContainer,
-//                    ,
-//                    LocalDate.now().toString()
-//            );
+            GameControllerDrawFx.createChatRow(
+                    chatMessagesContainer,
+                    Handler.getAccount().getUsername(),
+                    chatInput.getText().trim(),
+                    "tid"
+            );
+            chatInput.setText(""); // Reset text
         }
     }
 
