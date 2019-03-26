@@ -104,12 +104,12 @@ CREATE PROCEDURE account_validate_user(IN uname VARCHAR(30), IN password VARCHAR
     SELECT salt FROM account WHERE uname = account.username OR uname = account.email INTO salt_pw;
     SELECT SHA2(CONCAT(password, salt_pw), 256) INTO hashed_pwd;
 
-    SELECT username, email, regdate, score
+    SELECT username, email, regdate, money
     FROM account
     LEFT JOIN player p on account.user_id = p.user_id
     WHERE hashed_password = hashed_pwd;
     /*
-    SELECT username, email, regdate, score
+    SELECT username, email, regdate, money
     FROM account
     LEFT JOIN player p on account.user_id = p.user_id
     WHERE username = 'giske';
@@ -153,7 +153,7 @@ CREATE PROCEDURE account_reset_password(
 
 CREATE PROCEDURE player_get_highscore(IN name VARCHAR(30))
   BEGIN
-    SELECT score FROM player WHERE user_id = name;
+    SELECT money FROM player WHERE user_id = name;
   END;
 
 

@@ -47,7 +47,7 @@ create procedure player_update(
   in in_jail bit,
   in bankrupt bit,
   in active int,
-  in score int
+  in money int
 )
 begin
   declare u_id int;
@@ -62,7 +62,7 @@ begin
                     injail = in_jail,
                     bankrupt = bankrupt,
                     active = active,
-                    score = score
+                    money = money
     where player_id = u_id;
   commit;
 
@@ -77,7 +77,7 @@ create procedure player_endgame(
 begin
   update player set active = 0 where gameid = game_id and active = 1;
 
-  update player set score = (select (money + sum)
+  update player set money = (select (money + sum)
     from (select money, sum(price) as sum from property join player
       on player.user_id = property.user_id group by user_id) as a)
         where player.game_id = game_id and active = 0;
@@ -93,7 +93,7 @@ create procedure player_getByGameId(
   in game_id int
 )
 begin
-  select a.username, p.money, p.currentpos, p.injail, p.bankrupt, p.active, p.score
+  select a.username, p.money, p.currentpos, p.injail, p.bankrupt, p.active, p.money
   from player p
   join account a on p.user_id = a.user_id
   where game_id = p.game_id
@@ -107,10 +107,10 @@ DROP PROCEDURE player_get_highscore;
 CREATE PROCEDURE player_get_highscore()
 BEGIN
 
-  SELECT username, score
+  SELECT username, money
   FROM account
   LEFT JOIN player p on account.user_id = p.user_id
-  ORDER BY IFNULL(p.score, 0)
+  ORDER BY IFNULL(p.money, 0)
   DESC LIMIT 10;
 
 END;
@@ -118,26 +118,26 @@ END;
 CAlL player_get_highscore();
 
 -- TESTING: -----------
-SELECT score FROM player ORDER BY IFNULL(score, 0);
+SELECT money FROM player ORDER BY IFNULL(money, 0);
 
-SELECT IFNULL(score, 0) FROM player;
+SELECT IFNULL(money, 0) FROM player;
 SELECT
        CASE
-         WHEN score IS NULL THEN 'N/A'
-         ELSE score
+         WHEN money IS NULL THEN 'N/A'
+         ELSE money
            END AS Result
 FROM player;
 
 CREATE PROCEDURE fisk()
   BEGIN
     DECLARE variabel INT;
-  SELECT username, score
+  SELECT username, money
   FROM account
     LEFT JOIN player p on account.user_id = p.user_id
-    ORDER BY score DESC LIMIT 10 INTO variabel;
-    SELECT CASE WHEN variabel IS NULL THEN 0 END AS score;
+    ORDER BY money DESC LIMIT 10 INTO variabel;
+    SELECT CASE WHEN variabel IS NULL THEN 0 END AS money;
 
-    CREATE VIEW v AS SELECT variabel, score AS value FROM player;
+    CREATE VIEW v AS SELECT variabel, money AS value FROM player;
     SELECT * FROM v;
 
   END;
