@@ -84,7 +84,6 @@ create table game(
   starttime datetime not null,
   endtime datetime,
   currentplayer integer,
-  winner integer,
   primary key(game_id)
 );
 
@@ -101,8 +100,6 @@ create table gameproperty(
 ADD FOREIGN KEYS
  */
 
-ALTER TABLE game
-ADD foreign key(winner) references account(user_id);
 ALTER TABLE lobby
   ADD FOREIGN KEY (room_id) REFERENCES lobbyname(lobby_id) ;
 ALTER TABLE lobby

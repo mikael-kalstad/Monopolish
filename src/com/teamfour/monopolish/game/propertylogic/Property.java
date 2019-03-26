@@ -19,6 +19,12 @@ public class Property {
 
     /**
      * Constructor
+     * @param p_id property id
+     * @param name name of property
+     * @param price the price of the property
+     * @param position the position the property is located on the board
+     * @param categorycolor the categorycolor of the property
+     * @param owner the current owner of the property
      */
     public Property(int p_id, String name, int price, int position, String categorycolor, String owner){
         this.ID = p_id;
