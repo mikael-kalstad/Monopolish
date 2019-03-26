@@ -193,7 +193,7 @@ public class GameControllerDrawFx extends StackPane {
         Text user = new Text();
         user.setText(username);
         user.setStyle("-fx-font-size: 18px;");
-        user.setFill(Paint.valueOf("##545454"));
+        user.setFill(Paint.valueOf("#545454"));
         container.add(user, 2,0);
 
         // Property img
