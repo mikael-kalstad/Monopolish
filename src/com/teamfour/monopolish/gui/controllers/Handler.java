@@ -106,6 +106,7 @@ public class Handler extends Application {
      */
     public static void resetAccount() { account = null; }
 
+
     // Get DAO instances
     public static AccountDAO getAccountDAO() { return accountDAO; }
     public static PlayerDAO getPlayerDAO() { return playerDAO; }

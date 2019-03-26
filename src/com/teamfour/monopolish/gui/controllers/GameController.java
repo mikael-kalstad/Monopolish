@@ -1,6 +1,7 @@
 package com.teamfour.monopolish.gui.controllers;
 
 import com.teamfour.monopolish.game.GameLogic;
+import com.teamfour.monopolish.game.entities.player.Player;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -25,71 +26,65 @@ import java.util.TimerTask;
  */
 
 public class GameController {
-    // Dice elements
-    @FXML
-    ImageView dice1_img, dice2_img;
     private Timer timer = new Timer();
     private GameLogic gameLogic = new GameLogic(Handler.getCurrentGameId());
+
     // Array for events in game
     private ArrayList<Text> eventList = new ArrayList<>();
+
     // Array for players in game
     private ArrayList<FxPlayer> playerList = new ArrayList<>();
+
     // Elements in board
-    @FXML
-    private Label yourname, p1name, p1money, p2name, p2money, p3name, p3money, p4name, p4money;
-    @FXML
-    private HBox player3view, player4view;
-    @FXML
-    private VBox playerInfo;
-    @FXML
-    private TextFlow propertycard;
-    @FXML
-    private GridPane gamegrid;
-    @FXML
-    private ListView eventlog;
+    @FXML private VBox playerInfo;
+    @FXML private TextFlow propertycard;
+    @FXML private GridPane gamegrid;
+    @FXML private ListView eventlog;
+
+    // Dice images in board
+    @FXML ImageView dice1_img, dice2_img;
+
     // Elements in sidebar
-    @FXML
-    private Button rolldiceBtn, buyBtn, claimrentBtn;
-    @FXML
-    private Label moneyValue, roundValue, statusValue;
+    @FXML private Button rolldiceBtn, buyBtn, claimrentBtn;
+    @FXML private Label roundValue, statusValue;
+    @FXML private Label username, userMoney;
+    @FXML private Pane userColor, userPropertiesIcon;
+    @FXML private Pane opponentsContainer;
 
-    // Chat
-    @FXML
-    private Pane chatContainer, chatMessages;
-
+    // Chat elements
+    @FXML private Pane chatContainer;
+    @FXML private Pane chatMessages;
     private boolean chatOpen = false;
 
     // Properties dialog
-    @FXML
-    private FlowPane propertyContainer;
+    @FXML private FlowPane propertyContainer;
 
-    /**
-     * This method initializes the scene view and loads both object elements and graphical elements.
-     */
-    @FXML
-    public void initialize() {
+    @FXML public void initialize() {
         // Load gamelogic and initialize the game setup
-        try {
-            gameLogic.setupGame();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        try { gameLogic.setupGame(); }
+        catch (SQLException e) { e.printStackTrace(); }
+
+        // Get usernames in the game
+        String[] usernames = gameLogic.getTurns();
+
+        // Create FXPlayers and add to a list for later references
+        for (String username : usernames) {
+            playerList.add(new FxPlayer(username, FxPlayer.getMAX(), FxPlayer.getMAX()));
         }
 
-        // Draw players based on the number of players
-        String[] playerTurns = gameLogic.getTurns();
-        for (int i = 0; i < playerTurns.length; i++) {
-            playerList.add(new FxPlayer(playerTurns[i], FxPlayer.getMAX(), FxPlayer.getMAX()));
-        }
+        // Update opponents in sidebar
+        updatePlayersInfo();
 
         // Draw players on the board
-        drawPlayers();
-        drawAllPlayersView();
+        drawPlayerPieces();
+
         // Start the game!
         waitForTurn();
 
-        // Set default alert box for leaving
 
-        // When window is closed
+
+
+        // Set default alert box for leaving when window is closed
         Handler.getSceneManager().getWindow().setOnCloseRequest(e -> {
             e.consume(); // Override default closing method
 
@@ -112,7 +107,6 @@ public class GameController {
                 Handler.getSceneManager().getWindow().close();
             }
         });
-        drawYourPlayerView();
     }
 
     /**
@@ -146,14 +140,13 @@ public class GameController {
         // Some voting gui and logic here...
     }
 
-    public void showProperties() {
+    public void showProperties(String username) {
         propertyContainer.setVisible(true);
-        System.out.println("show properties!");
+        System.out.println("show properties to " + username);
     }
 
     public void closePropertiesDialog() {
         propertyContainer.setVisible(false);
-
     }
 
     /**
@@ -214,7 +207,7 @@ public class GameController {
         try {
             int[] positions = gameLogic.getPlayerPositions();
             for (int i = 0; i < positions.length; i++) {
-                movePlayer(playerList.get(i), positions[i]);
+                movePlayerPiece(playerList.get(i), positions[i]);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -282,7 +275,7 @@ public class GameController {
     /**
      * Draw all players on the board on their respective positions
      */
-    public void drawPlayers() {
+    public void drawPlayerPieces() {
         for (FxPlayer player : playerList) {
             GridPane.setConstraints(player, player.getPosX(), player.getPosY());
         }
@@ -292,7 +285,7 @@ public class GameController {
         gamegrid.getChildren().addAll(playerList);
     }
 
-    public void movePlayer(FxPlayer player, int steps) {
+    public void movePlayerPiece(FxPlayer player, int steps) {
         player.posToXY(steps);
         player.setAlignment(Pos.CENTER);
         GridPane.setConstraints(player, player.getPosX(), player.getPosY());
@@ -313,6 +306,7 @@ public class GameController {
      * @param player
      */
     private void checkForOthers(FxPlayer player) {
+
         ArrayList<FxPlayer> checklist = new ArrayList<>();
 
         for (FxPlayer p : playerList) {
@@ -349,29 +343,62 @@ public class GameController {
     }
 
 
-    private void addToEventlog(String s) {
-        eventList.add(new Text(s));
+    private void addToEventlog(String msg) {
+        eventList.add(new Text(msg));
 
         int focus = eventList.size();
         eventlog.getItems().clear();
-        eventlog.getItems().addAll(eventList);
+        eventlog.getItems().add(eventList);
         eventlog.scrollTo(focus);
     }
 
-    private void drawYourPlayerView() {
-        yourname.setText(gameLogic.getYourPlayer().getUsername());
+    /**
+     * Helper method for setting onclick in propertyIcon
+     * @param container for the propertyIcon
+     * @param username target user
+     */
+    private void setPropertyOnClick(Pane container, String username) {
+        container.setOnMouseClicked(e -> {
+            showProperties(username);
+        });
     }
 
-    private void drawAllPlayersView() {
-        p1name.setText(playerList.get(0).getUsername());
-        p2name.setText(playerList.get(1).getUsername());
-        if (playerList.size() >= 3) {
-            player3view.setVisible(true);
-            p3name.setText(playerList.get(2).getUsername());
-        }
-        if (playerList.size() == 4) {
-            player4view.setVisible(true);
-            p4name.setText(playerList.get(3).getUsername());
+    /**
+     * This method will update players info in the sidebar.
+     * It will render the GUI in the opponentsContainer.
+     */
+    private void updatePlayersInfo(){
+        ArrayList<Player> players = Handler.getPlayerDAO().getPlayersInGame(Handler.getCurrentGameId());
+        String color = "orange";
+        System.out.println("RENDERING PLAYERS!");
+
+        // Go through all the players, update info and render GUI
+        for (Player player : players) {
+            System.out.println("player " + player.getUsername()); // TESTING
+
+            // Player is the actual user
+            if (player.getUsername().equals(Handler.getAccount().getUsername())) {
+                username.setText(player.getUsername());
+                userMoney.setText(String.valueOf(player.getMoney()));
+                userColor.setStyle("-fx-background-color: " + color + ";");
+
+                // Show your own properties on click
+                setPropertyOnClick(userPropertiesIcon, player.getUsername());
+            }
+
+            // Player is an opponent
+            else {
+                // Render opponentRow in opponentsContainer and save the propertyIcon that is returned
+                Pane imgContainer = FxPlayer.createOpponentRow(
+                        player.getUsername(),
+                        "red",
+                        String.valueOf(player.getMoney()),
+                        opponentsContainer
+                );
+
+                // Show properties to the user when the icon container is clicked
+                setPropertyOnClick(imgContainer, player.getUsername());
+            }
         }
     }
 

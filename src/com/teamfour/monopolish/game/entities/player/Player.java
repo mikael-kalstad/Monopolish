@@ -19,7 +19,7 @@ public class Player extends Entity {
     private boolean inJail = false;
     private boolean bankrupt = false;
     private int active = 0;
-    private int score = 0;
+    private int money = 0;
 
     /**
      * Constructor
@@ -38,17 +38,17 @@ public class Player extends Entity {
      * @param inJail
      * @param bankrupt
      * @param active
-     * @param score
+     * @param money
      */
     public Player(String username, int money, int position, boolean inJail,
-                  boolean bankrupt, int active, int score) {
+                  boolean bankrupt, int active) {
         super(money);
         this.USERNAME = username;
+        this.money = money;
         this.position = position;
         this.inJail = inJail;
         this.bankrupt = bankrupt;
         this.active = active;
-        this.score = score;
     }
 
     /**
@@ -111,8 +111,8 @@ public class Player extends Entity {
         this.active = active;
     }
 
-    public void setScore(int score) {
-        this.score = score;
+    public void setMoney(int money) {
+        this.money = money;
     }
 
     public boolean isInJail() {
@@ -127,7 +127,7 @@ public class Player extends Entity {
         return active;
     }
 
-    public int getScore() {
-        return score;
+    public int getMoney() {
+        return money;
     }
 }

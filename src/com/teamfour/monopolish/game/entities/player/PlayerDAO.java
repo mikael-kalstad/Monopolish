@@ -107,7 +107,7 @@ public class PlayerDAO extends DataAccessObject {
             cStmt.setBoolean(5, player.isInJail());
             cStmt.setBoolean(6, player.isBankrupt());
             cStmt.setInt(7, player.getActive());
-            cStmt.setInt(8, player.getScore());
+            cStmt.setInt(8, player.getMoney());
 
             count = cStmt.executeUpdate();
         } catch (SQLException e) {
@@ -124,7 +124,7 @@ public class PlayerDAO extends DataAccessObject {
      * create Player objects for all players with the given game_id
      * @param gameId the id of the current game
      */
-    public ArrayList<Player> getPlayersInGame(int gameId) throws SQLException {
+    public ArrayList<Player> getPlayersInGame(int gameId) {
         ArrayList<Player> players = new ArrayList<>();
         try {
             getConnection();
@@ -141,13 +141,12 @@ public class PlayerDAO extends DataAccessObject {
                 boolean inJail = rs.getBoolean(4);
                 boolean bankrupt = rs.getBoolean(5);
                 int active = rs.getInt(6);
-                int score = rs.getInt(7);
+//                int score = rs.getInt(7);
 
-                players.add(new Player(username, money, position, inJail, bankrupt, active, score));
+                players.add(new Player(username, money, position, inJail, bankrupt, active));
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new SQLException();
         } finally {
             releaseConnection();
         }
