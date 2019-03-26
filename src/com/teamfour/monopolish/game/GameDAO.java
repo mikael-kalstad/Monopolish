@@ -180,7 +180,7 @@ public class GameDAO extends DataAccessObject {
     }
 
     public void addChatMessage(String username, String message){
-
+        System.out.println("message in chat from DAO " + message);
         try {
             getConnection();
             cStmt = connection.prepareCall("{call chat_add(?,?)}");
