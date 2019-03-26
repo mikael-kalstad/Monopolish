@@ -18,14 +18,5 @@ public class GameTest {
         }
         instance = new GameLogic(1);
     }
-
-    @Test
-    public void testRun() {
-        try {
-            instance.run();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }
 
