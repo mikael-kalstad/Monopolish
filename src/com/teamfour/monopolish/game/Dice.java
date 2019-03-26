@@ -63,7 +63,8 @@ public class Dice extends StackPane {
         int[] result = new int[numOfDices];
 
         for (int i = 0; i < numOfDices; i++) {
-            result[i] = randomNum(1, numOfEyes);
+            //result[i] = randomNum(1, numOfEyes);
+            result[i] = (int)(Math.random() * ((numOfEyes - 1) + 1)) + 1;
         }
 
         return result;
