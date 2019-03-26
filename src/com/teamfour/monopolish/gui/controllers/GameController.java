@@ -5,10 +5,7 @@ import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -376,6 +373,21 @@ public class GameController {
         if (playerList.size() == 4) {
             player4view.setVisible(true);
             p4name.setText(playerList.get(3).getUsername());
+        }
+    }
+
+    public void buyPrompt() {
+        Alert buyprompt = new Alert(Alert.AlertType.CONFIRMATION, "This property is available,\n do you want to buy it?",
+                ButtonType.NO, ButtonType.YES);
+        buyprompt.showAndWait();
+
+        if (buyprompt.getResult() == ButtonType.YES) {
+            //do transaction, transfer property to player
+            buyprompt.close();
+        }
+
+        if (buyprompt.getResult() == ButtonType.NO) {
+            buyprompt.close();
         }
     }
 }
