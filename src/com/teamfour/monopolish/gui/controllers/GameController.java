@@ -281,6 +281,7 @@ public class GameController {
         // Dr
         updateBoard();
         callTileEvent();
+        updateBoard();
 
         // If the player didn't throw two equal dices, end the turn. If not, the player can throw dice again
         try {
@@ -304,8 +305,13 @@ public class GameController {
         // If on non-available property, send prompt (OR SOMETHING) to owner of property
 
         // If go-to jail, go to jail!
-        if (gameLogic.getPlayerPosition(yourUsername) == Board.GO_TO_JAIL)
-            gameLogic.setPlayerInJail(yourUsername, true);
+        if (gameLogic.getPlayerPosition(yourUsername) == gameLogic.getGoToJailPosition()) {
+            try {
+                gameLogic.setPlayerInJail(yourUsername, true);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**

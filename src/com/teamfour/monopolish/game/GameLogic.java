@@ -50,11 +50,6 @@ public class GameLogic {
      * @throws SQLException
      */
     public void setupGame() throws SQLException {
-        // Load board, graphics, etc.
-        ConnectionPool.create();
-
-        // 1. Load players from database by gameid
-        // 2. Load all properties from database into bank's properties
         // Initialize board and get players from database
         System.out.println("Loading board...");
         System.out.println("Gameid: " + gameId);
@@ -79,11 +74,10 @@ public class GameLogic {
         entityManager.updateToDatabase();
         // 6. Start!
 
-        // Load yourPlayer
-
+        // Set the first player as currentPlayer!
         currentPlayer = turns[0];
-        // Main game loop
-        System.out.println("Game is starting!");
+
+        System.out.println("Setup completed");
     }
 
     /**
@@ -96,8 +90,12 @@ public class GameLogic {
         int[] throwResult = dice.throwDice();
         int steps = throwResult[0] + throwResult[1];
         // Check if player is in prison. If they are in prison, and they get matching dices, move out of jail
-        if (!entityManager.getYou().isInJail() || (entityManager.getYou().isInJail() && throwResult[0] == throwResult[1]))
+        if (entityManager.getYou().isInJail() && throwResult[0] == throwResult[1]) {
+            setPlayerInJail(entityManager.getYou().getUsername(), false);
             entityManager.getYou().move(steps);
+        } else {
+            entityManager.getYou().move(steps);
+        }
 
         // Update position to database
         updateToDatabase();
@@ -106,9 +104,10 @@ public class GameLogic {
         return throwResult;
     }
 
-    public void setPlayerInJail(String username, boolean inJail) {
-        entityManager.getPlayer(username).setInJail(true);
-        entityManager.getPlayer(username).moveTo(Board.JAIL);
+    public void setPlayerInJail(String username, boolean inJail) throws SQLException {
+        entityManager.getPlayer(username).setInJail(inJail);
+        entityManager.getPlayer(username).moveTo(board.getJailPosition());
+        updateToDatabase();
     }
 
     // HELPER METHODS
@@ -267,5 +266,13 @@ public class GameLogic {
 
     public int getPlayerPosition(String username) {
         return entityManager.getPlayer(username).getPosition();
+    }
+
+    public int getJailPosition() {
+        return board.getJailPosition();
+    }
+
+    public int getGoToJailPosition() {
+        return board.getGoToJailPosition();
     }
 }

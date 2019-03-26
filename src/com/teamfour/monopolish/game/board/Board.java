@@ -38,10 +38,23 @@ public class Board {
      * Returns the position where jail is located
      * @return The int position where jail is located
      */
+    public int getGoToJailPosition() {
+        for (int i = 0; i < tiles.length; i++) {
+            if (tiles[i] == GO_TO_JAIL) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    /**
+     * Returns the position where jail is located
+     * @return The int position where jail is located
+     */
     public int getJailPosition() {
         for (int i = 0; i < tiles.length; i++) {
             if (tiles[i] == JAIL) {
-                System.out.println("Jail is at " + i);
                 return i;
             }
         }
