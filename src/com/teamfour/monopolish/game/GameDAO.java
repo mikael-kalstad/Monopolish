@@ -164,7 +164,7 @@ public class GameDAO extends DataAccessObject {
 
             ResultSet rs = cStmt.executeQuery();
 
-            if (rs.next()){
+            while(rs.next()){
                 chatLine[0] = rs.getString("username");
                 chatLine[1] = rs.getString("time_String");
                 chatLine[2] = rs.getString("message");
@@ -195,7 +195,4 @@ public class GameDAO extends DataAccessObject {
             releaseConnection();
         }
     }
-
-
-
 }
