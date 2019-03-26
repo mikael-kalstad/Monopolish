@@ -198,10 +198,8 @@ public class GameController {
                         // If it's your turn, break out of the timer
                         int result = gameLogic.isNewTurn();
                         if (result == 1) {
-                            System.out.println("Your turn");
                             newTurn(true);
                         } else if (result == 0) {
-                            System.out.println("Updated board");
                             newTurn(false);
                         }
                     } catch (SQLException e) {
@@ -307,7 +305,8 @@ public class GameController {
 
         checkForOthers(player);
 
-        String pos = player.getUsername() + " moved to X: " + player.getPosX() + " Y:" + player.getPosY();
+        //String pos = player.getUsername() + " moved to X: " + player.getPosX() + " Y:" + player.getPosY();
+        String pos = player.getUsername() + " is at position " + player.getTilePosition();
         addToEventlog(pos);
     }
 

@@ -72,7 +72,6 @@ public class GameLogic {
         for (int i = 0; i < turns.length; i++) {
             System.out.println((i + 1) + ": " + turns[i]);
         }
-        System.out.println("\n");
 
         // 5. Write current player and money amounts to database
         System.out.println("Writing back to database...");
@@ -183,8 +182,8 @@ public class GameLogic {
      * @throws SQLException
      */
     public void newTurn(boolean yourTurn) throws SQLException {
-        System.out.println("Turn number: " + (turnNumber + 1));
         currentPlayer = gameDAO.getCurrentPlayer(gameId);
+        System.out.println("It is " + currentPlayer + "'s turn.");
         updateFromDatabase();
         for (int i = 0; i < turns.length; i++) {
             if (turns[i].equals(currentPlayer)) {
