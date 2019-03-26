@@ -63,6 +63,7 @@ public class GameController {
     // Chat elements
     @FXML private Pane chatContainer;
     @FXML private Pane chatMessagesContainer;
+    @FXML private ScrollPane chatMessageScrollPane;
     @FXML private TextField chatInput;
     private boolean chatOpen = false;
 
@@ -109,6 +110,9 @@ public class GameController {
                                 message[2].trim(),
                                 message[1].trim()
                         );
+
+                        // Scroll to bottom
+                        chatMessageScrollPane.setVvalue(1);
                     }
                 });
             }
@@ -207,15 +211,16 @@ public class GameController {
             chatInput.setStyle("-fx-border-color: yellow;");
         } else {
             chatInput.setStyle("-fx-border-color: white;");
-            chatInput.setText(""); // Reset text
-
             Handler.getGameDAO().addChatMessage(Handler.getAccount().getUsername(), chatInput.getText().trim());
 
 //            GameControllerDrawFx.createChatRow(
 //                    chatMessagesContainer,
-//                    ,
-//                    LocalDate.now().toString()
+//                    Handler.getAccount().getUsername(),
+//                    chatInput.getText().trim(),
+//                    "tid"
 //            );
+
+            chatInput.setText(""); // Reset text
         }
     }
 
