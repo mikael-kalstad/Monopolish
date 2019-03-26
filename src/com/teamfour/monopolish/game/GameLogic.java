@@ -99,10 +99,8 @@ public class GameLogic {
         // Check if player is in prison. If they are in prison, and they get matching dices, move out of jail
         if (entityManager.getYou().isInJail() && throwResult[0] == throwResult[1]) {
             entityManager.getYou().move(steps);
-            finishYourTurn();
         } else {
             entityManager.getYou().move(steps);
-            finishYourTurn();
         }
 
         return throwResult;

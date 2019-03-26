@@ -92,7 +92,6 @@ public class GameController {
 
         // Set default alert box for leaving
 
-
         // When window is closed
         Handler.getSceneManager().getWindow().setOnCloseRequest(e -> {
             e.consume(); // Override default closing method
@@ -257,9 +256,22 @@ public class GameController {
     public void rollDice() {
         // Get values for two dices
         int[] diceValues = null;
+        int dualDiceCounter = 0;
+        do {
+            try {
+                diceValues = gameLogic.throwDice();
+                if (dualDiceCounter == 2) {
+
+                }
+                dualDiceCounter++;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } while (diceValues[0] == diceValues[1]);
+
         try {
-            diceValues = gameLogic.throwDice();
-        } catch (SQLException e) {
+            gameLogic.finishYourTurn();
+        } catch(SQLException e) {
             e.printStackTrace();
         }
 
