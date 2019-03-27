@@ -89,12 +89,20 @@ public class GameLogic {
         // Throw dice and store in array
         int[] throwResult = dice.throwDice();
         int steps = throwResult[0] + throwResult[1];
+        int previousPosition = entityManager.getYou().getPosition();
+
         // Check if player is in prison. If they are in prison, and they get matching dices, move out of jail
-        if (entityManager.getYou().isInJail() && throwResult[0] == throwResult[1]) {
+        boolean isInJail = entityManager.getYou().isInJail();
+        if (isInJail && throwResult[0] == throwResult[1]) {
             setPlayerInJail(entityManager.getYou().getUsername(), false);
             entityManager.getYou().move(steps);
-        } else {
+        } else if (!isInJail) {
             entityManager.getYou().move(steps);
+        }
+
+        // If the player passed start, give them money
+        if (entityManager.getYou().getPosition() < previousPosition) {
+            entityManager.transferMoneyFromBank(entityManager.getYou().getUsername(), START_MONEY);
         }
 
         // Update position to database
@@ -104,6 +112,12 @@ public class GameLogic {
         return throwResult;
     }
 
+    /**
+     * Sets the specified player in or out of jail
+     * @param username Username of the player
+     * @param inJail Set in jail or not
+     * @throws SQLException
+     */
     public void setPlayerInJail(String username, boolean inJail) throws SQLException {
         entityManager.getPlayer(username).setInJail(inJail);
         entityManager.getPlayer(username).moveTo(board.getJailPosition());
@@ -131,19 +145,6 @@ public class GameLogic {
             }
         } else {
             System.out.println("You don't own this property, prepare to get buried in debt.");
-        }
-    }
-
-    @Deprecated
-    public void startYourTurn() throws SQLException {
-        currentPlayer = gameDAO.getCurrentPlayer(gameId);
-        updateFromDatabase();
-        for (int i = 0; i < turns.length; i++) {
-            if (turns[i].equals(currentPlayer)) {
-                if (i < turnNumber)
-                    roundNumber++;
-                turnNumber = i;
-            }
         }
     }
 

@@ -45,7 +45,6 @@ public class PlayerDAO extends DataAccessObject {
      * @param game_id the id of the current game
      * @param username the username of the player that is created
      */
-
     public Player createPlayer(int game_id, String username) throws SQLException {
         ArrayList<Player> players = null;
         try {

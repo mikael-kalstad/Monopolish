@@ -1,10 +1,10 @@
 package com.teamfour.monopolish.gui.controllers;
 
 import com.teamfour.monopolish.game.GameLogic;
-import com.teamfour.monopolish.game.board.Board;
 import com.teamfour.monopolish.game.entities.player.Player;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -154,6 +154,7 @@ public class GameController {
      * Method that will run when the user wants to leave the game.
      */
     public void leave() {
+        // Create and display alert box when leaving
         Alert alertDialog = AlertBox.display(
                 Alert.AlertType.CONFIRMATION,
                 "Warning", "Do you want to leave?",
@@ -216,12 +217,15 @@ public class GameController {
         }
     }
 
+    /**
+     * Sends a string text from the chat input box to the chat
+     */
     public void addChatMessage() {
         if (chatInput.getText().trim().isEmpty()) {
             chatInput.setStyle("-fx-border-color: yellow;");
         } else {
             chatInput.setStyle("-fx-border-color: white;");
-            Handler.getGameDAO().addChatMessage(Handler.getAccount().getUsername(), chatInput.getText().trim());
+            Handler.getGameDAO().addChatMessage(yourUsername, chatInput.getText().trim());
 
             // Reset text
             chatInput.setText("");
@@ -248,7 +252,6 @@ public class GameController {
      * clock will start again
      */
     private void waitForTurn() {
-        rolldiceBtn.setDisable(true);
         // Create a databaseTimer object
         databaseTimer = new Timer();
         // We'll schedule a task that will check against the database
@@ -298,12 +301,23 @@ public class GameController {
         callTileEvent();
         updateBoard();
 
-        // If the player didn't throw two equal dices, end the turn. If not, the player can throw dice again
+        // If the player didn't throw two equal dices, disable the dice button. If not, the player can throw dice again
+        if (diceValues[0] != diceValues[1]) {
+            rolldiceBtn.setDisable(true);
+            endturnBtn.setDisable(false);
+        }
+    }
+
+    /**
+     * Ends your current turn
+     */
+    public void endTurn() {
         try {
-            if (diceValues[0] != diceValues[1]) {
-                gameLogic.finishYourTurn();
-                waitForTurn();
-            }
+            // Disable this button
+            endturnBtn.setDisable(true);
+            // Finish turn in gamelogic and wait for your next turn
+            gameLogic.finishYourTurn();
+            waitForTurn();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -313,8 +327,6 @@ public class GameController {
      * Checks to see what form of tile you are on and call the event accordingly
      */
     private void callTileEvent() {
-        // If passed start, add start money
-
         // If on property, enable button to buy property
 
         // If on non-available property, send prompt (OR SOMETHING) to owner of property
