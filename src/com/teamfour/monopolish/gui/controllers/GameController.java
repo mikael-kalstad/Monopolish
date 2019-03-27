@@ -45,6 +45,8 @@ public class GameController {
 
     // Elements in board
     @FXML private AnchorPane phillip;
+    @FXML private Button buypropertyBtn;
+    @FXML private Label propertyowned;
     @FXML private VBox playerInfo;
     @FXML private TextFlow propertycard;
     @FXML private GridPane gamegrid;

@@ -634,7 +634,7 @@
                   <Font name="Tahoma" size="75.0" />
                </font>
             </Label>
-            <AnchorPane fx:id="phillip" layoutX="271.0" layoutY="44.0" prefHeight="240.0" prefWidth="190.0" />
+            <AnchorPane fx:id="phillip" layoutX="266.0" layoutY="23.0" prefHeight="240.0" prefWidth="190.0" />
             <AnchorPane fx:id="diceContainer" layoutX="210.0" layoutY="408.0" prefHeight="200.0" prefWidth="301.0">
                <children>
                   <ImageView fx:id="dice1_img" fitHeight="50.0" fitWidth="52.0" layoutX="76.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
@@ -654,6 +654,19 @@
                   </Text>
                </children>
             </AnchorPane>
+            <Button fx:id="buypropertyBtn" layoutX="281.0" layoutY="275.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="160.0" style="-fx-background-color: #03A9F4;" text="Buy property" textFill="#fafafa" visible="false">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Label fx:id="propertyowned" layoutX="300.0" layoutY="286.0" text="propertyowned" textFill="#5d5b5b" visible="false">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
       <ListView fx:id="eventlog" layoutX="14.0" layoutY="408.0" prefHeight="200.0" prefWidth="212.0" />
