@@ -44,8 +44,6 @@ public class GameController {
     @FXML private AnchorPane phillip;
     @FXML private Button buypropertyBtn;
     @FXML private Label propertyOwned;
-    @FXML private VBox playerInfo;
-    @FXML private TextFlow propertycard;
     @FXML private GridPane gamegrid;
     @FXML private ListView eventlog;
 
@@ -417,14 +415,6 @@ public class GameController {
             databaseTimer.cancel();
             rolldiceBtn.setDisable(false);
         }
-    }
-
-    public void buy() {
-        addToEventlog("Æsj");
-    }
-
-    public void claimrent() {
-
     }
 
     private void addToEventlog(String msg) {
