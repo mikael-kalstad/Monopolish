@@ -366,9 +366,9 @@ public class GameControllerDrawFx extends StackPane {
 
         propertypriceflow.getChildren().addAll(rentlist);
 
-        ArrayList<Text> f = new ArrayList<>();
-        for (int i : propertyprices){ f.add(new Text(i+"\n")); }
-        prices.getChildren().addAll(f);
+        ArrayList<Text> pricesTextList = new ArrayList<>();
+        for (int i : propertyprices){ pricesTextList.add(new Text(i+"\n")); }
+        prices.getChildren().addAll(pricesTextList);
 
         propertycardcontainer.getChildren().add(card);
     }
