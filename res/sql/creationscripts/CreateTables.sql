@@ -112,7 +112,7 @@ ADD FOREIGN KEYS
  */
 
 ALTER TABLE lobby
-  ADD FOREIGN KEY (room_id) REFERENCES lobbyname(lobby_id) ;
+  ADD FOREIGN KEY (room_id) REFERENCES lobbyname(lobby_id);
 ALTER TABLE lobby
 ADD FOREIGN KEY (user_id) REFERENCES account(user_id);
 
