@@ -371,6 +371,7 @@ public class GameController {
         }
         roundValue.setText(String.valueOf(gameLogic.getRoundNumber() + 1));
         userMoney.setText(String.valueOf(gameLogic.getPlayer(yourUsername).getMoney()));
+        updatePlayersInfo();
     }
 
     /**
