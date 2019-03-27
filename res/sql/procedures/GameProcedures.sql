@@ -13,7 +13,7 @@ CREATE PROCEDURE game_insert(IN lobby_id int, IN user_name VARCHAR(30), OUT game
     LEFT JOIN player p ON l.user_id=p.user_id
     LEFT JOIN account a on p.user_id = a.user_id
     LEFT JOIN game g on p.game_id = g.game_id
-    WHERE a.username LIKE user_name AND l.room_id=lobby_id AND (p.active=1 OR g.endtime IS NULL) LIMIT 1);
+    WHERE a.username LIKE user_name AND l.room_id=lobby_id AND (p.active=1 AND g.endtime IS NULL) LIMIT 1);
 
     -- If not, be the one who creates the game session!
     IF (gameid IS NULL) THEN

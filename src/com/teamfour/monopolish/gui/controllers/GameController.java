@@ -1,6 +1,7 @@
 package com.teamfour.monopolish.gui.controllers;
 
 import com.teamfour.monopolish.game.GameLogic;
+import com.teamfour.monopolish.game.board.Board;
 import com.teamfour.monopolish.game.entities.player.Player;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.application.Platform;
@@ -333,6 +334,7 @@ public class GameController {
             endturnBtn.setDisable(true);
             // Finish turn in gamelogic and wait for your next turn
             gameLogic.finishYourTurn();
+            updateBoard();
             waitForTurn();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -345,6 +347,14 @@ public class GameController {
     private void callTileEvent() {
         // If on property, enable button to buy property
         // Display property card in middle of board
+        if(gameLogic.getBoard().getTileType(gameLogic.getPlayer(yourUsername).getPosition()) == Board.PROPERTY) {
+            // Activate button
+            // TODO: This is just a test
+            int[] prices = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+            GameControllerDrawFx.createPropertyCard(phillip, "#03A9F4", "Testgata 543", prices);
+        } else {
+            phillip.getChildren().clear();
+        }
 
         // If on non-available property, send prompt (OR SOMETHING) to owner of property
 
@@ -372,6 +382,7 @@ public class GameController {
         }
         roundValue.setText(String.valueOf(gameLogic.getRoundNumber() + 1));
         userMoney.setText(String.valueOf(gameLogic.getPlayer(yourUsername).getMoney()));
+        statusValue.setText("Waiting for " + gameLogic.getCurrentPlayer() + " to finish their turn");
         updatePlayersInfo();
     }
 
