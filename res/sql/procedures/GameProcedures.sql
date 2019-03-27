@@ -106,6 +106,8 @@ CREATE PROCEDURE game_close(IN gameid INT)
     SET g.currentplayer=NULL,
         g.endtime=NOW()
     WHERE g.game_id=gameid;
+
+    DELETE FROM gameproperty WHERE game_id=gameid;
   END;
 -- END$$
 
