@@ -48,12 +48,6 @@ public class GameControllerDrawFx extends StackPane {
         return MAX;
     }
 
-    public static void main(String[] args) {
-        GameControllerDrawFx p = new GameControllerDrawFx("k", 9, 9);
-        p.move(37);
-        System.out.println(p);
-    }
-
     public void move (int steps) {
         while (true) {
             tilePosition++;
@@ -69,17 +63,17 @@ public class GameControllerDrawFx extends StackPane {
     }
 
     public void posToXY(int pos) {
-        int position, x, y;
+        int x, y;
         if (pos > (MAX * 4) - 1 || pos < 0) {
             throw new IllegalArgumentException("Player position out of bounds");
         }
         if (pos >= 0 && pos < MAX) {
-            position = 0;
+            tilePosition = 0;
             x = MAX;
             while (true) {
                 x--;
-                position++;
-                if (position == pos) {
+                tilePosition++;
+                if (tilePosition == pos) {
                     this.posY = MAX;
                     this.posX = x;
                     break;
@@ -87,12 +81,12 @@ public class GameControllerDrawFx extends StackPane {
             }
         }
         if (pos >= MAX && pos < MAX * 2) {
-            position = MAX;
+            tilePosition = MAX;
             y = MAX;
             while (true) {
                 y--;
-                position++;
-                if (position == pos) {
+                tilePosition++;
+                if (tilePosition == pos) {
                     this.posY = y;
                     this.posX = 0;
                     break;
@@ -100,12 +94,12 @@ public class GameControllerDrawFx extends StackPane {
             }
         }
         if (pos >= MAX * 2 && pos < MAX * 3) {
-            position = MAX * 2;
+            tilePosition = MAX * 2;
             x = 0;
             while (true) {
                 x++;
-                position++;
-                if (position == pos) {
+                tilePosition++;
+                if (tilePosition == pos) {
                     this.posY = 0;
                     this.posX = x;
                     break;
@@ -113,12 +107,12 @@ public class GameControllerDrawFx extends StackPane {
             }
         }
         if (pos >= MAX * 3 && pos < MAX * 4) {
-            position = MAX * 3;
+            tilePosition = MAX * 3;
             y = 0;
             while(true) {
                 y++;
-                position++;
-                if (position == pos) {
+                tilePosition++;
+                if (tilePosition == pos) {
                     this.posY = y;
                     this.posX = MAX;
                     break;
