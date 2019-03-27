@@ -18,9 +18,15 @@ CREATE PROCEDURE game_insert(IN lobby_id int, IN user_name VARCHAR(30), OUT game
     -- If not, be the one who creates the game session!
     IF (gameid IS NULL) THEN
       -- To ensure that a user is not active in two games at the same time, we make sure
-      -- to set their status in any other game to LEFT as a fail-safe
+      -- to set their status in any other game to 2 (EXITED) as a fail-safe
       UPDATE player SET player.active=2
       WHERE user_id IN (SELECT user_id FROM lobby WHERE room_id=lobby_id);
+
+      -- If all players in a game now are set to 2, close this game by setting the end time
+      UPDATE game SET endtime=NOW()
+      WHERE game_id IN (SELECT game_id
+                        FROM (SELECT game_id, active FROM player GROUP BY game_id) AS player_active
+                        WHERE active=2);
 
       -- Create a new game
       INSERT INTO game (starttime)
