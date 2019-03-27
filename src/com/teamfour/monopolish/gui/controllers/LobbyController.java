@@ -27,6 +27,7 @@ import java.util.TimerTask;
  */
 public class LobbyController {
     private ArrayList<Pane> lobbyList = new ArrayList<>(); // List over all lobby container elements
+    private ArrayList<String[]> colorList = new ArrayList<>(); // List containing username and color of players
     private final String USERNAME = Handler.getAccount().getUsername();
     private int current_lobby_id = -1; // Default when user is not in any lobby = -1
     private boolean READY = false;
@@ -142,6 +143,9 @@ public class LobbyController {
         lobbiesContainer.getChildren().clear();
         lobbyList.clear();
         current_lobby_id = -1;
+
+        // Clear list containing username and color of players
+        colorList.clear();
 
         // Get data from database about all lobbies
         ArrayList<String[]> lobbyInfo = Handler.getLobbyDAO().getAllLobbies();
@@ -336,6 +340,10 @@ public class LobbyController {
                 break;
         }
 
+        // Update list containing username and color of players
+        colorList.add(new String[]{username, color});
+//        System.out.println("colors " + colorList.get(0)[0] + " color " + colorList.get(0)[1]);
+
         // Render player in container
         GridPane playerRow = LobbyDrawFx.drawPlayerRow(color, username, numOfPlayers);
         playerRow.setId(username);
@@ -500,8 +508,12 @@ public class LobbyController {
                         int gameId = Handler.getGameDAO().insertGame(current_lobby_id, Handler.getAccount().getUsername());
                         Handler.setCurrentGameId(gameId);
 
+                        // Set colorlist in Handler
+                        Handler.setColorList(colorList);
+
                         // Switch so that the timers are turned off in the next run
                         time = -1;
+
                         // Switch to game scene
                         Handler.getSceneManager().setScene(ViewConstants.GAME.getValue());
                     } else if (time == -1) {

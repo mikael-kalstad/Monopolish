@@ -55,35 +55,25 @@
             </ImageView>
          </children>
       </Pane>
-      <Button fx:id="registerBtn" focusTraversable="false" layoutX="178.0" layoutY="858.0" mnemonicParsing="false" onAction="#register" prefHeight="77.0" prefWidth="375.0" style="-fx-background-color: #FF9800; -fx-background-radius: 0;" text="Sign up" textAlignment="CENTER" textFill="WHITE">
+      <Button fx:id="registerBtn" focusTraversable="false" layoutX="195.0" layoutY="780.0" mnemonicParsing="false" onAction="#register" prefHeight="77.0" prefWidth="375.0" style="-fx-background-color: #FF9800; -fx-background-radius: 0;" text="Sign up" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font size="28.0" />
          </font>
       </Button>
-      <Text layoutX="195.0" layoutY="201.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome Back!" wrappingWidth="612.998046875">
+      <Text layoutX="195.0" layoutY="252.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to monopoly" wrappingWidth="940.3314819335938">
          <font>
-            <Font name="System Bold" size="82.0" />
+            <Font name="System Bold" size="75.0" />
          </font>
       </Text>
-      <Text layoutX="178.0" layoutY="793.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Not registered?">
+      <Text layoutX="195.0" layoutY="748.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Not registered?">
          <font>
             <Font name="System Bold" size="32.0" />
          </font>
       </Text>
-      <Text layoutX="195.0" layoutY="348.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Play monopoly with your friends! Nothing can stop you from winning!" wrappingWidth="655.3333435058594">
+      <Text layoutX="195.0" layoutY="444.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Play monopoly with your friends! Nothing can stop you from winning!" wrappingWidth="655.3333435058594">
          <font>
             <Font size="30.0" />
          </font>
       </Text>
-      <ImageView fitHeight="110.0" fitWidth="110.0" layoutX="960.0" layoutY="603.0">
-         <image>
-            <Image url="file:res/gui/Dices/dice2.png" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="110.0" fitWidth="110.0" layoutX="808.0" layoutY="703.0">
-         <image>
-            <Image url="file:res/gui/Dices/dice2.pngfile:res/gui/Dices/dice6.png" />
-         </image>
-      </ImageView>
    </children>
 </AnchorPane>
