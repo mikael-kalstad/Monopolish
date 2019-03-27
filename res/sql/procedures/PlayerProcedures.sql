@@ -37,7 +37,7 @@ begin
   update gameproperty set user_id = null where game_id = g_id and user_id = u_id;
 
   -- If this is the last player to leave, close the game
-  IF ((SELECT COUNT(*) FROM player p WHERE p.game_id=g_id AND active=1) < 1) THEN
+  IF ((SELECT COUNT(*) FROM player p WHERE p.game_id=g_id AND p.active=1) < 1) THEN
     CALL game_close(g_id);
   end if;
   commit;

@@ -46,7 +46,7 @@ public class GameController {
     // Elements in board
     @FXML private AnchorPane phillip;
     @FXML private Button buypropertyBtn;
-    @FXML private Label propertyowned;
+    @FXML private Label propertyOwned;
     @FXML private VBox playerInfo;
     @FXML private TextFlow propertycard;
     @FXML private GridPane gamegrid;
@@ -347,19 +347,32 @@ public class GameController {
      * Checks to see what form of tile you are on and call the event accordingly
      */
     private void callTileEvent() {
-        // If on property, enable button to buy property
-        // Display property card in middle of board
-        if(gameLogic.getBoard().getTileType(gameLogic.getPlayer(yourUsername).getPosition()) == Board.PROPERTY) {
-            // Activate button
-            // TODO: This is just a test
-            int[] prices = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+        // Store your player's position
+        int yourPosition = gameLogic.getPlayer(yourUsername).getPosition();
+
+        // PROPERTY TILE HANDLING
+        if(gameLogic.getBoard().getTileType(yourPosition) == Board.PROPERTY) {
+            // Draw property card with
             GameControllerDrawFx.createPropertyCard(phillip,
                     gameLogic.getEntityManager().getPropertyAtPosition(gameLogic.getPlayer(yourUsername).getPosition()));
-        } else {
-            phillip.getChildren().clear();
-        }
 
-        // If on non-available property, send prompt (OR SOMETHING) to owner of property
+            // Get owner of property and set the button or label accordingly
+            String propertyOwner = gameLogic.getEntityManager().getOwnerAtProperty(yourPosition);
+            if (propertyOwner == null || propertyOwner.equals("")) {
+                // If property is available, show button
+                buypropertyBtn.setVisible(true);
+                propertyOwned.setVisible(false);
+            } else {
+                // If owned, display name of owner
+                buypropertyBtn.setVisible(false);
+                propertyOwned.setVisible(true);
+                propertyOwned.setText("Owned by " + propertyOwner);
+            }
+        } else {
+            // If no property here, make sure to clear the property
+            phillip.getChildren().clear();
+            buypropertyBtn.setVisible(false);
+        }
 
         // If go-to jail, go to jail!
         if (gameLogic.getPlayer(yourUsername).getPosition() == gameLogic.getGoToJailPosition()) {
@@ -568,14 +581,29 @@ public class GameController {
     public void buyPrompt() {
         Alert buyprompt = new Alert(Alert.AlertType.CONFIRMATION, "This property is available,\n do you want to buy it?",
                 ButtonType.NO, ButtonType.YES);
+    }
+
+    public void buyProperty() {
+        Alert buyprompt = new Alert(Alert.AlertType.CONFIRMATION, "Please confirm purchase!",
+                ButtonType.OK, ButtonType.CANCEL);
         buyprompt.showAndWait();
 
-        if (buyprompt.getResult() == ButtonType.YES) {
+        if (buyprompt.getResult() == ButtonType.OK) {
             //TODO: do transaction, transfer property to player
+            try {
+                gameLogic.propertyTransaction();
+                Alert confirmation = new Alert(Alert.AlertType.INFORMATION, "Purchase successful!", ButtonType.OK);
+                confirmation.showAndWait();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             buyprompt.close();
+            buypropertyBtn.setVisible(false);
+            propertyOwned.setVisible(true);
+            propertyOwned.setText("Owned by " + yourUsername);
         }
 
-        if (buyprompt.getResult() == ButtonType.NO) {
+        if (buyprompt.getResult() == ButtonType.CANCEL) {
             buyprompt.close();
         }
     }

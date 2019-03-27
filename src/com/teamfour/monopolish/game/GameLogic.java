@@ -128,25 +128,14 @@ public class GameLogic {
 
     // HELPER METHODS
 
-    private void propertyTransaction() {
-        Property property = entityManager.getPropertyAtPosition(entityManager.getYou().getPosition());
-        if (property == null) {
-            System.out.println("No property here, get lost, punk.");
-            return;
-        }
-
-        if (property.getOwner().equals("")) {
-            System.out.println("You have landed on " + property.getName() + ". You are buying it.");
-            // TODO: Press button to buy property if you have enough money
-            if (entityManager.getYou().getMoney() >= property.getPrice()) {
-                entityManager.transactProperty(entityManager.getYou(), property);
-                System.out.println("You now have " + entityManager.getYou().getMoney() + " caches");
-                System.out.println(entityManager.getYou().toString());
-            } else {
-                System.out.println("You can't afford it, you doofus.");
-            }
+    public boolean propertyTransaction() throws SQLException {
+        Property propertyToPurchase = entityManager.getPropertyAtPosition(entityManager.getYou().getPosition());
+        if (entityManager.getYou().getMoney() >= propertyToPurchase.getPrice()) {
+            entityManager.transactProperty(entityManager.getYou(), propertyToPurchase);
+            updateToDatabase();
+            return true;
         } else {
-            System.out.println("You don't own this property, prepare to get buried in debt.");
+            return false;
         }
     }
 

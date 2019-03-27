@@ -102,6 +102,10 @@ public class EntityManager {
 
     }
 
+    public String getOwnerAtProperty(int position) {
+        return getPropertyAtPosition(position).getOwner();
+    }
+
     public void transactProperty(Entity receiver, Property property) {
         Entity propertyOwner;
         String owner = property.getOwner();
