@@ -85,7 +85,6 @@ public class EntityManager {
     public boolean distributeMoneyFromBank(int amount) {
         for (Player p : players) {
             bank.transferMoney(p, amount);
-            System.out.println(p.getMoney());
         }
 
         return true;
@@ -133,7 +132,7 @@ public class EntityManager {
         players = playerDAO.getPlayersInGame(gameId);
         // TODO: Fix this shit
         while (players.size() <= 0) {
-            players = playerDAO.getPlayersInGame(gameId);
+            //players = playerDAO.getPlayersInGame(gameId);
         }
         for (Player p : players) {
             p.updatePropertiesFromDatabase(gameId);

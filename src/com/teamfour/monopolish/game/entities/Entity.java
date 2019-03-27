@@ -61,12 +61,8 @@ public abstract class Entity {
      * @param amount Amount to transfer
      */
     public boolean transferMoney(Entity entity, int amount) {
-        System.out.println(amount);
         this.adjustMoney(-amount);
-        System.out.println(money);
         entity.adjustMoney(amount);
-
-        System.out.println(entity.getMoney());
 
         return true;
     }
