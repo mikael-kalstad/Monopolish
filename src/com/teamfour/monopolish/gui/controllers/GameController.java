@@ -497,6 +497,7 @@ public class GameController {
      * It will render the GUI in the opponentsContainer.
      */
     private void updatePlayersInfo(){
+        opponentsContainer.getChildren().clear();
         ArrayList<Player> players = Handler.getPlayerDAO().getPlayersInGame(Handler.getCurrentGameId());
         String color;
 
