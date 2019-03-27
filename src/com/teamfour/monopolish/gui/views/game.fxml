@@ -591,7 +591,7 @@
             </Button>
             <Pane fx:id="opponentsContainer" layoutX="47.0" layoutY="631.0" prefHeight="405.0" prefWidth="536.0" />
             <Line endX="406.0" endY="1.52587890625E-5" layoutX="169.0" layoutY="242.0" startX="-100.0" stroke="WHITE" />
-            <Button fx:id="claimrentBtn" layoutX="435.0" layoutY="453.0" mnemonicParsing="false" onAction="#claimrent" prefHeight="50.0" prefWidth="141.0" style="-fx-background-color: orange;" text="End turn" textFill="#fafafa">
+            <Button fx:id="endturnBtn" layoutX="435.0" layoutY="453.0" mnemonicParsing="false" onAction="#claimrent" prefHeight="50.0" prefWidth="141.0" style="-fx-background-color: orange;" text="End turn" textFill="#fafafa">
                <font>
                   <Font size="18.0" />
                </font>
@@ -725,7 +725,7 @@
                   <FlowPane fx:id="chatMessagesContainer" prefHeight="238.0" prefWidth="235.0" />
                </content>
             </ScrollPane>
-            <TextField fx:id="chatInput" layoutY="275.0" onAction="#addChatMessage" prefHeight="40.0" prefWidth="235.0" promptText="Say something nice..." style="-fx-background-color: ededed;">
+            <TextField fx:id="chatInput" layoutY="275.0" onAction="#addChatMessage" onInputMethodTextChanged="#checkChatInput" prefHeight="40.0" prefWidth="235.0" promptText="Say something nice..." style="-fx-background-color: ededed;">
                <font>
                   <Font size="13.0" />
                </font>
@@ -740,9 +740,9 @@
             </ImageView>
          </children>
       </Pane>
-      <Pane fx:id="propertiescontainer" layoutX="257.0" layoutY="105.0" prefHeight="855.0" prefWidth="1477.0" style="-fx-background-color: ededed; -fx-background-radius: 20;" visible="false">
+      <Pane fx:id="propertiesContainer" layoutX="257.0" layoutY="105.0" prefHeight="855.0" prefWidth="1477.0" style="-fx-background-color: ededed; -fx-background-radius: 20;" visible="false">
          <children>
-            <Text layoutX="609.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Properties">
+            <Text layoutX="609.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Properties">
                <font>
                   <Font size="58.0" />
                </font>
@@ -761,6 +761,16 @@
                   <FlowPane fx:id="propertiesContentContainer" prefHeight="640.0" prefWidth="1331.0" style="-fx-padding: 20; -fx-vgap: 40; -fx-hgap: 60; -fx-background-color: ededed;" />
                </content>
             </ScrollPane>
+            <Text fx:id="propertiesUsername" fill="#6f6f6f" layoutX="1148.0" layoutY="102.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" wrappingWidth="307.33334478177136">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Text>
+            <Text fill="#6f6f6f" layoutX="1035.0" layoutY="102.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Owner:" textAlignment="CENTER" wrappingWidth="119.99997326731682">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Text>
          </children>
       </Pane>
    </children>
