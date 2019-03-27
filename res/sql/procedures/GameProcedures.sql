@@ -26,7 +26,8 @@ CREATE PROCEDURE game_insert(IN lobby_id int, IN user_name VARCHAR(30), OUT game
       UPDATE game SET endtime=NOW()
       WHERE game_id IN (SELECT game_id
                         FROM (SELECT game_id, active FROM player GROUP BY game_id) AS player_active
-                        WHERE active=2);
+                        WHERE active=2)
+      AND endtime IS NULL;
 
       -- Create a new game
       INSERT INTO game (starttime)
@@ -84,7 +85,7 @@ CREATE PROCEDURE game_set_current_player(IN gameid INT, IN current_username VARC
     SET current_player_id = (SELECT p.player_id
     FROM player p
     JOIN account a on p.user_id = a.user_id
-    WHERE a.username LIKE current_username LIMIT 1);
+    WHERE a.username LIKE current_username AND p.game_id=gameid LIMIT 1);
 
     IF (current_player_id IS NOT NULL) THEN
       UPDATE game
@@ -103,9 +104,9 @@ DROP PROCEDURE game_close;
 
 CREATE PROCEDURE game_close(IN gameid INT, IN winner_id INT)
   BEGIN
-    IF (winner_id = 0) THEN
-      SET winner_id = NULL;
-    END IF;
+    DELETE FROM chatmessage
+    WHERE player_id IN
+    (SELECT player_id FROM message_view WHERE game_id = gameid);
 
     UPDATE game g
     SET g.currentplayer=NULL,

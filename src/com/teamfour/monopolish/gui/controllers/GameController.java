@@ -19,7 +19,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * Controller class for game view
+ * Controller class for game view. This class acts as a communication layer between the player and the GameLogic class.
+ * We also use this class a general layout of the main game loop. Here, we control when the user should be able
+ * to click certain buttons, what happens when you click them, and handles all graphical interfaces and updates
  *
  * @author Bård Hestmark
  * @version 1.6
@@ -70,6 +72,9 @@ public class GameController {
     @FXML private FlowPane propertiesContentContainer;
     @FXML private Text propertiesUsername;
 
+    /**
+     * Launches when the scene is loaded.
+     */
     @FXML public void initialize() {
         // Load gamelogic and initialize the game setup
         try { gameLogic.setupGame(); }
@@ -302,9 +307,13 @@ public class GameController {
         String s = "Threw dice:  " + diceValues[0] + ",  " + diceValues[1];
         addToEventlog(s);
 
-        // Dr
+        // Update board view
         updateBoard();
+
+        // Check the tile you are currently on and call that event
         callTileEvent();
+
+        // Update board view again
         updateBoard();
 
         // If the player didn't throw two equal dices, disable the dice button. If not, the player can throw dice again
@@ -334,6 +343,7 @@ public class GameController {
      */
     private void callTileEvent() {
         // If on property, enable button to buy property
+        // Display property card in middle of board
 
         // If on non-available property, send prompt (OR SOMETHING) to owner of property
 
