@@ -351,7 +351,8 @@ public class GameController {
             // Activate button
             // TODO: This is just a test
             int[] prices = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-            GameControllerDrawFx.createPropertyCard(phillip, "#03A9F4", "Testgata 543", prices);
+            GameControllerDrawFx.createPropertyCard(phillip,
+                    gameLogic.getEntityManager().getPropertyAtPosition(gameLogic.getPlayer(yourUsername).getPosition()));
         } else {
             phillip.getChildren().clear();
         }
