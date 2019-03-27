@@ -1,7 +1,6 @@
 package com.teamfour.monopolish.gui.controllers;
 
 import com.teamfour.monopolish.game.GameLogic;
-import com.teamfour.monopolish.game.board.Board;
 import com.teamfour.monopolish.game.entities.player.Player;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.application.Platform;
@@ -152,6 +151,7 @@ public class GameController {
      * Method that will run when the user wants to leave the game.
      */
     public void leave() {
+        // Create and display alert box when leaving
         Alert alertDialog = AlertBox.display(
                 Alert.AlertType.CONFIRMATION,
                 "Warning", "Do you want to leave?",
