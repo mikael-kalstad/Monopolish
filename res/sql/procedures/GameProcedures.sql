@@ -88,22 +88,18 @@ Procedure to retrieve the current player
  */
 
 -- DELIMITER $$
-DROP PROCEDURE game_close;
+DROP PROCEDURE if exists game_close;
 
-CREATE PROCEDURE game_close(IN gameid INT, IN winner_id INT)
+CREATE PROCEDURE game_close(IN gameid INT)
   BEGIN
-    IF (winner_id = 0) THEN
-      SET winner_id = NULL;
-    END IF;
 
-    DELETE FROM chatmessage 
-      WHERE player_id IN 
+    DELETE FROM chatmessage
+      WHERE player_id IN
         (SELECT player_id FROM message_view WHERE game_id = gameid);
 
     UPDATE game g
     SET g.currentplayer=NULL,
-        g.endtime=NOW(),
-        g.winner=winner_id
+        g.endtime=NOW()
     WHERE g.game_id=gameid;
   END;
 -- END$$
@@ -113,12 +109,11 @@ Procedure to retrieve the current player
  */
 
 -- DELIMITER $$
-DROP PROCEDURE game_get_winner;
+DROP PROCEDURE if exists game_get_winner;
 
-CREATE PROCEDURE game_get_winner(IN game_id INT, OUT winner_id INT)
+CREATE PROCEDURE game_get_winner(IN gameid INT, OUT winner_id INT)
   BEGIN
-    SET winner_id=(SELECT IFNULL(g.winner, 0)
-    FROM game g
-    WHERE g.game_id=game_id LIMIT 1);
+    declare winner_id int;
+    select user_id into winner_id from player where game_id = gameid order by score desc LIMIT 1;
   END;
 -- END$$

@@ -65,8 +65,7 @@ CREATE TABLE player
   injail BIT NOT NULL DEFAULT 0,
   bankrupt BIT NOT NULL DEFAULT 0,
   active int not null default 1,
-  score INT DEFAULT 0,
-  chat_id integer not null
+  score INT DEFAULT 0
 );
 
 -- active = 1 : aktiv,

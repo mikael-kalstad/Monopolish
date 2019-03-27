@@ -32,6 +32,7 @@ begin
   select user_id  into u_id from account where u_name = username;
 
   update player set active = 2 where user_id = u_id and game_id = g_id;
+  update gameproperty set user_id = null where game_id = g_id and user_id = u_id;
 
   IF ((SELECT COUNT(*) FROM player p WHERE p.game_id=g_id AND active=1) < 1) THEN
     UPDATE game SET game.endtime=NOW() WHERE game.game_id=g_id;
@@ -80,7 +81,7 @@ create procedure player_endgame(
 begin
   update player set active = 0 where gameid = game_id and active = 1;
 
-  update player set money = (select (money + sum)
+  update player set score = (select (money + sum)
     from (select money, sum(price) as sum from property join player
       on player.user_id = property.user_id group by user_id) as a)
         where player.game_id = gameid and active = 0;
@@ -89,7 +90,7 @@ begin
 end $$
 delimiter ;
 
-drop procedure player_getByGameId;
+drop procedure if exists player_getByGameId;
 
 delimiter $$
 create procedure player_getByGameId(
@@ -110,10 +111,10 @@ DROP PROCEDURE player_get_highscore;
 CREATE PROCEDURE player_get_highscore()
 BEGIN
 
-  SELECT username, money
+  SELECT username, score
   FROM account
   LEFT JOIN player p on account.user_id = p.user_id
-  ORDER BY IFNULL(p.money, 0)
+  ORDER BY IFNULL(p.score, 0)
   DESC LIMIT 10;
 
 END;
@@ -121,26 +122,26 @@ END;
 CAlL player_get_highscore();
 
 -- TESTING: -----------
-SELECT money FROM player ORDER BY IFNULL(money, 0);
+SELECT money FROM player ORDER BY IFNULL(score, 0);
 
-SELECT IFNULL(money, 0) FROM player;
+SELECT IFNULL(score, 0) FROM player;
 SELECT
        CASE
-         WHEN money IS NULL THEN 'N/A'
-         ELSE money
+         WHEN score IS NULL THEN 'N/A'
+         ELSE score
            END AS Result
 FROM player;
 
 CREATE PROCEDURE fisk()
   BEGIN
     DECLARE variabel INT;
-  SELECT username, money
+  SELECT username, score
   FROM account
     LEFT JOIN player p on account.user_id = p.user_id
-    ORDER BY money DESC LIMIT 10 INTO variabel;
+    ORDER BY score DESC LIMIT 10 INTO variabel;
     SELECT CASE WHEN variabel IS NULL THEN 0 END AS money;
 
-    CREATE VIEW v AS SELECT variabel, money AS value FROM player;
+    CREATE VIEW v AS SELECT variabel, score AS value FROM player;
     SELECT * FROM v;
 
   END;

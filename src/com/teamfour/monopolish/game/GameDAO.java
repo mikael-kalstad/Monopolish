@@ -114,7 +114,6 @@ public class GameDAO extends DataAccessObject {
             cStmt = connection.prepareCall("{call game_close(?, ?)}");
 
             cStmt.setInt(1, gameId);
-            cStmt.setInt(2, winnerId);
 
             count = cStmt.executeUpdate();
         } catch (SQLException e) {
