@@ -634,7 +634,7 @@
                   <Font name="Tahoma" size="75.0" />
                </font>
             </Label>
-            <AnchorPane layoutX="271.0" layoutY="44.0" prefHeight="240.0" prefWidth="180.0" />
+            <AnchorPane fx:id="phillip" layoutX="271.0" layoutY="44.0" prefHeight="240.0" prefWidth="190.0" />
             <AnchorPane fx:id="diceContainer" layoutX="210.0" layoutY="408.0" prefHeight="200.0" prefWidth="301.0">
                <children>
                   <ImageView fx:id="dice1_img" fitHeight="50.0" fitWidth="52.0" layoutX="76.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
