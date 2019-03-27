@@ -43,6 +43,7 @@ public class GameController {
     private ArrayList<GameControllerDrawFx> playerList = new ArrayList<>();
 
     // Elements in board
+    @FXML private AnchorPane phillip;
     @FXML private VBox playerInfo;
     @FXML private TextFlow propertycard;
     @FXML private GridPane gamegrid;
