@@ -711,7 +711,7 @@
                   <FlowPane fx:id="chatMessagesContainer" prefHeight="238.0" prefWidth="235.0" />
                </content>
             </ScrollPane>
-            <TextField fx:id="chatInput" layoutY="275.0" onAction="#addChatMessage" onInputMethodTextChanged="#checkChatInput" prefHeight="40.0" prefWidth="235.0" promptText="Say something nice..." style="-fx-background-color: ededed;">
+            <TextField fx:id="chatInput" layoutY="275.0" onAction="#addChatMessage" prefHeight="40.0" prefWidth="235.0" promptText="Say something nice..." style="-fx-background-color: ededed; -fx-border-width: 1;">
                <font>
                   <Font size="13.0" />
                </font>
@@ -724,6 +724,15 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </ImageView>
+            <Pane fx:id="chatWarning" layoutX="-2.0" layoutY="257.0" prefHeight="20.0" prefWidth="235.0" style="-fx-background-color: ededed; -fx-background-radius: 15 15 0 0; -fx-border-width: 1; -fx-border-color: CFCFCF;" visible="false">
+               <children>
+                  <Text fill="#d95e3d" layoutX="34.0" layoutY="14.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" Maximum 40 characters allowed" wrappingWidth="166.07812750339508">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </Text>
+               </children>
+            </Pane>
          </children>
       </Pane>
       <Pane fx:id="propertiesContainer" layoutX="257.0" layoutY="105.0" prefHeight="855.0" prefWidth="1477.0" style="-fx-background-color: ededed; -fx-background-radius: 20;" visible="false">
