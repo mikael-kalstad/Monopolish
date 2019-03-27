@@ -1,6 +1,7 @@
 package com.teamfour.monopolish.gui.controllers;
 
 import com.mysql.cj.result.Row;
+import com.teamfour.monopolish.game.propertylogic.Property;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -303,17 +304,14 @@ public class GameControllerDrawFx extends StackPane {
 
 
     /**
-     * This method produces a card with property info to be placed where needed
-     * will later take in a property object to get needed information
-     * @param propertycardcontainer the box the card will be placed in
-     * @param colorhex the propertys color group, temporary until replaced by property object
-     * @param propertyname the name of the property, temporary until replaced by property object
-     * @param propertyprices list of prices connected to the property, temporary until replaced by property object
+     * A method to generate a javafx property card
+     * @param propertycardcontainer The box the card will be placed in, has to be 240x190
+     * @param property A property object
      */
-    static void createPropertyCard(Pane propertycardcontainer, String colorhex, String propertyname, int[] propertyprices) {
+    static void createPropertyCard(Pane propertycardcontainer, Property property) {
         Pane card = new AnchorPane();
         Pane header = new AnchorPane();
-        Label propertynamelabel = new Label(propertyname);
+        Label propertynamelabel = new Label(property.getName());
         TextFlow propertypriceflow = new TextFlow();
         TextFlow prices = new TextFlow();
 
@@ -335,7 +333,7 @@ public class GameControllerDrawFx extends StackPane {
         AnchorPane.setBottomAnchor(prices, 5.0);
 
         card.setStyle("-fx-background-color: #ffffff;");
-        header.setStyle("-fx-background-color: "+ colorhex +";");
+        header.setStyle("-fx-background-color: "+ property.getCategorycolor() +";");
         propertynamelabel.setStyle("-fx-font-size: 18px");
         propertypriceflow.setStyle("-fx-font-size: 13px");
         prices.setStyle("-fx-font-size: 13px");
@@ -360,7 +358,7 @@ public class GameControllerDrawFx extends StackPane {
         propertypriceflow.getChildren().addAll(rentlist);
 
         ArrayList<Text> pricesTextList = new ArrayList<>();
-        for (int i : propertyprices){ pricesTextList.add(new Text(i+"\n")); }
+        for (int i : property.getRent()){ pricesTextList.add(new Text(i+"\n")); }
         prices.getChildren().addAll(pricesTextList);
 
         propertycardcontainer.getChildren().add(card);
