@@ -1,11 +1,7 @@
 package com.teamfour.monopolish.game;
 
-import javafx.geometry.Pos;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -29,17 +25,6 @@ public class Dice extends StackPane {
     public Dice(int numOfDices, int numOfEyes) {
         this.numOfDices = numOfDices;
         this.numOfEyes = numOfEyes;
-    }
-
-    public ArrayList<Circle> getDots(int numOfEyes){
-        ArrayList<Circle> dots = new ArrayList<>();
-
-        for (int i  = 0; i <= numOfEyes; i++) {
-            dots.add(new Circle(10));
-            dots.get(i).setFill(Color.BLACK);
-            dots.get(i).setStroke(Color.BLACK);
-        }
-        return dots;
     }
 
     /**
