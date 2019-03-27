@@ -4,7 +4,6 @@ import com.teamfour.monopolish.game.GameLogic;
 import com.teamfour.monopolish.game.entities.player.Player;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
