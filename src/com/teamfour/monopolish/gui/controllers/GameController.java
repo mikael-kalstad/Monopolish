@@ -68,7 +68,7 @@ public class GameController {
     private int CHAT_MAX_CHARACTERS = 40;
 
     // Properties dialog
-    @FXML private Pane propertiescontainer;
+    @FXML private Pane propertiesContainer;
     @FXML private FlowPane propertiesContentContainer;
     @FXML private Text propertiesUsername;
 
@@ -210,7 +210,7 @@ public class GameController {
      * @param username Target user
      */
     public void showProperties(String username) {
-        propertiescontainer.setVisible(true);
+        propertiesContainer.setVisible(true);
         propertiesUsername.setText(username);
     }
 
@@ -218,7 +218,7 @@ public class GameController {
      * Hide the popup dialog showing the properties to a player
      */
     public void closePropertiesDialog() {
-        propertiescontainer.setVisible(false);
+        propertiesContainer.setVisible(false);
     }
 
     /**
@@ -495,10 +495,14 @@ public class GameController {
      */
     private void updatePlayersInfo(){
         ArrayList<Player> players = Handler.getPlayerDAO().getPlayersInGame(Handler.getCurrentGameId());
-        String color = "orange";
+        String color;
 
         // Go through all the players, update info and render GUI
         for (Player player : players) {
+            // Find color associated with user
+            color = getPlayerColor(player.getUsername());
+            if (color == null) color = "red"; // Check if color has been assigned
+
             // Player is the actual user
             if (player.getUsername().equals(Handler.getAccount().getUsername())) {
                 username.setText(player.getUsername());
@@ -514,7 +518,7 @@ public class GameController {
                 // Render opponentRow in opponentsContainer and save the propertyIcon that is returned
                 Pane imgContainer = GameControllerDrawFx.createOpponentRow(
                         player.getUsername(),
-                        "red",
+                        color,
                         String.valueOf(player.getMoney()),
                         opponentsContainer
                 );
@@ -523,6 +527,23 @@ public class GameController {
                 setPropertyOnClick(imgContainer, player.getUsername());
             }
         }
+    }
+
+    /**
+     * Go through a color list (located in Handler) and find the color associated with a player.
+     * @param username Target user
+     * @return Color associated with user
+     */
+    private String getPlayerColor(String username) {
+        // Go through the arraylist located in Handler
+        for (String[] player : Handler.getColorList()) {
+            // Check if username is target username and return color associated with it if it is an match
+            if (player[0].equals(username)) {
+                System.out.println("COLOR SET: " + username + " " + player[1]);
+                return player[1];
+            }
+        }
+        return null;
     }
 
     public void buyPrompt() {
