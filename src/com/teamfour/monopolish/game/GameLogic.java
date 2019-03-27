@@ -278,4 +278,8 @@ public class GameLogic {
     public Player getPlayer(String username) {
         return entityManager.getPlayer(username);
     }
+
+    public Board getBoard() {
+        return board;
+    }
 }
