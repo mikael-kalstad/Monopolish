@@ -348,7 +348,7 @@ public class GameController {
         // Display property card in middle of board
         if(gameLogic.getBoard().getTileType(gameLogic.getPlayer(yourUsername).getPosition()) == Board.PROPERTY) {
             // Activate button
-            
+
         }
 
         // If on non-available property, send prompt (OR SOMETHING) to owner of property
