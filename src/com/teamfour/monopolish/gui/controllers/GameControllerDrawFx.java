@@ -306,13 +306,14 @@ public class GameControllerDrawFx extends StackPane {
         element.setFill(Paint.valueOf("#787878"));
     }
 
-    static void createPropertyCard(HBox box, String colorhex, String propertyname, ArrayList<Text> propertyprices) {
+    static void createPropertyCard(HBox box, String colorhex, String propertyname, int[] propertyprices) {
         AnchorPane cardpane = new AnchorPane();
         AnchorPane header = new AnchorPane();
         Label propertynamelabel = new Label(propertyname);
         TextFlow propertypriceflow = new TextFlow();
+        TextFlow prices = new TextFlow();
 
-        cardpane.getChildren().addAll(header, propertypriceflow);
+        cardpane.getChildren().addAll(header, propertypriceflow, prices);
 
         cardpane.setPrefSize(190, 240);
         header.setPrefSize(190, 50);
@@ -320,23 +321,45 @@ public class GameControllerDrawFx extends StackPane {
         AnchorPane.setTopAnchor(header, 0.0);
         AnchorPane.setLeftAnchor(header, 0.0);
         AnchorPane.setRightAnchor(header, 0.0);
-        AnchorPane.setBottomAnchor(propertypriceflow, 50.0);
 
         AnchorPane.setTopAnchor(propertypriceflow, 55.0);
         AnchorPane.setLeftAnchor(propertypriceflow, 5.0);
-        AnchorPane.setRightAnchor(propertypriceflow, 5.0);
+        AnchorPane.setRightAnchor(propertypriceflow, 45.0);
         AnchorPane.setBottomAnchor(propertypriceflow, 5.0);
+
+        AnchorPane.setTopAnchor(prices, 55.0);
+        AnchorPane.setLeftAnchor(prices, 145.0);
+        AnchorPane.setRightAnchor(prices, 5.0);
+        AnchorPane.setBottomAnchor(prices, 5.0);
 
         cardpane.setStyle("-fx-background-color: #ffffff;");
         header.setStyle("-fx-background-color: "+ colorhex +";");
         propertynamelabel.setStyle("-fx-font-size: 18px");
-        propertypriceflow.setStyle("-fx-font-size: 14px");
+        propertypriceflow.setStyle("-fx-font-size: 13px");
+        prices.setStyle("-fx-font-size: 13px");
 
         header.getChildren().add(propertynamelabel);
         propertynamelabel.setLayoutX(49.0);
         propertynamelabel.setLayoutY(12.0);
 
-        propertypriceflow.getChildren().addAll(propertyprices);
+        ArrayList<Text> rentlist = new ArrayList<>();
+
+        rentlist.add(new Text("" +
+                "Leie:" +
+                "\nLeie med fargesett:" +
+                "\nRent 1 house:" +
+                "\nRent 2 houses:" +
+                "\nRent 3 houses:" +
+                "\nRent 4 houses:" +
+                "\nRent with hotel:" +
+                "\nHouses cost:" +
+                "\nHotels cost:"));
+
+        propertypriceflow.getChildren().addAll(rentlist);
+
+        ArrayList<Text> f = new ArrayList<>();
+        for (int i : propertyprices){ f.add(new Text(i+"\n")); }
+        prices.getChildren().addAll(f);
 
         box.getChildren().add(cardpane);
     }
