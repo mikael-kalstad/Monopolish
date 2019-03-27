@@ -580,7 +580,7 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <Button fx:id="rolldiceBtn" layoutX="68.0" layoutY="453.0" mnemonicParsing="false" onAction="#rollDice" prefHeight="50.0" prefWidth="160.0" style="-fx-background-color: #03A9F4;" text="Roll dice" textFill="#fafafa">
+            <Button fx:id="rolldiceBtn" disable="true" layoutX="68.0" layoutY="453.0" mnemonicParsing="false" onAction="#rollDice" prefHeight="50.0" prefWidth="160.0" style="-fx-background-color: #03A9F4;" text="Roll dice" textFill="#fafafa">
                <font>
                   <Font size="18.0" />
                </font>
@@ -590,7 +590,7 @@
             </Button>
             <Pane fx:id="opponentsContainer" layoutX="47.0" layoutY="631.0" prefHeight="405.0" prefWidth="536.0" />
             <Line endX="406.0" endY="1.52587890625E-5" layoutX="169.0" layoutY="242.0" startX="-100.0" stroke="WHITE" />
-            <Button fx:id="endturnBtn" layoutX="435.0" layoutY="453.0" mnemonicParsing="false" onAction="#endTurn" prefHeight="50.0" prefWidth="141.0" style="-fx-background-color: orange;" text="End turn" textFill="#fafafa">
+            <Button fx:id="endturnBtn" disable="true" layoutX="435.0" layoutY="453.0" mnemonicParsing="false" onAction="#endTurn" prefHeight="50.0" prefWidth="141.0" style="-fx-background-color: orange;" text="End turn" textFill="#fafafa">
                <font>
                   <Font size="18.0" />
                </font>
@@ -711,7 +711,7 @@
                   <FlowPane fx:id="chatMessagesContainer" prefHeight="238.0" prefWidth="235.0" />
                </content>
             </ScrollPane>
-            <TextField fx:id="chatInput" layoutY="275.0" onAction="#addChatMessage" onInputMethodTextChanged="#checkChatInput" prefHeight="40.0" prefWidth="235.0" promptText="Say something nice..." style="-fx-background-color: ededed;">
+            <TextField fx:id="chatInput" layoutY="275.0" onAction="#addChatMessage" prefHeight="40.0" prefWidth="235.0" promptText="Say something nice..." style="-fx-background-color: ededed; -fx-border-width: 1;">
                <font>
                   <Font size="13.0" />
                </font>
@@ -724,6 +724,15 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </ImageView>
+            <Pane fx:id="chatWarning" layoutX="-2.0" layoutY="257.0" prefHeight="20.0" prefWidth="235.0" style="-fx-background-color: ededed; -fx-background-radius: 15 15 0 0; -fx-border-width: 1; -fx-border-color: CFCFCF;" visible="false">
+               <children>
+                  <Text fill="#d95e3d" layoutX="34.0" layoutY="14.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" Maximum 40 characters allowed" wrappingWidth="166.07812750339508">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </Text>
+               </children>
+            </Pane>
          </children>
       </Pane>
       <Pane fx:id="propertiesContainer" layoutX="257.0" layoutY="105.0" prefHeight="855.0" prefWidth="1477.0" style="-fx-background-color: ededed; -fx-background-radius: 20;" visible="false">

@@ -4,7 +4,6 @@ import com.teamfour.monopolish.game.GameLogic;
 import com.teamfour.monopolish.game.entities.player.Player;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -62,8 +61,9 @@ public class GameController {
     @FXML private Pane chatMessagesContainer;
     @FXML private ScrollPane chatMessageScrollPane;
     @FXML private TextField chatInput;
-    private String current_chat_msg;
+    @FXML private Pane chatWarning;
     private boolean chatOpen = false;
+    private int CHAT_MAX_CHARACTERS = 40;
 
     // Properties dialog
     @FXML private Pane propertiescontainer;
@@ -83,7 +83,7 @@ public class GameController {
             playerList.add(new GameControllerDrawFx(username, GameControllerDrawFx.getMAX(), GameControllerDrawFx.getMAX()));
         }
 
-        // Update opponents in sidebar
+        // Update players in the sidebar
         updatePlayersInfo();
 
         // Draw players on the board
@@ -121,6 +121,26 @@ public class GameController {
         long delay = 1000L; // Delay before update refreshTimer starts
         long period = 1000L; // Delay between each update/refresh
         chatTimer.scheduleAtFixedRate(task, delay, period);
+
+        // Check if chat input has reached max number of characters
+        chatInput.textProperty().addListener((observable, oldValue, newValue) -> {
+            // Check if input is longer than allowed
+            if (chatInput.getText().length() > CHAT_MAX_CHARACTERS) {
+                // Set input text to value before going over the limit
+                chatInput.setText(oldValue);
+
+                // Set cursor to the end of the input
+                chatInput.positionCaret(chatInput.getText().length());
+
+                // Change border style and show warning
+                chatInput.setStyle("-fx-border-color: orange");
+                chatWarning.setVisible(true);
+            } else {
+                // Reset border style and hide warning
+                chatInput.setStyle("-fx-border-color: white");
+                chatWarning.setVisible(false);
+            }
+        });
 
         // Set default alert box for leaving when window is closed
         Handler.getSceneManager().getWindow().setOnCloseRequest(e -> {
@@ -224,19 +244,8 @@ public class GameController {
             chatInput.setStyle("-fx-border-color: white;");
             Handler.getGameDAO().addChatMessage(yourUsername, chatInput.getText().trim());
 
-            // Reset text
+            // Reset input text
             chatInput.setText("");
-            current_chat_msg = "";
-        }
-    }
-
-    public void checkChatInput() {
-        if (chatInput.getText().length() >= 20) {
-            System.out.println("INPUT NOT OKAY!");
-            chatInput.setText(current_chat_msg);
-        } else {
-            System.out.println("INPUT OKAY!");
-            current_chat_msg = chatInput.getText();
         }
     }
 
@@ -477,12 +486,9 @@ public class GameController {
     private void updatePlayersInfo(){
         ArrayList<Player> players = Handler.getPlayerDAO().getPlayersInGame(Handler.getCurrentGameId());
         String color = "orange";
-        System.out.println("RENDERING PLAYERS!");
 
         // Go through all the players, update info and render GUI
         for (Player player : players) {
-            System.out.println("player " + player.getUsername()); // TESTING
-
             // Player is the actual user
             if (player.getUsername().equals(Handler.getAccount().getUsername())) {
                 username.setText(player.getUsername());

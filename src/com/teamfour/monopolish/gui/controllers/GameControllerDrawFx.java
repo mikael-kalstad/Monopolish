@@ -201,6 +201,8 @@ public class GameControllerDrawFx extends StackPane {
         ImageView img = new ImageView("file:res/gui/house.png");
         img.setFitHeight(50);
         img.setFitWidth(50);
+        img.setX(30);
+        img.setY(30);
         Pane imgContainer = new Pane(); // Container for img
         imgContainer.setPrefSize(60, 60);
         imgContainer.setMaxSize(60, 60);

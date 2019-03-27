@@ -493,15 +493,17 @@ public class LobbyController {
                     }
                     // Logic when game should start
                     else if (time == 0) {
+                        countDownTimer.cancel();
+                        refreshTimer.cancel();
+
                         // Make a new game in database
                         int gameId = Handler.getGameDAO().insertGame(current_lobby_id, Handler.getAccount().getUsername());
                         Handler.setCurrentGameId(gameId);
 
-                        // Switch to game scene
-                        Handler.getSceneManager().setScene(ViewConstants.GAME.getValue());
-
                         // Switch so that the timers are turned off in the next run
                         time = -1;
+                        // Switch to game scene
+                        Handler.getSceneManager().setScene(ViewConstants.GAME.getValue());
                     } else if (time == -1) {
                         // Stop the timers
                         countDownTimer.cancel();
