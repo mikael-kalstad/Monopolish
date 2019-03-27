@@ -89,6 +89,8 @@ public class GameLogic {
         // Throw dice and store in array
         int[] throwResult = dice.throwDice();
         int steps = throwResult[0] + throwResult[1];
+        int previousPosition = entityManager.getYou().getPosition();
+
         // Check if player is in prison. If they are in prison, and they get matching dices, move out of jail
         boolean isInJail = entityManager.getYou().isInJail();
         if (isInJail && throwResult[0] == throwResult[1]) {
@@ -96,6 +98,11 @@ public class GameLogic {
             entityManager.getYou().move(steps);
         } else if (!isInJail) {
             entityManager.getYou().move(steps);
+        }
+
+        // If the player passed start, give them money
+        if (entityManager.getYou().getPosition() < previousPosition) {
+            entityManager.transferMoneyFromBank(entityManager.getYou().getUsername(), START_MONEY);
         }
 
         // Update position to database
