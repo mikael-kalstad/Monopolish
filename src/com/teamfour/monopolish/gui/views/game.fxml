@@ -580,7 +580,7 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <Button fx:id="rolldiceBtn" layoutX="68.0" layoutY="453.0" mnemonicParsing="false" onAction="#rollDice" prefHeight="50.0" prefWidth="160.0" style="-fx-background-color: #03A9F4;" text="Roll dice" textFill="#fafafa">
+            <Button fx:id="rolldiceBtn" disable="true" layoutX="68.0" layoutY="453.0" mnemonicParsing="false" onAction="#rollDice" prefHeight="50.0" prefWidth="160.0" style="-fx-background-color: #03A9F4;" text="Roll dice" textFill="#fafafa">
                <font>
                   <Font size="18.0" />
                </font>
