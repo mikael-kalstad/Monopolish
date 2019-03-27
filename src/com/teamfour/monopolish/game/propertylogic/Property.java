@@ -12,6 +12,7 @@ public class Property {
     private final int ID;
     private final String NAME;
     private int price;
+    private int[] rent = new int[9];
     private int position;
     private boolean pawned = false;
     private String owner;
@@ -33,6 +34,19 @@ public class Property {
         this.position = position;
         this.CATEGORYCOLOR = categorycolor;
         this.owner = owner;
+        calculateRent();
+
+        rent[7] = price;
+        rent[8] = price;
+    }
+
+    /**
+     * Calculates rent of the different levels of house/hotel construction
+     */
+    private void calculateRent() {
+        for (int i = 0; i < rent.length - 2; i++) {
+            rent[i] = (int)(price * 0.1 * i);
+        }
     }
 
     @Override

@@ -349,7 +349,11 @@ public class GameController {
         // Display property card in middle of board
         if(gameLogic.getBoard().getTileType(gameLogic.getPlayer(yourUsername).getPosition()) == Board.PROPERTY) {
             // Activate button
-
+            // TODO: This is just a test
+            int[] prices = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+            GameControllerDrawFx.createPropertyCard(phillip, "#03A9F4", "Testgata 543", prices);
+        } else {
+            phillip.getChildren().clear();
         }
 
         // If on non-available property, send prompt (OR SOMETHING) to owner of property
