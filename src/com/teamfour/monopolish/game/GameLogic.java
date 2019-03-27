@@ -1,6 +1,7 @@
 package com.teamfour.monopolish.game;
 
 import com.teamfour.monopolish.game.board.Board;
+import com.teamfour.monopolish.game.entities.Entity;
 import com.teamfour.monopolish.game.entities.EntityManager;
 import com.teamfour.monopolish.game.entities.player.Player;
 import com.teamfour.monopolish.game.propertylogic.Property;
@@ -17,9 +18,11 @@ import java.util.ArrayList;
  */
 
 public class GameLogic {
+
     // Read-only variables
-    private final int START_MONEY = 5000;
-    private final int BAIL_MONEY = 500;
+    private final int START_MONEY = 30000;
+    private final int BAIL_MONEY = 1000;
+    private static final int PASS_START_MONEY = 4000;
 
     // Database and entities
     private GameDAO gameDAO;                // Database connection
@@ -101,7 +104,7 @@ public class GameLogic {
 
         // If the player passed start, give them money
         if (entityManager.getYou().getPosition() < previousPosition) {
-            entityManager.transferMoneyFromBank(entityManager.getYou().getUsername(), START_MONEY);
+            entityManager.transferMoneyFromBank(entityManager.getYou().getUsername(), PASS_START_MONEY);
         }
 
         // Update position to database
@@ -264,15 +267,15 @@ public class GameLogic {
         return positions;
     }
 
-    public int getPlayerPosition(String username) {
-        return entityManager.getPlayer(username).getPosition();
-    }
-
     public int getJailPosition() {
         return board.getJailPosition();
     }
 
     public int getGoToJailPosition() {
         return board.getGoToJailPosition();
+    }
+
+    public Player getPlayer(String username) {
+        return entityManager.getPlayer(username);
     }
 }

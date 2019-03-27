@@ -348,7 +348,7 @@ public class GameController {
         // If on non-available property, send prompt (OR SOMETHING) to owner of property
 
         // If go-to jail, go to jail!
-        if (gameLogic.getPlayerPosition(yourUsername) == gameLogic.getGoToJailPosition()) {
+        if (gameLogic.getPlayer(yourUsername).getPosition() == gameLogic.getGoToJailPosition()) {
             try {
                 gameLogic.setPlayerInJail(yourUsername, true);
             } catch (SQLException e) {
@@ -369,7 +369,8 @@ public class GameController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        roundValue.setText(String.valueOf(gameLogic.getRoundNumber()));
+        roundValue.setText(String.valueOf(gameLogic.getRoundNumber() + 1));
+        userMoney.setText(String.valueOf(gameLogic.getPlayer(yourUsername).getMoney()));
     }
 
     /**
@@ -384,6 +385,7 @@ public class GameController {
             gameLogic.newTurn(yourTurn);
             // Update the playing board accordingly to database updates
             updateBoard();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
