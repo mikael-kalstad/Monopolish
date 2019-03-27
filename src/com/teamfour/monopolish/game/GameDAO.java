@@ -20,6 +20,7 @@ public class GameDAO extends DataAccessObject {
     /**
      * Generates a new game from the lobby Id
      * @param lobbyId Lobby Id to pick players from
+     * @param username the username of the player
      * @return The Id of the new game
      * @throws SQLException
      */
@@ -154,6 +155,12 @@ public class GameDAO extends DataAccessObject {
         return winnerId;
     }
 
+    /**
+     * Gets everything from the game chat
+     * @param gameId The session id
+     * @return chat content
+     */
+
     public ArrayList<String[]> getChat(int gameId) {
         ArrayList<String[]> chatList= new ArrayList<String[]>();
         try {
@@ -178,7 +185,11 @@ public class GameDAO extends DataAccessObject {
         }
         return chatList;
     }
-
+    /**
+     * adds a chat-message to the chat
+     * @param username The session id
+     * @param message the chat-message
+     */
     public void addChatMessage(String username, String message){
         try {
             getConnection();

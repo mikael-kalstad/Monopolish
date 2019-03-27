@@ -75,7 +75,7 @@ delimiter ;
 
 delimiter $$
 create procedure player_endgame(
-  in game_id int
+  in gameid int
 )
 begin
   update player set active = 0 where gameid = game_id and active = 1;
@@ -83,7 +83,7 @@ begin
   update player set money = (select (money + sum)
     from (select money, sum(price) as sum from property join player
       on player.user_id = property.user_id group by user_id) as a)
-        where player.game_id = game_id and active = 0;
+        where player.game_id = gameid and active = 0;
   commit;
 
 end $$

@@ -96,6 +96,10 @@ CREATE PROCEDURE game_close(IN gameid INT, IN winner_id INT)
       SET winner_id = NULL;
     END IF;
 
+    DELETE FROM chatmessage 
+      WHERE player_id IN 
+        (SELECT player_id FROM message_view WHERE game_id = gameid);
+
     UPDATE game g
     SET g.currentplayer=NULL,
         g.endtime=NOW(),
