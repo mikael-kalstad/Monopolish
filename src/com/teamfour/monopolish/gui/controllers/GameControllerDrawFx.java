@@ -4,7 +4,9 @@ import com.mysql.cj.result.Row;
 import com.teamfour.monopolish.game.propertylogic.Property;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -14,6 +16,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 
@@ -21,130 +24,159 @@ import java.util.ArrayList;
  * Class for drawing players and player position on the board
  *
  * @author Bård Hestmark
- * @version 1.6
+ * @version 1.7
  */
 
-public class GameControllerDrawFx extends StackPane {
-    // Attributes
-    private static int MAX = 9;
+public class GameControllerDrawFx {
+    /**
+     * This method is used to draw a player piece on the board in the game
+     *
+     * @param boardGrid Target grid for board
+     * @param positions Positions of the players
+     * @param colors Color of associated with the player
+     */
+    public static void createPlayerPieces(GridPane boardGrid, int[] positions, String[] colors) {
+        // Clear the board before creating drawing any player pieces
+        boardGrid.getChildren().clear();
 
-    private int tilePosition = 0;
-    private int posX, posY;
-    private String username;
+        ArrayList<Node> playerPieces = new ArrayList<>();
 
-    public GameControllerDrawFx(String username, int posX, int posY) {
-        this.username = username;
-        this.posX = posX;
-        this.posY = posY;
+        for (int i = 0; i < positions.length; i++) {
+            // Create a player piece and set color
+            Circle piece = new Circle(12);
+            piece.setFill(Paint.valueOf(colors[i]));
+            piece.setStroke(Paint.valueOf(colors[i]));
+            piece.setStyle("-fx-margin: 10px");
 
-        Circle player = new Circle(10);
-        player.setFill(Color.BLUE);
-        player.setStroke(Color.BLUE);
+            // Convert position to XY position
+            int[] posXY = posToXY(positions[i]);
+            if (posXY == null || posXY.length != 2) return; // Error check
 
-        setAlignment(Pos.CENTER);
-        getChildren().addAll(player);
-    }
+            // Set piece in the right column and row and center it
+            GridPane.setConstraints(piece, posXY[0], posXY[1]);
+            GridPane.setHalignment(piece, HPos.CENTER);
+            GridPane.setValignment(piece, VPos.CENTER);
 
-    public static int getMAX() {
-        return MAX;
-    }
+            // Add piece to boardGrid
+            boardGrid.getChildren().add(piece);
 
-    public void move (int steps) {
-        while (true) {
-            tilePosition++;
-            steps--;
-            if (tilePosition == MAX*4) {
-                tilePosition = 0;
-            }
-            if (steps == 0) {
-                break;
-            }
+            // Add piece to a list
+            playerPieces.add(piece);
+
+            // Check if other players are on the tile
+            checkForOverlaps(playerPieces, posXY[0], posXY[1]);
         }
-        posToXY(tilePosition);
-    }
-
-    public void posToXY(int pos) {
-        int x, y;
-        if (pos > (MAX * 4) - 1 || pos < 0) {
-            throw new IllegalArgumentException("Player position out of bounds");
-        }
-        if (pos >= 0 && pos < MAX) {
-            tilePosition = 0;
-            x = MAX;
-            while (true) {
-                x--;
-                tilePosition++;
-                if (tilePosition == pos) {
-                    this.posY = MAX;
-                    this.posX = x;
-                    break;
-                }
-            }
-        }
-        if (pos >= MAX && pos < MAX * 2) {
-            tilePosition = MAX;
-            y = MAX;
-            while (true) {
-                y--;
-                tilePosition++;
-                if (tilePosition == pos) {
-                    this.posY = y;
-                    this.posX = 0;
-                    break;
-                }
-            }
-        }
-        if (pos >= MAX * 2 && pos < MAX * 3) {
-            tilePosition = MAX * 2;
-            x = 0;
-            while (true) {
-                x++;
-                tilePosition++;
-                if (tilePosition == pos) {
-                    this.posY = 0;
-                    this.posX = x;
-                    break;
-                }
-            }
-        }
-        if (pos >= MAX * 3 && pos < MAX * 4) {
-            tilePosition = MAX * 3;
-            y = 0;
-            while(true) {
-                y++;
-                tilePosition++;
-                if (tilePosition == pos) {
-                    this.posY = y;
-                    this.posX = MAX;
-                    break;
-                }
-            }
-        }
-    }
-
-    public int getPosX() {
-        return posX;
-    }
-
-    public int getPosY() {
-        return posY;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public int getTilePosition() {
-        return tilePosition;
-    }
-
-    public String toString() {
-        return "Player moved to X: " + posX + ", Y: " + posY;
     }
 
     /**
-     * This method is used to draw an opponent row in the sidebar in the game view.
-     *
+     * Helper method that will translate a position to a X and Y position
+     * that works on the grid for the board in the game view
+     * @param pos Position on the board
+     * @return Array with X and Y position [X, Y]
+     */
+    private static int[] posToXY(int pos) {
+        int position, x, y;
+        int MAX = 9;
+
+        if (pos > (MAX * 4) - 1 || pos < 0) {
+            throw new IllegalArgumentException("Player position out of bounds");
+        }
+
+        // Position between free parking and jail
+        else if (pos >= MAX * 2 && pos < MAX * 3) {
+            position = MAX * 2;
+            x = 0;
+            while (true) {
+                x++;
+                position++;
+                if (position == pos) {
+                    return new int[]{x, 0};
+                }
+            }
+        }
+
+        // Position between visit jail and free parking
+        else if (pos >= MAX && pos < MAX * 2) {
+            position = MAX;
+            y = MAX;
+            while (true) {
+                y--;
+                position++;
+                if (position == pos) {
+                    return new int[]{0, y};
+                }
+            }
+        }
+
+        // Position between start and visit jail
+        if (pos >= 0 && pos < MAX) {
+            position = 0;
+            x = MAX;
+            while (true) {
+                x--;
+                position++;
+                if (position == pos) {
+                    return new int[]{x, MAX};
+                }
+            }
+        }
+
+        // Position between jail and start
+        if (pos >= MAX * 3 && pos < MAX * 4) {
+            position = MAX * 3;
+            y = 0;
+            while(true) {
+                y++;
+                position++;
+                if (position == pos) {
+                    return new int[]{MAX, y};
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+      * This method checks if there are other game pieces on the same tile. If there are, position
+      * these pieces according to each other
+      *
+      * @param playerPieces List of all player pieces
+      * @param tileX X position of the tile
+      * @param tileY Y position of the tile
+     */
+    private static void checkForOverlaps(ArrayList<Node> playerPieces, int tileX, int tileY) {
+        // List of pieces on this specific tile
+        ArrayList<Node> piecesOnTile = new ArrayList<>();
+
+        // Go through all players pieces and check for pieces that are on the same tile
+        for (Node p : playerPieces) {
+            // Check if X and Y position are the same
+            if (tileX == GridPane.getColumnIndex(p) && tileY == GridPane.getRowIndex(p)) {
+                piecesOnTile.add(p);
+            }
+        }
+
+        // Check how many pieces there are on the tile and position them accordingly on the tile
+        if (piecesOnTile.size() == 2) {
+            GridPane.setHalignment(piecesOnTile.get(0), HPos.LEFT);
+            GridPane.setHalignment(piecesOnTile.get(1), HPos.RIGHT);
+        }
+
+        if (piecesOnTile.size() == 3) {
+            GridPane.setValignment(piecesOnTile.get(0), VPos.TOP);
+            GridPane.setValignment(piecesOnTile.get(1), VPos.TOP);
+            GridPane.setValignment(piecesOnTile.get(2), VPos.BOTTOM);
+        }
+
+        if (piecesOnTile.size() == 4) {
+            GridPane.setHalignment(piecesOnTile.get(2), HPos.LEFT);
+            GridPane.setHalignment(piecesOnTile.get(3), HPos.RIGHT);
+            GridPane.setValignment(piecesOnTile.get(3), VPos.BOTTOM);
+        }
+    }
+
+    /**
+     * This method is used to draw an opponent row in the sidebar in the game view
      *
      * @param username of the actual user
      * @param color of the player

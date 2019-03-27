@@ -535,29 +535,6 @@ public class LobbyController {
         countDownTimer.scheduleAtFixedRate(countDownTask, delay, period);
     }
 
-//    private String[][] getPlayersInfo(int lobby_id) {
-//        // Get container for lobby
-//        Pane lobbyContainer = getLobbyContainer(lobby_id);
-//        if (lobbyContainer == null) return null;
-//
-//        // Get container for players
-//        Pane playerContainer = getContainerById(lobbyContainer, PLAYER_CONTAINER_ID);
-//        if (playerContainer == null) return null;
-//
-//        // Find number of players in lobby
-//        int numOfPlayers = playerContainer.getChildren().size();
-//
-//        // Set player info for each player
-//        String[][] playersInfo = new String[numOfPlayers][2];
-//
-//        for (int i = 0; i < numOfPlayers; i++) {
-//            getTextById()
-//            playersInfo[i][0] =
-//        }
-//
-//        return playersInfo;
-//    }
-
     /**
      * Go back to the dashboard view
      */
