@@ -308,21 +308,28 @@ public class GameControllerDrawFx extends StackPane {
         element.setFill(Paint.valueOf("#787878"));
     }
 
-    static void createPropertyCard(HBox box, String colorhex, String propertyname, int[] propertyprices) {
-        AnchorPane cardpane = new AnchorPane();
-        AnchorPane header = new AnchorPane();
+
+    /**
+     * This method produces a card with property info to be placed where needed
+     * will later take in a property object to get needed information
+     * @param propertycardcontainer the box the card will be placed in
+     * @param colorhex the propertys color group, temporary until replaced by property object
+     * @param propertyname the name of the property, temporary until replaced by property object
+     * @param propertyprices list of prices connected to the property, temporary until replaced by property object
+     */
+    static void createPropertyCard(Pane propertycardcontainer, String colorhex, String propertyname, int[] propertyprices) {
+        Pane card = new AnchorPane();
+        Pane header = new AnchorPane();
         Label propertynamelabel = new Label(propertyname);
         TextFlow propertypriceflow = new TextFlow();
         TextFlow prices = new TextFlow();
 
-        cardpane.getChildren().addAll(header, propertypriceflow, prices);
+        card.getChildren().addAll(header, propertypriceflow, prices);
 
-        cardpane.setPrefSize(190, 240);
+        card.setPrefSize(190, 240);
         header.setPrefSize(190, 50);
 
         AnchorPane.setTopAnchor(header, 0.0);
-        AnchorPane.setLeftAnchor(header, 0.0);
-        AnchorPane.setRightAnchor(header, 0.0);
 
         AnchorPane.setTopAnchor(propertypriceflow, 55.0);
         AnchorPane.setLeftAnchor(propertypriceflow, 5.0);
@@ -334,7 +341,7 @@ public class GameControllerDrawFx extends StackPane {
         AnchorPane.setRightAnchor(prices, 5.0);
         AnchorPane.setBottomAnchor(prices, 5.0);
 
-        cardpane.setStyle("-fx-background-color: #ffffff;");
+        card.setStyle("-fx-background-color: #ffffff;");
         header.setStyle("-fx-background-color: "+ colorhex +";");
         propertynamelabel.setStyle("-fx-font-size: 18px");
         propertypriceflow.setStyle("-fx-font-size: 13px");
@@ -359,10 +366,10 @@ public class GameControllerDrawFx extends StackPane {
 
         propertypriceflow.getChildren().addAll(rentlist);
 
-        ArrayList<Text> f = new ArrayList<>();
-        for (int i : propertyprices){ f.add(new Text(i+"\n")); }
-        prices.getChildren().addAll(f);
+        ArrayList<Text> pricesTextList = new ArrayList<>();
+        for (int i : propertyprices){ pricesTextList.add(new Text(i+"\n")); }
+        prices.getChildren().addAll(pricesTextList);
 
-        box.getChildren().add(cardpane);
+        propertycardcontainer.getChildren().add(card);
     }
 }
