@@ -6,7 +6,6 @@ import com.teamfour.monopolish.game.entities.player.Player;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -25,7 +24,7 @@ import java.util.TimerTask;
  * to click certain buttons, what happens when you click them, and handles all graphical interfaces and updates
  *
  * @author Bård Hestmark
- * @version 1.6
+ * @version 1.7
  */
 
 public class GameController {
@@ -39,9 +38,6 @@ public class GameController {
 
     // Array for events in game
     private ArrayList<Text> eventList = new ArrayList<>();
-
-    // Array for players in game
-    private ArrayList<GameControllerDrawFx> playerList = new ArrayList<>();
 
     // Elements in board
     @FXML private AnchorPane phillip;
@@ -84,19 +80,7 @@ public class GameController {
         try { gameLogic.setupGame(); }
         catch (SQLException e) { e.printStackTrace(); }
 
-        // Get usernames in the game
-        String[] usernames = gameLogic.getTurns();
-
-        // Create FXPlayers and add to a list for later references
-        for (String username : usernames) {
-            playerList.add(new GameControllerDrawFx(username, GameControllerDrawFx.getMAX(), GameControllerDrawFx.getMAX()));
-        }
-
-        // Update players in the sidebar
-        updatePlayersInfo();
-
-        // Draw players on the board
-        drawPlayerPieces();
+        updateBoard();
 
         // Start the game!
         waitForTurn();
@@ -113,10 +97,10 @@ public class GameController {
 
                     for (String[] message : chatContent) {
                         GameControllerDrawFx.createChatRow(
-                                chatMessagesContainer,
-                                message[0].trim(),
-                                message[2].trim(),
-                                message[1].trim()
+                            chatMessagesContainer,
+                            message[0].trim(),
+                            message[2].trim(),
+                            message[1].trim()
                         );
 
                         // Scroll to bottom
@@ -390,9 +374,14 @@ public class GameController {
     public void updateBoard() {
         try {
             int[] positions = gameLogic.getPlayerPositions();
-            for (int i = 0; i < positions.length; i++) {
-                setPiecePosition(playerList.get(i), positions[i]);
+            String[] turns = gameLogic.getTurns();
+            String[] colors = new String[turns.length];
+
+            for (int i = 0; i < turns.length; i++) {
+                colors[i] = getPlayerColor(turns[i]);
             }
+
+            GameControllerDrawFx.createPlayerPieces(gamegrid, positions, colors);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -423,72 +412,6 @@ public class GameController {
         if (yourTurn) {
             databaseTimer.cancel();
             rolldiceBtn.setDisable(false);
-        }
-    }
-
-    /**
-     * Draw all players on the board on their respective positions
-     */
-    public void drawPlayerPieces() {
-        for (GameControllerDrawFx player : playerList) {
-            GridPane.setConstraints(player, player.getPosX(), player.getPosY());
-        }
-        checkForOthers(playerList.get(0));
-
-        gamegrid.getChildren().clear();
-        gamegrid.getChildren().addAll(playerList);
-    }
-
-    /**
-     * Moves the specified player piece to the specified position.
-     * @param piece
-     * @param position
-     */
-    public void setPiecePosition(GameControllerDrawFx piece, int position) {
-        piece.posToXY(position);
-        piece.setAlignment(Pos.CENTER);
-        GridPane.setConstraints(piece, piece.getPosX(), piece.getPosY());
-
-        gamegrid.getChildren().clear();
-        gamegrid.getChildren().addAll(playerList);
-
-        checkForOthers(piece);
-
-        //String pos = player.getUsername() + " moved to X: " + player.getPosX() + " Y:" + player.getPosY();
-        String pos = piece.getUsername() + " is at position " + piece.getTilePosition();
-        addToEventlog(pos);
-    }
-
-    /**
-     * This method checks if there are other game pieces on the same place. If there are, position
-     * these pieces according to eachother
-     * @param player
-     */
-    private void checkForOthers(GameControllerDrawFx player) {
-        ArrayList<GameControllerDrawFx> checklist = new ArrayList<>();
-
-        for (GameControllerDrawFx p : playerList) {
-            if ((p.getPosX() == player.getPosX()) && (p.getPosY() == player.getPosY())) {
-                checklist.add(p);
-            }
-        }
-
-        if (checklist.size() > 1) {
-            if (checklist.size() == 2) {
-                checklist.get(0).setAlignment(Pos.CENTER_LEFT);
-                checklist.get(1).setAlignment(Pos.CENTER_RIGHT);
-            }
-            if (checklist.size() == 3) {
-                checklist.get(0).setAlignment(Pos.CENTER_LEFT);
-                checklist.get(1).setAlignment(Pos.CENTER_RIGHT);
-                checklist.get(2).setAlignment(Pos.BOTTOM_CENTER);
-            }
-            if (checklist.size() == 4) {
-                checklist.get(0).setAlignment(Pos.CENTER_LEFT);
-                checklist.get(1).setAlignment(Pos.CENTER_RIGHT);
-                checklist.get(2).setAlignment(Pos.BOTTOM_LEFT);
-                checklist.get(3).setAlignment(Pos.BOTTOM_RIGHT);
-            }
         }
     }
 
