@@ -84,6 +84,7 @@ public class EntityManager {
 
     public boolean distributeMoneyFromBank(int amount) {
         for (Player p : players) {
+            p.setMoney(0);
             bank.transferMoney(p, amount);
         }
 
