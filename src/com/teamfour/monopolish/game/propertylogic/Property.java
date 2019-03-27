@@ -103,6 +103,10 @@ public class Property {
         return price;
     }
 
+    public int[] getRent() {
+        return rent;
+    }
+
     public String getCategorycolor(){
         return CATEGORYCOLOR;
     }
