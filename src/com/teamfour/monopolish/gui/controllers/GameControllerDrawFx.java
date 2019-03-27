@@ -4,13 +4,16 @@ import com.mysql.cj.result.Row;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
+import java.util.ArrayList;
 
 
 /**
@@ -301,5 +304,40 @@ public class GameControllerDrawFx extends StackPane {
     private static void setInfoTextStyling(Text element) {
         element.setStyle("-fx-font-size: 10px");
         element.setFill(Paint.valueOf("#787878"));
+    }
+
+    static void createPropertyCard(HBox box, String colorhex, String propertyname, ArrayList<Text> propertyprices) {
+        AnchorPane cardpane = new AnchorPane();
+        AnchorPane header = new AnchorPane();
+        Label propertynamelabel = new Label(propertyname);
+        TextFlow propertypriceflow = new TextFlow();
+
+        cardpane.getChildren().addAll(header, propertypriceflow);
+
+        cardpane.setPrefSize(190, 240);
+        header.setPrefSize(190, 50);
+
+        AnchorPane.setTopAnchor(header, 0.0);
+        AnchorPane.setLeftAnchor(header, 0.0);
+        AnchorPane.setRightAnchor(header, 0.0);
+        AnchorPane.setBottomAnchor(propertypriceflow, 50.0);
+
+        AnchorPane.setTopAnchor(propertypriceflow, 55.0);
+        AnchorPane.setLeftAnchor(propertypriceflow, 5.0);
+        AnchorPane.setRightAnchor(propertypriceflow, 5.0);
+        AnchorPane.setBottomAnchor(propertypriceflow, 5.0);
+
+        cardpane.setStyle("-fx-background-color: #ffffff;");
+        header.setStyle("-fx-background-color: "+ colorhex +";");
+        propertynamelabel.setStyle("-fx-font-size: 18px");
+        propertypriceflow.setStyle("-fx-font-size: 14px");
+
+        header.getChildren().add(propertynamelabel);
+        propertynamelabel.setLayoutX(49.0);
+        propertynamelabel.setLayoutY(12.0);
+
+        propertypriceflow.getChildren().addAll(propertyprices);
+
+        box.getChildren().add(cardpane);
     }
 }
