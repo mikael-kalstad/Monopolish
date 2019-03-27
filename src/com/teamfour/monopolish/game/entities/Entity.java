@@ -51,9 +51,6 @@ public abstract class Entity {
      */
     public int adjustMoney(int amount) {
         // If the amount is negative, check if the entity can afford the transaction
-        if (amount < 0 && Math.abs(amount) > money)
-            return -1;
-
         money += amount;
         return money;
     }
@@ -64,11 +61,12 @@ public abstract class Entity {
      * @param amount Amount to transfer
      */
     public boolean transferMoney(Entity entity, int amount) {
-        if (this.adjustMoney(-amount) < 0)
-            return false;
+        System.out.println(amount);
+        this.adjustMoney(-amount);
+        System.out.println(money);
+        entity.adjustMoney(amount);
 
-        if (entity.adjustMoney(amount) < 0)
-            return false;
+        System.out.println(entity.getMoney());
 
         return true;
     }

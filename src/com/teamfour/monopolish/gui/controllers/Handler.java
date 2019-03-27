@@ -12,6 +12,8 @@ import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+
 /**
  * This class will hold an instances of objects that will be used throughout the application. <br/>
  * By using this Handler, all classes can refer to the same object more easily.
@@ -24,6 +26,7 @@ public class Handler extends Application {
     private static PlayerDAO playerDAO = new PlayerDAO();
     private static LobbyDAO lobbyDAO = new LobbyDAO();
     private static GameDAO gameDAO = new GameDAO();
+    private static ArrayList<String[]> colorList = new ArrayList<>();
     private static int currentGameId;
 
     // Constants for GUI
@@ -106,6 +109,20 @@ public class Handler extends Application {
      */
     public static void resetAccount() { account = null; }
 
+
+    /**
+     * Set the arrayList containing color info for each player
+     * @param arr
+     */
+    public static void setColorList(ArrayList<String[]> arr) {
+//        System.out.println("arr in HANDLER " + arr.get(0)[0] + " color " + arr.get(0)[1]);
+        // Deep copy of the array
+        for (String[] player : arr) {
+            colorList.add(player.clone());
+        }
+    }
+
+    public static ArrayList<String[]> getColorList() { return colorList; }
 
     // Get DAO instances
     public static AccountDAO getAccountDAO() { return accountDAO; }

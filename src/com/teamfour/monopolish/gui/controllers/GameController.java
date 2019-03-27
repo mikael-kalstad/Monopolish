@@ -19,7 +19,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * Controller class for game view
+ * Controller class for game view. This class acts as a communication layer between the player and the GameLogic class.
+ * We also use this class a general layout of the main game loop. Here, we control when the user should be able
+ * to click certain buttons, what happens when you click them, and handles all graphical interfaces and updates
  *
  * @author Bård Hestmark
  * @version 1.6
@@ -66,10 +68,13 @@ public class GameController {
     private int CHAT_MAX_CHARACTERS = 40;
 
     // Properties dialog
-    @FXML private Pane propertiescontainer;
+    @FXML private Pane propertiesContainer;
     @FXML private FlowPane propertiesContentContainer;
     @FXML private Text propertiesUsername;
 
+    /**
+     * Launches when the scene is loaded.
+     */
     @FXML public void initialize() {
         // Load gamelogic and initialize the game setup
         try { gameLogic.setupGame(); }
@@ -205,7 +210,7 @@ public class GameController {
      * @param username Target user
      */
     public void showProperties(String username) {
-        propertiescontainer.setVisible(true);
+        propertiesContainer.setVisible(true);
         propertiesUsername.setText(username);
     }
 
@@ -213,7 +218,7 @@ public class GameController {
      * Hide the popup dialog showing the properties to a player
      */
     public void closePropertiesDialog() {
-        propertiescontainer.setVisible(false);
+        propertiesContainer.setVisible(false);
     }
 
     /**
@@ -302,9 +307,13 @@ public class GameController {
         String s = "Threw dice:  " + diceValues[0] + ",  " + diceValues[1];
         addToEventlog(s);
 
-        // Dr
+        // Update board view
         updateBoard();
+
+        // Check the tile you are currently on and call that event
         callTileEvent();
+
+        // Update board view again
         updateBoard();
 
         // If the player didn't throw two equal dices, disable the dice button. If not, the player can throw dice again
@@ -334,6 +343,7 @@ public class GameController {
      */
     private void callTileEvent() {
         // If on property, enable button to buy property
+        // Display property card in middle of board
 
         // If on non-available property, send prompt (OR SOMETHING) to owner of property
 
@@ -485,10 +495,14 @@ public class GameController {
      */
     private void updatePlayersInfo(){
         ArrayList<Player> players = Handler.getPlayerDAO().getPlayersInGame(Handler.getCurrentGameId());
-        String color = "orange";
+        String color;
 
         // Go through all the players, update info and render GUI
         for (Player player : players) {
+            // Find color associated with user
+            color = getPlayerColor(player.getUsername());
+            if (color == null) color = "red"; // Check if color has been assigned
+
             // Player is the actual user
             if (player.getUsername().equals(Handler.getAccount().getUsername())) {
                 username.setText(player.getUsername());
@@ -504,7 +518,7 @@ public class GameController {
                 // Render opponentRow in opponentsContainer and save the propertyIcon that is returned
                 Pane imgContainer = GameControllerDrawFx.createOpponentRow(
                         player.getUsername(),
-                        "red",
+                        color,
                         String.valueOf(player.getMoney()),
                         opponentsContainer
                 );
@@ -513,6 +527,23 @@ public class GameController {
                 setPropertyOnClick(imgContainer, player.getUsername());
             }
         }
+    }
+
+    /**
+     * Go through a color list (located in Handler) and find the color associated with a player.
+     * @param username Target user
+     * @return Color associated with user
+     */
+    private String getPlayerColor(String username) {
+        // Go through the arraylist located in Handler
+        for (String[] player : Handler.getColorList()) {
+            // Check if username is target username and return color associated with it if it is an match
+            if (player[0].equals(username)) {
+                System.out.println("COLOR SET: " + username + " " + player[1]);
+                return player[1];
+            }
+        }
+        return null;
     }
 
     public void buyPrompt() {

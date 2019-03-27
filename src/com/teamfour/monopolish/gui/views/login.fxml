@@ -8,7 +8,6 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -56,59 +55,25 @@
             </ImageView>
          </children>
       </Pane>
-      <Button fx:id="registerBtn" focusTraversable="false" layoutX="178.0" layoutY="858.0" mnemonicParsing="false" onAction="#register" prefHeight="77.0" prefWidth="375.0" style="-fx-background-color: #FF9800; -fx-background-radius: 0;" text="Sign up" textAlignment="CENTER" textFill="WHITE">
+      <Button fx:id="registerBtn" focusTraversable="false" layoutX="195.0" layoutY="780.0" mnemonicParsing="false" onAction="#register" prefHeight="77.0" prefWidth="375.0" style="-fx-background-color: #FF9800; -fx-background-radius: 0;" text="Sign up" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font size="28.0" />
          </font>
       </Button>
-      <Text layoutX="195.0" layoutY="201.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome Back!" wrappingWidth="612.998046875">
+      <Text layoutX="195.0" layoutY="252.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to monopoly" wrappingWidth="940.3314819335938">
          <font>
-            <Font name="System Bold" size="82.0" />
+            <Font name="System Bold" size="75.0" />
          </font>
       </Text>
-      <Text layoutX="178.0" layoutY="793.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Not registered?">
+      <Text layoutX="195.0" layoutY="748.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Not registered?">
          <font>
             <Font name="System Bold" size="32.0" />
          </font>
       </Text>
-      <Text layoutX="195.0" layoutY="348.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Play monopoly with your friends! Nothing can stop you from winning!" wrappingWidth="655.3333435058594">
+      <Text layoutX="195.0" layoutY="444.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Play monopoly with your friends! Nothing can stop you from winning!" wrappingWidth="655.3333435058594">
          <font>
             <Font size="30.0" />
          </font>
       </Text>
-      <ImageView fitHeight="276.0" fitWidth="219.0" layoutX="772.0" layoutY="620.0">
-         <image>
-            <Image url="@../../../../../../res/gui/man.png" />
-         </image>
-      </ImageView>
-      <Button focusTraversable="false" layoutX="1244.0" layoutY="931.0" mnemonicParsing="false" onAction="#bypassToDashboard" prefHeight="55.0" prefWidth="245.0" style="-fx-background-color: red; -fx-background-radius: 0;" text="Bypass (dashboard)" textAlignment="CENTER" textFill="WHITE">
-         <font>
-            <Font size="21.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="CLOSED_HAND" />
-         </cursor>
-      </Button>
-      <Button focusTraversable="false" layoutX="1496.0" layoutY="931.0" mnemonicParsing="false" onAction="#bypassToGame" prefHeight="55.0" prefWidth="245.0" style="-fx-background-color: green; -fx-background-radius: 0;" text="Bypass (game)" textAlignment="CENTER" textFill="WHITE">
-         <font>
-            <Font size="21.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="CLOSED_HAND" />
-         </cursor>
-      </Button>
-      <Text fill="#0093ff" layoutX="960.0" layoutY="867.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Backdoors ">
-         <font>
-            <Font size="53.0" />
-         </font>
-      </Text>
-      <Line endX="-5.0" endY="40.0" layoutX="1198.0" layoutY="888.0" startX="-100.0" stroke="#ff0ab4" />
-      <Line endX="-14.2928466796875" endY="30.7071533203125" layoutX="1208.0" layoutY="898.0" startX="-62.5" startY="30.7071533203125" stroke="#ff0ab4" />
-      <Line endX="-70.0" layoutX="1255.0" layoutY="897.0" startX="-62.5" startY="30.7071533203125" stroke="#ff0ab4" />
-      <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="1073.0" layoutY="509.0">
-         <image>
-            <Image url="@../../../../../../res/gui/lock.png" />
-         </image>
-      </ImageView>
    </children>
 </AnchorPane>
