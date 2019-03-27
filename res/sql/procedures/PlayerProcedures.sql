@@ -29,13 +29,16 @@ create procedure player_remove(
 begin
   declare u_id int;
 
+  -- Get username from user_id
   select user_id  into u_id from account where u_name = username;
 
+  -- Update this player's status, and release any property that they might own
   update player set active = 2 where user_id = u_id and game_id = g_id;
   update gameproperty set user_id = null where game_id = g_id and user_id = u_id;
 
+  -- If this is the last player to leave, close the game
   IF ((SELECT COUNT(*) FROM player p WHERE p.game_id=g_id AND active=1) < 1) THEN
-    UPDATE game SET game.endtime=NOW() WHERE game.game_id=g_id;
+    CALL game_close(g_id);
   end if;
   commit;
 end $$
