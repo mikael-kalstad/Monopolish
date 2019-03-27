@@ -347,8 +347,8 @@ public class GameControllerDrawFx extends StackPane {
         ArrayList<Text> rentlist = new ArrayList<>();
 
         rentlist.add(new Text("" +
-                "Leie:" +
-                "\nLeie med fargesett:" +
+                "Rent:" +
+                "\nRent with colorset:" +
                 "\nRent 1 house:" +
                 "\nRent 2 houses:" +
                 "\nRent 3 houses:" +
