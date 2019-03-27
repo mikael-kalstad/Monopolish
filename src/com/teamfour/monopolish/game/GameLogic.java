@@ -1,6 +1,5 @@
 package com.teamfour.monopolish.game;
 
-import com.teamfour.monopolish.database.ConnectionPool;
 import com.teamfour.monopolish.game.board.Board;
 import com.teamfour.monopolish.game.entities.EntityManager;
 import com.teamfour.monopolish.game.entities.player.Player;

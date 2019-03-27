@@ -19,7 +19,6 @@ public class Player extends Entity {
     private boolean inJail = false;
     private boolean bankrupt = false;
     private int active = 0;
-    private int money = 0;
 
     /**
      * Constructor

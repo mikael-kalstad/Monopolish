@@ -14,18 +14,16 @@ public class EntityTest {
     @BeforeAll
     public static void setInstance() {
         instance = new Bank(1);
-        instance.adjustMoney(2000);
     }
 
     @Test
     public void testTransferMoney() {
         Bank otherBank = new Bank(1);
-        otherBank.adjustMoney(2000);
 
         otherBank.transferMoney(instance, 500);
 
-        assertEquals(2500, instance.getMoney());
-        assertEquals(1500, otherBank.getMoney());
+        assertEquals(500500, instance.getMoney());
+        assertEquals(499500, otherBank.getMoney());
     }
 
     @Test

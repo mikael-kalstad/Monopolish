@@ -85,6 +85,7 @@ public class EntityManager {
     public boolean distributeMoneyFromBank(int amount) {
         for (Player p : players) {
             bank.transferMoney(p, amount);
+            System.out.println(p.getMoney());
         }
 
         return true;
