@@ -2,6 +2,7 @@ package com.teamfour.monopolish.gui.controllers;
 
 import com.teamfour.monopolish.game.GameLogic;
 import com.teamfour.monopolish.game.board.Board;
+import com.teamfour.monopolish.game.entities.EntityManager;
 import com.teamfour.monopolish.game.entities.player.Player;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.application.Platform;
@@ -43,8 +44,6 @@ public class GameController {
     @FXML private AnchorPane phillip;
     @FXML private Button buypropertyBtn;
     @FXML private Label propertyOwned;
-    @FXML private VBox playerInfo;
-    @FXML private TextFlow propertycard;
     @FXML private GridPane gamegrid;
     @FXML private ListView eventlog;
 
@@ -373,10 +372,12 @@ public class GameController {
      * Updates all the scene's graphics to reflect the changes in the database
      */
     public void updateBoard() {
+        String[] turns = gameLogic.getTurns();
+        String[] colors = new String[turns.length];
+        int[] positions = {0, 0, 0, 0};
+
         try {
-            int[] positions = gameLogic.getPlayerPositions();
-            String[] turns = gameLogic.getTurns();
-            String[] colors = new String[turns.length];
+            positions = gameLogic.getPlayerPositions();
 
             for (int i = 0; i < turns.length; i++) {
                 colors[i] = getPlayerColor(turns[i]);
@@ -389,6 +390,7 @@ public class GameController {
         roundValue.setText(String.valueOf(gameLogic.getRoundNumber() + 1));
         userMoney.setText(String.valueOf(gameLogic.getPlayer(yourUsername).getMoney()));
         statusValue.setText("Waiting for " + gameLogic.getCurrentPlayer() + " to finish their turn");
+        addToEventlog(turns[0] + " moved to " + gameLogic.getEntityManager().getPropertyAtPosition(positions[0]));
         updatePlayersInfo();
     }
 
@@ -415,14 +417,6 @@ public class GameController {
             rolldiceBtn.setDisable(false);
             buypropertyBtn.setDisable(false);
         }
-    }
-
-    public void buy() {
-        addToEventlog("Æsj");
-    }
-
-    public void claimrent() {
-
     }
 
     private void addToEventlog(String msg) {
@@ -496,7 +490,6 @@ public class GameController {
         for (String[] player : Handler.getColorList()) {
             // Check if username is target username and return color associated with it if it is an match
             if (player[0].equals(username)) {
-                System.out.println("COLOR SET: " + username + " " + player[1]);
                 return player[1];
             }
         }
