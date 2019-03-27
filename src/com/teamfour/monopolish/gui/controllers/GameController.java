@@ -316,8 +316,9 @@ public class GameController {
      */
     public void endTurn() {
         try {
-            // Disable this button
+            // Disable buttons
             endturnBtn.setDisable(true);
+            buypropertyBtn.setDisable(true);
             // Finish turn in gamelogic and wait for your next turn
             gameLogic.finishYourTurn();
             updateBoard();
@@ -412,6 +413,7 @@ public class GameController {
         if (yourTurn) {
             databaseTimer.cancel();
             rolldiceBtn.setDisable(false);
+            buypropertyBtn.setDisable(false);
         }
     }
 
@@ -501,18 +503,13 @@ public class GameController {
         return null;
     }
 
-    public void buyPrompt() {
-        Alert buyprompt = new Alert(Alert.AlertType.CONFIRMATION, "This property is available,\n do you want to buy it?",
-                ButtonType.NO, ButtonType.YES);
-    }
-
     public void buyProperty() {
-        Alert buyprompt = new Alert(Alert.AlertType.CONFIRMATION, "Please confirm purchase!",
-                ButtonType.OK, ButtonType.CANCEL);
+        Alert buyprompt = new Alert(Alert.AlertType.CONFIRMATION, "Do you wish to purchase this property?",
+                ButtonType.YES, ButtonType.NO);
         buyprompt.showAndWait();
 
-        if (buyprompt.getResult() == ButtonType.OK) {
-            //TODO: do transaction, transfer property to player
+        if (buyprompt.getResult() == ButtonType.YES) {
+            // Perform the transaction of property through gamelogic
             try {
                 gameLogic.propertyTransaction();
                 Alert confirmation = new Alert(Alert.AlertType.INFORMATION, "Purchase successful!", ButtonType.OK);
@@ -521,12 +518,16 @@ public class GameController {
                 e.printStackTrace();
             }
             buyprompt.close();
+
+            // Update board
+            updateBoard();
+
+            // Update property information label
             buypropertyBtn.setVisible(false);
             propertyOwned.setVisible(true);
             propertyOwned.setText("Owned by " + yourUsername);
         }
-
-        if (buyprompt.getResult() == ButtonType.CANCEL) {
+        if (buyprompt.getResult() == ButtonType.NO) {
             buyprompt.close();
         }
     }
