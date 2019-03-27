@@ -53,7 +53,7 @@ public class GameController {
     @FXML ImageView dice1_img, dice2_img;
 
     // Elements in sidebar
-    @FXML private Button rolldiceBtn, buyBtn, claimrentBtn;
+    @FXML private Button rolldiceBtn, endturnBtn;
     @FXML private Label roundValue, statusValue;
     @FXML private Label username, userMoney;
     @FXML private Pane userColor, userPropertiesIcon;
@@ -64,11 +64,13 @@ public class GameController {
     @FXML private Pane chatMessagesContainer;
     @FXML private ScrollPane chatMessageScrollPane;
     @FXML private TextField chatInput;
+    private String current_chat_msg;
     private boolean chatOpen = false;
 
     // Properties dialog
     @FXML private Pane propertiescontainer;
     @FXML private FlowPane propertiesContentContainer;
+    @FXML private Text propertiesUsername;
 
     @FXML public void initialize() {
         // Load gamelogic and initialize the game setup
@@ -179,11 +181,19 @@ public class GameController {
         // Some voting gui and logic here...
     }
 
+    /**
+     * Show a popup dialog with all the properties belonging to a player
+     *
+     * @param username Target user
+     */
     public void showProperties(String username) {
         propertiescontainer.setVisible(true);
-        System.out.println("show properties to " + username);
+        propertiesUsername.setText(username);
     }
 
+    /**
+     * Hide the popup dialog showing the properties to a player
+     */
     public void closePropertiesDialog() {
         propertiescontainer.setVisible(false);
     }
@@ -213,14 +223,19 @@ public class GameController {
             chatInput.setStyle("-fx-border-color: white;");
             Handler.getGameDAO().addChatMessage(Handler.getAccount().getUsername(), chatInput.getText().trim());
 
-//            GameControllerDrawFx.createChatRow(
-//                    chatMessagesContainer,
-//                    Handler.getAccount().getUsername(),
-//                    chatInput.getText().trim(),
-//                    "tid"
-//            );
+            // Reset text
+            chatInput.setText("");
+            current_chat_msg = "";
+        }
+    }
 
-            chatInput.setText(""); // Reset text
+    public void checkChatInput() {
+        if (chatInput.getText().length() >= 20) {
+            System.out.println("INPUT NOT OKAY!");
+            chatInput.setText(current_chat_msg);
+        } else {
+            System.out.println("INPUT OKAY!");
+            current_chat_msg = chatInput.getText();
         }
     }
 
