@@ -163,6 +163,7 @@ public class DashboardController {
      * Change view to login
      */
     public void logout() {
+        Handler.getAccountDAO().setInactive(Handler.getAccount().getUsername());    // Sets user to inactive in DB
         Handler.getSceneManager().setScene(ViewConstants.LOGIN.getValue());
         Handler.resetAccount(); // Make sure account is reset when login out
     }

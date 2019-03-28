@@ -174,6 +174,7 @@ public class GameController {
             if (alertDialog.getResult().getButtonData().isDefaultButton()) {
                 // Remove player from lobby
                 final String USERNAME = Handler.getAccount().getUsername();
+                Handler.getAccountDAO().setInactive(USERNAME);
                 Handler.getLobbyDAO().removePlayer(USERNAME, Handler.getLobbyDAO().getLobbyId(USERNAME));
                 gameLogic.getEntityManager().removePlayer(USERNAME);
                 databaseTimer.cancel(); // Stop databaseTimer thread

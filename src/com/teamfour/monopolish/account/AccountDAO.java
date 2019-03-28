@@ -120,7 +120,7 @@ public class AccountDAO extends DataAccessObject {
         return account;
     }
 
-    public void setInactive(String username) throws SQLException {
+    public void setInactive(String username) /*throws SQLException */{
 
         try {
             getConnection();
@@ -133,7 +133,7 @@ public class AccountDAO extends DataAccessObject {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new SQLException();
+            //throw new SQLException();
         } finally {
             releaseConnection();
         }
