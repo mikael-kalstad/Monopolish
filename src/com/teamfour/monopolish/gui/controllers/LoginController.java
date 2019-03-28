@@ -131,11 +131,10 @@ public class LoginController {
                 ConnectionPool.create();
                 res = Handler.getAccountDAO().getAccountByCredentials(usernameInput.getText(), passwordInput.getText());
 
-                System.out.println("res from db: " + res);
-
                 // Username/email and password is correct
                 if (res != null) {
                     Handler.setAccount(res); // Set local account object
+                    Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
                     canLogin = true;
                     dbError = false;
                 }
@@ -150,18 +149,8 @@ public class LoginController {
         checkInput(passwordInput, msg, !canLogin, dbError);
     }
 
+    // Go to register view
     public void register() {
-        // Go to register view
         Handler.getSceneManager().setScene(ViewConstants.REGISTER.getValue());
-    }
-
-    // ---- REMOVE BEFORE PRODUCTION! -------
-    public void bypassToDashboard() {
-        Handler.setAccount(new Account("Mikael", "mikael@hotmail.com", LocalDate.now(), 7634, false));
-        Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
-    }
-
-    public void bypassToGame() {
-        Handler.getSceneManager().setScene(ViewConstants.GAME.getValue());
     }
 }
