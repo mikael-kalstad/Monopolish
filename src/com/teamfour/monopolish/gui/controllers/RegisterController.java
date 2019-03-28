@@ -193,7 +193,7 @@ public class RegisterController {
         // Check requirements (details in javadoc above method)
         if (!inputsEmpty() && passwordRequirements && passwordMatch && !usernameRequirement) {
             int res = -1; // Response from database
-            Account user = new Account(usernameInput.getText().trim(), emailInput.getText().trim(), LocalDate.now(), 0);
+            Account user = new Account(usernameInput.getText().trim(), emailInput.getText().trim(), LocalDate.now(), 0, false);
 
             try {
                 ConnectionPool.create();

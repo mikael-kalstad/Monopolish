@@ -28,7 +28,7 @@ public class AccountDAOTest {
 
     @Test
     public void testInsertAccount() {
-        Account user = new Account("eirikhem", "eirik@eirik.eirik", LocalDate.now(), 0);
+        Account user = new Account("eirikhem", "eirik@eirik.eirik", LocalDate.now(), 0, false);
         String password = "Hahahaha";
         try {
             int result = instance.insertAccount(user, password);

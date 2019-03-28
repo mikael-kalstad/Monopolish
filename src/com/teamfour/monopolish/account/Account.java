@@ -14,12 +14,14 @@ public class Account {
     private String email;
     private LocalDate regDate;
     private int highscore;
+    private boolean active;
 
-    public Account(String username, String email, LocalDate regDate, int highscore) {
+    public Account(String username, String email, LocalDate regDate, int highscore, boolean active) {
         this.username = username;
         this.email = email;
         this.regDate = regDate;
         this.highscore = highscore;
+        this.active = active;
     }
 
     public String getUsername() {

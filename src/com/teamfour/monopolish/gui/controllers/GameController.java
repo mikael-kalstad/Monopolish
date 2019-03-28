@@ -382,7 +382,7 @@ public class GameController {
     public void updateBoard() {
         String[] turns = gameLogic.getTurns();
         String[] colors = new String[turns.length];
-        int[] positions = {0, 0, 0, 0};
+        int[] positions = null;
 
         try {
             positions = gameLogic.getPlayerPositions();
@@ -395,10 +395,14 @@ public class GameController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         roundValue.setText(String.valueOf(gameLogic.getRoundNumber() + 1));
         userMoney.setText(String.valueOf(gameLogic.getPlayer(yourUsername).getMoney()));
         statusValue.setText("Waiting for " + gameLogic.getCurrentPlayer() + " to finish their turn");
-        addToEventlog(turns[0] + " moved to " + gameLogic.getEntityManager().getPropertyAtPosition(positions[0]));
+
+        if (positions != null)
+            addToEventlog(gameLogic.getCurrentPlayer() + " moved to " + gameLogic.getEntityManager().getPropertyAtPosition(positions[gameLogic.getTurnNumber()]).getName());
+
         updatePlayersInfo();
     }
 

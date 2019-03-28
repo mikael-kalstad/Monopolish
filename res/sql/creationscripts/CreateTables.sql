@@ -34,7 +34,8 @@ CREATE TABLE account
   email VARCHAR(50) NOT NULL UNIQUE,
   hashed_password VARCHAR(64) NOT NULL,
   salt BINARY(32) NOT NULL,
-  regdate DATETIME NOT NULL
+  regdate DATETIME NOT NULL,
+  active BIT NOT NULL DEFAULT 0
 );
 
 -- lobbynavn

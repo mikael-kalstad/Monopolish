@@ -16,7 +16,7 @@ public class AccountTest {
     @BeforeAll
     public void setInstance() {
         LocalDate date = LocalDate.of(2019, Month.DECEMBER, 24);
-        instance = new Account("johhnyBoi23", "johhny@gmail.com", date, 10500);
+        instance = new Account("johhnyBoi23", "johhny@gmail.com", date, 10500, false);
     }
 
     @AfterAll
