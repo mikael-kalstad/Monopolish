@@ -561,7 +561,11 @@ public class GameController {
             messageBox.showAndWait();
             gameLogic.getPlayer(yourUsername).setFreeParking(false);
         } else {
-            rentTransaction();
+            try {
+                gameLogic.rentTransaction();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             messageBox = new Alert(Alert.AlertType.INFORMATION,
                                 "You have paid rent!", ButtonType.OK);
             messageBox.showAndWait();
