@@ -61,4 +61,14 @@ public class Board {
 
         return -1;
     }
+
+    public int getFreeParkingPosition() {
+        for (int i = 0; i < tiles.length; i++) {
+            if (tiles[i] == FREE_PARKING) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
 }

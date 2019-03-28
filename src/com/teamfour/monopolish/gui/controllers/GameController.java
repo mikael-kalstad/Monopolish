@@ -2,7 +2,6 @@ package com.teamfour.monopolish.gui.controllers;
 
 import com.teamfour.monopolish.game.GameLogic;
 import com.teamfour.monopolish.game.board.Board;
-import com.teamfour.monopolish.game.entities.EntityManager;
 import com.teamfour.monopolish.game.entities.player.Player;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.application.Platform;
@@ -12,7 +11,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -31,6 +29,7 @@ import java.util.TimerTask;
 public class GameController {
     // Timer for checking database updates
     private Timer databaseTimer = new Timer();
+    private Timer chatTimer = new Timer();
 
     // GameLogic for handling more intricate game operations
     private GameLogic gameLogic = new GameLogic(Handler.getCurrentGameId());
@@ -109,7 +108,7 @@ public class GameController {
             }
         };
 
-        Timer chatTimer = new Timer();
+        chatTimer = new Timer();
         long delay = 1000L; // Delay before update refreshTimer starts
         long period = 1000L; // Delay between each update/refresh
         chatTimer.scheduleAtFixedRate(task, delay, period);
@@ -152,6 +151,7 @@ public class GameController {
                 Handler.getLobbyDAO().removePlayer(USERNAME, Handler.getLobbyDAO().getLobbyId(USERNAME));
                 gameLogic.getEntityManager().removePlayer(USERNAME);
                 databaseTimer.cancel(); // Stop databaseTimer thread
+                chatTimer.cancel();
 
                 // Close the window
                 Handler.getSceneManager().getWindow().close();
@@ -173,17 +173,16 @@ public class GameController {
 
         if (alertDialog.getResult().getButtonData().isDefaultButton()) {
             databaseTimer.cancel(); // Stop timer thread
-
-            if (alertDialog.getResult().getButtonData().isDefaultButton()) {
-                // Remove player from lobby
-                final String USERNAME = Handler.getAccount().getUsername();
-                int lobbyId = Handler.getLobbyDAO().getLobbyId(USERNAME);
-                System.out.println("lobby id when leaving... " + lobbyId);
-                Handler.getLobbyDAO().removePlayer(USERNAME, Handler.getLobbyDAO().getLobbyId(USERNAME));
-                gameLogic.getEntityManager().removePlayer(USERNAME);
-                // Change view to dashboard
-                Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
-            }
+            chatTimer.cancel();
+            // Remove player from lobby
+            final String USERNAME = Handler.getAccount().getUsername();
+            int lobbyId = Handler.getLobbyDAO().getLobbyId(USERNAME);
+            System.out.println("lobby id when leaving... " + lobbyId);
+            Handler.getLobbyDAO().removePlayer(USERNAME, Handler.getLobbyDAO().getLobbyId(USERNAME));
+            gameLogic.getEntityManager().removePlayer(USERNAME);
+            // Change view to dashboard
+            Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
+            databaseTimer.cancel(); // Stop timer thread
         }
     }
 
@@ -351,6 +350,10 @@ public class GameController {
                 buypropertyBtn.setVisible(false);
                 propertyOwned.setVisible(true);
                 propertyOwned.setText("Owned by " + propertyOwner);
+
+                // If this is not your property, prepare to get rented! Or something
+                if (!propertyOwner.equals(yourUsername))
+                    rentTransaction();
             }
         } else {
             // If no property here, make sure to clear the property
@@ -358,8 +361,13 @@ public class GameController {
             buypropertyBtn.setVisible(false);
         }
 
+        // If on free parking, get a free-parking token
+        if (gameLogic.getPlayer(yourUsername).getPosition() == gameLogic.getBoard().getFreeParkingPosition()) {
+            gameLogic.getPlayer(yourUsername).setFreeParking(true);
+        }
+
         // If go-to jail, go to jail!
-        if (gameLogic.getPlayer(yourUsername).getPosition() == gameLogic.getGoToJailPosition()) {
+        if (gameLogic.getPlayer(yourUsername).getPosition() == gameLogic.getBoard().getGoToJailPosition()) {
             try {
                 gameLogic.setPlayerInJail(yourUsername, true);
             } catch (SQLException e) {
@@ -496,6 +504,20 @@ public class GameController {
         return null;
     }
 
+    public void rentTransaction() {
+        Alert messageBox;
+        // TODO: Everything
+        if (gameLogic.getPlayer(yourUsername).hasFreeParking()) {
+            messageBox = new Alert(Alert.AlertType.INFORMATION,
+                    "You have a 'Free Parking' token! You don't have to pay rent here", ButtonType.OK);
+            messageBox.showAndWait();
+            gameLogic.getPlayer(yourUsername).setFreeParking(false);
+        }
+    }
+
+    /**
+     * Lets the player choose to purchase a property
+     */
     public void buyProperty() {
         Alert buyprompt = new Alert(Alert.AlertType.CONFIRMATION, "Do you wish to purchase this property?",
                 ButtonType.YES, ButtonType.NO);
@@ -504,9 +526,14 @@ public class GameController {
         if (buyprompt.getResult() == ButtonType.YES) {
             // Perform the transaction of property through gamelogic
             try {
-                gameLogic.propertyTransaction();
-                Alert confirmation = new Alert(Alert.AlertType.INFORMATION, "Purchase successful!", ButtonType.OK);
-                confirmation.showAndWait();
+                Alert messageBox;
+                if (gameLogic.propertyTransaction())
+                {
+                    messageBox = new Alert(Alert.AlertType.INFORMATION, "Purchase successful!", ButtonType.OK);
+                } else {
+                    messageBox = new Alert(Alert.AlertType.INFORMATION, "You do not have enough funds to purchase this property.");
+                }
+                messageBox.showAndWait();
             } catch (SQLException e) {
                 e.printStackTrace();
             }

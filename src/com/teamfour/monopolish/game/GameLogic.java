@@ -1,7 +1,6 @@
 package com.teamfour.monopolish.game;
 
 import com.teamfour.monopolish.game.board.Board;
-import com.teamfour.monopolish.game.entities.Entity;
 import com.teamfour.monopolish.game.entities.EntityManager;
 import com.teamfour.monopolish.game.entities.player.Player;
 import com.teamfour.monopolish.game.propertylogic.Property;
@@ -174,6 +173,17 @@ public class GameLogic {
     }
 
     /**
+     * Finishes the game and calculates all player scores
+     */
+    public String finishGame() {
+        for (Player p : entityManager.getPlayers()) {
+            p.calculateScore();
+        }
+
+        return "";
+    }
+
+    /**
      * Indicates a new turn in the game. Retrieves all updates from the database and
      * increments the turn number
      * @param yourTurn
@@ -224,6 +234,14 @@ public class GameLogic {
 
     public EntityManager getEntityManager() { return entityManager; }
 
+    public Player getPlayer(String username) {
+        return entityManager.getPlayer(username);
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
     /**
      * Check if a turn has finished in another client. Returns an integer based on following situations:
      * 1 - It's a new turn, and it's your turn
@@ -254,21 +272,5 @@ public class GameLogic {
         }
 
         return positions;
-    }
-
-    public int getJailPosition() {
-        return board.getJailPosition();
-    }
-
-    public int getGoToJailPosition() {
-        return board.getGoToJailPosition();
-    }
-
-    public Player getPlayer(String username) {
-        return entityManager.getPlayer(username);
-    }
-
-    public Board getBoard() {
-        return board;
     }
 }

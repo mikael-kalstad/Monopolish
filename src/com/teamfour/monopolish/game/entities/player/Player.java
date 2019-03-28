@@ -13,12 +13,16 @@ import java.sql.SQLException;
  */
 
 public class Player extends Entity {
-    // Attributes
+    // Attributes (all these will be synced to database)
     private final String USERNAME;
     private int position = 0;
     private boolean inJail = false;
     private boolean bankrupt = false;
     private int active = 0;
+    private int score = 0;
+
+    // Client-side only attributes
+    private boolean freeParking = false;
 
     /**
      * Constructor
@@ -51,16 +55,23 @@ public class Player extends Entity {
     }
 
     /**
+     * Calculates this player's score based on their money and property values
+     */
+    public int calculateScore() {
+        score = money;
+
+        for (int i = 0; i < properties.size(); i++) {
+            score += properties.get(i).getPrice() / 2;
+        }
+
+        return score;
+    }
+
+    /**
      * Moves a specified amount
      * @param steps
      */
     public void move(int steps) {
-        /*
-        if(position + steps > (Board.BOARD_LENGTH - 1)){
-            position = position + steps - (Board.BOARD_LENGTH - 1);
-        }
-        position += steps;
-        */
         while (true) {
             position++;
             steps--;
@@ -129,4 +140,8 @@ public class Player extends Entity {
     public int getMoney() {
         return money;
     }
+
+    public boolean hasFreeParking() { return freeParking; }
+
+    public void setFreeParking(boolean freeParking) { this.freeParking = freeParking; }
 }
