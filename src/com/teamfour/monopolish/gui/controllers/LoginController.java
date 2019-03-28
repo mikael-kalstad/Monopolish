@@ -148,11 +148,6 @@ public class LoginController {
         // Check inputs
         checkInput(usernameInput, msg, !canLogin, dbError);
         checkInput(passwordInput, msg, !canLogin, dbError);
-
-        // If response from database is okay, go to dashboard view
-        if (canLogin) {
-            Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
-        }
     }
 
     public void register() {

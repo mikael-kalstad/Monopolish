@@ -3,14 +3,21 @@ package com.teamfour.monopolish.gui.controllers;
 import com.teamfour.monopolish.game.GameLogic;
 import com.teamfour.monopolish.game.board.Board;
 import com.teamfour.monopolish.game.entities.player.Player;
+import com.teamfour.monopolish.game.propertylogic.Property;
 import com.teamfour.monopolish.gui.views.ViewConstants;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -62,6 +69,9 @@ public class GameController {
     @FXML private ScrollPane chatMessageScrollPane;
     @FXML private TextField chatInput;
     @FXML private Pane chatWarning;
+    @FXML private Circle unreadContainer;
+    @FXML private Text unreadValue;
+    private int current_msg_count = 0;
     private boolean chatOpen = false;
     private int CHAT_MAX_CHARACTERS = 40;
 
@@ -84,6 +94,7 @@ public class GameController {
         waitForTurn();
 
         // Update chat messages periodically
+        chatContainer.setTranslateY(-275);
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
@@ -103,6 +114,21 @@ public class GameController {
 
                         // Scroll to bottom
                         chatMessageScrollPane.setVvalue(1);
+                    }
+
+                    System.out.println("chat msgs : " + chatMessagesContainer.getChildren().size());
+                    if (!chatOpen && current_msg_count < chatMessagesContainer.getChildren().size()) {
+                        unreadValue.setVisible(true);
+                        unreadContainer.setVisible(true);
+                        String unreadMsgCount = "9+";
+                        if (chatMessagesContainer.getChildren().size() - current_msg_count < 10) {
+                            unreadMsgCount = String.valueOf(chatMessagesContainer.getChildren().size() - current_msg_count);
+                        }
+                        unreadValue.setText(unreadMsgCount);
+                    }
+                    else {
+                        unreadValue.setVisible(false);
+                        unreadContainer.setVisible(false);
                     }
                 });
             }
@@ -196,8 +222,20 @@ public class GameController {
      * @param username Target user
      */
     public void showProperties(String username) {
+        // Clear all properties that already may exists inside the dialog
+        propertiesContentContainer.getChildren().clear();
+
+        // Show properties dialog and set username
         propertiesContainer.setVisible(true);
         propertiesUsername.setText(username);
+
+        System.out.println("User has " + gameLogic.getPlayer(username).getProperties().size() + " properties");
+
+        // Add all properties that the user owns to the dialog
+        for (Property p : gameLogic.getPlayer(username).getProperties()) {
+            Pane card = GameControllerDrawFx.createPropertyCard(p);
+            propertiesContentContainer.getChildren().add(card);
+        }
     }
 
     /**
@@ -212,15 +250,23 @@ public class GameController {
      * depending if the chat is open or closed.
      */
     public void toggleChat() {
-        // Open chat
+        // Slider animation
+        TranslateTransition tt = new TranslateTransition(Duration.millis(400), chatContainer);
+
+        // Close chat
         if (chatOpen) {
-            chatContainer.setTranslateY(0); // Set to default position
+            // Set to default position
+            tt.setByY(-275);
+            tt.play();
             chatOpen = false;
+            current_msg_count = chatMessagesContainer.getChildren().size();
         }
 
         // Open chat
         else {
-            chatContainer.setTranslateY(275); // Move up
+            // Move up
+            tt.setByY(275);
+            tt.play();
             chatOpen = true;
         }
     }
@@ -279,21 +325,19 @@ public class GameController {
     public void rollDice() {
         // Get values for two dices
         int[] diceValues = null;
-        try {
-            diceValues = gameLogic.throwDice();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        try { diceValues = gameLogic.throwDice(); }
+        catch (SQLException e) { e.printStackTrace(); }
 
-        // Check if diceValues array is initialized or length is less than two
-        if (diceValues == null || diceValues.length < 2) return;
+        // Check if diceValues array is initialized or number of dices is not correct
+        if (diceValues == null || diceValues.length != 2) return;
+
         // Update dice images and log on board
         dice1_img.setImage(new Image(("file:res/gui/dices/dice" + diceValues[0] + ".png")));
         dice2_img.setImage(new Image(("file:res/gui/dices/dice" + diceValues[1] + ".png")));
         String s = "Threw dice:  " + diceValues[0] + ",  " + diceValues[1];
         addToEventlog(s);
 
-        // Update board view
+        // Update board view to show where player moved
         updateBoard();
 
         // Check the tile you are currently on and call that event
@@ -336,8 +380,8 @@ public class GameController {
         // PROPERTY TILE HANDLING
         if(gameLogic.getBoard().getTileType(yourPosition) == Board.PROPERTY) {
             // Draw property card with
-            GameControllerDrawFx.createPropertyCard(phillip,
-                    gameLogic.getEntityManager().getPropertyAtPosition(gameLogic.getPlayer(yourUsername).getPosition()));
+            Pane card = GameControllerDrawFx.createPropertyCard(gameLogic.getEntityManager().getPropertyAtPosition(gameLogic.getPlayer(yourUsername).getPosition()));
+            phillip.getChildren().add(card);
 
             // Get owner of property and set the button or label accordingly
             String propertyOwner = gameLogic.getEntityManager().getOwnerAtProperty(yourPosition);
@@ -390,7 +434,6 @@ public class GameController {
             for (int i = 0; i < turns.length; i++) {
                 colors[i] = getPlayerColor(turns[i]);
             }
-
             GameControllerDrawFx.createPlayerPieces(gamegrid, positions, colors);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -401,7 +444,7 @@ public class GameController {
         statusValue.setText("Waiting for " + gameLogic.getCurrentPlayer() + " to finish their turn");
 
         if (positions != null)
-            addToEventlog(gameLogic.getCurrentPlayer() + " moved to " + gameLogic.getEntityManager().getPropertyAtPosition(positions[gameLogic.getTurnNumber()]).getName());
+            //addToEventlog(gameLogic.getCurrentPlayer() + " moved to " + gameLogic.getEntityManager().getPropertyAtPosition(positions[gameLogic.getTurnNumber()]).getName());
 
         updatePlayersInfo();
     }

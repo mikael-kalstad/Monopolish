@@ -2,6 +2,7 @@ package com.teamfour.monopolish.gui.controllers;
 
 import com.mysql.cj.result.Row;
 import com.teamfour.monopolish.game.propertylogic.Property;
+import javafx.animation.TranslateTransition;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
@@ -14,7 +15,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
+import javafx.util.Duration;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -46,7 +49,7 @@ public class GameControllerDrawFx {
             Circle piece = new Circle(12);
             piece.setFill(Paint.valueOf(colors[i]));
             piece.setStroke(Paint.valueOf(colors[i]));
-            piece.setStyle("-fx-margin: 10px");
+            piece.setStyle("-fx-margin: 10px; -fx-padding: 10px");
 
             // Convert position to XY position
             int[] posXY = posToXY(positions[i]);
@@ -220,7 +223,7 @@ public class GameControllerDrawFx {
         // Set username
         Text user = new Text();
         user.setText(username);
-        user.setStyle("-fx-font-size: 18px;");
+        user.setStyle("-fx-font-size: 20px;");
         user.setFill(Paint.valueOf("#545454"));
         container.add(user, 2,0);
 
@@ -286,6 +289,7 @@ public class GameControllerDrawFx {
         // Adding content to info section
         Text usernameValue = new Text(username);
         Text timeValue = new Text(time);
+        timeValue.setTextAlignment(TextAlignment.RIGHT);
 
         // Set text styling
         setInfoTextStyling(usernameValue);
@@ -300,9 +304,8 @@ public class GameControllerDrawFx {
 
         // Adding content to message section
         Text msg = new Text(message);
-        msg.setStyle(
-                "-fx-font-size: 12px;"
-        );
+        msg.setStyle("-fx-font-size: 12px;");
+        msg.setWrappingWidth(220);
         msg.setFill(Paint.valueOf("#1a1a1a"));
         container.add(msg, 0, 1);
 
@@ -337,10 +340,9 @@ public class GameControllerDrawFx {
 
     /**
      * A method to generate a javafx property card
-     * @param propertycardcontainer The box the card will be placed in, has to be 240x190
      * @param property A property object
      */
-    static void createPropertyCard(Pane propertycardcontainer, Property property) {
+    static Pane createPropertyCard(Property property) {
         Pane card = new AnchorPane();
         Pane header = new AnchorPane();
         Label propertynamelabel = new Label(property.getName());
@@ -393,6 +395,6 @@ public class GameControllerDrawFx {
         for (int i : property.getRent()){ pricesTextList.add(new Text(i+"\n")); }
         prices.getChildren().addAll(pricesTextList);
 
-        propertycardcontainer.getChildren().add(card);
+        return card;
     }
 }

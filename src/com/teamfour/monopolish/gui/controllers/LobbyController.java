@@ -425,7 +425,7 @@ public class LobbyController {
             // Check if game is started
             if (numOfPlayers > 1 && numOfReady == numOfPlayers) {
                 joinBtn.setDisable(true);
-                statusValue.setText(STATUS_STARTING);
+                statusValue.setText(STATUS_STARTED);
                 LobbyDrawFx.setTextColor(statusValue, PLAYER_COLOR_RED);
             }
 

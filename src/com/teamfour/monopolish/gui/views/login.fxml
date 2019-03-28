@@ -53,6 +53,11 @@
                   <Image url="file:res/gui/lock.png" />
                </image>
             </ImageView>
+            <ImageView fx:id="loadingAnimation" fitHeight="20.0" fitWidth="86.0" layoutX="214.0" layoutY="576.0" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="file:res/gui/loading2.gif" />
+               </image>
+            </ImageView>
          </children>
       </Pane>
       <Button fx:id="registerBtn" focusTraversable="false" layoutX="195.0" layoutY="780.0" mnemonicParsing="false" onAction="#register" prefHeight="77.0" prefWidth="375.0" style="-fx-background-color: #FF9800; -fx-background-radius: 0;" text="Sign up" textAlignment="CENTER" textFill="WHITE">
