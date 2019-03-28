@@ -16,7 +16,8 @@ public class PlayerDAO extends DataAccessObject {
 
     /**
      * creates players in the database and Player objects.
-     *@param game_id the id of the current game
+     *
+     * @param game_id   the id of the current game
      * @param usernames the usernames of the players that's created
      */
 
@@ -37,7 +38,7 @@ public class PlayerDAO extends DataAccessObject {
         } finally {
             releaseConnection();
         }
-        return(null);
+        return (null);
     }
 
     /**
@@ -88,7 +89,8 @@ public class PlayerDAO extends DataAccessObject {
 
     /**
      * updates a players, position or money.
-     * @param player the Player object that gets updated
+     *
+     * @param player  the Player object that gets updated
      * @param game_id the id of the current game
      */
     public boolean updatePlayer(Player player, int game_id) throws SQLException {
@@ -119,6 +121,7 @@ public class PlayerDAO extends DataAccessObject {
 
     /**
      * create Player objects for all players with the given game_id
+     *
      * @param gameId the id of the current game
      */
     public ArrayList<Player> getPlayersInGame(int gameId) {
@@ -153,6 +156,7 @@ public class PlayerDAO extends DataAccessObject {
 
     /**
      * ends the game and registers each player's score in the database
+     *
      * @param game_id the id of the current game
      */
     public void endGame(int game_id) throws SQLException {

@@ -108,7 +108,7 @@ public class AccountDAO extends DataAccessObject {
             }
 
             account = new Account(rs.getString(1), rs.getString(2), rs.getDate(3).toLocalDate(),
-                    0);
+                    0, false);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -118,5 +118,24 @@ public class AccountDAO extends DataAccessObject {
         }
 
         return account;
+    }
+
+    public void setInactive(String username) throws SQLException {
+
+        try {
+            getConnection();
+            //cStmt = connection.prepareCall("{call account_insert_user(?, ?, ?, ?, ?)}");
+            cStmt = connection.prepareCall("{call account_set_inactive(?)}");
+
+            cStmt.setString(1, username);
+
+            cStmt.execute();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLException();
+        } finally {
+            releaseConnection();
+        }
     }
 }

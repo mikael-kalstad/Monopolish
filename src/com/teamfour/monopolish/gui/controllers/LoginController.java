@@ -162,7 +162,7 @@ public class LoginController {
 
     // ---- REMOVE BEFORE PRODUCTION! -------
     public void bypassToDashboard() {
-        Handler.setAccount(new Account("Mikael", "mikael@hotmail.com", LocalDate.now(), 7634));
+        Handler.setAccount(new Account("Mikael", "mikael@hotmail.com", LocalDate.now(), 7634, false));
         Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
     }
 
