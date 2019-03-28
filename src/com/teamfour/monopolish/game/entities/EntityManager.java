@@ -98,6 +98,10 @@ public class EntityManager {
         if (fromPlayer == null || toPlayer == null)
             return false;
 
+        if (fromPlayer.getMoney() < amount) {
+            amount = fromPlayer.getMoney();
+        }
+
         return fromPlayer.transferMoney(toPlayer, amount);
 
     }

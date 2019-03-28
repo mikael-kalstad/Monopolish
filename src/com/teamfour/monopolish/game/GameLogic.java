@@ -138,6 +138,15 @@ public class GameLogic {
         }
     }
 
+    public int rentTransaction() throws SQLException {
+        int position = entityManager.getYou().getPosition();
+        String owner = entityManager.getOwnerAtProperty(position);
+        int price = entityManager.getPropertyAtPosition(position).getRent()[0];
+        entityManager.transferMoneyFromTo(entityManager.getYou().getUsername(), owner, price);
+
+        return entityManager.getYou().getMoney();
+    }
+
     /**
      * Update all data from database so that all game objects reflects the database
      * @throws SQLException

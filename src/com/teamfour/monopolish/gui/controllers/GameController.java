@@ -387,10 +387,12 @@ public class GameController {
             String propertyOwner = gameLogic.getEntityManager().getOwnerAtProperty(yourPosition);
             if (propertyOwner == null || propertyOwner.equals("")) {
                 // If property is available, show button
+                buypropertyBtn.setDisable(false);
                 buypropertyBtn.setVisible(true);
                 propertyOwned.setVisible(false);
             } else {
                 // If owned, display name of owner
+                buypropertyBtn.setDisable(true);
                 buypropertyBtn.setVisible(false);
                 propertyOwned.setVisible(true);
                 propertyOwned.setText("Owned by " + propertyOwner);
@@ -470,7 +472,6 @@ public class GameController {
         if (yourTurn) {
             databaseTimer.cancel();
             rolldiceBtn.setDisable(false);
-            buypropertyBtn.setDisable(false);
         }
     }
 
@@ -559,6 +560,11 @@ public class GameController {
                     "You have a 'Free Parking' token! You don't have to pay rent here", ButtonType.OK);
             messageBox.showAndWait();
             gameLogic.getPlayer(yourUsername).setFreeParking(false);
+        } else {
+            rentTransaction();
+            messageBox = new Alert(Alert.AlertType.INFORMATION,
+                                "You have paid rent!", ButtonType.OK);
+            messageBox.showAndWait();
         }
     }
 
@@ -573,14 +579,10 @@ public class GameController {
         if (buyprompt.getResult() == ButtonType.YES) {
             // Perform the transaction of property through gamelogic
             try {
-                Alert messageBox;
-                if (gameLogic.propertyTransaction())
-                {
-                    messageBox = new Alert(Alert.AlertType.INFORMATION, "Purchase successful!", ButtonType.OK);
-                } else {
-                    messageBox = new Alert(Alert.AlertType.INFORMATION, "You do not have enough funds to purchase this property.");
+                if (!gameLogic.propertyTransaction()) {
+                    Alert messageBox = new Alert(Alert.AlertType.INFORMATION, "You do not have enough funds to purchase this property.");
+                    messageBox.showAndWait();
                 }
-                messageBox.showAndWait();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
