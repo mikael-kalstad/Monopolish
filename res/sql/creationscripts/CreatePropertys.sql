@@ -2,6 +2,8 @@
   Generates propertys
  */
 
+DELETE FROM property
+
 INSERT INTO property VALUES(1, 'Gløshaugen', 1200, 1, '#8D6E63');
 INSERT INTO property VALUES(2, 'Svartlamoen', 1200, 3, '#8D6E63');
 
@@ -29,5 +31,5 @@ INSERT INTO property VALUES(18, 'Rockheim', 6000, 28, '#81c784');
 INSERT INTO property VALUES(19, 'Tyholttårnet', 6000, 29, '#81c784');
 INSERT INTO property VALUES(20, 'Nidarosdomen', 6400, 31, '#81c784');
 
-INSERT INTO property VALUES(21, 'E.C. Dahls', 7000, 34, '#1565C0');
-INSERT INTO property VALUES(22, 'Kalvskinnet', 8000, 36, '#1565C0');
+INSERT INTO property VALUES(21, 'E.C. Dahls', 7000, 33, '#1565C0');
+INSERT INTO property VALUES(22, 'Kalvskinnet', 8000, 35, '#1565C0');

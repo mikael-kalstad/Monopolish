@@ -54,6 +54,20 @@ public class Player extends Entity {
         this.active = active;
     }
 
+    public boolean checkBankrupt() {
+        if (money > 0) {
+            return false;
+        }
+
+        int numberOfValidProperties = 0;
+        for (int i = 0; i < properties.size(); i++) {
+            if (!properties.get(i).isPawned())
+                numberOfValidProperties++;
+        }
+
+        return (money == 0 && numberOfValidProperties == 0);
+    }
+
     /**
      * Calculates this player's score based on their money and property values
      */
