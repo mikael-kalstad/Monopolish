@@ -401,7 +401,7 @@ public class GameController {
         statusValue.setText("Waiting for " + gameLogic.getCurrentPlayer() + " to finish their turn");
 
         if (positions != null)
-            addToEventlog(gameLogic.getCurrentPlayer() + " moved to " + gameLogic.getEntityManager().getPropertyAtPosition(positions[gameLogic.getTurnNumber()]).getName());
+            //addToEventlog(gameLogic.getCurrentPlayer() + " moved to " + gameLogic.getEntityManager().getPropertyAtPosition(positions[gameLogic.getTurnNumber()]).getName());
 
         updatePlayersInfo();
     }

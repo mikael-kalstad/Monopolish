@@ -45,7 +45,7 @@ public class Property {
      */
     private void calculateRent() {
         for (int i = 0; i < rent.length - 2; i++) {
-            rent[i] = (int)(price * 0.1 * i);
+            rent[i] = (int)(price * 0.1 * (i + 1));
         }
     }
 
