@@ -94,7 +94,7 @@ public class GameController {
         waitForTurn();
 
         // Update chat messages periodically
-        chatContainer.setTranslateY(-275);
+        chatContainer.setTranslateY(275);
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
@@ -116,7 +116,6 @@ public class GameController {
                         chatMessageScrollPane.setVvalue(1);
                     }
 
-                    System.out.println("chat msgs : " + chatMessagesContainer.getChildren().size());
                     if (!chatOpen && current_msg_count < chatMessagesContainer.getChildren().size()) {
                         unreadValue.setVisible(true);
                         unreadContainer.setVisible(true);
@@ -174,6 +173,7 @@ public class GameController {
             if (alertDialog.getResult().getButtonData().isDefaultButton()) {
                 // Remove player from lobby
                 final String USERNAME = Handler.getAccount().getUsername();
+                Handler.getAccountDAO().setInactive(USERNAME);
                 Handler.getLobbyDAO().removePlayer(USERNAME, Handler.getLobbyDAO().getLobbyId(USERNAME));
                 gameLogic.getEntityManager().removePlayer(USERNAME);
                 databaseTimer.cancel(); // Stop databaseTimer thread
@@ -256,7 +256,7 @@ public class GameController {
         // Close chat
         if (chatOpen) {
             // Set to default position
-            tt.setByY(-275);
+            tt.setByY(275);
             tt.play();
             chatOpen = false;
             current_msg_count = chatMessagesContainer.getChildren().size();
@@ -265,7 +265,7 @@ public class GameController {
         // Open chat
         else {
             // Move up
-            tt.setByY(275);
+            tt.setByY(-275);
             tt.play();
             chatOpen = true;
         }
