@@ -8,9 +8,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 
-import java.time.LocalDate;
-
-
 /**
  * Controller class for registration view
  *
@@ -31,6 +28,7 @@ public class LoginController {
     private final String MSG_REQUIRED = "*Field is required";
     private final String MSG_WARNING = "*Username/email or password is wrong";
     private final String MSG_DATABASE_ERROR = "*Database error, try again";
+    private final String MSG_USER_LOGGED_IN_ERROR = "*User already logged in";
 
     /**
      * Method to change styling to an input
@@ -41,9 +39,9 @@ public class LoginController {
     private void setBorderStyle(TextField element, String color) {
         element.setStyle(
                 "-fx-border-color: " + color + ";" +
-                        "-fx-border-width: 0 0 2 0;" +
-                        "-fx-background-color: transparent;" +
-                        "-fx-text-inner-color: " + COLOR_NORMAL + ";");
+                "-fx-border-width: 0 0 2 0;" +
+                "-fx-background-color: transparent;" +
+                "-fx-text-inner-color: " + COLOR_NORMAL + ";");
     }
 
     /**

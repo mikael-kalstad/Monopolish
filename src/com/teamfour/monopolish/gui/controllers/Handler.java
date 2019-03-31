@@ -9,6 +9,7 @@ import com.teamfour.monopolish.lobby.LobbyDAO;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -31,7 +32,8 @@ public class Handler extends Application {
 
     // Constants for GUI
     private final String APPLICATION_TITLE = "Monopoly";
-    private final double ASPECT_RATIO = 16.0/9.0;
+    private final String APPLICATION_LOGO = "res/gui/Dices/dice4.png";
+    private final double ASPECT_RATIO = 64.0/35.0;
     private final String INITIAL_VIEW = ViewConstants.LOGIN.getValue();
 
     /**
@@ -43,12 +45,13 @@ public class Handler extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle(APPLICATION_TITLE);
+        primaryStage.getIcons().add(new Image("file:" + APPLICATION_LOGO));
 
         // Setting full screen size to stage
         Rectangle2D screen = Screen.getPrimary().getVisualBounds();
         primaryStage.setWidth(screen.getWidth());
         primaryStage.setHeight(screen.getHeight());
-        //primaryStage.setMaximized(true);
+        primaryStage.setMaximized(true);
 
         // Setting initial view (login)
         sceneManager = new SceneManager(primaryStage, INITIAL_VIEW);

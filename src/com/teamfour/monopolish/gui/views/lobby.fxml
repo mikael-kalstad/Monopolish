@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
@@ -50,15 +51,21 @@
       </Text>
       <ImageView fitHeight="74.0" fitWidth="74.0" layoutX="731.0" layoutY="887.0" onMouseClicked="#showNewLobbyDialog">
          <image>
-            <Image url="file:res/gui/add.png" />
+            <Image url="file:res/gui/Lobby/add.png" />
          </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </ImageView>
-      <Text fill="#4ab24c" layoutX="820.0" layoutY="942.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New lobby" wrappingWidth="302.000114440918">
+      <Text fill="#4ab24c" layoutX="820.0" layoutY="942.0" onMouseClicked="#showNewLobbyDialog" strokeType="OUTSIDE" strokeWidth="0.0" text="New lobby" wrappingWidth="302.000114440918">
          <font>
             <Font name="System Bold" size="49.0" />
          </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Text>
-      <Pane fx:id="newLobbyBackground" onMouseClicked="#closeNewLobbyDialog" prefHeight="1040.0" prefWidth="1920.0" style="-fx-background-color: lightgrey;" visible="false" />
+      <Pane fx:id="newLobbyBackground" onMouseClicked="#closeNewLobbyDialog" prefHeight="1040.0" prefWidth="1920.0" style="-fx-background-color: rgba(160,160,160,0.4);" visible="false" />
       <Pane fx:id="newLobbyDialog" layoutX="591.0" layoutY="234.0" prefHeight="354.0" prefWidth="735.0" style="-fx-background-color: EEEEEE; -fx-background-radius: 15;" visible="false">
          <children>
             <TextField fx:id="newLobbyNameInput" layoutX="164.0" layoutY="112.0" onAction="#createNewLobby" prefHeight="65.0" prefWidth="407.0" promptText="Lobby name" style="-fx-border-width: 0 0 2 0; -fx-background-color: white; -fx-border-color: #999; -fx-text-inner-color: black;">
@@ -75,6 +82,9 @@
                <font>
                   <Font size="24.0" />
                </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </Button>
             <Text fx:id="newLobbyMsg" fill="#bfb71d" layoutX="161.0" layoutY="208.0" strokeType="OUTSIDE" strokeWidth="0.0" text="*Lobby name can't be empty, choose a name." visible="false" />
             <ImageView layoutX="673.0" layoutY="14.0" onMouseClicked="#closeNewLobbyDialog">
@@ -159,7 +169,7 @@
             </Text>
             <ImageView layoutX="33.0" layoutY="37.0">
                <image>
-                  <Image url="file:res/gui/countdown.png" />
+                  <Image url="file:res/gui/Lobby/countdown.png" />
                </image>
             </ImageView>
          </children>

@@ -182,7 +182,7 @@ public class LobbyController {
             }
 
             // Update "local" player elements
-            updatePlayerElements(container, username, ready);
+           updatePlayerElements(container, username, ready);
         }
 
         // Go through all lobbies and update "global" lobby elements
@@ -272,9 +272,8 @@ public class LobbyController {
      * Will make a dialog for making a new lobby appear
      */
     public void showNewLobbyDialog() {
-        // Set the background to visible and transparent grey'ish
+        // Show backgroundOverlay
         newLobbyBackground.setVisible(true);
-        newLobbyBackground.setStyle("-fx-background-color: rgba(160,160,160,0.4)");
 
         // Show a new lobby dialog
         newLobbyDialog.setVisible(true);
@@ -284,8 +283,14 @@ public class LobbyController {
      * Will hide the dialog for a new lobby
      */
     public void closeNewLobbyDialog() {
+        // Hide backgroundOverlay
         newLobbyDialog.setVisible(false);
+
+        // Hide new lobby dialog
         newLobbyBackground.setVisible(false);
+
+        // Reset input text
+        newLobbyNameInput.setText("");
     }
 
     /**
@@ -300,17 +305,17 @@ public class LobbyController {
         }
         // If input is not empty create new lobby
         else {
-            LobbyDrawFx.setBorderStyle(newLobbyNameInput, INPUT_COLOR_NORMAL);
-            newLobbyMsg.setVisible(false);
-            newLobbyDialog.setVisible(false);
-            newLobbyBackground.setVisible(false);
-            int lobby_id = Handler.getLobbyDAO().newLobby(USERNAME, newLobbyNameInput.getText());
+            Handler.getLobbyDAO().newLobby(USERNAME, newLobbyNameInput.getText());
 
             // If user is already in a lobby
             if (current_lobby_id > 0) {
                 Handler.getLobbyDAO().removePlayer(USERNAME, current_lobby_id);
-                newLobbyNameInput.setText(""); // Reset text
             }
+
+            // Update GUI
+            LobbyDrawFx.setBorderStyle(newLobbyNameInput, INPUT_COLOR_NORMAL); // Reset border style
+            newLobbyMsg.setVisible(false); // Hide msg in lobbies container
+            closeNewLobbyDialog();
         }
         refresh();
     }
@@ -371,8 +376,8 @@ public class LobbyController {
         if (readyImg == null) return; // Avoid exception
 
         // Set ready images
-        if (playerReady) readyImg.setImage(new Image("file:res/gui/ready.png"));
-        else readyImg.setImage(new Image("file:res/gui/notReady.png"));
+        if (playerReady) readyImg.setImage(new Image("file:res/gui/Lobby/ready.png"));
+        else readyImg.setImage(new Image("file:res/gui/lobby/notReady.png"));
     }
 
     /**
@@ -488,13 +493,12 @@ public class LobbyController {
         time = COUNTDOWN_TIME;
 
         TimerTask countDownTask = new TimerTask() {
-
             @Override
             public void run() {
-                Platform.runLater(() -> {
-                    int numOfPlayers = Handler.getLobbyDAO().getUsersInLobby(lobby_id).size();
-                    int numOfReady = Handler.getLobbyDAO().getAllReadyInLobby(lobby_id);
+                int numOfPlayers = Handler.getLobbyDAO().getUsersInLobby(lobby_id).size();
+                int numOfReady = Handler.getLobbyDAO().getAllReadyInLobby(lobby_id);
 
+                Platform.runLater(() -> {
                     // Check if player left the lobby
                     if (current_lobby_id == -1 || numOfReady != numOfPlayers) {
                         countDownTimer.cancel();
@@ -531,7 +535,7 @@ public class LobbyController {
             }
         };
 
-        long delay = 2000L; // Delay before update refreshTimer starts
+        long delay = 500L; // Delay before update refreshTimer starts
         long period = 1000L; // Delay between each update/refresh
         countDownTimer.scheduleAtFixedRate(countDownTask, delay, period);
     }

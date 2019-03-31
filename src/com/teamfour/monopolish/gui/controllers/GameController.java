@@ -5,6 +5,8 @@ import com.teamfour.monopolish.game.board.Board;
 import com.teamfour.monopolish.game.entities.player.Player;
 import com.teamfour.monopolish.game.propertylogic.Property;
 import com.teamfour.monopolish.gui.views.ViewConstants;
+import javafx.animation.ParallelTransition;
+import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -30,21 +32,27 @@ import java.util.TimerTask;
  * to click certain buttons, what happens when you click them, and handles all graphical interfaces and updates
  *
  * @author Bård Hestmark
- * @version 1.7
+ * @version 1.8
  */
 
 public class GameController {
     // Timer for checking database updates
     private Timer databaseTimer = new Timer();
     private Timer chatTimer = new Timer();
+    private Timer roundTimer = new Timer();
+    private final int ROUND_COUNTDOWN_TIME = 60;
+    private int time;
 
     // GameLogic for handling more intricate game operations
     private GameLogic gameLogic = new GameLogic(Handler.getCurrentGameId());
 
-    private String yourUsername = Handler.getAccount().getUsername();
+    private final String USERNAME = Handler.getAccount().getUsername();
 
     // Array for events in game
     private ArrayList<Text> eventList = new ArrayList<>();
+
+    // Background overlay for popups
+    @FXML private Pane backgroundOverlay;
 
     // Elements in board
     @FXML private AnchorPane phillip;
@@ -61,6 +69,7 @@ public class GameController {
     @FXML private Label roundValue, statusValue;
     @FXML private Label username, userMoney;
     @FXML private Pane userColor, userPropertiesIcon;
+    @FXML private Text roundTimeValue;
     @FXML private Pane opponentsContainer;
 
     // Chat elements
@@ -93,8 +102,11 @@ public class GameController {
         // Start the game!
         waitForTurn();
 
-        // Update chat messages periodically
+        // Move chat container to bottom of the window
+        Handler.getSceneManager().getWindow().getX();
         chatContainer.setTranslateY(275);
+
+        // Update chat messages periodically
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
@@ -104,6 +116,7 @@ public class GameController {
                     // Reset all chat messages
                     chatMessagesContainer.getChildren().clear();
 
+                    // Go through all the messages and add them to the chat
                     for (String[] message : chatContent) {
                         GameControllerDrawFx.createChatRow(
                             chatMessagesContainer,
@@ -112,7 +125,7 @@ public class GameController {
                             message[1].trim()
                         );
 
-                        // Scroll to bottom
+                        // Scroll to bottom of the chat
                         chatMessageScrollPane.setVvalue(1);
                     }
 
@@ -122,6 +135,9 @@ public class GameController {
                         String unreadMsgCount = "9+";
                         if (chatMessagesContainer.getChildren().size() - current_msg_count < 10) {
                             unreadMsgCount = String.valueOf(chatMessagesContainer.getChildren().size() - current_msg_count);
+                            unreadValue.setStyle("-fx-font-size: 16px");
+                        } else {
+                            unreadValue.setStyle("-fx-font-size: 12px");
                         }
                         unreadValue.setText(unreadMsgCount);
                     }
@@ -222,6 +238,9 @@ public class GameController {
      * @param username Target user
      */
     public void showProperties(String username) {
+        // Show backgroundOverlay
+        backgroundOverlay.setVisible(true);
+
         // Clear all properties that already may exists inside the dialog
         propertiesContentContainer.getChildren().clear();
 
@@ -236,6 +255,12 @@ public class GameController {
             Pane card = GameControllerDrawFx.createPropertyCard(p);
             propertiesContentContainer.getChildren().add(card);
         }
+
+        // Close dialog if background is clicked
+        backgroundOverlay.setOnMouseClicked(e -> {
+            closePropertiesDialog();
+            backgroundOverlay.setVisible(false); // Hide background
+        });
     }
 
     /**
@@ -243,6 +268,7 @@ public class GameController {
      */
     public void closePropertiesDialog() {
         propertiesContainer.setVisible(false);
+        backgroundOverlay.setVisible(false);
     }
 
     /**
@@ -250,7 +276,7 @@ public class GameController {
      * depending if the chat is open or closed.
      */
     public void toggleChat() {
-        // Slider animation
+        // Slider animation for chat-container
         TranslateTransition tt = new TranslateTransition(Duration.millis(400), chatContainer);
 
         // Close chat
@@ -279,7 +305,7 @@ public class GameController {
             chatInput.setStyle("-fx-border-color: yellow;");
         } else {
             chatInput.setStyle("-fx-border-color: white;");
-            Handler.getGameDAO().addChatMessage(yourUsername, chatInput.getText().trim());
+            Handler.getGameDAO().addChatMessage(USERNAME, chatInput.getText().trim());
 
             // Reset input text
             chatInput.setText("");
@@ -334,29 +360,62 @@ public class GameController {
         // Update dice images and log on board
         dice1_img.setImage(new Image(("file:res/gui/dices/dice" + diceValues[0] + ".png")));
         dice2_img.setImage(new Image(("file:res/gui/dices/dice" + diceValues[1] + ".png")));
-        String s = "Threw dice:  " + diceValues[0] + ",  " + diceValues[1];
-        addToEventlog(s);
+        String s = USERNAME + " threw dice:  " + diceValues[0] + ",  " + diceValues[1];
 
-        // Update board view to show where player moved
-        updateBoard();
+        // Animation constants
+        final int DURATION = 600;
+        final int ROTATE_ANGLE = 1080;
 
-        // Check the tile you are currently on and call that event
-        callTileEvent();
+        RotateTransition rt1 = new RotateTransition(Duration.millis(DURATION), dice1_img);
+        RotateTransition rt2 = new RotateTransition(Duration.millis(DURATION), dice2_img);
+        rt1.setByAngle(ROTATE_ANGLE);
+        rt2.setByAngle(-ROTATE_ANGLE);
 
-        // Update board view again
-        updateBoard();
+        TranslateTransition tt1 = new TranslateTransition(Duration.millis(DURATION), dice1_img);
+        TranslateTransition tt2 = new TranslateTransition(Duration.millis(DURATION), dice2_img);
+        tt1.setFromY(dice1_img.getY() + 100);
+        tt1.setFromX(dice1_img.getX() + 200);
+        tt1.setToY(dice1_img.getY());
+        tt1.setToX(dice1_img.getX());
 
-        // If the player didn't throw two equal dices, disable the dice button. If not, the player can throw dice again
-        if (diceValues[0] != diceValues[1]) {
-            rolldiceBtn.setDisable(true);
-            endturnBtn.setDisable(false);
-        }
+        tt2.setFromY(dice2_img.getY() + 100);
+        tt2.setFromX(dice1_img.getX() - 200);
+        tt2.setToY(dice2_img.getY());
+        tt2.setToX(dice1_img.getX());
+
+        ParallelTransition pt = new ParallelTransition(rt1, rt2, tt1, tt2);
+        pt.play();
+
+        int[] finalDiceValues = diceValues;
+        pt.onFinishedProperty().set(e -> {
+            addToEventlog(s);
+
+            // Update board view to show where player moved
+            updateBoard();
+
+            // Check the tile you are currently on and call that event
+            callTileEvent();
+
+            // Update board view again
+            updateBoard();
+
+            // If the player didn't throw two equal dices, disable the dice button. If not, the player can throw dice again
+            if (finalDiceValues[0] != finalDiceValues[1]) {
+                rolldiceBtn.setDisable(true);
+                endturnBtn.setDisable(false);
+            }
+        });
+
     }
 
     /**
      * Ends your current turn
      */
     public void endTurn() {
+        // Stop and reset timer
+        roundTimer.cancel();
+        roundTimeValue.setText(String.valueOf(ROUND_COUNTDOWN_TIME));
+
         try {
             // Disable buttons
             endturnBtn.setDisable(true);
@@ -375,12 +434,12 @@ public class GameController {
      */
     private void callTileEvent() {
         // Store your player's position
-        int yourPosition = gameLogic.getPlayer(yourUsername).getPosition();
+        int yourPosition = gameLogic.getPlayer(USERNAME).getPosition();
 
         // PROPERTY TILE HANDLING
         if(gameLogic.getBoard().getTileType(yourPosition) == Board.PROPERTY) {
             // Draw property card with
-            Pane card = GameControllerDrawFx.createPropertyCard(gameLogic.getEntityManager().getPropertyAtPosition(gameLogic.getPlayer(yourUsername).getPosition()));
+            Pane card = GameControllerDrawFx.createPropertyCard(gameLogic.getEntityManager().getPropertyAtPosition(gameLogic.getPlayer(USERNAME).getPosition()));
             phillip.getChildren().add(card);
 
             // Get owner of property and set the button or label accordingly
@@ -398,7 +457,7 @@ public class GameController {
                 propertyOwned.setText("Owned by " + propertyOwner);
 
                 // If this is not your property, prepare to get rented! Or something
-                if (!propertyOwner.equals(yourUsername))
+                if (!propertyOwner.equals(USERNAME))
                     rentTransaction();
             }
         } else {
@@ -408,14 +467,14 @@ public class GameController {
         }
 
         // If on free parking, get a free-parking token
-        if (gameLogic.getPlayer(yourUsername).getPosition() == gameLogic.getBoard().getFreeParkingPosition()) {
-            gameLogic.getPlayer(yourUsername).setFreeParking(true);
+        if (gameLogic.getPlayer(USERNAME).getPosition() == gameLogic.getBoard().getFreeParkingPosition()) {
+            gameLogic.getPlayer(USERNAME).setFreeParking(true);
         }
 
         // If go-to jail, go to jail!
-        if (gameLogic.getPlayer(yourUsername).getPosition() == gameLogic.getBoard().getGoToJailPosition()) {
+        if (gameLogic.getPlayer(USERNAME).getPosition() == gameLogic.getBoard().getGoToJailPosition()) {
             try {
-                gameLogic.setPlayerInJail(yourUsername, true);
+                gameLogic.setPlayerInJail(USERNAME, true);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -433,16 +492,18 @@ public class GameController {
         try {
             positions = gameLogic.getPlayerPositions();
 
+            // Set player colors
             for (int i = 0; i < turns.length; i++) {
                 colors[i] = getPlayerColor(turns[i]);
             }
+
             GameControllerDrawFx.createPlayerPieces(gamegrid, positions, colors);
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
         roundValue.setText(String.valueOf(gameLogic.getRoundNumber() + 1));
-        userMoney.setText(String.valueOf(gameLogic.getPlayer(yourUsername).getMoney()));
+        userMoney.setText(String.valueOf(gameLogic.getPlayer(USERNAME).getMoney()));
         statusValue.setText("Waiting for " + gameLogic.getCurrentPlayer() + " to finish their turn");
 
         if (positions != null)
@@ -467,6 +528,28 @@ public class GameController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        // Iniate round timer
+        time = ROUND_COUNTDOWN_TIME;
+
+        TimerTask countdown = new TimerTask() {
+            @Override
+            public void run() {
+                if (time > 0) {
+                    Platform.runLater(() -> roundTimeValue.setText(String.valueOf(time)));
+                    time--;
+                } else {
+                    System.out.println("END OF YOUR TURN!");
+                    endTurn();
+                    roundTimer.cancel();
+                    roundTimeValue.setText(String.valueOf(ROUND_COUNTDOWN_TIME));
+                }
+            }
+        };
+
+        long delay = 1000L; // Delay before update refreshTimer starts
+        long period = 1000L; // Delay between each update/refresh
+        roundTimer.scheduleAtFixedRate(countdown, delay, period);
 
         // If this is your turn, stop the database check databaseTimer and enable the button to roll dice
         if (yourTurn) {
@@ -503,12 +586,18 @@ public class GameController {
         opponentsContainer.getChildren().clear();
         ArrayList<Player> players = Handler.getPlayerDAO().getPlayersInGame(Handler.getCurrentGameId());
         String color;
+        ImageView img = null;
 
         // Go through all the players, update info and render GUI
         for (Player player : players) {
             // Find color associated with user
             color = getPlayerColor(player.getUsername());
             if (color == null) color = "red"; // Check if color has been assigned
+
+            // Check if player has left, is in jail or bankrupt and change img accordingly
+            if (player.getActive() == 0) img = new ImageView("file:res/gui/Game/exited.png");
+            else if (player.isInJail()) img = new ImageView("file:res/gui/Game/jail.png");
+            else if (player.isBankrupt()) img = new ImageView("file:res/gui/Game/bankrupt.png");
 
             // Player is the actual user
             if (player.getUsername().equals(Handler.getAccount().getUsername())) {
@@ -518,6 +607,15 @@ public class GameController {
 
                 // Show your own properties on click
                 setPropertyOnClick(userPropertiesIcon, player.getUsername());
+
+                // Set img if it is assigned
+                //userColor.getChildren().clear(); // Reset
+
+                if (img != null) {
+                    img.setFitHeight(userColor.getHeight());
+                    img.setFitWidth(userColor.getWidth());
+                    userColor.getChildren().add(img);
+                }
             }
 
             // Player is an opponent
@@ -527,6 +625,7 @@ public class GameController {
                         player.getUsername(),
                         color,
                         String.valueOf(player.getMoney()),
+                        img,
                         opponentsContainer
                 );
 
@@ -555,11 +654,11 @@ public class GameController {
     public void rentTransaction() {
         Alert messageBox;
         // TODO: Everything
-        if (gameLogic.getPlayer(yourUsername).hasFreeParking()) {
+        if (gameLogic.getPlayer(USERNAME).hasFreeParking()) {
             messageBox = new Alert(Alert.AlertType.INFORMATION,
                     "You have a 'Free Parking' token! You don't have to pay rent here", ButtonType.OK);
             messageBox.showAndWait();
-            gameLogic.getPlayer(yourUsername).setFreeParking(false);
+            gameLogic.getPlayer(USERNAME).setFreeParking(false);
         } else {
             try {
                 gameLogic.rentTransaction();
@@ -598,7 +697,7 @@ public class GameController {
             // Update property information label
             buypropertyBtn.setVisible(false);
             propertyOwned.setVisible(true);
-            propertyOwned.setText("Owned by " + yourUsername);
+            propertyOwned.setText("Owned by " + USERNAME);
         }
         if (buyprompt.getResult() == ButtonType.NO) {
             buyprompt.close();

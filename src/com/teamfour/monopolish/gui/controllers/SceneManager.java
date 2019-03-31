@@ -15,23 +15,17 @@ import java.io.IOException;
  * This class will handle scene changes to a specific stage.
  *
  * @author Mikael Kalstad
- * @version 1.0
+ * @version 1.2
  */
 public class SceneManager {
     private Stage window;
 
     // Standard sizes for scenes (in pixels)
-    private final int STANDARD_SCENE_WIDTH = 1940;
-    private final int STANDARD_SCENE_HEIGHT = 1040;
-
-    /**
-     * Set the exit prompt
-     *
-     */
+    private final int STANDARD_SCENE_WIDTH = 1920;
+    private final int STANDARD_SCENE_HEIGHT = 1050;
 
     /**
      * Instantiates a new Scene manager.
-     *
      *
      * @param stage         the stage of the application
      * @param initial_view the initial view that will render on the stage
@@ -70,14 +64,12 @@ public class SceneManager {
         double sw = window.getWidth();
         double sh = window.getHeight();
 
-        /*
-        System.out.println("Scene width: " + window.getWidth());
-        System.out.println("Scene height: " + window.getHeight());
+        System.out.println("Scene width: " + window.getScene().getWidth());
+        System.out.println("Scene height: " + window.getScene().getHeight());
         System.out.println("Screen width: " + screen.getWidth());
         System.out.println("Screen height: " + screen.getHeight());
         System.out.println("Multiplier: width" + sw/window.getScene().getWidth());
         System.out.println("Multiplier: height" + sh/window.getScene().getHeight());
-        */
 
         Scale scale = new Scale(sw/STANDARD_SCENE_WIDTH, sh/STANDARD_SCENE_HEIGHT, 0, 0);
         window.getScene().getRoot().getTransforms().setAll(scale);

@@ -1,5 +1,6 @@
 package com.teamfour.monopolish.gui.controllers;
 
+import javafx.animation.ScaleTransition;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -11,6 +12,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 /**
  * Class for drawing and modifying some gui elements in the lobby view,
@@ -18,6 +20,25 @@ import javafx.scene.text.Text;
  */
 
 class LobbyDrawFx {
+    static void setBtnScaleOnHover(Button btn) {
+        ScaleTransition st = new ScaleTransition(Duration.millis(200), btn);
+        btn.setOnMouseEntered(e -> {
+            st.setFromX(btn.getScaleX());
+            st.setFromX(btn.getScaleY());
+            st.setByX(0.1);
+            st.setByY(0.1);
+            st.playFromStart();
+        });
+
+        btn.setOnMouseExited(e -> {
+            st.setFromX(btn.getScaleX());
+            st.setFromX(btn.getScaleY());
+            st.setByX(1.0);
+            st.setByY(1.0);
+            st.playFromStart();
+        });
+    }
+
     // Used by newLobbyDialog
     static void setBorderStyle(TextField element, String color) {
         element.setStyle(
@@ -49,10 +70,11 @@ class LobbyDrawFx {
         btn.setText(msg);
         btn.setStyle(
                 "-fx-text-fill: white;" +
-                "-fx-font-size: 13;" +
+                "-fx-font-size: 14;" +
                 "-fx-background-color: " + backgroundColor + ";" +
                 "-fx-background-radius: 0;" +
-                "-fx-padding: 8 20;"
+                "-fx-padding: 8 20;" +
+                "-fx-cursor: hand;"
         );
     }
 
@@ -64,8 +86,8 @@ class LobbyDrawFx {
         grid.setMaxSize(270, 330);
         grid.setVgap(10);
         grid.setStyle(
-                "-fx-background-color: #e5e5e8;" +
-                "-fx-padding: 20;"
+            "-fx-background-color: #e5e5e8;" +
+            "-fx-padding: 20;"
         );
 
         // Row layout for grid
@@ -116,6 +138,7 @@ class LobbyDrawFx {
         setBtnStyle(joinBtn, "Join", "#FF9800");
         joinBtn.setPrefWidth(110);
         joinBtn.setId("join"); // Used to find element
+        //setBtnScaleOnHover(joinBtn);
 
         // "Ready" button in the lobby
         Button readyBtn = new Button();
@@ -123,6 +146,7 @@ class LobbyDrawFx {
         readyBtn.setMinWidth(110);
         readyBtn.setId("ready"); // Used to find element
         readyBtn.setDisable(true); // Disable by default
+        //setBtnScaleOnHover(readyBtn);
 
         // Container for playersContainer, fits MAXIMUM 4 playersContainer
         Pane playersContainer = new Pane();
@@ -192,7 +216,7 @@ class LobbyDrawFx {
         container.add(player, 2,0);
 
         // Ready or not image
-        ImageView img = new ImageView("file:res/gui/notReady.png");
+        ImageView img = new ImageView("file:res/gui/Lobby/notReady.png");
         img.setPreserveRatio(true);
         img.setFitHeight(30);
         img.setId("readyImg");

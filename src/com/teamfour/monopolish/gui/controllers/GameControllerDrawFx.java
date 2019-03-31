@@ -9,6 +9,7 @@ import javafx.geometry.VPos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -188,7 +189,7 @@ public class GameControllerDrawFx {
      * @return A pane that works as a container for the property icon.
      * Must be returned since onclick must be defined in gameController since this class is static.
      */
-    public static Pane createOpponentRow(String username, String color, String moneyValue, Pane opponentsContainer) {
+    public static Pane createOpponentRow(String username, String color, String moneyValue, ImageView logo, Pane opponentsContainer) {
         GridPane container = new GridPane();
         container.setPrefSize(530, 90);
         container.setMaxSize(530, 90);
@@ -208,7 +209,7 @@ public class GameControllerDrawFx {
         propertyCol.setPrefWidth(100);
         propertyCol.setHalignment(HPos.CENTER);
         moneyCol.setPrefWidth(120);
-        moneyCol.setHalignment(HPos.CENTER);
+        moneyCol.setHalignment(HPos.LEFT);
         container.getColumnConstraints().addAll(colorCol, spaceCol, userCol, propertyCol, moneyCol);
 
         // The color box
@@ -216,6 +217,13 @@ public class GameControllerDrawFx {
         colorContainer.setPrefSize(80, 90);
         colorContainer.setStyle("-fx-background-color: " + color + ";");
         container.add(colorContainer, 0, 0);
+
+        // Set img if it is assigned
+        if (logo != null) {
+            logo.setFitHeight(colorContainer.getPrefHeight());
+            logo.setFitWidth(colorContainer.getPrefWidth());
+            colorContainer.getChildren().add(logo);
+        }
 
         // Spacing between color box and username
         Pane spacing = new Pane();container.add(spacing, 1, 0);
@@ -228,19 +236,20 @@ public class GameControllerDrawFx {
         container.add(user, 2,0);
 
         // Property img
-        ImageView img = new ImageView("file:res/gui/house.png");
-        img.setFitHeight(50);
-        img.setFitWidth(50);
-        img.setStyle("-fx-alignment: center");
         Pane imgContainer = new Pane(); // Container for img
         imgContainer.setPrefSize(60, 60);
         imgContainer.setMaxSize(60, 60);
         imgContainer.setStyle(
                 "-fx-border-color: #888;" +
-                "-fx-border-radius: 15;"
+                "-fx-border-radius: 15;" +
+                "-fx-cursor: hand;"
         );
+
+        ImageView img = new ImageView("file:res/gui/Game/house.png");
+        img.setFitHeight(55);
+        img.setFitWidth(55);
+
         imgContainer.getChildren().add(img);
-        imgContainer.setCursor(Cursor.HAND); // Cursor for buttons
         container.add(imgContainer, 3, 0);
 
         // Money text
