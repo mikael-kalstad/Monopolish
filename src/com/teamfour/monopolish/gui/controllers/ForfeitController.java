@@ -1,5 +1,6 @@
 package com.teamfour.monopolish.gui.controllers;
 
+import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
@@ -24,7 +25,7 @@ public class ForfeitController {
     @FXML private Text yourVoteText;
 
     // Constants
-    private final int COUNTDOWN_TIME = 60;
+    private final int COUNTDOWN_TIME = 20;
     private final String USERNAME = Handler.getAccount().getUsername();
     private final int GAME_ID = Handler.getCurrentGameId();
     private final int NUM_OF_PLAYERS = Handler.getPlayerDAO().getPlayersInGame(GAME_ID).size();
@@ -132,6 +133,10 @@ public class ForfeitController {
         TimerTask countdownTask = new TimerTask() {
             @Override
             public void run() {
+                if (time < 5) {
+                    timeValue.setStyle("-fx-text-fill: red");
+                }
+
                 if (time > 0) {
                     time--;
                     timeValue.setText(String.valueOf(time));
@@ -152,5 +157,8 @@ public class ForfeitController {
         if (votesForQuit > votesForContinue) res = "Game will quit";
 
         System.out.println("FORFEIT RESULT: " + res);
+
+        // Switch to dashboard!
+        Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
     }
 }
