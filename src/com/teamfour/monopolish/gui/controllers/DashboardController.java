@@ -52,7 +52,7 @@ public class DashboardController {
     }
 
     private String formatWithThousandDecimal(String num) {
-        if (num.length() < 3) return num;
+        if (num.length() < 4) return num;
         int thousandIndex = num.length() - 3;
         return num.substring(0, thousandIndex) + "." + num.substring(thousandIndex);
     }
