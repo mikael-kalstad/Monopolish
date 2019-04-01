@@ -159,7 +159,7 @@ public class PlayerDAO extends DataAccessObject {
      *
      * @param game_id the id of the current game
      */
-    public void endGame(int game_id) throws SQLException {
+    public void endGame(int game_id) {
         try {
             connection = ConnectionPool.getMainConnectionPool().getConnection();
             cStmt = connection.prepareCall("{call player_endgame(?)}");
@@ -172,7 +172,6 @@ public class PlayerDAO extends DataAccessObject {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new SQLException();
         } finally {
             releaseConnection();
         }

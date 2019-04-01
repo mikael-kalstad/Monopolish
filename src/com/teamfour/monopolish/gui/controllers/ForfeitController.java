@@ -38,6 +38,7 @@ public class ForfeitController {
     int time = COUNTDOWN_TIME;
 
     @FXML public void initialize() {
+        timeValue.setStyle("-fx-text-fill: orange");
         timeValue.setText(String.valueOf(COUNTDOWN_TIME));
 
         // User want to forfeit/quit
@@ -134,7 +135,7 @@ public class ForfeitController {
         TimerTask countdownTask = new TimerTask() {
             @Override
             public void run() {
-                if (time < 5) {
+                if (time <= 5) {
                     timeValue.setStyle("-fx-text-fill: red");
                 }
 
@@ -158,6 +159,10 @@ public class ForfeitController {
         if (votesForQuit > votesForContinue) res = "Game will quit";
 
         System.out.println("FORFEIT RESULT: " + res);
+
+        // End game in database
+        Handler.getPlayerDAO().endGame(GAME_ID);
+        Handler.getGameDAO().finishGame(GAME_ID);
 
         // Switch to dashboard!
         Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());

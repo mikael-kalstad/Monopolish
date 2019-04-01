@@ -103,11 +103,9 @@ public class GameDAO extends DataAccessObject {
     /**
      * Finish the game and ties up loose ends in the table
      * @param gameId Session id
-     * @param winnerId Userid of the winner. 0 if no winner
      * @return True if operation was successful
-     * @throws SQLException
      */
-    public boolean finishGame(int gameId, int winnerId) throws SQLException {
+    public boolean finishGame(int gameId) {
         int count = 0;
         try {
             getConnection();
@@ -118,7 +116,6 @@ public class GameDAO extends DataAccessObject {
             count = cStmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new SQLException();
         } finally {
             releaseConnection();
         }
