@@ -24,7 +24,7 @@ public class PlayerDAO extends DataAccessObject {
     public ArrayList<Player> createPlayers(int game_id, String[] usernames) throws SQLException {
         ArrayList<Player> players = null;
         try {
-            connection = ConnectionPool.getMainConnectionPool().getConnection();
+            getConnection();
             cStmt = connection.prepareCall("{call player_create(?, ?)}");
             for (int i = 0; i < usernames.length; i++) {
                 cStmt.setInt(1, game_id);
@@ -49,7 +49,7 @@ public class PlayerDAO extends DataAccessObject {
     public Player createPlayer(int game_id, String username) throws SQLException {
         ArrayList<Player> players = null;
         try {
-            connection = ConnectionPool.getMainConnectionPool().getConnection();
+            getConnection();
             cStmt = connection.prepareCall("{call player_create(?, ?)}");
 
             cStmt.setInt(1, game_id);
@@ -74,7 +74,7 @@ public class PlayerDAO extends DataAccessObject {
      */
     public void removePlayer(int game_id, String username) {
         try {
-            connection = ConnectionPool.getMainConnectionPool().getConnection();
+            getConnection();
             cStmt = connection.prepareCall("{call player_remove(?, ?)}");
 
             cStmt.setString(1, username);
@@ -161,7 +161,7 @@ public class PlayerDAO extends DataAccessObject {
      */
     public void endGame(int game_id) {
         try {
-            connection = ConnectionPool.getMainConnectionPool().getConnection();
+            getConnection();
             cStmt = connection.prepareCall("{call player_endgame(?)}");
 
             for (int i = 0; i < 10; i++) {
@@ -187,7 +187,7 @@ public class PlayerDAO extends DataAccessObject {
         String[][] list = new String[10][2];
 
         try {
-            connection = ConnectionPool.getMainConnectionPool().getConnection();
+            getConnection();
 
             cStmt = connection.prepareCall("{call player_get_highscore()}");
 
@@ -220,7 +220,7 @@ public class PlayerDAO extends DataAccessObject {
      */
     public void setForfeitStatus(String username, int gameId, int forfeitStatus) {
         try {
-            connection = ConnectionPool.getMainConnectionPool().getConnection();
+            getConnection();
 
             cStmt = connection.prepareCall("{call player_set_forfeit(?, ?, ?)}");  // player_id, game_id, forfeit_status
                                                                                 // 0 = default, 1 = quit, 2 = continue
@@ -249,7 +249,7 @@ public class PlayerDAO extends DataAccessObject {
         int[] list = new int[2];
 
         try {
-            connection = ConnectionPool.getMainConnectionPool().getConnection();
+            getConnection();
 
             cStmt = connection.prepareCall("{call player_get_forfeit(?)}");  // player_id, game_id, forfeit_status
 
@@ -263,9 +263,9 @@ public class PlayerDAO extends DataAccessObject {
             }
 
         } catch(SQLException sql){
-                sql.printStackTrace();
+            sql.printStackTrace();
         } finally{
-                releaseConnection();
+            releaseConnection();
         }
         return list;
 

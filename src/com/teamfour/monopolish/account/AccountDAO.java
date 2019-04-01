@@ -43,7 +43,6 @@ public class AccountDAO extends DataAccessObject {
                 System.out.println("Email ikke unik");
                 status = 2;
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
             throw new SQLException();

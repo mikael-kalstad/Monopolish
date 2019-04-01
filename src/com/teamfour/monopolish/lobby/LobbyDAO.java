@@ -2,6 +2,7 @@ package com.teamfour.monopolish.lobby;
 
 import com.teamfour.monopolish.database.DataAccessObject;
 
+import javax.xml.transform.Result;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -30,7 +31,6 @@ public class LobbyDAO extends DataAccessObject {
 
             cStmt.setString(1, username);
             cStmt.registerOutParameter(2, Types.INTEGER);
-
 
             if (cStmt.executeUpdate() > 0)
                 roomId = cStmt.getInt(2);
@@ -84,7 +84,6 @@ public class LobbyDAO extends DataAccessObject {
             cStmt.setString(1, username);
             cStmt.setInt(2, lobby_id);
             cStmt.registerOutParameter(3, Types.BOOLEAN);
-
 
             if (cStmt.executeUpdate() > 0) res = cStmt.getBoolean(3);
         }catch (SQLException sql){
@@ -179,7 +178,6 @@ public class LobbyDAO extends DataAccessObject {
     public ArrayList<String> getUsersInLobby(int roomId) {
         ArrayList<String> users = new ArrayList<>();
         try {
-
             getConnection();
             cStmt = connection.prepareCall("{CALL lobby_get_users_in_lobby(?)}");
 
@@ -226,13 +224,11 @@ public class LobbyDAO extends DataAccessObject {
      */
     public int getAllReadyInLobby(int lobby_id) {
         int num = 0;
-        getConnection();
-
         try {
-            ResultSet rs;
+            getConnection();
             cStmt = connection.prepareCall("{CALL getALlReadyInLobby(?)}");
             cStmt.setInt(1, lobby_id);
-            rs = cStmt.executeQuery();
+            ResultSet rs = cStmt.executeQuery();
 
             if (rs.next()) num = rs.getInt(1);
         }
@@ -247,9 +243,8 @@ public class LobbyDAO extends DataAccessObject {
      * removes any empty lobbies
      */
     public void removeEmptyLobbies() {
-        getConnection();
-
         try {
+            getConnection();
             cStmt = connection.prepareCall("{CALL lobby_removeEmptyLobbies()}");
             cStmt.executeQuery();
         }
@@ -264,13 +259,12 @@ public class LobbyDAO extends DataAccessObject {
      * @param username Username
      */
     public int getLobbyId(String username) {
-        getConnection();
         int lobby = 0;
         try {
-            ResultSet rs;
+            getConnection();
             cStmt = connection.prepareCall("{CALL lobby_get_id(?)}");
             cStmt.setString(1, username);
-            rs = cStmt.executeQuery();
+            ResultSet rs = cStmt.executeQuery();
             if (rs.next())
                 lobby = rs.getInt(1);
             rs.close();

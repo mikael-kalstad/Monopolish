@@ -137,17 +137,17 @@ public class EntityManager {
      * after an opponent's round
      */
     public void updateFromDatabase() throws SQLException {
+        int moneyInGame = 0;
         players.clear();
         players = playerDAO.getPlayersInGame(gameId);
-        // TODO: Fix this shit
-        while (players.size() <= 0) {
-            //players = playerDAO.getPlayersInGame(gameId);
-        }
         for (Player p : players) {
             p.updatePropertiesFromDatabase(gameId);
+            moneyInGame += p.getMoney();
         }
 
+        // Update bank
         bank.updatePropertiesFromDatabase(gameId);
+        bank.setMoney(Bank.MAX_GAME_MONEY - moneyInGame);
     }
 
     /**

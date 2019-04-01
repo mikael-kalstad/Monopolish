@@ -144,4 +144,8 @@ public class ChatController {
             chatInput.setText("");
         }
     }
+
+    public Timer getChatTimer() {
+        return chatTimer;
+    }
 }

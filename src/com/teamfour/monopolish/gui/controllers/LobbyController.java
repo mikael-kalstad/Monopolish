@@ -146,6 +146,7 @@ public class LobbyController {
      *  </ul>
      */
     public void refresh() {
+        System.out.println("Lobby timer is runnin.");
         // Check if any lobbies in database are empty
         Handler.getLobbyDAO().removeEmptyLobbies();
 

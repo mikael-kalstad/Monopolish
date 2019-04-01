@@ -121,7 +121,7 @@ public class PropertyDAO extends DataAccessObject {
      */
     public void endGame(int game_id) throws SQLException {
         try {
-            connection = ConnectionPool.getMainConnectionPool().getConnection();
+            getConnection();
             cStmt = connection.prepareCall("{call property_clean(?)}");
 
                 cStmt.setInt(1, game_id);
