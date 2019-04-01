@@ -418,6 +418,7 @@ public class GameController {
 
         // Iniate round timer
         time = ROUND_COUNTDOWN_TIME;
+        roundTimer = new Timer();
 
         TimerTask countdown = new TimerTask() {
             @Override
