@@ -779,10 +779,10 @@ public class GameController {
 
     /**
      *
-     * @param container The trade container
+     * @param button The trade button shown in the properties container
      * @param username The user the player wants to trade with
      */
-    public void setTradeOnClick(Pane container, String username) {
-        container.setOnMouseClicked(e -> showTradeScreen(username));
+    public void setTradeOnClick(Button button, String username) {
+        button.setOnMouseClicked(e -> showTradeScreen(username));
     }
 }
