@@ -215,17 +215,17 @@ public class PlayerDAO extends DataAccessObject {
     /**
      * Set forfeit status on player in game
      *
-     * @param playerId playerId
+     * @param username usernmae
      * @param gameId gameId
      * @param forfeitStatus 0 = default, 1 = quit, 2 = continue
      */
-    public void setForfeitStatus(int playerId, int gameId, int forfeitStatus) {
+    public void setForfeitStatus(String username, int gameId, int forfeitStatus) {
         try {
             connection = ConnectionPool.getMainConnectionPool().getConnection();
 
             cStmt = connection.prepareCall("{call player_set_forfeit(?, ?, ?)}");  // player_id, game_id, forfeit_status
                                                                                 // 0 = default, 1 = quit, 2 = continue
-            cStmt.setInt(1, playerId);
+            cStmt.setString(1, username);
             cStmt.setInt(2, gameId);
             cStmt.setInt(3, forfeitStatus);
 
@@ -241,25 +241,26 @@ public class PlayerDAO extends DataAccessObject {
 
     /**
      *
-     * @param playerId
+     *
      * @param gameId
      * @return // 0 = default, 1 = quit, 2 = continue
      */
 
-    public int getForfeitStatus(int playerId, int gameId) {
-        int forfeitStatus = 0;
+    public int[] getForfeitStatus(int gameId) {
+        int[] list = new int[2];
 
         try {
             connection = ConnectionPool.getMainConnectionPool().getConnection();
 
-            cStmt = connection.prepareCall("{call player_get_forfeit(?, ?)}");  // player_id, game_id, forfeit_status
-            cStmt.setInt(1, playerId);
-            cStmt.setInt(2, gameId);
+            cStmt = connection.prepareCall("{call player_get_forfeit(?)}");  // player_id, game_id, forfeit_status
+
+            cStmt.setInt(1, gameId);
 
             ResultSet rs = cStmt.executeQuery();
 
             while (rs.next()) {
-                forfeitStatus = rs.getInt(1);
+                list[0] = rs.getInt(1);
+                list[1] = rs.getInt(2);
             }
 
         } catch(SQLException sql){
@@ -267,7 +268,7 @@ public class PlayerDAO extends DataAccessObject {
         } finally{
                 releaseConnection();
         }
-        return forfeitStatus;
+        return list;
 
     }
 }

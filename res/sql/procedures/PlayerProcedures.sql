@@ -126,19 +126,27 @@ CAlL player_get_highscore();
 
 -- default 0, 1 = quit, 2 = continue
 CREATE PROCEDURE player_set_forfeit(
-  IN player_id INT,
+  IN username VARCHAR(30),
   IN game_id INT,
   IN forfeit_value INT
 )
   BEGIN
-    UPDATE player p SET forfeit = forfeit_value WHERE p.game_id = game_id AND p.player_id = player_id;
+    UPDATE player p, account a SET forfeit = forfeit_value WHERE p.game_id = game_id AND a.username = username;
   END;
 
 CALL player_set_forfeit(1, 1, 1);
 
-CREATE PROCEDURE player_get_forfeit(IN player_id INT, IN game_id INT)
+DROP PROCEDURE player_get_forfeit;
+
+CREATE PROCEDURE player_get_forfeit(IN game_id INT)
   BEGIN
-    SELECT p.forfeit FROM player p WHERE game_id = p.game_id AND player_id = p.player_id;
+    DECLARE quit INT;
+    DECLARE fortset INT;
+    SELECT COUNT(p.forfeit) FROM player p, account a WHERE game_id = p.game_id AND p.forfeit = 1 INTO quit;
+    SELECT COUNT(p.forfeit) FROM player p, account a WHERE game_id = p.game_id AND p.forfeit = 2 INTO fortset;
+    SELECT quit, fortset;
+
+
   END;
 
-CALL player_get_forfeit(1, 1);
+CALL player_get_forfeit(1);
