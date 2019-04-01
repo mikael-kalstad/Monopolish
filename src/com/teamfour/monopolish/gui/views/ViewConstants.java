@@ -22,7 +22,8 @@ public enum ViewConstants {
     DASHBOARD("dashboard.fxml"),
     LOBBY("lobby.fxml"),
     GAME("game.fxml"),
-    CHAT("chat.fxml");
+    CHAT("chat.fxml"),
+    FORFEIT("forfeit.fxml");
 
     private String value;
 

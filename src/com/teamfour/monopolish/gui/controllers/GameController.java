@@ -76,11 +76,13 @@ public class GameController {
 
     // Container for chat element
     @FXML private Pane chatContainer;
+    @FXML private Pane forfeitContainer;
 
     // Properties dialog
     @FXML private Pane propertiesContainer;
     @FXML private FlowPane propertiesContentContainer;
     @FXML private Text propertiesUsername;
+    @FXML private Button tradeBtn;
 
     /**
      * Launches when the scene is loaded.
@@ -162,8 +164,28 @@ public class GameController {
         }
     }
 
+    /**
+     * Will run when the forfeit button is clicked.
+     * A forfeit dialog will appear on the screen
+     */
     public void forfeit() {
-        // Some voting gui and logic here...
+        // Load forfeit GUI
+        addElementToContainer(ViewConstants.FORFEIT.getValue(), forfeitContainer);
+        backgroundOverlay.setVisible(true);
+    }
+
+    /**
+     * Load element from .fxml file and add to container
+     *
+     * @param filename Target .fxml file
+     * @param container Target container
+     */
+    private void addElementToContainer(String filename, Pane container) {
+        try {
+            Node element = FXMLLoader.load(getClass().getResource(ViewConstants.FILE_PATH.getValue() + filename));
+            container.getChildren().add(element);
+        }
+        catch (IOException e) { e.printStackTrace(); }
     }
 
     /**
