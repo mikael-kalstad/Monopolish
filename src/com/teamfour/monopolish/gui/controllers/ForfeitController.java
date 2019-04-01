@@ -119,9 +119,13 @@ public class ForfeitController {
                 voteCountContinue.setText(String.valueOf(votes[1]));
 
                 if (votesForQuit + votesForContinue == NUM_OF_PLAYERS) {
-                    refreshTimer.cancel();
-                    refreshTimer.purge();
-                    endGame();
+                    if (votesForQuit > votesForContinue) {
+                        refreshTimer.cancel();
+                        refreshTimer.purge();
+                        endGame();
+                    } else {
+                        Handler.getForfeitContainer().setVisible(false);
+                    }
                 }
             }
         };
