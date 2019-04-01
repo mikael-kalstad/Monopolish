@@ -35,6 +35,7 @@ public class Handler extends Application {
     private static ArrayList<String[]> colorList = new ArrayList<>();
     private static String tradeUsername;
     private static @FXML Pane tradeContainer;
+    private static @FXML Pane forfeitContainer;
     private static int currentGameId;
 
     // Constants for GUI
@@ -144,6 +145,8 @@ public class Handler extends Application {
     public static void setTradeUsername(String tradeUsername) { Handler.tradeUsername = tradeUsername; }
     public static Pane getTradeContainer() { return tradeContainer; }
     public static void setTradeContainer(Pane tradeContainer) { Handler.tradeContainer = tradeContainer; }
+    public static Pane getForfeitContainer() { return forfeitContainer; }
+    public static void setForfeitContainer(Pane forfeitContainer) { Handler.forfeitContainer = forfeitContainer; }
     public static int getCurrentGameId() { return currentGameId; }
     public static void setCurrentGameId(int currentGameId) { Handler.currentGameId = currentGameId; }
 }

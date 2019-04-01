@@ -93,7 +93,8 @@ public class GameController {
      * Launches when the scene is loaded.
      */
     @FXML public void initialize() {
-        // Reference that is used in tradeController
+        // Reference that is used in other controllers
+        Handler.setForfeitContainer(forfeitContainer);
         Handler.setTradeContainer(tradeContainer);
 
         // Set gamelogic object in handler
@@ -262,6 +263,7 @@ public class GameController {
 
         tradeBtn.setOnMouseClicked(e -> {
             propertiesContainer.setVisible(false);
+            backgroundOverlay.setVisible(false);
             tradeContainer.getChildren().clear();
             tradeContainer.setVisible(true);
             Handler.setTradeUsername(username);
@@ -601,6 +603,9 @@ public class GameController {
                     img.setFitHeight(userColor.getHeight());
                     img.setFitWidth(userColor.getWidth());
                     userColor.getChildren().add(img);
+                } else {
+                    // Remove image
+                    userColor.getChildren().clear();
                 }
             }
 
