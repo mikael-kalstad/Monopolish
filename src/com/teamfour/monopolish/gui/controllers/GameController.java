@@ -300,13 +300,14 @@ public class GameController {
      */
     public void endTurn() {
         // Stop and reset timer
-        roundTimer.cancel();
-        roundTimeValue.setText(String.valueOf(ROUND_COUNTDOWN_TIME));
+        //roundTimer.cancel();
+        //roundTimeValue.setText(String.valueOf(ROUND_COUNTDOWN_TIME));
 
         try {
             // Disable buttons
             endturnBtn.setDisable(true);
             buypropertyBtn.setDisable(true);
+
             // Finish turn in gamelogic and wait for your next turn
             gameLogic.finishYourTurn();
             updateBoard();
@@ -362,6 +363,7 @@ public class GameController {
         if (gameLogic.getPlayer(USERNAME).getPosition() == gameLogic.getBoard().getGoToJailPosition()) {
             try {
                 gameLogic.setPlayerInJail(USERNAME, true);
+                System.out.println("YOU ARE GOING TO JAIL: " + USERNAME);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -409,6 +411,7 @@ public class GameController {
         try {
             // Increment to a new turn in the gamelogic object
             gameLogic.newTurn(yourTurn);
+
             // Update the playing board accordingly to database updates
             updateBoard();
 
@@ -417,7 +420,7 @@ public class GameController {
         }
 
         // Iniate round timer
-        time = ROUND_COUNTDOWN_TIME;
+        /*time = ROUND_COUNTDOWN_TIME;
         roundTimer = new Timer();
 
         TimerTask countdown = new TimerTask() {
@@ -437,11 +440,11 @@ public class GameController {
 
         long delay = 1000L; // Delay before update refreshTimer starts
         long period = 1000L; // Delay between each update/refresh
-        roundTimer.scheduleAtFixedRate(countdown, delay, period);
+        roundTimer.scheduleAtFixedRate(countdown, delay, period);*/
 
         // If this is your turn, stop the database check databaseTimer and enable the button to roll dice
         if (yourTurn) {
-            databaseTimer.cancel();
+            //databaseTimer.cancel();
             rolldiceBtn.setDisable(false);
         }
     }
