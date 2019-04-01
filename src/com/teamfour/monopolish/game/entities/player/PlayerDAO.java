@@ -178,57 +178,29 @@ public class PlayerDAO extends DataAccessObject {
         }
     }
 
-    public String[][] getHighscoreList() {
-        String username = "";
-        String highscore = "";
+    /**
+     * Makes a String[][] with top 10 highscores
+     *
+     * @return list 2d String array with playes and scores
+     */
 
-        //String[][] list = new String[2][10];
+    public String[][] getHighscoreList() {
         String[][] list = new String[10][2];
 
         try {
-            //getConnection();
             connection = ConnectionPool.getMainConnectionPool().getConnection();
 
             cStmt = connection.prepareCall("{call player_get_highscore()}");
 
             ResultSet rs = cStmt.executeQuery();
             int counter = 0;
-            int counter2 = 0;
+
             while (rs.next()) {
-                //username = rs.getString(1);
-                //highscore = rs.getString(2);
                 list[counter][0] = rs.getString(1);
                 list[counter][1] = rs.getString(2);
 
                 counter++;
-                /*
-
-                for (int i = 0; i < list.length; i++) {
-
-                    username = rs.getString(1);
-                    if (username == null) {
-                        username = "0";
-                    }
-
-                    list[i][0] = rs.getString(1);
-                    System.out.println("i: "+i+rs.getRow());
-                    for (int j = 0; j < list[0].length; j++) {
-
-                        highscore = rs.getString(2);
-                        if (highscore == null) {
-                            highscore = "0";
-                        }
-
-
-                        list[j][1] = rs.getString(2);
-                        System.out.println("j: "+j+rs.getRow());
-                    }
-
-                    counter++;
-                    */
                 }
-
-
 
 
         } catch (SQLException e) {
