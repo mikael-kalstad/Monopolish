@@ -701,7 +701,7 @@
          </cursor>
       </Button>
       <Pane fx:id="backgroundOverlay" prefHeight="1055.0" prefWidth="1920.0" style="-fx-background-color: rgba(160,160,160,0.4);" visible="false" />
-      <Pane fx:id="propertiesContainer" layoutX="257.0" layoutY="105.0" prefHeight="855.0" prefWidth="1477.0" style="-fx-background-color: ededed; -fx-background-radius: 20;">
+      <Pane fx:id="propertiesContainer" layoutX="257.0" layoutY="105.0" prefHeight="855.0" prefWidth="1477.0" style="-fx-background-color: ededed; -fx-background-radius: 20;" visible="false">
          <children>
             <Text layoutX="609.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Properties">
                <font>
@@ -740,7 +740,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Text fill="#6f6d6d" layoutX="53.0" layoutY="133.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Send a request to trade properties and money with player">
+            <Text fx:id="tradeMsg" fill="#6f6d6d" layoutX="53.0" layoutY="133.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Send a request to trade properties and money with player">
                <font>
                   <Font size="11.0" />
                </font>

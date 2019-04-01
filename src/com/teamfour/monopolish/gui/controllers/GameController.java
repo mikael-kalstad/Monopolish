@@ -79,6 +79,7 @@ public class GameController {
     @FXML private FlowPane propertiesContentContainer;
     @FXML private Text propertiesUsername;
     @FXML private Button tradeBtn;
+    @FXML private Text tradeMsg;
 
     //trading screen:
     @FXML private Pane tradecontainer;
@@ -117,7 +118,7 @@ public class GameController {
 
                 if (votes[0] != 0 || votes[1] != 0 && !forfeitContainer.isVisible()) {
                     // Show forfeit dialog
-                    forfeit();
+                    Platform.runLater(() -> forfeit());
 
                     // Stop timer
                     forfeitTimer.cancel();
@@ -240,6 +241,15 @@ public class GameController {
         for (Property p : gameLogic.getPlayer(username).getProperties()) {
             Pane card = GameControllerDrawFx.createPropertyCard(p);
             propertiesContentContainer.getChildren().add(card);
+        }
+
+        // Check if trade btn and msg should be shown
+        if (username.equals(USERNAME)) {
+            tradeBtn.setVisible(false);
+            tradeMsg.setVisible(false);
+        } else {
+            tradeBtn.setVisible(true);
+            tradeMsg.setVisible(true);
         }
 
         // Close dialog if background is clicked
