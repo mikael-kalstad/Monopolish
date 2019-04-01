@@ -353,6 +353,7 @@ public class GameControllerDrawFx {
      */
     static Pane createPropertyCard(Property property) {
         Pane card = new AnchorPane();
+        card.setId(property.getName());
         Pane header = new AnchorPane();
         Label propertynamelabel = new Label(property.getName());
         TextFlow propertypriceflow = new TextFlow();
