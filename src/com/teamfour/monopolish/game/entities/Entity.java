@@ -97,6 +97,7 @@ public abstract class Entity {
     public void updatePropertiesFromDatabase(int gameId) throws SQLException {
         properties.clear();
         properties = propertyDAO.getPropertiesByOwner(gameId, null);
+        System.out.println("Properties amount: " + properties.size());
     }
 
     @Override

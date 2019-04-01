@@ -102,6 +102,7 @@ public class Player extends Entity {
     public void updatePropertiesFromDatabase(int gameId) throws SQLException {
         properties.clear();
         properties = propertyDAO.getPropertiesByOwner(gameId, USERNAME);
+        System.out.println("Properties amount: " + properties.size());
     }
 
     /**

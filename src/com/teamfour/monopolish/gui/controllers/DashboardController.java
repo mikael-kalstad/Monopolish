@@ -72,6 +72,7 @@ public class DashboardController {
 
             // Check if score is null, and set default as 0
             // Can be null with result from database
+            if (highscoreData[i][0] == null) continue;
             if (highscoreData[i][1] == null) highscoreData[i][1] = String.valueOf(0);
 
             // Adding thousand format

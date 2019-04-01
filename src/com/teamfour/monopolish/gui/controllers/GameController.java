@@ -587,6 +587,7 @@ public class GameController {
                     Alert messageBox = new Alert(Alert.AlertType.INFORMATION, "You do not have enough funds to purchase this property.");
                     messageBox.showAndWait();
                 }
+                System.out.println("BUYING PROPERTY...");
             } catch (SQLException e) {
                 e.printStackTrace();
             }

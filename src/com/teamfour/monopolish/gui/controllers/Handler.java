@@ -119,7 +119,6 @@ public class Handler extends Application {
      * @param arr
      */
     public static void setColorList(ArrayList<String[]> arr) {
-//        System.out.println("arr in HANDLER " + arr.get(0)[0] + " color " + arr.get(0)[1]);
         // Deep copy of the array
         for (String[] player : arr) {
             colorList.add(player.clone());
