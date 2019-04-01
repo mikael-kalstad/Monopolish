@@ -175,6 +175,7 @@ public class GameController {
         // Load forfeit GUI
         addElementToContainer(ViewConstants.FORFEIT.getValue(), forfeitContainer);
         backgroundOverlay.setVisible(true);
+        forfeitContainer.setVisible(true);
     }
 
     /**
