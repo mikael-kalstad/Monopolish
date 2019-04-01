@@ -54,25 +54,28 @@ public class ForfeitController {
      * @param container Target container for on hover
      */
     private void setOnHover(Pane container) {
-        String color = "#ef5350";  // Quit color
-        if (container.getId().equals("voteContinue")) color = "#009e0f"; // Continue color
+        // Quit color
+        String color = "#ef5350";
+        String hoverColor = "#d13734";
+
+
+        if (container.getId().equals("voteContinue")) {
+            // Continue color
+            color = "#009e0f";
+            hoverColor = "#01870e";
+        }
 
         String finalColor = color;
+        String finalHoverColor = hoverColor;
 
         // Lighten background on hover
         container.setOnMouseEntered(e -> {
-            container.setStyle(
-                    "filter: brightness(-20%);" +
-                    "-fx-background-color: " + finalColor + ";"
-            );
+            container.setStyle("-fx-background-color: " + finalHoverColor + ";");
         });
 
         // Reset background when mouse leaves on hover
         container.setOnMouseExited(e -> {
-            container.setStyle(
-                    "filter: brightness(100%);" +
-                    "-fx-background-color: " + finalColor + ";"
-            );
+            container.setStyle("-fx-background-color: " + finalColor + ";");
         });
     }
 
