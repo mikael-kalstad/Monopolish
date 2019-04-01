@@ -2,7 +2,6 @@
   Generates propertys
  */
 
-DELETE FROM property
 
 INSERT INTO property VALUES(1, 'Gløshaugen', 1200, 1, '#8D6E63');
 INSERT INTO property VALUES(2, 'Svartlamoen', 1200, 3, '#8D6E63');

@@ -97,7 +97,6 @@ DROP PROCEDURE if exists game_close;
 
 CREATE PROCEDURE game_close(IN gameid INT)
   BEGIN
-
     DELETE FROM chatmessage
       WHERE player_id IN
         (SELECT player_id FROM message_view WHERE game_id = gameid);
