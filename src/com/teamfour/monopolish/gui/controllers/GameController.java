@@ -107,6 +107,28 @@ public class GameController {
         }
         catch (IOException e) { e.printStackTrace(); }
 
+        // Start forfeit timer
+        Timer forfeitTimer = new Timer();
+
+        TimerTask forfeitTask = new TimerTask() {
+            @Override
+            public void run() {
+                int[] votes = Handler.getPlayerDAO().getForfeitStatus(Handler.getCurrentGameId());
+
+                if (votes[0] != 0 || votes[1] != 0 && !forfeitContainer.isVisible()) {
+                    // Show forfeit dialog
+                    forfeit();
+
+                    // Stop timer
+                    forfeitTimer.cancel();
+                    forfeitTimer.purge();
+                }
+            }
+        };
+
+        // Check for forfeit every second
+        forfeitTimer.scheduleAtFixedRate(forfeitTask, 0L, 1000L);
+
         // Set default alert box for leaving when window is closed
         Handler.getSceneManager().getWindow().setOnCloseRequest(e -> {
             e.consume(); // Override default closing method
@@ -174,7 +196,11 @@ public class GameController {
     public void forfeit() {
         // Load forfeit GUI
         addElementToContainer(ViewConstants.FORFEIT.getValue(), forfeitContainer);
+        // Show background and disable click
         backgroundOverlay.setVisible(true);
+        backgroundOverlay.onMouseClickedProperty().set(e -> {});
+
+        propertiesContainer.setVisible(false);
         forfeitContainer.setVisible(true);
     }
 

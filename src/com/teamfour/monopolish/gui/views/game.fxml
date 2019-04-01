@@ -701,7 +701,7 @@
          </cursor>
       </Button>
       <Pane fx:id="backgroundOverlay" prefHeight="1055.0" prefWidth="1920.0" style="-fx-background-color: rgba(160,160,160,0.4);" visible="false" />
-      <Pane fx:id="propertiesContainer" layoutX="257.0" layoutY="105.0" prefHeight="855.0" prefWidth="1477.0" style="-fx-background-color: ededed; -fx-background-radius: 20;" visible="false">
+      <Pane fx:id="propertiesContainer" layoutX="257.0" layoutY="105.0" prefHeight="855.0" prefWidth="1477.0" style="-fx-background-color: ededed; -fx-background-radius: 20;">
          <children>
             <Text layoutX="609.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Properties">
                <font>
@@ -732,7 +732,7 @@
                   <Font size="23.0" />
                </font>
             </Text>
-            <Button fx:id="tradeBtn" layoutX="123.0" layoutY="54.0" mnemonicParsing="false" onAction="#forfeit" prefHeight="46.0" prefWidth="141.0" style="-fx-background-color: #5996ba;" text="Trade" textFill="#fafafa">
+            <Button fx:id="tradeBtn" layoutX="123.0" layoutY="54.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="141.0" style="-fx-background-color: #5996ba;" text="Trade" textFill="#fafafa">
                <font>
                   <Font size="21.0" />
                </font>
