@@ -136,9 +136,10 @@ CREATE PROCEDURE player_set_forfeit(
   IN forfeit_value INT
 )
   BEGIN
-    UPDATE player p, account a SET forfeit = forfeit_value WHERE in_game_id = p.game_id AND in_username = a.username;
+    UPDATE player p, account a SET forfeit = forfeit_value WHERE in_game_id = p.game_id AND in_username = a.username AND p.user_id = a.user_id;
   END;
 
+CALL player_set_forfeit('giske', 19, 2);
 
 DROP PROCEDURE player_get_forfeit;
 
@@ -157,4 +158,4 @@ CREATE PROCEDURE player_get_forfeit(IN game_id INT)
 
   END;
 
-CALL player_get_forfeit(15);
+CALL player_get_forfeit(3);

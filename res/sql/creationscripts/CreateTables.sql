@@ -109,15 +109,24 @@ create table chatmessage(
 );
 
 CREATE TABLE trading(
-  seller_id INT,
-  buyer_id INT,
-  price INT,
-  prop_id INT
+  seller_id INT NOT NULL,
+  buyer_id INT NOT NULL,
+  price INT DEFAULT 0,
+  prop_id INT NOT NULL,
+  PRIMARY KEY (seller_id, buyer_id, prop_id)
 );
 
 /*
 ADD FOREIGN KEYS
- */
+*/
+ALTER TABLE trading
+  ADD FOREIGN KEY (seller_id) REFERENCES player(player_id);
+ALTER TABLE trading
+  ADD FOREIGN KEY (buyer_id) REFERENCES player(player_id);
+ALTER TABLE trading
+  -- ADD FOREIGN KEY (prop_id) REFERENCES gameproperty(property_id);
+  ADD FOREIGN KEY (prop_id) REFERENCES property(property_id);
+
 
 ALTER TABLE lobby
   ADD FOREIGN KEY (room_id) REFERENCES lobbyname(lobby_id);
