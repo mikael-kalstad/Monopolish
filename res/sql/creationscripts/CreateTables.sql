@@ -22,7 +22,6 @@ DROP TABLE IF EXISTS trading;
 
 -- Enable again
 SET FOREIGN_KEY_CHECKS=1;
-
 /*
 CREATE TABLES
  */
@@ -95,7 +94,6 @@ create table game(
 create table gameproperty(
   game_id integer not null,
   property_id integer not null,
-  position int not null DEFAULT 0,
   pawned bit default 0,
   user_id integer,
   constraint pk_gameproperty PRIMARY KEY (game_id, property_id)

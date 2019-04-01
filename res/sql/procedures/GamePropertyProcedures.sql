@@ -8,15 +8,21 @@ drop procedure if exists property_clean;
 delimiter $$
 create procedure property_create(
     in g_id int,
-    in prop_id int
+    in prop_id int,
+    in user_name varchar(30)
   )
   begin
-    insert into gameproperty(game_id, property_id) values (g_id, prop_id);
+    declare u_id int;
+
+    -- Get username from user_id
+    select user_id  into u_id from account where user_name = username;
+
+    insert into gameproperty(game_id, property_id, user_id) values (g_id, prop_id, u_id);
 
     select gameproperty.*, property.position, property.price, property.categorycolor
       from gameproperty join property p
         on gameproperty.property_id = p.property_id
-          where prop_id = property_id;
+          where prop_id = property_id and g_id = game_id;
   commit;
 
 end $$
@@ -26,21 +32,21 @@ DROP PROCEDURE property_get_all;
 
 DELIMITER $$
 CREATE PROCEDURE property_get_all(
-  IN game_id INT
+  IN g_id INT
 )
 BEGIN
   -- Delete all data related to this game session before starting
-  DELETE FROM gameproperty WHERE gameproperty.game_id=game_id;
+  DELETE FROM gameproperty WHERE gameproperty.game_id=g_id;
 
-  INSERT INTO gameproperty (game_id, property_id, position)
-  SELECT game_id, property_id, position FROM property;
+  INSERT INTO gameproperty (game_id, property_id)
+  SELECT g_id, property_id FROM property;
 
   select gp.property_id, p.name, p.price, p.position, p.categorycolor, IFNULL(a.username, '')
   from gameproperty gp
   join property p on gp.property_id = p.property_id
   left join player p2 on gp.user_id = p2.user_id
   left join account a on p2.user_id = a.user_id
-  WHERE gp.game_id=game_id;
+  WHERE gp.game_id=g_id;
 END $$
 
 delimiter $$
@@ -69,7 +75,7 @@ DROP PROCEDURE property_get_by_owner;
 
 DELIMITER $$
 CREATE PROCEDURE property_get_by_owner(
-  IN game_id INT,
+  IN g_id INT,
   IN username VARCHAR(30)
 )
 BEGIN
@@ -84,14 +90,14 @@ BEGIN
       join property p on gp.property_id = p.property_id
       left join player p2 on gp.user_id = p2.user_id
       left join account a on p2.user_id = a.user_id
-      WHERE gp.game_id=game_id AND a.username IS NULL;
+      WHERE gp.game_id=g_id AND a.username IS NULL group by p.property_id;
   ELSE
     select gp.property_id, p.name, p.price, p.position, p.categorycolor, IFNULL(a.username, '')
     from gameproperty gp
       join property p on gp.property_id = p.property_id
       left join player p2 on gp.user_id = p2.user_id
       left join account a on p2.user_id = a.user_id
-      WHERE gp.game_id=game_id AND a.username LIKE username;
+      WHERE gp.game_id=g_id AND a.username LIKE username group by p.property_id;
   END IF;
 END $$
 DELIMITER ;

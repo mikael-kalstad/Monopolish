@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 /**
  * This class manages all Entities in the game session. Entities are classified by players and the bank object.
- * This class uses its arraylist of players and the bank object to handle the communication between this objects,
+ * This class uses its arraylist of players and the bank object to handle the communication between these objects,
  * as well as acting as an abstraction layer between all the objects and the rest of the application
  *
  * @author      eirikhem
