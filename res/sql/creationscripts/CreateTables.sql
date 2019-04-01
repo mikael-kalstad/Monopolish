@@ -17,6 +17,7 @@ DROP TABLE IF EXISTS player;
 DROP TABLE IF EXISTS property;
 DROP TABLE IF EXISTS gameproperty;
 DROP TABLE IF EXISTS chatmessage;
+DROP TABLE IF EXISTS trading;
 
 
 -- Enable again
@@ -66,7 +67,8 @@ CREATE TABLE player
   injail BIT NOT NULL DEFAULT 0,
   bankrupt BIT NOT NULL DEFAULT 0,
   active int not null default 1,
-  score INT DEFAULT 0
+  score INT DEFAULT 0,
+  forfeit INT DEFAULT 0
 );
 
 -- active = 1 : aktiv,
@@ -106,6 +108,13 @@ create table chatmessage(
   time_in datetime not null,
   message varchar(40),
   primary key (message_id, player_id)
+);
+
+CREATE TABLE trading(
+  seller_id INT,
+  buyer_id INT,
+  price INT,
+  prop_id INT
 );
 
 /*

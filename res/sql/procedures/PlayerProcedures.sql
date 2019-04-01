@@ -124,28 +124,21 @@ END;
 
 CAlL player_get_highscore();
 
--- TESTING: -----------
-SELECT money FROM player ORDER BY IFNULL(score, 0);
-
-SELECT IFNULL(score, 0) FROM player;
-SELECT
-       CASE
-         WHEN score IS NULL THEN 'N/A'
-         ELSE score
-           END AS Result
-FROM player;
-
-CREATE PROCEDURE fisk()
+-- default 0, 1 = quit, 2 = continue
+CREATE PROCEDURE player_set_forfeit(
+  IN player_id INT,
+  IN game_id INT,
+  IN forfeit_value INT
+)
   BEGIN
-    DECLARE variabel INT;
-  SELECT username, score
-  FROM account
-    LEFT JOIN player p on account.user_id = p.user_id
-    ORDER BY score DESC LIMIT 10 INTO variabel;
-    SELECT CASE WHEN variabel IS NULL THEN 0 END AS money;
-
-    CREATE VIEW v AS SELECT variabel, score AS value FROM player;
-    SELECT * FROM v;
-
+    UPDATE player p SET forfeit = forfeit_value WHERE p.game_id = game_id AND p.player_id = player_id;
   END;
--- ---------------
+
+CALL player_set_forfeit(1, 1, 1);
+
+CREATE PROCEDURE player_get_forfeit(IN player_id INT, IN game_id INT)
+  BEGIN
+    SELECT p.forfeit FROM player p WHERE game_id = p.game_id AND player_id = p.player_id;
+  END;
+
+CALL player_get_forfeit(1, 1);
