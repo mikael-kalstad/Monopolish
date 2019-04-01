@@ -34,6 +34,9 @@ public class LobbyController {
     private Timer refreshTimer;
     private int time;
 
+    // After refresh keep track of if the game has started
+    private boolean game_starting = false;
+
     // GUI FXML elements
     @FXML private FlowPane lobbiesContainer;
     @FXML private Text noLobbyText;
@@ -348,7 +351,6 @@ public class LobbyController {
 
         // Update list containing username and color of players
         colorList.add(new String[]{username, color});
-//        System.out.println("colors " + colorList.get(0)[0] + " color " + colorList.get(0)[1]);
 
         // Render player in container
         GridPane playerRow = LobbyDrawFx.drawPlayerRow(color, username, numOfPlayers);
@@ -419,10 +421,11 @@ public class LobbyController {
             }
 
             // Check if game should start
-            if (numOfPlayers > 1 && numOfReady == numOfPlayers) {
+            if (numOfPlayers > 1 && numOfReady == numOfPlayers && !game_starting) {
                 statusValue.setText(STATUS_STARTING);
                 LobbyDrawFx.setTextColor(statusValue, PLAYER_COLOR_RED);
                 startGame(lobby_id);
+                game_starting = true;
             }
         }
 
@@ -486,6 +489,7 @@ public class LobbyController {
      *
      */
     private void startGame(int lobby_id) {
+        System.out.println("STARTING GAME!");
         // Countdown refreshTimer when game start
         Timer countDownTimer = new Timer();
         countdown.setVisible(true);
@@ -503,6 +507,7 @@ public class LobbyController {
                     if (current_lobby_id == -1 || numOfReady != numOfPlayers) {
                         countDownTimer.cancel();
                         countdown.setVisible(false);
+                        game_starting = false;
                     }
                     // Logic when game should start
                     else if (time == 0) {

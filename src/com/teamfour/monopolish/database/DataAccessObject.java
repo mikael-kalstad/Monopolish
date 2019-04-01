@@ -35,11 +35,11 @@ public abstract class DataAccessObject {
      */
     protected void releaseConnection() {
         ConnectionPool.getMainConnectionPool().releaseConnection(connection);
-        try {
+        /*try {
             cStmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
-        }
+        }*/
 
         connection = null;
     }
