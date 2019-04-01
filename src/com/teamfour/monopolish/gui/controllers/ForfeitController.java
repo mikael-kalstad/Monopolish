@@ -1,6 +1,7 @@
 package com.teamfour.monopolish.gui.controllers;
 
 import com.teamfour.monopolish.gui.views.ViewConstants;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
@@ -143,7 +144,7 @@ public class ForfeitController {
                 } else {
                     countdownTimer.cancel();
                     countdownTimer.purge();
-                    endGame();
+                    Platform.runLater(() -> endGame());
                 }
             }
         };
