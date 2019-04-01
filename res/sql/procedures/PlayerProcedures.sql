@@ -124,29 +124,37 @@ END;
 
 CAlL player_get_highscore();
 
--- default 0, 1 = quit, 2 = continue
+DROP PROCEDURE player_set_forfeit;
+
+/**
+  Procedure that sets the forfeit value of a player in a game
+  default 0, 1 = quit, 2 = continue
+ */
 CREATE PROCEDURE player_set_forfeit(
-  IN username VARCHAR(30),
-  IN game_id INT,
+  IN in_username VARCHAR(30),
+  IN in_game_id INT,
   IN forfeit_value INT
 )
   BEGIN
-    UPDATE player p, account a SET forfeit = forfeit_value WHERE p.game_id = game_id AND a.username = username;
+    UPDATE player p, account a SET forfeit = forfeit_value WHERE in_game_id = p.game_id AND in_username = a.username;
   END;
 
-CALL player_set_forfeit(1, 1, 1);
 
 DROP PROCEDURE player_get_forfeit;
 
+/**
+  Procedure that takes in game_id and counts how many players want to quit the game
+ */
 CREATE PROCEDURE player_get_forfeit(IN game_id INT)
   BEGIN
     DECLARE quit INT;
-    DECLARE fortset INT;
-    SELECT COUNT(p.forfeit) FROM player p, account a WHERE game_id = p.game_id AND p.forfeit = 1 INTO quit;
-    SELECT COUNT(p.forfeit) FROM player p, account a WHERE game_id = p.game_id AND p.forfeit = 2 INTO fortset;
-    SELECT quit, fortset;
+    DECLARE fortsett INT;
 
+    SELECT COUNT(DISTINCT p.player_id) FROM player p, account a WHERE game_id = p.game_id AND p.forfeit = 1 INTO quit;
+    SELECT COUNT(DISTINCT p.player_id) FROM player p, account a WHERE game_id = p.game_id AND p.forfeit = 2 INTO fortsett;
+
+    SELECT quit, fortsett;
 
   END;
 
-CALL player_get_forfeit(1);
+CALL player_get_forfeit(15);
