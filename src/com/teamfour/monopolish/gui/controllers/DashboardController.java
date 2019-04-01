@@ -34,14 +34,6 @@ public class DashboardController {
     // Container for top 10 highscores
     @FXML Pane highscoreContainer;
 
-    // Example data
-    private String[][] fakeData = {
-            {"Torbjørn", "10000"}, {"Lisa", "9000"}, {"Mikael", "8734"},
-            {"giske777", "8500"}, {"Carlos", "7053"}, {"Siv jensen", "3223"},
-            {"Giske", "2300"}, {"Carlos", "1233"}, {"Siv jensen", "1111"},
-            {"KNM Helge Ingstad", "0001"}
-    };
-
     /**
      * This method will run before the view is rendered
      */
@@ -55,7 +47,8 @@ public class DashboardController {
         }
 
         //String[][] data = Handler.getPlayerDAO().
-        setLeaderBoard(fakeData);
+        //setLeaderBoard(fakeData);
+        setLeaderBoard(Handler.getPlayerDAO().getHighscoreList());
     }
 
     private String formatWithThousandDecimal(String num) {
