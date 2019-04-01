@@ -2,6 +2,7 @@ package com.teamfour.monopolish.gui.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 
 import java.util.Timer;
@@ -19,24 +20,36 @@ public class ForfeitController {
     // Countdown time
     @FXML private Text timeValue;
 
+    // Text showing what you voted
+    @FXML private Text yourVoteText;
+
     // Constants
     private final int COUNTDOWN_TIME = 60;
     private final String USERNAME = Handler.getAccount().getUsername();
     private final int GAME_ID = Handler.getCurrentGameId();
     private final int NUM_OF_PLAYERS = Handler.getPlayerDAO().getPlayersInGame(GAME_ID).size();
+    private final String VOTE_QUIT_MSG = "You voted to Quit";
+    private final String VOTE_CONTINUE_MSG = "You voted to Continue";
 
     private int votesForQuit = 0;
     private int votesForContinue = 0;
+    int time = COUNTDOWN_TIME;
 
     @FXML public void initialize() {
         timeValue.setText(String.valueOf(COUNTDOWN_TIME));
 
+        // User want to forfeit/quit
         voteQuit.onMouseClickedProperty().set(e -> {
             Handler.getPlayerDAO().setForfeitStatus(USERNAME, GAME_ID, 1);
+            yourVoteText.setText(VOTE_QUIT_MSG);
+            yourVoteText.setFill(Paint.valueOf("red"));
         });
 
+        // User want to continue the game
         voteContinue.onMouseClickedProperty().set(e -> {
             Handler.getPlayerDAO().setForfeitStatus(USERNAME, GAME_ID, 2);
+            yourVoteText.setText(VOTE_CONTINUE_MSG);
+            yourVoteText.setFill(Paint.valueOf("green"));
         });
 
         // Change color on hover to show selection
@@ -57,26 +70,31 @@ public class ForfeitController {
         // Quit color
         String color = "#ef5350";
         String hoverColor = "#d13734";
-
+        String backgroundRadius = " 0 0 0 15";
 
         if (container.getId().equals("voteContinue")) {
             // Continue color
-            color = "#009e0f";
+            color = "#52d35e";
             hoverColor = "#01870e";
+            backgroundRadius = "0 0 15 0";
         }
 
+        // Final values for variables is needed in lambda functions
         String finalColor = color;
         String finalHoverColor = hoverColor;
+        String finalBackgroundRadius = backgroundRadius;
 
         // Lighten background on hover
-        container.setOnMouseEntered(e -> {
-            container.setStyle("-fx-background-color: " + finalHoverColor + ";");
-        });
+        container.setOnMouseEntered(e -> container.setStyle(
+                "-fx-background-color: " + finalHoverColor + ";" +
+                "-fx-background-radius: " + finalBackgroundRadius + ";"
+        ));
 
         // Reset background when mouse leaves on hover
-        container.setOnMouseExited(e -> {
-            container.setStyle("-fx-background-color: " + finalColor + ";");
-        });
+        container.setOnMouseExited(e -> container.setStyle(
+                "-fx-background-color: " + finalColor + ";" +
+                "-fx-background-radius: " + finalBackgroundRadius + ";"
+        ));
     }
 
     /**
@@ -98,7 +116,9 @@ public class ForfeitController {
                 voteCountContinue.setText(String.valueOf(votes[1]));
 
                 if (votesForQuit + votesForContinue == NUM_OF_PLAYERS) {
-                    // End game
+                    refreshTimer.cancel();
+                    refreshTimer.purge();
+                    endGame();
                 }
             }
         };
@@ -112,12 +132,12 @@ public class ForfeitController {
         TimerTask countdownTask = new TimerTask() {
             @Override
             public void run() {
-                int time = COUNTDOWN_TIME;
-
                 if (time > 0) {
                     time--;
                     timeValue.setText(String.valueOf(time));
                 } else {
+                    countdownTimer.cancel();
+                    countdownTimer.purge();
                     endGame();
                 }
             }
