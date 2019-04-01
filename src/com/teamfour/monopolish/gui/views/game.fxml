@@ -5,7 +5,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -16,7 +15,6 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -650,7 +648,7 @@
                   <Font name="Tahoma" size="75.0" />
                </font>
             </Label>
-            <AnchorPane fx:id="phillip" layoutX="266.0" layoutY="23.0" prefHeight="240.0" prefWidth="190.0" />
+            <AnchorPane fx:id="cardContainer" layoutX="266.0" layoutY="23.0" prefHeight="240.0" prefWidth="190.0" />
             <AnchorPane fx:id="diceContainer" layoutX="210.0" layoutY="408.0" prefHeight="200.0" prefWidth="301.0">
                <children>
                   <ImageView fx:id="dice1_img" fitHeight="50.0" fitWidth="52.0" layoutX="76.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
@@ -702,55 +700,6 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Pane fx:id="chatContainer" layoutX="14.0" layoutY="700.0" prefHeight="315.0" prefWidth="235.0" style="-fx-background-radius: 10 10 0 0; -fx-border-color: grey; -fx-border-radius: 10 10 0 0;">
-         <children>
-            <Pane layoutY="-1.0" onMouseClicked="#toggleChat" prefHeight="40.0" prefWidth="235.0" style="-fx-background-color: #03A9F4; -fx-background-radius: 10 10 0 0;">
-               <children>
-                  <Text fill="WHITE" layoutX="97.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Chat">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Text>
-                  <Circle fx:id="unreadContainer" fill="#ff4848" layoutX="210.0" layoutY="20.0" radius="11.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" visible="false" />
-                  <Text fx:id="unreadValue" fill="WHITE" layoutX="206.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="8" visible="false">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Text>
-               </children>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Pane>
-            <ScrollPane fx:id="chatMessageScrollPane" layoutY="40.0" prefHeight="240.0" prefWidth="235.0" style="-fx-hbar-policy: never;">
-               <content>
-                  <FlowPane fx:id="chatMessagesContainer" prefHeight="238.0" prefWidth="235.0" />
-               </content>
-            </ScrollPane>
-            <TextField fx:id="chatInput" layoutY="275.0" onAction="#addChatMessage" prefHeight="40.0" prefWidth="235.0" promptText="Say something nice..." style="-fx-background-color: ededed; -fx-border-width: 1;">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </TextField>
-            <ImageView fitHeight="24.0" fitWidth="24.0" layoutX="197.0" layoutY="283.0" onMouseClicked="#addChatMessage">
-               <image>
-                  <Image url="file:res/gui/Game/send.png" />
-               </image>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </ImageView>
-            <Pane fx:id="chatWarning" layoutX="-2.0" layoutY="257.0" prefHeight="20.0" prefWidth="235.0" style="-fx-background-color: ededed; -fx-background-radius: 15 15 0 0; -fx-border-width: 1; -fx-border-color: CFCFCF;" visible="false">
-               <children>
-                  <Text fill="#d95e3d" layoutX="34.0" layoutY="14.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" Maximum 40 characters allowed" wrappingWidth="166.07812750339508">
-                     <font>
-                        <Font size="10.0" />
-                     </font>
-                  </Text>
-               </children>
-            </Pane>
-         </children>
-      </Pane>
       <Pane fx:id="backgroundOverlay" prefHeight="1055.0" prefWidth="1920.0" style="-fx-background-color: rgba(160,160,160,0.4);" visible="false" />
       <Pane fx:id="propertiesContainer" layoutX="257.0" layoutY="105.0" prefHeight="855.0" prefWidth="1477.0" style="-fx-background-color: ededed; -fx-background-radius: 20;" visible="false">
          <children>
@@ -799,5 +748,6 @@
             <Font name="System Bold" size="32.0" />
          </font>
       </Label>
+      <Pane fx:id="chatContainer" layoutX="21.0" layoutY="700.0" prefHeight="315.0" prefWidth="235.0" />
    </children>
 </AnchorPane>

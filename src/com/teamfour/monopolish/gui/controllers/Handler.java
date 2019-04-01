@@ -4,6 +4,7 @@ import com.teamfour.monopolish.account.Account;
 import com.teamfour.monopolish.account.AccountDAO;
 import com.teamfour.monopolish.game.GameDAO;
 import com.teamfour.monopolish.game.entities.player.PlayerDAO;
+import com.teamfour.monopolish.gui.views.SceneManager;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import com.teamfour.monopolish.lobby.LobbyDAO;
 import javafx.application.Application;

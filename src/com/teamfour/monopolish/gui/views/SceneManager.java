@@ -1,4 +1,4 @@
-package com.teamfour.monopolish.gui.controllers;
+package com.teamfour.monopolish.gui.views;
 
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.fxml.FXMLLoader;
@@ -30,7 +30,7 @@ public class SceneManager {
      * @param stage         the stage of the application
      * @param initial_view the initial view that will render on the stage
      */
-    SceneManager(Stage stage, String initial_view) {
+    public SceneManager(Stage stage, String initial_view) {
        this.window = stage;
        setScene(initial_view);
     }
