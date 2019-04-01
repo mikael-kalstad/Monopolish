@@ -116,9 +116,15 @@ public class LobbyController {
 
                     refreshTimer.cancel(); // Stop refreshTimer thread
 
+                    // Logout user
+                    Handler.getAccountDAO().setInactive(USERNAME);
+
                     // Close the window
                     Handler.getSceneManager().getWindow().close();
                 }
+            } else {
+                // Logout user
+                Handler.getAccountDAO().setInactive(USERNAME);
             }
         });
     }

@@ -121,7 +121,11 @@ public class GameController {
                 Handler.getLobbyDAO().removePlayer(USERNAME, Handler.getLobbyDAO().getLobbyId(USERNAME));
                 gameLogic.getEntityManager().removePlayer(USERNAME);
                 databaseTimer.cancel(); // Stop databaseTimer thread
+                databaseTimer.purge();
                 chatTimer.cancel();
+
+                // Logout user
+                Handler.getAccountDAO().setInactive(USERNAME);
 
                 // Close the window
                 Handler.getSceneManager().getWindow().close();
@@ -143,6 +147,7 @@ public class GameController {
 
         if (alertDialog.getResult().getButtonData().isDefaultButton()) {
             databaseTimer.cancel(); // Stop timer thread
+            databaseTimer.purge();
             chatTimer.cancel();
             // Remove player from lobby
             final String USERNAME = Handler.getAccount().getUsername();
@@ -153,6 +158,7 @@ public class GameController {
             // Change view to dashboard
             Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
             databaseTimer.cancel(); // Stop timer thread
+            databaseTimer.purge();
         }
     }
 
@@ -210,6 +216,7 @@ public class GameController {
     private void waitForTurn() {
         // Create a databaseTimer object
         databaseTimer = new Timer();
+
         // We'll schedule a task that will check against the database
         // if it's your turn every 1 second
         databaseTimer.scheduleAtFixedRate(new TimerTask() {
@@ -445,6 +452,7 @@ public class GameController {
         // If this is your turn, stop the database check databaseTimer and enable the button to roll dice
         if (yourTurn) {
             databaseTimer.cancel();
+            databaseTimer.purge();
             rolldiceBtn.setDisable(false);
         }
     }

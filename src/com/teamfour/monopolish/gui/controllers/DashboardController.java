@@ -46,9 +46,12 @@ public class DashboardController {
             personalHighscore.setText(formatWithThousandDecimal(String.valueOf(Handler.getAccount().getHighscore())));
         }
 
-        //String[][] data = Handler.getPlayerDAO().
-        //setLeaderBoard(fakeData);
         setLeaderBoard(Handler.getPlayerDAO().getHighscoreList());
+
+        Handler.getSceneManager().getWindow().setOnCloseRequest(e -> {
+            // Logout user
+            Handler.getAccountDAO().setInactive(Handler.getAccount().getUsername());
+        });
     }
 
     private String formatWithThousandDecimal(String num) {
