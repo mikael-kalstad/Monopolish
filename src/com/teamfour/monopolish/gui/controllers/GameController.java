@@ -444,7 +444,7 @@ public class GameController {
 
         // If this is your turn, stop the database check databaseTimer and enable the button to roll dice
         if (yourTurn) {
-            //databaseTimer.cancel();
+            databaseTimer.cancel();
             rolldiceBtn.setDisable(false);
         }
     }
@@ -477,7 +477,7 @@ public class GameController {
         opponentsContainer.getChildren().clear();
         ArrayList<Player> players = Handler.getPlayerDAO().getPlayersInGame(Handler.getCurrentGameId());
         String color;
-        ImageView img = null;
+        ImageView img;
 
         // Go through all the players, update info and render GUI
         for (Player player : players) {
@@ -489,6 +489,7 @@ public class GameController {
             if (player.getActive() == 0) img = new ImageView("file:res/gui/Game/exited.png");
             else if (player.isInJail()) img = new ImageView("file:res/gui/Game/jail.png");
             else if (player.isBankrupt()) img = new ImageView("file:res/gui/Game/bankrupt.png");
+            else img = null;
 
             // Player is the actual user
             if (player.getUsername().equals(Handler.getAccount().getUsername())) {
