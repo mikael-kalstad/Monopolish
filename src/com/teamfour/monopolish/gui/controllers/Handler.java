@@ -3,14 +3,17 @@ package com.teamfour.monopolish.gui.controllers;
 import com.teamfour.monopolish.account.Account;
 import com.teamfour.monopolish.account.AccountDAO;
 import com.teamfour.monopolish.game.GameDAO;
+import com.teamfour.monopolish.game.GameLogic;
 import com.teamfour.monopolish.game.entities.player.PlayerDAO;
 import com.teamfour.monopolish.gui.views.SceneManager;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import com.teamfour.monopolish.lobby.LobbyDAO;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
+import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -28,7 +31,10 @@ public class Handler extends Application {
     private static PlayerDAO playerDAO = new PlayerDAO();
     private static LobbyDAO lobbyDAO = new LobbyDAO();
     private static GameDAO gameDAO = new GameDAO();
+    private static GameLogic gameLogic;
     private static ArrayList<String[]> colorList = new ArrayList<>();
+    private static String tradeUsername;
+    private static @FXML Pane tradeContainer;
     private static int currentGameId;
 
     // Constants for GUI
@@ -132,6 +138,12 @@ public class Handler extends Application {
     public static PlayerDAO getPlayerDAO() { return playerDAO; }
     public static LobbyDAO getLobbyDAO() { return lobbyDAO; }
     public static GameDAO getGameDAO() { return gameDAO; }
+    public static GameLogic getGameLogic() { return gameLogic; }
+    public static void setGameLogic(GameLogic gameLogic) { Handler.gameLogic = gameLogic; }
+    public static String getTradeUsername() { return tradeUsername; }
+    public static void setTradeUsername(String tradeUsername) { Handler.tradeUsername = tradeUsername; }
+    public static Pane getTradeContainer() { return tradeContainer; }
+    public static void setTradeContainer(Pane tradeContainer) { Handler.tradeContainer = tradeContainer; }
     public static int getCurrentGameId() { return currentGameId; }
     public static void setCurrentGameId(int currentGameId) { Handler.currentGameId = currentGameId; }
 }

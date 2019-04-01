@@ -754,6 +754,6 @@
          </font>
       </Label>
       <Pane fx:id="chatContainer" layoutX="21.0" layoutY="700.0" prefHeight="315.0" prefWidth="235.0" />
-      <Pane fx:id="tradecontainer" layoutX="210.0" layoutY="53.0" prefHeight="950.0" prefWidth="1500.0" visible="false" />
+      <Pane fx:id="tradeContainer" layoutX="210.0" layoutY="53.0" prefHeight="950.0" prefWidth="1500.0" visible="false" />
    </children>
 </AnchorPane>
