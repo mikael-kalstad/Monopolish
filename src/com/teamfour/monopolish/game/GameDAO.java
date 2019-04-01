@@ -109,7 +109,7 @@ public class GameDAO extends DataAccessObject {
         int count = 0;
         try {
             getConnection();
-            cStmt = connection.prepareCall("{call game_close(?, ?)}");
+            cStmt = connection.prepareCall("{call game_close(?)}");
 
             cStmt.setInt(1, gameId);
 

@@ -165,6 +165,6 @@ public class ForfeitController {
         Handler.getGameDAO().finishGame(GAME_ID);
 
         // Switch to dashboard!
-        Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
+        Platform.runLater(() -> Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue()));
     }
 }
