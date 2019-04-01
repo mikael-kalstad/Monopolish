@@ -257,7 +257,7 @@ public class GameController {
         String s = USERNAME + " threw dice:  " + diceValues[0] + ",  " + diceValues[1];
 
         // Animation constants
-        final int DURATION = 600;
+        /*final int DURATION = 600;
         final int ROTATE_ANGLE = 1080;
 
         RotateTransition rt1 = new RotateTransition(Duration.millis(DURATION), dice1_img);
@@ -278,10 +278,10 @@ public class GameController {
         tt2.setToX(dice1_img.getX());
 
         ParallelTransition pt = new ParallelTransition(rt1, rt2, tt1, tt2);
-        pt.play();
+        pt.play();*/
 
         int[] finalDiceValues = diceValues;
-        pt.onFinishedProperty().set(e -> {
+        /*pt.onFinishedProperty().set(e -> {*/
             addToEventlog(s);
 
             // Update board view to show where player moved
@@ -298,7 +298,7 @@ public class GameController {
                 rolldiceBtn.setDisable(true);
                 endturnBtn.setDisable(false);
             }
-        });
+        /*});*/
 
     }
 
@@ -381,6 +381,7 @@ public class GameController {
      * Updates all the scene's graphics to reflect the changes in the database
      */
     public void updateBoard() {
+        System.out.println("Active threads: " + Thread.activeCount());
         String[] turns = gameLogic.getTurns();
         String[] colors = new String[turns.length];
         int[] positions = null;
