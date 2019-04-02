@@ -405,8 +405,8 @@ public class GameController {
      * Ends your current turn
      */
     public void endTurn() {
-        // TESTING
-        MessagePopupController.show("Baard accepted your trade!");
+//        // TESTING
+//        MessagePopupController.show("Baard accepted your trade!");
 
         // Stop and reset timer
         //roundTimer.cancel();
