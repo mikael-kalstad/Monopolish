@@ -224,6 +224,7 @@ public class GameController {
     public void forfeit() {
         // Load forfeit GUI
         addElementToContainer(ViewConstants.FORFEIT.getValue(), forfeitContainer);
+
         // Show background and disable click
         backgroundOverlay.setVisible(true);
         backgroundOverlay.onMouseClickedProperty().set(e -> {});
@@ -509,7 +510,8 @@ public class GameController {
         }
 
         roundValue.setText(String.valueOf(gameLogic.getRoundNumber() + 1));
-        userMoney.setText(String.valueOf(gameLogic.getPlayer(USERNAME).getMoney()));
+        // Updated in updatePlayerInfo()?
+        //userMoney.setText(String.valueOf(gameLogic.getPlayer(USERNAME).getMoney()));
         statusValue.setText("Waiting for " + gameLogic.getCurrentPlayer() + " to finish their turn");
 
         if (positions != null)
