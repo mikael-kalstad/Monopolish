@@ -40,6 +40,7 @@ public class PropertyDAO extends DataAccessObject {
                 int position = rs.getInt(4);
                 String categoryColor = rs.getString(5);
                 String owner = rs.getString(6);
+                int type = rs.getInt(7);
 
                 props.add(new Property(propertyId, name, price, position, categoryColor, owner));
             }
@@ -78,6 +79,7 @@ public class PropertyDAO extends DataAccessObject {
                 int position = rs.getInt(4);
                 String categoryColor = rs.getString(5);
                 String owner = rs.getString(6);
+                int type = rs.getInt(7);
 
                 properties.add(new Property(propertyId, name, price, position, categoryColor, owner));
             }
