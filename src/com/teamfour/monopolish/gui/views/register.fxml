@@ -133,7 +133,7 @@
             </Pane>
             <Pane fx:id="usernameRequirement" layoutX="65.0" layoutY="-2.0" prefHeight="33.0" prefWidth="464.0" style="-fx-background-color: f7f7f7; -fx-background-radius: 15 15 0 0; -fx-border-width: 1; -fx-border-color: CFCFCF; -fx-border-radius: 15 15  0 0;" visible="false">
                <children>
-                  <Text fill="#d76363" layoutX="64.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username can have maximum 30 characters" wrappingWidth="335.2470760345459">
+                  <Text fill="#d76363" layoutX="64.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username can have maximum 15 characters" wrappingWidth="335.2470760345459">
                      <font>
                         <Font size="16.0" />
                      </font>

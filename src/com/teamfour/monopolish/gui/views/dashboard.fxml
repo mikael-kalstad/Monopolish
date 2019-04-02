@@ -31,9 +31,9 @@
                   <Font size="19.0" />
                </font>
             </Text>
-            <Text fx:id="username" fill="WHITE" layoutX="215.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Baard" wrappingWidth="124.66666173934942">
+            <Text fx:id="username" fill="WHITE" layoutX="212.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Baard" wrappingWidth="255.99997472763067">
                <font>
-                  <Font size="29.0" />
+                  <Font size="28.0" />
                </font>
             </Text>
             <Text fill="#dad9d9" layoutX="49.0" layoutY="503.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Personal Highscore" wrappingWidth="236.00002050399786">
@@ -169,13 +169,15 @@
                   </ImageView>
                </children>
             </Pane>
-            <Pane layoutX="845.0" layoutY="31.0" prefHeight="70.0" prefWidth="421.0" style="-fx-background-radius: 10 10 0 0; -fx-background-color: white;" />
+            <Pane layoutX="845.0" layoutY="31.0" prefHeight="70.0" prefWidth="421.0" style="-fx-background-radius: 10 10 0 0; -fx-background-color: white;">
+               <children>
+                  <Text layoutX="307.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Score">
+                     <font>
+                        <Font name="System Bold" size="29.0" />
+                     </font>
+                  </Text>
+               </children></Pane>
             <Text layoutX="856.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player">
-               <font>
-                  <Font name="System Bold" size="29.0" />
-               </font>
-            </Text>
-            <Text layoutX="1177.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Score">
                <font>
                   <Font name="System Bold" size="29.0" />
                </font>

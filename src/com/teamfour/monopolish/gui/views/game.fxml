@@ -683,7 +683,7 @@
             </Label>
          </children>
       </AnchorPane>
-      <ListView fx:id="eventlog" layoutX="14.0" layoutY="408.0" prefHeight="200.0" prefWidth="212.0" />
+      <ListView fx:id="eventlog" layoutX="14.0" layoutY="408.0" prefHeight="200.0" prefWidth="260.0" />
       <Button layoutX="51.0" layoutY="42.0" mnemonicParsing="false" onAction="#leave" prefHeight="40.0" prefWidth="126.0" style="-fx-background-color: ef5350;" text="Quit" textFill="#fafafa">
          <font>
             <Font size="16.0" />
@@ -812,18 +812,14 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <Pane fx:id="messagePopup" layoutX="1001.0" layoutY="962.0" prefHeight="86.0" prefWidth="301.0" style="-fx-background-color: ededed; -fx-border-color: #999; -fx-border-radius: 15;">
+      <Pane fx:id="messagePopup" layoutX="977.0" layoutY="896.0" prefHeight="107.0" prefWidth="329.0" style="-fx-background-color: ededed; -fx-border-color: #999; -fx-border-radius: 15;">
          <children>
-            <Text fx:id="msgPopupText" layoutX="14.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Baard accepted your trade request" wrappingWidth="255.0">
+            <Text fx:id="msgPopupText" layoutX="14.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Baard accepted your trade request" wrappingWidth="255.0">
                <font>
                   <Font size="14.0" />
                </font>
             </Text>
-            <Text fill="#a7a7a7" layoutX="237.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Click to hide" wrappingWidth="64.99996481619746">
-               <font>
-                  <Font size="10.0" />
-               </font>
-            </Text>
+            <Text fill="#a7a7a7" layoutX="251.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Click to hide" wrappingWidth="77.33333280703198" />
             <Label layoutX="14.0" layoutY="10.0" text="Message">
                <font>
                   <Font name="System Bold" size="15.0" />

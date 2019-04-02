@@ -23,103 +23,40 @@ import java.util.ArrayList;
  * This class will hold an instances of objects that will be used throughout the application. <br/>
  * By using this Handler, all classes can refer to the same object more easily.
  */
-public class Handler extends Application {
-    // Instances
+public class Handler {
     private static SceneManager sceneManager;
     private static Account account;
+    private static GameLogic gameLogic;
+
+    // DAO Objects
     private static AccountDAO accountDAO = new AccountDAO();
     private static PlayerDAO playerDAO = new PlayerDAO();
     private static LobbyDAO lobbyDAO = new LobbyDAO();
     private static GameDAO gameDAO = new GameDAO();
-    private static GameLogic gameLogic;
+
+    // Variables used in game
     private static ArrayList<String[]> colorList = new ArrayList<>();
     private static String tradeUsername;
     private static @FXML Pane tradeContainer;
     private static @FXML Pane forfeitContainer;
     private static int currentGameId;
 
-    // Constants for GUI
-    private final String APPLICATION_TITLE = "Monopoly";
-    private final String APPLICATION_LOGO = "res/gui/Dices/dice4.png";
-    private final double ASPECT_RATIO = 64.0/35.0;
-    private final String INITIAL_VIEW = ViewConstants.LOGIN.getValue();
-
-    /**
-     * This method will start the GUI application
-     *
-     * @param primaryStage The target window
-     * @throws Exception
-     */
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle(APPLICATION_TITLE);
-        primaryStage.getIcons().add(new Image("file:" + APPLICATION_LOGO));
-
-        // Setting full screen size to stage
-        Rectangle2D screen = Screen.getPrimary().getVisualBounds();
-        primaryStage.setWidth(screen.getWidth());
-        primaryStage.setHeight(screen.getHeight());
-        primaryStage.setMaximized(true);
-
-        // Setting initial view (login)
-        sceneManager = new SceneManager(primaryStage, INITIAL_VIEW);
-        primaryStage.show();
-
-        // Event listener for resizing
-        ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
-            // Fixing scene scaling issues
-            sceneManager.setSceneScale(primaryStage);
-
-            // Setting height
-            primaryStage.setHeight(primaryStage.getWidth() / (ASPECT_RATIO));
-        };
-
-        primaryStage.widthProperty().addListener(stageSizeListener);
-        primaryStage.heightProperty().addListener(stageSizeListener);
-
-        // Center window
-        //primaryStage.setX((primaryStage.getWidth() - screen.getWidth()) / 2);
-        //primaryStage.setX((primaryStage.getHeight() - screen.getHeight()) / 2);
-
-//        System.out.println("visualbounds width: " + screen.getWidth()); // screens usable width (no task bars etc.)
-//        System.out.println("visualbounds height: " + screen.getHeight()); // screens usable height
-//        System.out.println("Actual res width: " + primaryStage.getWidth());
-//        System.out.println("Actual res height: " + primaryStage.getHeight());
-    }
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    /**
-     * Get scenemanager instance, takes care of all view switching
-     * @return Instance of scenemanager
-     */
+    // Setter and getters
     public static SceneManager getSceneManager() {
         return sceneManager;
     }
+    public static void setSceneManager(SceneManager sceneManager) { Handler.sceneManager = sceneManager; }
 
-    /**
-     * Get account object
-     * @return Account instance
-     */
     public static Account getAccount() {
         return account;
     }
-
-    /**
-     * Set account instance
-     * @param newAccount A new account instance with user info
-     */
     public static void setAccount(Account newAccount) {
         account = newAccount;
     }
-
-    /**
-     * Reset account to remove data of user
-     */
     public static void resetAccount() { account = null; }
 
+    public static GameLogic getGameLogic() { return gameLogic; }
+    public static void setGameLogic(GameLogic gameLogic) { Handler.gameLogic = gameLogic; }
 
     /**
      * Set the arrayList containing color info for each player
@@ -131,16 +68,15 @@ public class Handler extends Application {
             colorList.add(player.clone());
         }
     }
-
     public static ArrayList<String[]> getColorList() { return colorList; }
 
-    // Get DAO instances
+    // Getter and setter for DAO objects
     public static AccountDAO getAccountDAO() { return accountDAO; }
     public static PlayerDAO getPlayerDAO() { return playerDAO; }
     public static LobbyDAO getLobbyDAO() { return lobbyDAO; }
     public static GameDAO getGameDAO() { return gameDAO; }
-    public static GameLogic getGameLogic() { return gameLogic; }
-    public static void setGameLogic(GameLogic gameLogic) { Handler.gameLogic = gameLogic; }
+
+    // Setter and getter for Game variables
     public static String getTradeUsername() { return tradeUsername; }
     public static void setTradeUsername(String tradeUsername) { Handler.tradeUsername = tradeUsername; }
     public static Pane getTradeContainer() { return tradeContainer; }

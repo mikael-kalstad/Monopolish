@@ -131,6 +131,8 @@ public class TradeController {
             ArrayList<String> offeredPropertiesNameList = new ArrayList<>();
             ArrayList<String> requestedPropertiesNameList = new ArrayList<>();
 
+            ArrayList<Object> finaloffer = new ArrayList<>();
+
             for (Pane p : offeredCards) {
                 offeredPropertiesNameList.add(p.getId());
             }

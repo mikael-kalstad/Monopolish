@@ -213,9 +213,6 @@ public class GameController {
     public void toggleHelpOverlay() {
         if (helpOverlay.isVisible()) helpOverlay.setVisible(false);
         else helpOverlay.setVisible(true);
-
-        // TESTING
-        MessagePopupController.show("Baard accepted your trade!");
     }
 
     /**
@@ -412,6 +409,9 @@ public class GameController {
      * Ends your current turn
      */
     public void endTurn() {
+        // TESTING
+        MessagePopupController.show("Baard accepted your trade!");
+
         // Stop and reset timer
         //roundTimer.cancel();
         //roundTimeValue.setText(String.valueOf(ROUND_COUNTDOWN_TIME));
@@ -621,10 +621,13 @@ public class GameController {
             else if (player.isBankrupt()) img = new ImageView("file:res/gui/Game/bankrupt.png");
             else img = null;
 
+            // Convert and format money value to player
+            String playerMoney = FxUtils.thousandDecimalFormat(String.valueOf(player.getMoney()));
+
             // Player is the actual user
             if (player.getUsername().equals(Handler.getAccount().getUsername())) {
                 username.setText(player.getUsername());
-                userMoney.setText(String.valueOf(player.getMoney()));
+                userMoney.setText(playerMoney);
                 userColor.setStyle("-fx-background-color: " + color + ";");
 
                 // Show your own properties on click
@@ -649,7 +652,7 @@ public class GameController {
                 Pane imgContainer = GameControllerDrawFx.createOpponentRow(
                         player.getUsername(),
                         color,
-                        String.valueOf(player.getMoney()),
+                        String.valueOf(playerMoney),
                         img,
                         opponentsContainer
                 );

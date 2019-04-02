@@ -16,17 +16,17 @@ import java.util.TimerTask;
 
 public class ChatController {
     // Chat elements
-    @FXML Pane chatContainer;
-    @FXML Pane chatMessagesContainer;
-    @FXML ScrollPane chatMessageScrollPane;
-    @FXML TextField chatInput;
-    @FXML Pane chatWarning;
-    @FXML Circle unreadContainer;
-    @FXML Text unreadValue;
+    private @FXML Pane chatContainer;
+    private @FXML Pane chatMessagesContainer;
+    private @FXML ScrollPane chatMessageScrollPane;
+    private @FXML TextField chatInput;
+    private @FXML Pane chatWarning;
+    private @FXML Circle unreadContainer;
+    private @FXML Text unreadValue;
 
-    int current_msg_count = 0;
-    boolean chatOpen = false;
-    int CHAT_MAX_CHARACTERS = 40;
+    private int current_msg_count = 0;
+    private boolean chatOpen = false;
+    private int CHAT_MAX_CHARACTERS = 40;
 
     // Timer that will periodically update the chat
     private static Timer chatTimer = new Timer();
@@ -83,25 +83,26 @@ public class ChatController {
         long period = 1000L; // Delay between each update/refresh
         chatTimer.scheduleAtFixedRate(task, delay, period);
 
-        // Check if chat input has reached max number of characters
-        chatInput.textProperty().addListener((observable, oldValue, newValue) -> {
-            // Check if input is longer than allowed
-            if (chatInput.getText().length() > CHAT_MAX_CHARACTERS) {
-                // Set input text to value before going over the limit
-                chatInput.setText(oldValue);
-
-                // Set cursor to the end of the input
-                chatInput.positionCaret(chatInput.getText().length());
-
-                // Change border style and show warning
-                chatInput.setStyle("-fx-border-color: orange");
-                chatWarning.setVisible(true);
-            } else {
-                // Reset border style and hide warning
-                chatInput.setStyle("-fx-border-color: white");
-                chatWarning.setVisible(false);
-            }
-        });
+//        // Check if chat input has reached max number of characters
+//        chatInput.textProperty().addListener((observable, oldValue, newValue) -> {
+//            // Check if input is longer than allowed
+//            if (chatInput.getText().length() > CHAT_MAX_CHARACTERS) {
+//                // Set input text to value before going over the limit
+//                chatInput.setText(oldValue);
+//
+//                // Set cursor to the end of the input
+//                chatInput.positionCaret(chatInput.getText().length());
+//
+//                // Change border style and show warning
+//                chatInput.setStyle("-fx-border-color: orange");
+//                chatWarning.setVisible(true);
+//            } else {
+//                // Reset border style and hide warning
+//                chatInput.setStyle("-fx-border-color: white");
+//                chatWarning.setVisible(false);
+//            }
+//        });
+         FxUtils.limitInputLength(CHAT_MAX_CHARACTERS, chatInput, chatWarning);
     }
 
     /**

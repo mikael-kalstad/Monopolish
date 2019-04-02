@@ -43,7 +43,7 @@ public class DashboardController {
             username.setText(Handler.getAccount().getUsername());
             // Some DAO request goes here...
             gamesPlayed.setText(String.valueOf(new Random().nextInt(10)));
-            personalHighscore.setText(formatWithThousandDecimal(String.valueOf(Handler.getAccount().getHighscore())));
+            personalHighscore.setText(FxUtils.thousandDecimalFormat(String.valueOf(Handler.getAccount().getHighscore())));
         }
 
         setLeaderBoard(Handler.getPlayerDAO().getHighscoreList());
@@ -54,11 +54,11 @@ public class DashboardController {
         });
     }
 
-    private String formatWithThousandDecimal(String num) {
-        if (num.length() < 4) return num;
-        int thousandIndex = num.length() - 3;
-        return num.substring(0, thousandIndex) + "." + num.substring(thousandIndex);
-    }
+//    private String thousandDecimalFormat(String num) {
+//        if (num.length() < 4) return num;
+//        int thousandIndex = num.length() - 3;
+//        return num.substring(0, thousandIndex) + "." + num.substring(thousandIndex);
+//    }
 
     /**
      * Will update leaderboard dynamically bases on highscore data
@@ -76,7 +76,7 @@ public class DashboardController {
             if (highscoreData[i][1] == null) highscoreData[i][1] = String.valueOf(0);
 
             // Adding thousand format
-            highscoreData[i][1] = formatWithThousandDecimal(highscoreData[i][1]);
+            highscoreData[i][1] = FxUtils.thousandDecimalFormat(highscoreData[i][1]);
 
             // Setting top 3 highscores
             if (i == 0) {
@@ -144,7 +144,7 @@ public class DashboardController {
         col1.setPercentWidth(70);
 
         ColumnConstraints col2 = new ColumnConstraints();
-        col2.setPercentWidth(20);
+        col2.setPercentWidth(25);
 
         grid.getColumnConstraints().addAll(col1, col2);
         grid.add(user, 0, 0);
