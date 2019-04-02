@@ -106,6 +106,9 @@ public class GameController {
         try { gameLogic.setupGame(); }
         catch (SQLException e) { e.printStackTrace(); }
 
+        // Setup messagePop
+        MessagePopupController.setup(messagePopupContainer);
+
         updateBoard();
 
         // Start the game!
@@ -117,9 +120,6 @@ public class GameController {
             chatContainer.getChildren().add(chat);
         }
         catch (IOException e) { e.printStackTrace(); }
-
-        // Setup messagePop
-        MessagePopupController.setup(messagePopupContainer);
 
         // Start forfeit timer
         Timer forfeitTimer = new Timer();
@@ -634,7 +634,7 @@ public class GameController {
 
                 // Check if amount of money is changed
                 if (current_money != player.getMoney()) {
-                    MessagePopupController.show("Money transaction: " + String.valueOf(player.getMoney() - current_money));
+                    MessagePopupController.show("Money transaction: " + (player.getMoney() - current_money));
                 }
                 current_money = player.getMoney();
 
