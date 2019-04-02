@@ -9,6 +9,7 @@ import javafx.animation.ParallelTransition;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -727,5 +728,9 @@ public class GameController {
         if (buyprompt.getResult() == ButtonType.NO) {
             buyprompt.close();
         }
+    }
+
+    public void payBail() {
+        
     }
 }
