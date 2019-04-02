@@ -17,10 +17,15 @@ public class MessagePopupController {
     private static final int ANIMATION_DURATION = 200;
     private static final int COUNTDOWN_TIME = 8;
     private static int time = COUNTDOWN_TIME;
+    private static boolean visible = false;
 
     public static void setup(Pane container, Text textElement) {
         MessagePopupController.container = container;
         MessagePopupController.textElement = textElement;
+
+        // Move container down and hide it
+        container.setTranslateY(200);
+        container.setVisible(false);
     }
 
     public static void show (String msg) {
@@ -28,6 +33,7 @@ public class MessagePopupController {
         textElement.setText(msg);
 
         // Slide and fade container in
+        container.setVisible(true);
         animateMovement(true);
 
         // Hide container on click
@@ -40,9 +46,17 @@ public class MessagePopupController {
         TimerTask countdown = new TimerTask() {
             @Override
             public void run() {
-                if (time > 0) {
+                if (!visible) {
+                    // Stop timer
+                    timer.cancel();
+                    timer.purge();
+                } else if (time > 0) {
                     time--;
                 } else {
+                    // Hide container
+                    animateMovement(false);
+
+                    // Stop timer
                     timer.cancel();
                     timer.purge();
                 }
@@ -53,7 +67,7 @@ public class MessagePopupController {
     }
 
     private static void animateMovement(boolean show) {
-        int translateY = 100;
+        int translateY = 200;
         double opacityFrom = 1.0;
         double opacityTo = 0.0;
 
@@ -62,7 +76,10 @@ public class MessagePopupController {
             translateY *= -1;
             opacityFrom = 0.0;
             opacityTo = 1.0;
+            visible = true;
         }
+
+        visible = false;
 
         // Setup translate- and fade-transition
         TranslateTransition tt = new TranslateTransition(Duration.millis(ANIMATION_DURATION), container);
@@ -78,5 +95,10 @@ public class MessagePopupController {
 
         // Play transition
         pt.play();
+
+        // Hide container visibility
+        if (!show) {
+            pt.setOnFinished(e -> container.setVisible(false));
+        }
     }
 }

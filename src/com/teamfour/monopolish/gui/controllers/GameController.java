@@ -215,9 +215,6 @@ public class GameController {
     public void toggleHelpOverlay() {
         if (helpOverlay.isVisible()) helpOverlay.setVisible(false);
         else helpOverlay.setVisible(true);
-
-        // TESTING
-        MessagePopupController.show("Baard accepted your trade!");
     }
 
     /**
@@ -414,6 +411,9 @@ public class GameController {
      * Ends your current turn
      */
     public void endTurn() {
+        // TESTING
+        MessagePopupController.show("Baard accepted your trade!");
+
         // Stop and reset timer
         //roundTimer.cancel();
         //roundTimeValue.setText(String.valueOf(ROUND_COUNTDOWN_TIME));
