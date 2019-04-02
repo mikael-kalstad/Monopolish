@@ -70,6 +70,7 @@ public class MessagePopupController {
         int translateY = 200;
         double opacityFrom = 1.0;
         double opacityTo = 0.0;
+        visible = false;
 
         // Reverse animation
         if (show) {
@@ -78,8 +79,6 @@ public class MessagePopupController {
             opacityTo = 1.0;
             visible = true;
         }
-
-        visible = false;
 
         // Setup translate- and fade-transition
         TranslateTransition tt = new TranslateTransition(Duration.millis(ANIMATION_DURATION), container);

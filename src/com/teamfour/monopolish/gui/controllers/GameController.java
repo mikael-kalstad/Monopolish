@@ -15,10 +15,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -223,10 +220,10 @@ public class GameController {
         // Load forfeit GUI
         addElementToContainer(ViewConstants.FORFEIT.getValue(), forfeitContainer);
 
-        // Show background and disable click
+        // Show background overlay
         backgroundOverlay.setVisible(true);
-        backgroundOverlay.onMouseClickedProperty().set(e -> {});
 
+        // Hide properties dialog and show forfeit dialog
         propertiesContainer.setVisible(false);
         forfeitContainer.setVisible(true);
     }
