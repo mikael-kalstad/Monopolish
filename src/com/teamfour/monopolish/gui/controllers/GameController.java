@@ -391,6 +391,8 @@ public class GameController {
         if (finalDiceValues[0] != finalDiceValues[1]) {
             rolldiceBtn.setDisable(true);
             endturnBtn.setDisable(false);
+        } else {
+            MessagePopupController.show("The dices are equal, throw again!");
         }
 
             // Check the tile you are currently on and call that event
