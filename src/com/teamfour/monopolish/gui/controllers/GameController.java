@@ -445,6 +445,7 @@ public class GameController {
                 // If property is available, show button
                 propertyBtn.setDisable(false);
                 propertyBtn.setVisible(true);
+                propertyBtn.setText("Buy property");
                 propertyBtn.setOnMouseClicked(event -> buyProperty());
                 propertyOwned.setVisible(false);
             } else {
@@ -699,6 +700,7 @@ public class GameController {
             // REMEMBER TO CHANGE INDEX (END OF THIS HUUUUGE LINE) TO ACTUAL RENT WHEN HOUSE AND HOTEL IS IMPLEMENTED
             MessagePopupController.show("You have paid " + gameLogic.getEntityManager().getPropertyAtPosition(gameLogic.getEntityManager().getYou().getPosition()).getAllRent()[0]);
         }
+        propertyBtn.setDisable(true);
         endturnBtn.setDisable(false);
     }
 
