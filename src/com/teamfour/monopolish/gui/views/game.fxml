@@ -629,7 +629,7 @@
                   <Font size="13.0" />
                </font>
             </Label>
-            <Button fx:id="payBailBtn" disable="true" layoutX="254.0" layoutY="453.0" mnemonicParsing="false" onAction="#payBail" prefHeight="50.0" prefWidth="160.0" style="-fx-background-color: #81c784;" text="Pay bail" textFill="WHITE">
+            <Button fx:id="payBailBtn" disable="true" layoutX="254.0" layoutY="453.0" mnemonicParsing="false" onAction="#payBail" prefHeight="50.0" prefWidth="160.0" style="-fx-background-color: #81c784;" text="Pay bail" textFill="WHITE" visible="false">
                <font>
                   <Font size="18.0" />
                </font>

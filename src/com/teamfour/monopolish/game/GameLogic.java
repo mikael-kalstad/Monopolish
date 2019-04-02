@@ -238,6 +238,15 @@ public class GameLogic {
             System.out.println("Round " + (roundNumber + 1));
     }
 
+    public boolean payBail() {
+        if (entityManager.getYou().getMoney() >= BAIL_MONEY) {
+            entityManager.transferMoneyToBank(entityManager.getYou().getUsername(), BAIL_MONEY);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     // SETTERS & GETTERS
 
     public int getGameId() {

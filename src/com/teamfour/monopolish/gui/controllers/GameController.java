@@ -62,7 +62,7 @@ public class GameController {
     @FXML ImageView dice1_img, dice2_img;
 
     // Elements in sidebar
-    @FXML private Button rolldiceBtn, endturnBtn;
+    @FXML private Button rolldiceBtn, endturnBtn, payBailBtn;
     @FXML private Label roundValue, statusValue;
     @FXML private Label username, userMoney;
     @FXML private Pane userColor, userPropertiesIcon;
@@ -344,8 +344,12 @@ public class GameController {
         // Get values for two dices
         int[] diceValues = null;
         int diceCounter = 0;
-        try { diceValues = gameLogic.throwDice(); }
-        catch (SQLException e) { e.printStackTrace(); }
+        try {
+            diceValues = gameLogic.throwDice();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         // Check if diceValues array is initialized or number of dices is not correct
         if (diceValues == null || diceValues.length != 2) return;
@@ -393,6 +397,8 @@ public class GameController {
             if (diceCounter == 2) {
                 try {
                     gameLogic.setPlayerInJail(USERNAME, true);
+                    payBailBtn.setDisable(true);
+                    payBailBtn.setVisible(true);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -421,6 +427,7 @@ public class GameController {
             endturnBtn.setDisable(true);
             rolldiceBtn.setDisable(true);
             buyPropertyBtn.setDisable(true);
+            payBailBtn.setDisable(true);
 
             // Finish turn in gamelogic and wait for your next turn
             gameLogic.finishYourTurn();
@@ -490,6 +497,8 @@ public class GameController {
             try {
                 gameLogic.setPlayerInJail(USERNAME, true);
                 MessagePopupController.show("Criminal scumbag! You are going to jail. Your mother is not proud...");
+                payBailBtn.setVisible(true);
+                payBailBtn.setDisable(true);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -548,6 +557,7 @@ public class GameController {
 
         // If this is your turn, stop the database check databaseTimer and enable the button to roll dice
         if (yourTurn) {
+            payBailBtn.setDisable(false);
             databaseTimer.cancel();
             databaseTimer.purge();
             rolldiceBtn.setDisable(false);
@@ -731,6 +741,15 @@ public class GameController {
     }
 
     public void payBail() {
-        
+        if (gameLogic.payBail()) {
+            try {
+                gameLogic.setPlayerInJail(USERNAME, false);
+                payBailBtn.setVisible(false);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else {
+
+        }
     }
 }

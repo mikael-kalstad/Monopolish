@@ -75,11 +75,20 @@ public class EntityManager {
 
     public boolean transferMoneyFromBank(String username, int amount) {
         Player player = getPlayer(username);
-        if (player == null) {
+        if (bank.getMoney() < amount) {
             return false;
         }
 
         return bank.transferMoney(player, amount);
+    }
+
+    public boolean transferMoneyToBank(String username, int amount) {
+        Player player = getPlayer(username);
+        if (player.getMoney() < amount) {
+            return false;
+        }
+
+        return player.transferMoney(bank, amount);
     }
 
     public boolean distributeMoneyFromBank(int amount) {
@@ -242,4 +251,6 @@ public class EntityManager {
     public ArrayList<Player> getPlayers() {
         return (players);
     }
+
+
 }
