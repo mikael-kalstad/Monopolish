@@ -115,4 +115,24 @@ public abstract class Entity {
     public ArrayList<Property> getProperties() { return properties; }
 
     public int getMoney() { return money; }
+
+    public int getBoatsOwned() {
+        int result = 0;
+        for (Property p : properties) {
+            if (p.getType() == Property.BOAT)
+                result++;
+        }
+
+        return result;
+    }
+
+    public int getTrainsOwned() {
+        int result = 0;
+        for (Property p : properties) {
+            if (p.getType() == Property.TRAIN)
+                result++;
+        }
+
+        return result;
+    }
 }

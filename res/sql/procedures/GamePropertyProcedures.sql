@@ -4,6 +4,8 @@ drop procedure if exists player_property;
 drop procedure if exists available_property;
 drop procedure if exists position_property;
 drop procedure if exists property_clean;
+DROP PROCEDURE property_get_all;
+DROP PROCEDURE property_get_by_owner;
 
 delimiter $$
 create procedure property_create(
@@ -19,7 +21,7 @@ create procedure property_create(
 
     insert into gameproperty(game_id, property_id, user_id) values (g_id, prop_id, u_id);
 
-    select gameproperty.*, property.position, property.price, property.categorycolor
+    select gameproperty.*, property.position, property.price, property.categorycolor, p.property_type
       from gameproperty join property p
         on gameproperty.property_id = p.property_id
           where prop_id = property_id and g_id = game_id;
@@ -28,7 +30,6 @@ create procedure property_create(
 end $$
 delimiter ;
 
-DROP PROCEDURE property_get_all;
 
 DELIMITER $$
 CREATE PROCEDURE property_get_all(
@@ -48,6 +49,7 @@ BEGIN
   left join account a on p2.user_id = a.user_id
   WHERE gp.game_id=g_id;
 END $$
+
 
 delimiter $$
 create procedure property_update(
@@ -71,7 +73,6 @@ create procedure property_update(
 end $$
 delimiter ;
 
-DROP PROCEDURE property_get_by_owner;
 
 DELIMITER $$
 CREATE PROCEDURE property_get_by_owner(
@@ -85,14 +86,14 @@ BEGIN
                   WHERE a.username LIKE username);
 
   IF (username IS NULL OR username LIKE '') THEN
-    select gp.property_id, p.name, p.price, p.position, p.categorycolor, IFNULL(a.username, '')
+    select gp.property_id, p.name, p.price, p.position, p.categorycolor, IFNULL(a.username, ''), p.property_type
       from gameproperty gp
       join property p on gp.property_id = p.property_id
       left join player p2 on gp.user_id = p2.user_id
       left join account a on p2.user_id = a.user_id
       WHERE gp.game_id=g_id AND a.username IS NULL group by p.property_id;
   ELSE
-    select gp.property_id, p.name, p.price, p.position, p.categorycolor, IFNULL(a.username, '')
+    select gp.property_id, p.name, p.price, p.position, p.categorycolor, IFNULL(a.username, ''), p.property_type
     from gameproperty gp
       join property p on gp.property_id = p.property_id
       left join player p2 on gp.user_id = p2.user_id

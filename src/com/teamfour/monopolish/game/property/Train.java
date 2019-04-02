@@ -8,7 +8,7 @@ public class Train extends Property {
      * @param name          name of property
      * @param price         the price of the property
      * @param position      the position the property is located on the board
-     * @param categorycolor the categorycolor of the property
+     * @param categorycolor the category color of the property
      * @param owner         the current owner of the property
      */
     public Train(int p_id, String name, int price, int position, String categorycolor, String owner) {

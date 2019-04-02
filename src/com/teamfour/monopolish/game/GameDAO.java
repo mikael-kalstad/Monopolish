@@ -200,4 +200,38 @@ public class GameDAO extends DataAccessObject {
             releaseConnection();
         }
     }
+
+    public void addEvent(int gameId, String message){
+        try {
+            getConnection();
+            cStmt = connection.prepareCall("{call event_add(?,?)}");
+            cStmt.setInt(1, gameId);
+            cStmt.setString(2, message);
+
+            cStmt.executeQuery();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            releaseConnection();
+        }
+    }
+
+    public String getEvent(int gameId) {
+        String event_text ="";
+        try {
+            getConnection();
+            cStmt = connection.prepareCall("{call event_get(?)}");
+            cStmt.setInt(1, gameId);
+
+            ResultSet rs = cStmt.executeQuery();
+            event_text = rs.getString("event_text");
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            releaseConnection();
+        }
+        return event_text;
+    }
 }

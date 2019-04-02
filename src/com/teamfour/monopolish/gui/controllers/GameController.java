@@ -387,17 +387,18 @@ public class GameController {
             // Update board view to show where player moved
             updateBoard();
 
+        // If the player didn't throw two equal dices, disable the dice button. If not, the player can throw dice again
+        if (finalDiceValues[0] != finalDiceValues[1]) {
+            rolldiceBtn.setDisable(true);
+            endturnBtn.setDisable(false);
+        }
+
             // Check the tile you are currently on and call that event
             callTileEvent();
 
             // Update board view again
             updateBoard();
 
-            // If the player didn't throw two equal dices, disable the dice button. If not, the player can throw dice again
-            if (finalDiceValues[0] != finalDiceValues[1]) {
-                rolldiceBtn.setDisable(true);
-                endturnBtn.setDisable(false);
-            }
         /*});*/
 
     }
@@ -414,6 +415,7 @@ public class GameController {
         try {
             // Disable buttons
             endturnBtn.setDisable(true);
+            rolldiceBtn.setDisable(true);
             buyPropertyBtn.setDisable(true);
 
             // Finish turn in gamelogic and wait for your next turn
@@ -469,6 +471,7 @@ public class GameController {
             cardContainer.getChildren().clear();
             propertyOwned.setVisible(false);
             buyPropertyBtn.setVisible(false);
+            payRentBtn.setVisible(false);
         }
 
         // If on free parking, get a free-parking token
@@ -700,7 +703,7 @@ public class GameController {
             MessagePopupController.show("You have paid " + gameLogic.getEntityManager().getPropertyAtPosition(gameLogic.getEntityManager().getYou().getPosition()).getAllRent()[0]);
         }
         payRentBtn.setDisable(true);
-        int[] currentDice = gameLogic.getDice().getCurrentDice();
+        int[] currentDice = gameLogic.getCurrentDice();
         if (currentDice[0] == currentDice[1] && !gameLogic.getEntityManager().getPlayer(USERNAME).isInJail()) {
             rolldiceBtn.setDisable(false);
             endturnBtn.setDisable(true);
