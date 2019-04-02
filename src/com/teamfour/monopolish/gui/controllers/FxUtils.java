@@ -2,6 +2,8 @@ package com.teamfour.monopolish.gui.controllers;
 
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Text;
 
 public class FxUtils {
     /**
@@ -44,5 +46,15 @@ public class FxUtils {
         if (num.length() < 4) return num;
         int thousandIndex = num.length() - 3;
         return num.substring(0, thousandIndex) + "." + num.substring(thousandIndex);
+    }
+
+    /**
+     * Change text color of a text element
+     *
+     * @param element Target text node
+     * @param color New color of the text
+     */
+    public static void setTextColor(Text element, String color) {
+        element.setFill(Paint.valueOf(color));
     }
 }
