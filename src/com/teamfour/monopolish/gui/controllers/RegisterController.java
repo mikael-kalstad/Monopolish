@@ -46,7 +46,7 @@ public class RegisterController {
     private final String MSG_EMAIL_WARNING = "*Email is already registered";
 
     //  Input requirements constants
-    private final int MAX_USERNAME_LENGTH = 30;
+    private final int MAX_USERNAME_LENGTH = 15;
     private final int MIN_PASSWORD_LENGTH = 6;
 
 
@@ -71,14 +71,8 @@ public class RegisterController {
             }
         });
 
-        usernameInput.setOnKeyTyped((observable) -> {
-            if (usernameInput.getText().length() >= MAX_USERNAME_LENGTH) {
-                usernameRequirement.setVisible(true);
-
-            } else {
-                usernameRequirement.setVisible(false);
-            }
-        });
+        // Add maximum username length
+        FxUtils.limitInputLength(MAX_USERNAME_LENGTH, usernameInput, usernameRequirement);
     }
 
     private void setBorderStyle(Node element, String color) {
@@ -180,7 +174,7 @@ public class RegisterController {
      */
     public void register() {
         boolean usernameTaken = false;
-        boolean usernameRequirement = usernameInput.getText().length() >= MAX_USERNAME_LENGTH;
+        boolean usernameRequirement = usernameInput.getText().length() > MAX_USERNAME_LENGTH;
         boolean emailTaken = false;
         boolean passwordRequirements = checkPasswordRequirements();
         boolean passwordMatch = passwordMatch();

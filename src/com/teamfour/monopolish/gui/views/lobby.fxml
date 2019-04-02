@@ -94,7 +94,7 @@
             </ImageView>
             <Pane fx:id="maxInputWarning" layoutX="164.0" layoutY="102.0" prefHeight="20.0" prefWidth="407.0" style="-fx-background-color: ededed; -fx-border-width: 1; -fx-border-color: CFCFCF; -fx-border-radius: 15 15 0 0;" visible="false">
                <children>
-                  <Text fill="#d95e3d" layoutX="120.0" layoutY="14.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" Maximum 40 characters allowed" wrappingWidth="166.07812750339508">
+                  <Text fill="#d95e3d" layoutX="120.0" layoutY="14.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" Maximum 20 characters allowed" wrappingWidth="166.07812750339508">
                      <font>
                         <Font size="10.0" />
                      </font>

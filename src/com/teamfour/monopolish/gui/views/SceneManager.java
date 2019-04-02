@@ -64,12 +64,12 @@ public class SceneManager {
         double sw = window.getWidth();
         double sh = window.getHeight();
 
-        System.out.println("Scene width: " + window.getScene().getWidth());
-        System.out.println("Scene height: " + window.getScene().getHeight());
-        System.out.println("Screen width: " + screen.getWidth());
-        System.out.println("Screen height: " + screen.getHeight());
-        System.out.println("Multiplier: width" + sw/window.getScene().getWidth());
-        System.out.println("Multiplier: height" + sh/window.getScene().getHeight());
+//        System.out.println("Scene width: " + window.getScene().getWidth());
+//        System.out.println("Scene height: " + window.getScene().getHeight());
+//        System.out.println("Screen width: " + screen.getWidth());
+//        System.out.println("Screen height: " + screen.getHeight());
+//        System.out.println("Multiplier: width" + sw/window.getScene().getWidth());
+//        System.out.println("Multiplier: height" + sh/window.getScene().getHeight());
 
         Scale scale = new Scale(sw/STANDARD_SCENE_WIDTH, sh/STANDARD_SCENE_HEIGHT, 0, 0);
         window.getScene().getRoot().getTransforms().setAll(scale);

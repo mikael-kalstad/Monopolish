@@ -1,9 +1,9 @@
 package com.teamfour.monopolish.game;
 
-import com.teamfour.monopolish.game.board.Board;
 import com.teamfour.monopolish.game.entities.EntityManager;
 import com.teamfour.monopolish.game.entities.player.Player;
 import com.teamfour.monopolish.game.propertylogic.Property;
+import com.teamfour.monopolish.game.propertylogic.Street;
 import com.teamfour.monopolish.gui.controllers.Handler;
 
 import java.sql.SQLException;
@@ -138,15 +138,14 @@ public class GameLogic {
         }
     }
 
-    public int rentTransaction() throws SQLException {
+    public boolean rentTransaction() throws SQLException {
         int position = entityManager.getYou().getPosition();
         String owner = entityManager.getOwnerAtProperty(position);
-        int price = entityManager.getPropertyAtPosition(position).getRent()[0];
+        int price = ((Street)entityManager.getPropertyAtPosition(position)).getRent();
         entityManager.transferMoneyFromTo(entityManager.getYou().getUsername(), owner, price);
         updateToDatabase();
 
-        entityManager.updateToDatabase();
-        return entityManager.getYou().getMoney();
+        return true;
     }
 
     /**
@@ -197,10 +196,11 @@ public class GameLogic {
     /**
      * Indicates a new turn in the game. Retrieves all updates from the database and
      * increments the turn number
-     * @param yourTurn
+     * @param yourTurn Is it your player's turn?
      * @throws SQLException
      */
     public void newTurn(boolean yourTurn) throws SQLException {
+        // Updates current player from database
         currentPlayer = gameDAO.getCurrentPlayer(gameId);
         updateFromDatabase();
         for (int i = 0; i < turns.length; i++) {
@@ -210,6 +210,10 @@ public class GameLogic {
                 turnNumber = i;
             }
         }
+
+        // Check if any players are bankrupt
+        entityManager.updateBankruptcy();
+
         if (turnNumber == 0)
             System.out.println("Round " + (roundNumber + 1));
         System.out.println("It is " + currentPlayer + "'s turn.");

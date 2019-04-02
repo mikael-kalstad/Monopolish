@@ -1,7 +1,7 @@
 package com.teamfour.monopolish.gui.controllers;
 
 import com.teamfour.monopolish.game.GameLogic;
-import com.teamfour.monopolish.game.board.Board;
+import com.teamfour.monopolish.game.Board;
 import com.teamfour.monopolish.game.entities.player.Player;
 import com.teamfour.monopolish.game.propertylogic.Property;
 import com.teamfour.monopolish.gui.views.ViewConstants;
@@ -58,7 +58,7 @@ public class GameController {
 
     // Elements in board
     @FXML private AnchorPane cardContainer;
-    @FXML private Button buypropertyBtn;
+    @FXML private Button propertyBtn;
     @FXML private Label propertyOwned;
     @FXML private GridPane gamegrid;
     @FXML private ListView eventlog;
@@ -159,7 +159,6 @@ public class GameController {
             // Check if yes button is pressed
             if (alertDialog.getResult().getButtonData().isDefaultButton()) {
                 // Remove player from lobby
-                final String USERNAME = Handler.getAccount().getUsername();
                 Handler.getAccountDAO().setInactive(USERNAME);
                 Handler.getLobbyDAO().removePlayer(USERNAME, Handler.getLobbyDAO().getLobbyId(USERNAME));
                 gameLogic.getEntityManager().removePlayer(USERNAME);
@@ -196,7 +195,6 @@ public class GameController {
             ChatController.getChatTimer().purge();
 
             // Remove player from lobby
-            final String USERNAME = Handler.getAccount().getUsername();
             int lobbyId = Handler.getLobbyDAO().getLobbyId(USERNAME);
             System.out.println("lobby id when leaving... " + lobbyId);
             Handler.getLobbyDAO().removePlayer(USERNAME, Handler.getLobbyDAO().getLobbyId(USERNAME));
@@ -421,7 +419,7 @@ public class GameController {
         try {
             // Disable buttons
             endturnBtn.setDisable(true);
-            buypropertyBtn.setDisable(true);
+            propertyBtn.setDisable(true);
 
             // Finish turn in gamelogic and wait for your next turn
             gameLogic.finishYourTurn();
@@ -449,25 +447,31 @@ public class GameController {
             String propertyOwner = gameLogic.getEntityManager().getOwnerAtProperty(yourPosition);
             if (propertyOwner == null || propertyOwner.equals("")) {
                 // If property is available, show button
-                buypropertyBtn.setDisable(false);
-                buypropertyBtn.setVisible(true);
+                propertyBtn.setDisable(false);
+                propertyBtn.setVisible(true);
+                propertyBtn.setOnMouseClicked(event -> buyProperty());
                 propertyOwned.setVisible(false);
             } else {
-                // If owned, display name of owner
-                buypropertyBtn.setDisable(true);
-                buypropertyBtn.setVisible(false);
-                propertyOwned.setVisible(true);
-                propertyOwned.setText("Owned by " + propertyOwner);
-
                 // If this is not your property, prepare to get rented! Or something
-                if (!propertyOwner.equals(USERNAME))
-                    rentTransaction();
+                if (propertyOwner.equals(USERNAME)) {
+                    propertyBtn.setDisable(true);
+                    propertyBtn.setVisible(false);
+                    propertyOwned.setVisible(true);
+                    propertyOwned.setText("Owned by you");
+                } else {
+                    propertyOwned.setVisible(false);
+                    propertyBtn.setDisable(false);
+                    propertyBtn.setVisible(true);
+                    propertyBtn.setText("Pay rent to " + propertyOwner);
+                    propertyBtn.setOnMouseClicked(event -> rentTransaction());
+                    endturnBtn.setDisable(true);
+                }
             }
         } else {
             // If no property here, make sure to clear the property
             cardContainer.getChildren().clear();
             propertyOwned.setVisible(false);
-            buypropertyBtn.setVisible(false);
+            propertyBtn.setVisible(false);
         }
 
         // If on free parking, get a free-parking token
@@ -558,6 +562,14 @@ public class GameController {
         long delay = 1000L; // Delay before update refreshTimer starts
         long period = 1000L; // Delay between each update/refresh
         roundTimer.scheduleAtFixedRate(countdown, delay, period);*/
+
+        String winner = "";
+
+        if ((winner = gameLogic.getEntityManager().findWinner()) != null) {
+            System.out.println(winner + " is winner!");
+            Alert winnerAlert = new Alert(Alert.AlertType.INFORMATION, winner + " is winner!", ButtonType.OK);
+            winnerAlert.showAndWait();
+        }
 
         // If this is your turn, stop the database check databaseTimer and enable the button to roll dice
         if (yourTurn) {
@@ -667,9 +679,12 @@ public class GameController {
         return null;
     }
 
+    /**
+     * Attempts to pay the player with the current owned property with the proper rent
+     */
     public void rentTransaction() {
         Alert messageBox;
-        // TODO: Everything
+        // Check if your player has a free parking token
         if (gameLogic.getPlayer(USERNAME).hasFreeParking()) {
             messageBox = new Alert(Alert.AlertType.INFORMATION,
                     "You have a 'Free Parking' token! You don't have to pay rent here", ButtonType.OK);
@@ -685,6 +700,7 @@ public class GameController {
                                 "You have paid rent!", ButtonType.OK);
             messageBox.showAndWait();
         }
+        endturnBtn.setDisable(false);
     }
 
     /**
@@ -712,9 +728,9 @@ public class GameController {
             updateBoard();
 
             // Update property information label
-            buypropertyBtn.setVisible(false);
+            propertyBtn.setVisible(false);
             propertyOwned.setVisible(true);
-            propertyOwned.setText("Owned by " + USERNAME);
+            propertyOwned.setText("Owned by you");
         }
         if (buyprompt.getResult() == ButtonType.NO) {
             buyprompt.close();
