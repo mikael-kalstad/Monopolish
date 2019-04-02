@@ -708,7 +708,13 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Pane fx:id="backgroundOverlay" prefHeight="1055.0" prefWidth="1920.0" style="-fx-background-color: rgba(160,160,160,0.4);" visible="false" />
+      <Label layoutX="1754.0" layoutY="-50.0" text="Total" textFill="#fafafa">
+         <font>
+            <Font name="System Bold" size="32.0" />
+         </font>
+      </Label>
+      <Pane fx:id="chatContainer" layoutX="21.0" layoutY="700.0" prefHeight="315.0" prefWidth="235.0" />
+      <Pane fx:id="messagePopupContainer" layoutX="12.0" layoutY="884.0" prefHeight="46.0" prefWidth="330.0" />
       <Pane fx:id="propertiesContainer" layoutX="257.0" layoutY="105.0" prefHeight="855.0" prefWidth="1477.0" style="-fx-background-color: ededed; -fx-background-radius: 20;" visible="false">
          <children>
             <Text layoutX="609.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Properties">
@@ -755,14 +761,8 @@
             </Text>
          </children>
       </Pane>
-      <Pane fx:id="forfeitContainer" layoutX="556.0" layoutY="300.0" prefHeight="315.0" prefWidth="600.0" style="-fx-background-color: ededed; -fx-background-radius: 20;" visible="false" />
-      <Label layoutX="1754.0" layoutY="-50.0" text="Total" textFill="#fafafa">
-         <font>
-            <Font name="System Bold" size="32.0" />
-         </font>
-      </Label>
-      <Pane fx:id="chatContainer" layoutX="21.0" layoutY="700.0" prefHeight="315.0" prefWidth="235.0" />
       <Pane fx:id="tradeContainer" layoutX="210.0" layoutY="53.0" prefHeight="950.0" prefWidth="1500.0" visible="false" />
+      <Pane fx:id="backgroundOverlay" prefHeight="1055.0" prefWidth="1920.0" style="-fx-background-color: rgba(160,160,160,0.4);" visible="false" />
       <Pane fx:id="helpOverlay" onMouseClicked="#toggleHelpOverlay" prefHeight="1055.0" prefWidth="1925.0" style="-fx-background-color: rgba(160,160,160,0.7);" visible="false">
          <children>
             <Text fill="WHITE" layoutX="9.0" layoutY="101.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Leave the game, you will not be able to rejoin" wrappingWidth="289.3332862193565">
@@ -812,6 +812,7 @@
             </Text>
          </children>
       </Pane>
+      <Pane fx:id="forfeitContainer" layoutX="556.0" layoutY="300.0" prefHeight="315.0" prefWidth="600.0" style="-fx-background-color: ededed; -fx-background-radius: 20;" visible="false" />
       <ImageView fx:id="helpBtn" fitHeight="40.0" fitWidth="40.0" layoutX="1850.0" layoutY="14.0" onMouseClicked="#toggleHelpOverlay">
          <image>
             <Image url="file:res/gui/Game/help.png" />
@@ -820,24 +821,5 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <Pane fx:id="messagePopup" layoutX="977.0" layoutY="896.0" prefHeight="107.0" prefWidth="329.0" style="-fx-background-color: ededed; -fx-border-color: #999; -fx-border-radius: 15;" visible="false">
-         <children>
-            <Text fx:id="msgPopupText" layoutX="14.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Baard accepted your trade request" wrappingWidth="255.0">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Text>
-            <Text fill="#a7a7a7" layoutX="251.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Click to hide" wrappingWidth="77.33333280703198" />
-            <Label layoutX="14.0" layoutY="10.0" text="Message">
-               <font>
-                  <Font name="System Bold" size="15.0" />
-               </font>
-            </Label>
-         </children>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Pane>
-      <Pane fx:id="messagePopupContainer" layoutX="960.0" layoutY="1018.0" prefHeight="46.0" prefWidth="330.0" />
    </children>
 </AnchorPane>

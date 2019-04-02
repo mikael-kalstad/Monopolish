@@ -381,11 +381,8 @@ public class GameController {
         pt.play();
 
         int[] finalDiceValues = diceValues;
-        /*pt.onFinishedProperty().set(e -> {*/
-            addToEventlog(s);
 
-            // Update board view to show where player moved
-            updateBoard();
+        Property property = gameLogic.getEntityManager().getPropertyAtPosition(gameLogic.getEntityManager().getYou().getPosition());
 
         // If the player didn't throw two equal dices, disable the dice button. If not, the player can throw dice again
         if (finalDiceValues[0] != finalDiceValues[1]) {
@@ -393,27 +390,25 @@ public class GameController {
             endturnBtn.setDisable(false);
         } else {
             MessagePopupController.show("The dices are equal, throw again!");
+
+            if (gameLogic.getPlayer(USERNAME).getPosition() == gameLogic.getBoard().getGoToJailPosition())
+                MessagePopupController.show("You are out of jail, free as a bird!");
         }
 
-            // Check the tile you are currently on and call that event
-            callTileEvent();
+        // Update board view to show where player moved
+        updateBoard();
 
-            // Update board view again
-            updateBoard();
+        // Check the tile you are currently on and call that event
+        callTileEvent();
 
-        /*});*/
-
+        // Update board view again
+        updateBoard();
     }
 
     /**
      * Ends your current turn
      */
     public void endTurn() {
-        MessagePopupController.show("Test msg");
-        // Stop and reset timer
-        //roundTimer.cancel();
-        //roundTimeValue.setText(String.valueOf(ROUND_COUNTDOWN_TIME));
-
         try {
             // Disable buttons
             endturnBtn.setDisable(true);
@@ -433,6 +428,9 @@ public class GameController {
      * Checks to see what form of tile you are on and call the event accordingly
      */
     private void callTileEvent() {
+        // Remove previous cards
+        cardContainer.getChildren().clear();
+
         // Store your player's position
         int yourPosition = gameLogic.getPlayer(USERNAME).getPosition();
 
@@ -721,7 +719,6 @@ public class GameController {
         } else {
             endturnBtn.setDisable(false);
         }
-
     }
 
     /**
