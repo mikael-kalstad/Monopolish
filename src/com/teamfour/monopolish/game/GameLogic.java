@@ -256,6 +256,8 @@ public class GameLogic {
         return board;
     }
 
+    public Dice getDice() { return dice; }
+
     /**
      * Check if a turn has finished in another client. Returns an integer based on following situations:
      * 1 - It's a new turn, and it's your turn
