@@ -405,9 +405,6 @@ public class GameController {
      * Ends your current turn
      */
     public void endTurn() {
-//        // TESTING
-//        MessagePopupController.show("Baard accepted your trade!");
-
         // Stop and reset timer
         //roundTimer.cancel();
         //roundTimeValue.setText(String.valueOf(ROUND_COUNTDOWN_TIME));
@@ -415,6 +412,7 @@ public class GameController {
         try {
             // Disable buttons
             endturnBtn.setDisable(true);
+            rolldiceBtn.setDisable(true);
             buyPropertyBtn.setDisable(true);
 
             // Finish turn in gamelogic and wait for your next turn
@@ -701,7 +699,7 @@ public class GameController {
             MessagePopupController.show("You have paid " + gameLogic.getEntityManager().getPropertyAtPosition(gameLogic.getEntityManager().getYou().getPosition()).getAllRent()[0]);
         }
         payRentBtn.setDisable(true);
-        int[] currentDice = gameLogic.getDice().getCurrentDice();
+        int[] currentDice = gameLogic.getCurrentDice();
         if (currentDice[0] == currentDice[1] && !gameLogic.getEntityManager().getPlayer(USERNAME).isInJail()) {
             rolldiceBtn.setDisable(false);
             endturnBtn.setDisable(true);

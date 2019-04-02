@@ -2,8 +2,10 @@ package com.teamfour.monopolish.game;
 
 import com.teamfour.monopolish.game.entities.EntityManager;
 import com.teamfour.monopolish.game.entities.player.Player;
+import com.teamfour.monopolish.game.property.Boat;
 import com.teamfour.monopolish.game.property.Property;
 import com.teamfour.monopolish.game.property.Street;
+import com.teamfour.monopolish.game.property.Train;
 import com.teamfour.monopolish.gui.controllers.Handler;
 
 import java.sql.SQLException;
@@ -36,6 +38,7 @@ public class GameLogic {
     private int roundNumber = 0;
     private String currentPlayer;
     private boolean finished = false;       // Is the game finished?
+    private int[] currentDice;
 
     /**
      * Constructor
@@ -88,13 +91,13 @@ public class GameLogic {
      */
     public int[] throwDice() throws SQLException {
         // Throw dice and store in array
-        int[] throwResult = dice.throwDice();
-        int steps = throwResult[0] + throwResult[1];
+        currentDice = dice.throwDice();
+        int steps = currentDice[0] + currentDice[1];
         int previousPosition = entityManager.getYou().getPosition();
 
         // Check if player is in prison. If they are in prison, and they get matching dices, move out of jail
         boolean isInJail = entityManager.getYou().isInJail();
-        if (isInJail && throwResult[0] == throwResult[1]) {
+        if (isInJail && currentDice[0] == currentDice[1]) {
             setPlayerInJail(entityManager.getYou().getUsername(), false);
             entityManager.getYou().move(steps);
         } else if (!isInJail) {
@@ -110,7 +113,7 @@ public class GameLogic {
         updateToDatabase();
 
         // Return the results from the throw to be handled by GUI
-        return throwResult;
+        return currentDice;
     }
 
     /**
@@ -138,11 +141,28 @@ public class GameLogic {
         }
     }
 
+    /**
+     * Performs a rent transaction at the position where you're currently at
+     * @return True if successful
+     * @throws SQLException
+     */
     public boolean rentTransaction() throws SQLException {
         int position = entityManager.getYou().getPosition();
-        String owner = entityManager.getOwnerAtProperty(position);
-        int price = ((Street)entityManager.getPropertyAtPosition(position)).getRent();
-        entityManager.transferMoneyFromTo(entityManager.getYou().getUsername(), owner, price);
+        Property currentProperty = entityManager.getPropertyAtPosition(position);
+        String owner = currentProperty.getOwner();
+        int currentPropertyType = currentProperty.getType();
+        int price;
+        if (currentPropertyType == Property.STREET)
+            price = ((Street)currentProperty).getRent();
+        else if (currentPropertyType == Property.BOAT) {
+            int numberOfBoats = entityManager.getPlayer(owner).getBoatsOwned();
+            price = ((Boat)currentProperty).getRent(numberOfBoats);
+        } else {
+            int numberOfTrains = entityManager.getPlayer(owner).getTrainsOwned();
+            price = ((Train)currentProperty).getRent(numberOfTrains, currentDice[0] + currentDice[1]);
+        }
+
+        entityManager.transferMoneyFromTo(entityManager.getYou().getUsername(), currentProperty.getOwner(), price);
         updateToDatabase();
 
         return true;
@@ -256,7 +276,7 @@ public class GameLogic {
         return board;
     }
 
-    public Dice getDice() { return dice; }
+    public int[] getCurrentDice() { return currentDice; }
 
     /**
      * Check if a turn has finished in another client. Returns an integer based on following situations:

@@ -7,9 +7,9 @@ package com.teamfour.monopolish.game.property;
  */
 
 public abstract class Property {
-    protected static final int STREET = 0;
-    protected static final int BOAT = 1;
-    protected static final int TRAIN = 2;
+    public static final int STREET = 0;
+    public static final int BOAT = 1;
+    public static final int TRAIN = 2;
 
     //Attributes
     protected final int ID;
