@@ -669,7 +669,7 @@ public class GameController {
                                 "You have paid rent!", ButtonType.OK);
             messageBox.showAndWait();
         }
-        rolldiceBtn.setDisable(false);
+        endturnBtn.setDisable(false);
     }
 
     /**
