@@ -6,6 +6,7 @@ import com.teamfour.monopolish.database.ConnectionPool;
 import com.teamfour.monopolish.game.GameDAO;
 import com.teamfour.monopolish.game.entities.player.Player;
 import com.teamfour.monopolish.game.propertylogic.Property;
+import com.teamfour.monopolish.game.propertylogic.Street;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -57,7 +58,7 @@ public class EntityManagerTest {
     @Test
     @DisplayName("getPropertyAtPosition test")
     public void testGetPropertyAtPosition(){
-        Property prop = new Property(22, "Kalvskinnet", 8000, 36, "#1565C0", null);
+        Property prop = new Street(22, "Kalvskinnet", 8000, 36, "#1565C0", null);
         assertTrue(instance.getPropertyAtPosition(36).getId() == prop.getId()
                 && instance.getPropertyAtPosition(36).getPrice() == prop.getPrice()
                 && instance.getPropertyAtPosition(36).getCategorycolor() == prop.getCategorycolor()

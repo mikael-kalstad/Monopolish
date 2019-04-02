@@ -1,26 +1,20 @@
 package com.teamfour.monopolish.gui.controllers;
 
-import com.mysql.cj.result.Row;
 import com.teamfour.monopolish.game.propertylogic.Property;
-import javafx.animation.TranslateTransition;
+import com.teamfour.monopolish.game.propertylogic.Boat;
+import com.teamfour.monopolish.game.propertylogic.Street;
 import javafx.geometry.HPos;
-import javafx.geometry.Pos;
 import javafx.geometry.VPos;
-import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
-import javafx.util.Duration;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 
@@ -387,22 +381,37 @@ public class GameControllerDrawFx {
         propertynamelabel.setLayoutY(12.0);
 
         ArrayList<Text> rentlist = new ArrayList<>();
+        Text rentContent;
 
-        rentlist.add(new Text("" +
-                "Rent:" +
-                "\nRent with colorset:" +
-                "\nRent 1 house:" +
-                "\nRent 2 houses:" +
-                "\nRent 3 houses:" +
-                "\nRent 4 houses:" +
-                "\nRent with hotel:" +
-                "\nHouses cost:" +
-                "\nHotels cost:"));
+        // If property is a street
+        if (property instanceof Street) {
+            rentContent = new Text("" +
+                    "Rent:" +
+                    "\nRent with colorset:" +
+                    "\nRent 1 house:" +
+                    "\nRent 2 houses:" +
+                    "\nRent 3 houses:" +
+                    "\nRent 4 houses:" +
+                    "\nRent with hotel:" +
+                    "\nHouses cost:" +
+                    "\nHotels cost:");
+        } else if (property instanceof Boat) {
+            rentContent = new Text("" +
+                        "Rent 1 railroad: " +
+                        "\nRent 2 railroads: " +
+                        "\nRent 3 railroads: ");
+        } else {
+            rentContent = new Text("" +
+                        "Rent 1 utility: " +
+                        "\nRent 2 utilities: ");
+        }
+
+        rentlist.add(rentContent);
 
         propertypriceflow.getChildren().addAll(rentlist);
 
         ArrayList<Text> pricesTextList = new ArrayList<>();
-        for (int i : property.getRent()){ pricesTextList.add(new Text(i+"\n")); }
+        for (String i : property.getAllRent()){ pricesTextList.add(new Text(i+"\n")); }
         prices.getChildren().addAll(pricesTextList);
 
         return card;

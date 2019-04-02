@@ -92,6 +92,7 @@ public class EntityManager {
     }
 
     public boolean transferMoneyFromTo(String from, String to, int amount) {
+        boolean result = false;
         Player fromPlayer = getPlayer(from);
         Player toPlayer = getPlayer(to);
 
@@ -103,7 +104,6 @@ public class EntityManager {
         }
 
         return fromPlayer.transferMoney(toPlayer, amount);
-
     }
 
     public String getOwnerAtProperty(int position) {
@@ -165,7 +165,6 @@ public class EntityManager {
      * @return You object
      */
     public Player getYou() {
-
         for(Player p : players) {
             if (p.getUsername().equals(Handler.getAccount().getUsername())) {
                 return p;
