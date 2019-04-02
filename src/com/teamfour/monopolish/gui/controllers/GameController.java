@@ -43,7 +43,7 @@ public class GameController {
 
     // GameLogic for handling more intricate game operations
     private GameLogic gameLogic;
-
+    private int current_money = 0;
     private final String USERNAME = Handler.getAccount().getUsername();
 
     // Array for events in game
@@ -483,7 +483,7 @@ public class GameController {
         if (gameLogic.getPlayer(USERNAME).getPosition() == gameLogic.getBoard().getGoToJailPosition()) {
             try {
                 gameLogic.setPlayerInJail(USERNAME, true);
-                System.out.println("YOU ARE GOING TO JAIL: " + USERNAME);
+                MessagePopupController.show("Criminal scumbag! You are going to jail. Your mother is not proud...");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -632,6 +632,12 @@ public class GameController {
                 userMoney.setText(playerMoney);
                 userColor.setStyle("-fx-background-color: " + color + ";");
 
+                // Check if amount of money is changed
+                if (current_money != player.getMoney()) {
+                    MessagePopupController.show("Money transaction: " + String.valueOf(player.getMoney() - current_money));
+                }
+                current_money = player.getMoney();
+
                 // Show your own properties on click
                 setPropertyOnClick(userPropertiesIcon, player.getUsername());
 
@@ -685,12 +691,9 @@ public class GameController {
      * Attempts to pay the player with the current owned property with the proper rent
      */
     public void rentTransaction() {
-        Alert messageBox;
         // Check if your player has a free parking token
         if (gameLogic.getPlayer(USERNAME).hasFreeParking()) {
-            messageBox = new Alert(Alert.AlertType.INFORMATION,
-                    "You have a 'Free Parking' token! You don't have to pay rent here", ButtonType.OK);
-            messageBox.showAndWait();
+            MessagePopupController.show("You have a 'Free Parking' token! You don't have to pay rent here");
             gameLogic.getPlayer(USERNAME).setFreeParking(false);
         } else {
             try {
@@ -699,8 +702,14 @@ public class GameController {
                 e.printStackTrace();
             }
 
+            Property property = gameLogic.getEntityManager().getPropertyAtPosition(gameLogic.getEntityManager().getYou().getPosition());
+
             // REMEMBER TO CHANGE INDEX (END OF THIS HUUUUGE LINE) TO ACTUAL RENT WHEN HOUSE AND HOTEL IS IMPLEMENTED
-            MessagePopupController.show("You have paid " + gameLogic.getEntityManager().getPropertyAtPosition(gameLogic.getEntityManager().getYou().getPosition()).getAllRent()[0]);
+            MessagePopupController.show(
+                    "You have paid " +
+                    property.getAllRent()[0] +
+                    " in rent to " + property.getOwner()
+            );
         }
         payRentBtn.setDisable(true);
         int[] currentDice = gameLogic.getCurrentDice();

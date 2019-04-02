@@ -49,7 +49,7 @@ public class MessagePopupController {
 
         // Move messagePopup and add to container
         container.getChildren().add(messagePopup);
-        messagePopup.setTranslateY(TRANSLATE_Y);
+        //messagePopup.setTranslateY(TRANSLATE_Y);
 
         // Hide container on click
         Pane finalMessagePopup = messagePopup;
