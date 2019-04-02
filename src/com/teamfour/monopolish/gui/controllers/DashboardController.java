@@ -118,7 +118,8 @@ public class DashboardController {
         }
         // If the user is in the leaderboard it will be marked to easily see it
         if (username.equals(Handler.getAccount().getUsername())) {
-            color = "#ff6b5e";
+            color = "rgba(252, 108, 108,0.4)";
+
         }
 
         row.setStyle(
