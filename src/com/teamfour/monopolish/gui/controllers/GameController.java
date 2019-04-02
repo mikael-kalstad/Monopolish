@@ -48,7 +48,6 @@ public class GameController {
     // GameLogic for handling more intricate game operations
     private GameLogic gameLogic;
 
-
     private final String USERNAME = Handler.getAccount().getUsername();
 
     // Array for events in game
@@ -445,6 +444,7 @@ public class GameController {
         } else {
             // If no property here, make sure to clear the property
             cardContainer.getChildren().clear();
+            propertyOwned.setVisible(false);
             buypropertyBtn.setVisible(false);
         }
 

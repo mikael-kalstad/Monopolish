@@ -143,6 +143,7 @@ public class GameLogic {
         String owner = entityManager.getOwnerAtProperty(position);
         int price = entityManager.getPropertyAtPosition(position).getRent()[0];
         entityManager.transferMoneyFromTo(entityManager.getYou().getUsername(), owner, price);
+        updateToDatabase();
 
         entityManager.updateToDatabase();
         return entityManager.getYou().getMoney();

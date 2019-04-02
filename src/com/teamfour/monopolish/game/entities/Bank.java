@@ -63,4 +63,6 @@ public class Bank extends Entity {
 
     public int getAvailableHouses() { return availableHouses; }
     public int getAvailableHotels() { return availableHotels; }
+
+    public void setMoney(int value) { money = value; }
 }
