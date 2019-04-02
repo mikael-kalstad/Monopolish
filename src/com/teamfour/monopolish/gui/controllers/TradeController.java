@@ -26,8 +26,6 @@ public class TradeController {
     @FXML public void initialize() {
         //just some cosmetics
         tradeusername.setText("Trading with: " + TRADE_USERNAME);
-        yourtrademoney.setText("0$");
-        requestedtrademoney.setText("0$");
 
         //Lists of the properties available
         ArrayList<Pane> yourCards = new ArrayList<>();
@@ -98,7 +96,7 @@ public class TradeController {
                     throw new IllegalArgumentException("Not enough money");
                 }
                 invalidinput.setVisible(false);
-                yourtrademoney.setText(input + "$");
+                yourtrademoney.setText(input);
             } catch (NumberFormatException e) {
                 invalidinput.setText("Invalid input");
                 invalidinput.setVisible(true);
@@ -115,7 +113,7 @@ public class TradeController {
                     throw new IllegalArgumentException("Not enough money");
                 }
                 invalidinput2.setVisible(false);
-                requestedtrademoney.setText(input + "$");
+                requestedtrademoney.setText(input);
             } catch (NumberFormatException e) {
                 invalidinput2.setText("Invalid input");
                 invalidinput2.setVisible(true);

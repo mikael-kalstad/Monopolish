@@ -96,7 +96,7 @@ create table gameproperty(
   property_id integer not null,
   pawned bit default 0,
   user_id integer,
-  constraint pk_gameproperty PRIMARY KEY (game_id, property_id)
+  PRIMARY KEY (game_id, property_id)
 );
 
 

@@ -52,9 +52,8 @@ create procedure player_update(
   in pos int,
   in moneyChange int,
   in in_jail bit,
-  in bankrupt bit,
-  in active int,
-  in money int
+  in bankrupt_in bit,
+  in active_in int
 )
 begin
   declare u_id int;
@@ -67,9 +66,8 @@ begin
   update player set currentpos = pos,
                     money = moneyChange,
                     injail = in_jail,
-                    bankrupt = bankrupt,
-                    active = active,
-                    money = money
+                    bankrupt = bankrupt_in,
+                    active = active_in
     where player_id = u_id;
   commit;
 
@@ -85,8 +83,9 @@ begin
   update player set active = 0 where gameid = game_id and active = 1;
 
   update player set score = (select (money + sum)
-    from (select money, sum(price) as sum from property join player
-      on player.user_id = property.user_id group by user_id) as a)
+    from (select money, sum(price) as sum from property join gameproperty on property.property_id = gameproperty.property_id
+      join player on player.user_id = gameproperty.user_id
+       group by player.user_id) as a)
         where player.game_id = gameid and active = 0;
   commit;
 

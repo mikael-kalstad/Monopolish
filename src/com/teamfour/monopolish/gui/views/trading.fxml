@@ -18,12 +18,17 @@
                   <FlowPane fx:id="youroffer" columnHalignment="CENTER" prefWidth="659.0" style="-fx-padding: 30; -fx-vgap: 30; -fx-hgap: 30; -fx-background-color: #EEEEEE;" />
                </content>
             </ScrollPane>
-            <Label fx:id="yourtrademoney" layoutX="336.0" layoutY="458.0" text="Label">
+            <Label fx:id="yourtrademoney" layoutX="336.0" layoutY="458.0" prefHeight="27.0" prefWidth="75.0" text="Label">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
             <Button fx:id="clearyou" layoutX="649.0" layoutY="459.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="50.0" style="-fx-background-color: orange;" text="Clear" textFill="#fafafa" />
+            <Label layoutX="325.0" layoutY="458.0" text="\$">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
       <AnchorPane layoutX="761.0" layoutY="636.0" prefHeight="237.0" prefWidth="712.5" style="-fx-background-color: #EEEEEE;">
@@ -51,12 +56,17 @@
                   <FlowPane fx:id="askfor" columnHalignment="CENTER" style="-fx-padding: 30; -fx-vgap: 30; -fx-hgap: 30; -fx-background-color: #EEEEEE;" />
                </content>
             </ScrollPane>
-            <Label fx:id="requestedtrademoney" layoutX="335.0" layoutY="458.0" text="Label">
+            <Label fx:id="requestedtrademoney" layoutX="335.0" layoutY="458.0" prefHeight="27.0" prefWidth="75.0" text="Label">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
             <Button fx:id="clearopponent" layoutX="649.0" layoutY="461.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="50.0" style="-fx-background-color: orange;" text="Clear" textFill="#fafafa" />
+            <Label layoutX="324.0" layoutY="458.0" text="\$">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
       <Label fx:id="tradeusername" layoutX="514.0" layoutY="14.0" prefHeight="47.0" prefWidth="487.0" text="Trading with:" textFill="#fafafa">
