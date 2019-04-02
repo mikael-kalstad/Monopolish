@@ -1,6 +1,5 @@
 package com.teamfour.monopolish.gui.controllers;
 
-import javafx.animation.ScaleTransition;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -12,7 +11,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
 
 /**
  * Class for drawing and modifying some gui elements in the lobby view,
@@ -20,26 +18,12 @@ import javafx.util.Duration;
  */
 
 class LobbyDrawFx {
-    static void setBtnScaleOnHover(Button btn) {
-        ScaleTransition st = new ScaleTransition(Duration.millis(200), btn);
-        btn.setOnMouseEntered(e -> {
-            st.setFromX(btn.getScaleX());
-            st.setFromX(btn.getScaleY());
-            st.setByX(0.1);
-            st.setByY(0.1);
-            st.playFromStart();
-        });
-
-        btn.setOnMouseExited(e -> {
-            st.setFromX(btn.getScaleX());
-            st.setFromX(btn.getScaleY());
-            st.setByX(1.0);
-            st.setByY(1.0);
-            st.playFromStart();
-        });
-    }
-
-    // Used by newLobbyDialog
+    /**
+     * Set border style color in a Textfield (input)
+     *
+     * @param element Target textfield
+     * @param color Border color
+     */
     static void setBorderStyle(TextField element, String color) {
         element.setStyle(
                 "-fx-border-color: " + color + ";" +
@@ -78,6 +62,11 @@ class LobbyDrawFx {
         );
     }
 
+    /**
+     * This method will draw a new lobby container
+     * @param lobbyName Name of the target lobby
+     * @return Lobby container
+     */
     static GridPane drawNewLobby(String lobbyName) {
         // Grid layout within the container
         GridPane grid = new GridPane();
@@ -103,9 +92,8 @@ class LobbyDrawFx {
                 "-fx-font-size: 20px; " +
                 "-fx-font-weight: bold;"
         );
-        title.setWrappingWidth(150);
-        GridPane.setHalignment(title, HPos.CENTER); // Center horizontally
 
+        title.setWrappingWidth(150);
 
         // Status of the lobby
         Text status = new Text("Status");

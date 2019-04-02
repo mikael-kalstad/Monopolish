@@ -169,13 +169,15 @@
                   </ImageView>
                </children>
             </Pane>
-            <Pane layoutX="845.0" layoutY="31.0" prefHeight="70.0" prefWidth="421.0" style="-fx-background-radius: 10 10 0 0; -fx-background-color: white;" />
+            <Pane layoutX="845.0" layoutY="31.0" prefHeight="70.0" prefWidth="421.0" style="-fx-background-radius: 10 10 0 0; -fx-background-color: white;">
+               <children>
+                  <Text layoutX="307.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Score">
+                     <font>
+                        <Font name="System Bold" size="29.0" />
+                     </font>
+                  </Text>
+               </children></Pane>
             <Text layoutX="856.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player">
-               <font>
-                  <Font name="System Bold" size="29.0" />
-               </font>
-            </Text>
-            <Text layoutX="1177.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Score">
                <font>
                   <Font name="System Bold" size="29.0" />
                </font>

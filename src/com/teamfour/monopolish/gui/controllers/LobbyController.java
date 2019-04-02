@@ -43,9 +43,13 @@ public class LobbyController {
     @FXML private Pane newLobbyDialog;
     @FXML private Pane newLobbyBackground;
     @FXML private TextField newLobbyNameInput;
+    @FXML private Pane maxInputWarning;
     @FXML private Text newLobbyMsg;
     @FXML private Pane countdown;
     @FXML private Text countdownValue;
+
+    // Max length for input in new lobby
+    private int MAX_LENGTH_INPUT = 20;
 
     //  Status msg constants
     private final String STATUS_OPEN = "OPEN";
@@ -94,6 +98,9 @@ public class LobbyController {
         refreshTimer.scheduleAtFixedRate(task, delay, period);
 
         refresh();
+
+        // Limit newLobby input length
+        FxUtils.limitInputLength(MAX_LENGTH_INPUT, newLobbyNameInput, maxInputWarning);
 
         // When window is closed
         Handler.getSceneManager().getWindow().setOnCloseRequest(e -> {
@@ -433,6 +440,12 @@ public class LobbyController {
                 LobbyDrawFx.setTextColor(statusValue, PLAYER_COLOR_RED);
                 startGame(lobby_id);
                 game_starting = true;
+            }
+
+            // Check if game is starting
+            if (game_starting) {
+                statusValue.setText(STATUS_STARTING);
+                LobbyDrawFx.setTextColor(statusValue, PLAYER_COLOR_RED);
             }
         }
 
