@@ -88,6 +88,9 @@ public class GameController {
     @FXML private Text msgPopupText;
     @FXML private Pane messagePopupContainer;
 
+    // Container for houses
+    @FXML private GridPane housegrid;
+
     /**
      * Launches when the scene is loaded.
      */

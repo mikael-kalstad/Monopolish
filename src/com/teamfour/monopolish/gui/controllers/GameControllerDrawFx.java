@@ -1,9 +1,10 @@
 package com.teamfour.monopolish.gui.controllers;
 
-import com.teamfour.monopolish.game.property.Property;
 import com.teamfour.monopolish.game.property.Boat;
+import com.teamfour.monopolish.game.property.Property;
 import com.teamfour.monopolish.game.property.Street;
 import javafx.geometry.HPos;
+import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -11,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
@@ -31,7 +33,7 @@ public class GameControllerDrawFx {
      *
      * @param boardGrid Target grid for board
      * @param positions Positions of the players
-     * @param colors Color of associated with the player
+     * @param colors    Color of associated with the player
      */
     public static void createPlayerPieces(GridPane boardGrid, int[] positions, String[] colors) {
         // Clear the board before creating drawing any player pieces
@@ -69,6 +71,7 @@ public class GameControllerDrawFx {
     /**
      * Helper method that will translate a position to a X and Y position
      * that works on the grid for the board in the game view
+     *
      * @param pos Position on the board
      * @return Array with X and Y position [X, Y]
      */
@@ -123,7 +126,7 @@ public class GameControllerDrawFx {
         if (pos >= MAX * 3 && pos < MAX * 4) {
             position = MAX * 3;
             y = 0;
-            while(true) {
+            while (true) {
                 y++;
                 position++;
                 if (position == pos) {
@@ -135,12 +138,12 @@ public class GameControllerDrawFx {
     }
 
     /**
-      * This method checks if there are other game pieces on the same tile. If there are, position
-      * these pieces according to each other
-      *
-      * @param playerPieces List of all player pieces
-      * @param tileX X position of the tile
-      * @param tileY Y position of the tile
+     * This method checks if there are other game pieces on the same tile. If there are, position
+     * these pieces according to each other
+     *
+     * @param playerPieces List of all player pieces
+     * @param tileX        X position of the tile
+     * @param tileY        Y position of the tile
      */
     private static void checkForOverlaps(ArrayList<Node> playerPieces, int tileX, int tileY) {
         // List of pieces on this specific tile
@@ -176,9 +179,9 @@ public class GameControllerDrawFx {
     /**
      * This method is used to draw an opponent row in the sidebar in the game view
      *
-     * @param username of the actual user
-     * @param color of the player
-     * @param moneyValue The value of the money text field
+     * @param username           of the actual user
+     * @param color              of the player
+     * @param moneyValue         The value of the money text field
      * @param opponentsContainer Target container for opponents
      * @return A pane that works as a container for the property icon.
      * Must be returned since onclick must be defined in gameController since this class is static.
@@ -220,14 +223,15 @@ public class GameControllerDrawFx {
         }
 
         // Spacing between color box and username
-        Pane spacing = new Pane();container.add(spacing, 1, 0);
+        Pane spacing = new Pane();
+        container.add(spacing, 1, 0);
 
         // Set username
         Text user = new Text();
         user.setText(username);
         user.setStyle("-fx-font-size: 20px;");
         user.setFill(Paint.valueOf("#545454"));
-        container.add(user, 2,0);
+        container.add(user, 2, 0);
 
         // Property img
         Pane imgContainer = new Pane(); // Container for img
@@ -235,8 +239,8 @@ public class GameControllerDrawFx {
         imgContainer.setMaxSize(60, 60);
         imgContainer.setStyle(
                 "-fx-border-color: #888;" +
-                "-fx-border-radius: 15;" +
-                "-fx-cursor: hand;"
+                        "-fx-border-radius: 15;" +
+                        "-fx-cursor: hand;"
         );
 
         ImageView img = new ImageView("file:res/gui/Game/house.png");
@@ -264,11 +268,12 @@ public class GameControllerDrawFx {
 
     /**
      * Will create a chat-row and add it to a container,
+     *
      * @param username of the user who sent the message
-     * @param message content of the chat-row
-     * @param time when the message was sent
+     * @param message  content of the chat-row
+     * @param time     when the message was sent
      */
-    public static void createChatRow(Pane chatMessageContainer,String username, String message, String time) {
+    public static void createChatRow(Pane chatMessageContainer, String username, String message, String time) {
         GridPane container = new GridPane();
         container.setPrefSize(235, 60);
 
@@ -319,12 +324,12 @@ public class GameControllerDrawFx {
         if (numOfMessages % 2 == 0) {
             container.setStyle(
                     "-fx-background-color: #ededed;" +
-                    "-fx-padding: 15px;"
+                            "-fx-padding: 15px;"
             );
         } else {
             container.setStyle(
                     "-fx-background-color: #fff;" +
-                    "-fx-padding: 15px;"
+                            "-fx-padding: 15px;"
             );
         }
 
@@ -333,6 +338,7 @@ public class GameControllerDrawFx {
 
     /**
      * Helper method for chat row, will set styling for text in info section
+     *
      * @param element Target text element
      */
     private static void setInfoTextStyling(Text element) {
@@ -343,6 +349,7 @@ public class GameControllerDrawFx {
 
     /**
      * A method to generate a javafx property card
+     *
      * @param property A property object
      */
     static Pane createPropertyCard(Property property) {
@@ -371,7 +378,7 @@ public class GameControllerDrawFx {
         AnchorPane.setBottomAnchor(prices, 5.0);
 
         card.setStyle("-fx-background-color: #ffffff;");
-        header.setStyle("-fx-background-color: "+ property.getCategorycolor() +";");
+        header.setStyle("-fx-background-color: " + property.getCategorycolor() + ";");
         propertynamelabel.setStyle("-fx-font-size: 18px");
         propertypriceflow.setStyle("-fx-font-size: 13px");
         prices.setStyle("-fx-font-size: 13px");
@@ -397,13 +404,13 @@ public class GameControllerDrawFx {
                     "\nHotels cost:");
         } else if (property instanceof Boat) {
             rentContent = new Text("" +
-                        "Rent 1 railroad: " +
-                        "\nRent 2 railroads: " +
-                        "\nRent 3 railroads: ");
+                    "Rent 1 railroad: " +
+                    "\nRent 2 railroads: " +
+                    "\nRent 3 railroads: ");
         } else {
             rentContent = new Text("" +
-                        "Rent 1 utility: " +
-                        "\nRent 2 utilities: ");
+                    "Rent 1 utility: " +
+                    "\nRent 2 utilities: ");
         }
 
         rentlist.add(rentContent);
@@ -411,9 +418,69 @@ public class GameControllerDrawFx {
         propertypriceflow.getChildren().addAll(rentlist);
 
         ArrayList<Text> pricesTextList = new ArrayList<>();
-        for (String i : property.getAllRent()){ pricesTextList.add(new Text(i+"\n")); }
+        for (String i : property.getAllRent()) {
+            pricesTextList.add(new Text(i + "\n"));
+        }
         prices.getChildren().addAll(pricesTextList);
 
         return card;
+    }
+
+    /**
+     * @param housegrid GridPane on the board for houses
+     * @param property  The property the house will be drawn on
+     */
+    static void addHouse(GridPane housegrid, Property property) {
+
+        int pos = property.getPosition();
+        Rectangle house = new Rectangle(13, 13);
+
+        int[] posXY = posToXY(pos);
+
+        //The boxes have to be drawn and placed differently depending on which of the four sides of the board theyre on
+        //Bottom
+        if (pos > 0 && pos < 9) {
+            HBox box = new HBox();
+            box.setSpacing(3);
+            box.setPrefWidth(65);
+            box.setStyle("-fx-padding: 5px;");
+            GridPane.setConstraints(box, posXY[0], posXY[1]);
+            box.setAlignment(Pos.TOP_CENTER);
+            housegrid.getChildren().add(box);
+            box.getChildren().addAll(house);
+        }
+        //Left side
+        if (pos > 9 && pos < 18) {
+            VBox box = new VBox();
+            box.setSpacing(3);
+            box.setPrefHeight(65);
+            box.setStyle("-fx-padding: 5px;");
+            GridPane.setConstraints(box, posXY[0], posXY[1]);
+            box.setAlignment(Pos.CENTER_RIGHT);
+            housegrid.getChildren().add(box);
+            box.getChildren().addAll(house);
+        }
+        //Top
+        if (pos > 18 && pos < 27) {
+            HBox box = new HBox();
+            box.setSpacing(3);
+            box.setPrefWidth(65);
+            box.setStyle("-fx-padding: 5px;");
+            GridPane.setConstraints(box, posXY[0], posXY[1]);
+            box.setAlignment(Pos.BOTTOM_CENTER);
+            housegrid.getChildren().add(box);
+            box.getChildren().addAll(house);
+        }
+        //Right side
+        if (pos > 27 && pos < 36) {
+            VBox box = new VBox();
+            box.setSpacing(3);
+            box.setPrefHeight(65);
+            box.setStyle("-fx-padding: 5px;");
+            GridPane.setConstraints(box, posXY[0], posXY[1]);
+            box.setAlignment(Pos.CENTER_LEFT);
+            housegrid.getChildren().add(box);
+            box.getChildren().addAll(house);
+        }
     }
 }
