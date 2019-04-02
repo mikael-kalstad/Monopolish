@@ -683,7 +683,7 @@
             </Label>
          </children>
       </AnchorPane>
-      <ListView fx:id="eventlog" layoutX="14.0" layoutY="408.0" prefHeight="200.0" prefWidth="212.0" />
+      <ListView fx:id="eventlog" layoutX="14.0" layoutY="408.0" prefHeight="200.0" prefWidth="260.0" />
       <Button layoutX="51.0" layoutY="42.0" mnemonicParsing="false" onAction="#leave" prefHeight="40.0" prefWidth="126.0" style="-fx-background-color: ef5350;" text="Quit" textFill="#fafafa">
          <font>
             <Font size="16.0" />
