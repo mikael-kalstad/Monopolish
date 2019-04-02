@@ -18,6 +18,7 @@ DROP TABLE IF EXISTS property;
 DROP TABLE IF EXISTS gameproperty;
 DROP TABLE IF EXISTS chatmessage;
 DROP TABLE IF EXISTS trading;
+DROP TABLE IF EXISTS eventlog;
 
 
 -- Enable again
@@ -80,6 +81,7 @@ create table property(
   price REAL,
   position INTEGER not null DEFAULT 0,
   categorycolor varchar(12),
+  property_type int not null,
   primary key(property_id)
 );
 
@@ -105,15 +107,25 @@ create table chatmessage(
   message_id integer not null auto_increment,
   time_in datetime not null,
   message varchar(40),
-  primary key (message_id, player_id)
+  primary key (message_id)
+);
+
+create table eventlog(
+  event_id integer not null auto_increment,
+  game_id integer not null,
+  time_in datetime not null,
+  event_text varchar(40),
+  primary key (event_id)
 );
 
 CREATE TABLE trading(
+  trade_id INT NOT NULL AUTO_INCREMENT,
   seller_id INT NOT NULL,
   buyer_id INT NOT NULL,
   price INT DEFAULT 0,
   prop_id INT NOT NULL,
-  PRIMARY KEY (seller_id, buyer_id, prop_id)
+  accepted BIT NOT NULL DEFAULT 0,
+  PRIMARY KEY (trade_id)
 );
 
 /*
@@ -147,3 +159,6 @@ ALTER TABLE gameproperty
 
 ALTER TABLE chatmessage
   ADD FOREIGN KEY (player_id) REFERENCES player(player_id) ;
+
+ALTER TABLE eventlog
+  ADD FOREIGN KEY (game_id) REFERENCES game(game_id);
