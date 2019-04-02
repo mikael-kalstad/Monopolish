@@ -29,7 +29,7 @@ public class ChatController {
     int CHAT_MAX_CHARACTERS = 40;
 
     // Timer that will periodically update the chat
-    private Timer chatTimer = new Timer();
+    private static Timer chatTimer = new Timer();
 
      @FXML public void initialize() {
         // "Close" chat / move it down
@@ -145,7 +145,7 @@ public class ChatController {
         }
     }
 
-    public Timer getChatTimer() {
+    public static Timer getChatTimer() {
         return chatTimer;
     }
 }
