@@ -88,6 +88,7 @@ public class GameController {
     // Message popup
     @FXML private Pane messagePopup;
     @FXML private Text msgPopupText;
+    @FXML private Pane messagePopupContainer;
 
     /**
      * Launches when the scene is loaded.
@@ -118,7 +119,7 @@ public class GameController {
         catch (IOException e) { e.printStackTrace(); }
 
         // Setup messagePop
-        MessagePopupController.setup(messagePopup, msgPopupText);
+        MessagePopupController.setup(messagePopupContainer);
 
         // Start forfeit timer
         Timer forfeitTimer = new Timer();
@@ -405,9 +406,7 @@ public class GameController {
      * Ends your current turn
      */
     public void endTurn() {
-//        // TESTING
-//        MessagePopupController.show("Baard accepted your trade!");
-
+        MessagePopupController.show("Test msg");
         // Stop and reset timer
         //roundTimer.cancel();
         //roundTimeValue.setText(String.valueOf(ROUND_COUNTDOWN_TIME));

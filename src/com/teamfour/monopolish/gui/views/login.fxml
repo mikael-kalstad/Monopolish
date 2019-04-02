@@ -83,8 +83,5 @@
             <Font size="30.0" />
          </font>
       </Text>
-      <Pane layoutY="1030.0" prefHeight="20.0" prefWidth="194.0" style="-fx-background-color: red;" />
-      <Pane layoutY="1010.0" prefHeight="20.0" prefWidth="194.0" style="-fx-background-color: blue;" />
-      <Pane layoutY="990.0" prefHeight="20.0" prefWidth="194.0" style="-fx-background-color: yellow;" />
    </children>
 </AnchorPane>

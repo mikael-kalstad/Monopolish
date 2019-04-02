@@ -24,7 +24,8 @@ public enum ViewConstants {
     GAME("game.fxml"),
     CHAT("chat.fxml"),
     FORFEIT("forfeit.fxml"),
-    TRADING("trading.fxml");
+    TRADING("trading.fxml"),
+    MESSAGE_POPUP("messagePopup.fxml");
 
     private String value;
 

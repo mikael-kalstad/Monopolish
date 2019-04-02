@@ -158,6 +158,10 @@ public class ForfeitController {
         Handler.getPlayerDAO().endGame(GAME_ID);
         Handler.getGameDAO().finishGame(GAME_ID);
 
+        // Delete lobby
+        int lobbyId = Handler.getLobbyDAO().getLobbyId(USERNAME);
+        Handler.getLobbyDAO().deleteLobby(lobbyId);
+
         // Switch to dashboard!
         Platform.runLater(() -> Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue()));
     }
