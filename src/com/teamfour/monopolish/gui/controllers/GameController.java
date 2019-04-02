@@ -31,7 +31,7 @@ import java.util.TimerTask;
  * to click certain buttons, what happens when you click them, and handles all graphical interfaces and updates
  *
  * @author Bård Hestmark
- * @version 1.8
+ * @version 1.9
  */
 
 public class GameController {
@@ -695,9 +695,12 @@ public class GameController {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            messageBox = new Alert(Alert.AlertType.INFORMATION,
-                                "You have paid rent!", ButtonType.OK);
-            messageBox.showAndWait();
+//            messageBox = new Alert(Alert.AlertType.INFORMATION,
+//                                "You have paid rent!", ButtonType.OK);
+//            messageBox.showAndWait();
+
+            // REMEMBER TO CHANGE INDEX (END OF THIS HUUUUGE LINE) TO ACTUAL RENT WHEN HOUSE AND HOTEL IS IMPLEMENTED
+            MessagePopupController.show("You have paid " + gameLogic.getEntityManager().getPropertyAtPosition(gameLogic.getEntityManager().getYou().getPosition()).getAllRent()[0]);
         }
         endturnBtn.setDisable(false);
     }
@@ -716,8 +719,9 @@ public class GameController {
                 if (!gameLogic.propertyTransaction()) {
                     Alert messageBox = new Alert(Alert.AlertType.INFORMATION, "You do not have enough funds to purchase this property.");
                     messageBox.showAndWait();
+                } else {
+                    MessagePopupController.show("Purchase successful, you now the owner of " + gameLogic.getEntityManager().getPropertyAtPosition(gameLogic.getEntityManager().getYou().getPosition()).getName());
                 }
-                System.out.println("BUYING PROPERTY...");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
