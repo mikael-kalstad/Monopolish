@@ -97,7 +97,7 @@ public class PlayerDAO extends DataAccessObject {
         int count = 0;
         try {
             getConnection();
-            cStmt = connection.prepareCall("{call player_update(?, ?, ?, ?, ?, ?, ?, ?)}");
+            cStmt = connection.prepareCall("{call player_update(?, ?, ?, ?, ?, ?, ?)}");
 
             cStmt.setString(1, player.getUsername());
             cStmt.setInt(2, game_id);
@@ -106,7 +106,6 @@ public class PlayerDAO extends DataAccessObject {
             cStmt.setBoolean(5, player.isInJail());
             cStmt.setBoolean(6, player.isBankrupt());
             cStmt.setInt(7, player.getActive());
-            cStmt.setInt(8, player.getMoney());
 
             count = cStmt.executeUpdate();
         } catch (SQLException e) {
