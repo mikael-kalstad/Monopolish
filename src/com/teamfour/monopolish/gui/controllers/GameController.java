@@ -3,7 +3,7 @@ package com.teamfour.monopolish.gui.controllers;
 import com.teamfour.monopolish.game.GameLogic;
 import com.teamfour.monopolish.game.Board;
 import com.teamfour.monopolish.game.entities.player.Player;
-import com.teamfour.monopolish.game.propertylogic.Property;
+import com.teamfour.monopolish.game.property.Property;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.animation.ParallelTransition;
 import javafx.animation.RotateTransition;
@@ -261,8 +261,6 @@ public class GameController {
         propertiesContainer.setVisible(true);
         propertiesUsername.setText(username);
 
-        System.out.println("User has " + gameLogic.getPlayer(username).getProperties().size() + " properties");
-
         // Add all properties that the user owns to the dialog
         for (Property p : gameLogic.getPlayer(username).getProperties()) {
             Pane card = GameControllerDrawFx.createPropertyCard(p);
@@ -495,7 +493,6 @@ public class GameController {
      * Updates all the scene's graphics to reflect the changes in the database
      */
     public void updateBoard() {
-        System.out.println("Active threads: " + Thread.activeCount());
         String[] turns = gameLogic.getTurns();
         String[] colors = new String[turns.length];
         int[] positions = null;

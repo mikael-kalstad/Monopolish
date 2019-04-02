@@ -1,4 +1,4 @@
-package com.teamfour.monopolish.game.propertylogic;
+package com.teamfour.monopolish.game.property;
 
 import com.teamfour.monopolish.database.DataAccessObject;
 

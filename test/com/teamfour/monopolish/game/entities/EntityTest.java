@@ -1,6 +1,5 @@
 package com.teamfour.monopolish.game.entities;
 
-import com.teamfour.monopolish.game.propertylogic.Property;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
