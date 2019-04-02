@@ -5,6 +5,7 @@ drop procedure if exists available_property;
 drop procedure if exists position_property;
 drop procedure if exists property_clean;
 DROP PROCEDURE property_get_all;
+DROP PROCEDURE property_get_by_owner;
 
 delimiter $$
 create procedure property_create(
@@ -49,6 +50,7 @@ BEGIN
   WHERE gp.game_id=g_id;
 END $$
 
+
 delimiter $$
 create procedure property_update(
     in prop_id int,
@@ -71,7 +73,6 @@ create procedure property_update(
 end $$
 delimiter ;
 
-DROP PROCEDURE property_get_by_owner;
 
 DELIMITER $$
 CREATE PROCEDURE property_get_by_owner(

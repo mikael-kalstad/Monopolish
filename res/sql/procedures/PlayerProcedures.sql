@@ -99,7 +99,7 @@ create procedure player_getByGameId(
   in game_id int
 )
 begin
-  select a.username, p.money, p.currentpos, p.injail, p.bankrupt, p.active, p.money
+  select a.username, p.money, p.currentpos, p.injail, p.bankrupt, p.active
   from player p
   join account a on p.user_id = a.user_id
   where game_id = p.game_id AND p.active=1
