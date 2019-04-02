@@ -386,14 +386,18 @@ public class GameController {
         int[] finalDiceValues = diceValues;
         addToEventlog(s);
 
-            // Update board view to show where player moved
-        updateBoard();
+        Property property = gameLogic.getEntityManager().getPropertyAtPosition(gameLogic.getEntityManager().getYou().getPosition());
 
         // If the player didn't throw two equal dices, disable the dice button. If not, the player can throw dice again
         if (finalDiceValues[0] != finalDiceValues[1]) {
             rolldiceBtn.setDisable(true);
             endturnBtn.setDisable(false);
         } else {
+            MessagePopupController.show("The dices are equal, throw again!");
+
+            if (gameLogic.getPlayer(USERNAME).getPosition() == gameLogic.getBoard().getGoToJailPosition())
+                MessagePopupController.show("You are out of jail, free as a bird!");
+
             if (diceCounter == 2) {
                 try {
                     gameLogic.setPlayerInJail(USERNAME, true);
@@ -408,6 +412,9 @@ public class GameController {
             }
         }
 
+        // Update board view to show where player moved
+        updateBoard();
+
         // Check the tile you are currently on and call that event
         callTileEvent();
 
@@ -419,9 +426,6 @@ public class GameController {
      * Ends your current turn
      */
     public void endTurn() {
-        MessagePopupController.show("Test msg");
-        // Stop and reset timer
-
         try {
             // Disable buttons
             endturnBtn.setDisable(true);
@@ -442,6 +446,9 @@ public class GameController {
      * Checks to see what form of tile you are on and call the event accordingly
      */
     private void callTileEvent() {
+        // Remove previous cards
+        cardContainer.getChildren().clear();
+
         // Store your player's position
         int yourPosition = gameLogic.getPlayer(USERNAME).getPosition();
 
@@ -702,7 +709,6 @@ public class GameController {
         } else {
             endturnBtn.setDisable(false);
         }
-
     }
 
     /**
