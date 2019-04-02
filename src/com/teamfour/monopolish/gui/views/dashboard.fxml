@@ -31,9 +31,9 @@
                   <Font size="19.0" />
                </font>
             </Text>
-            <Text fx:id="username" fill="WHITE" layoutX="215.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Baard" wrappingWidth="124.66666173934942">
+            <Text fx:id="username" fill="WHITE" layoutX="212.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Baard" wrappingWidth="255.99997472763067">
                <font>
-                  <Font size="29.0" />
+                  <Font size="28.0" />
                </font>
             </Text>
             <Text fill="#dad9d9" layoutX="49.0" layoutY="503.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Personal Highscore" wrappingWidth="236.00002050399786">
