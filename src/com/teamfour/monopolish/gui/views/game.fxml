@@ -755,7 +755,7 @@
       </Label>
       <Pane fx:id="chatContainer" layoutX="21.0" layoutY="700.0" prefHeight="315.0" prefWidth="235.0" />
       <Pane fx:id="tradeContainer" layoutX="210.0" layoutY="53.0" prefHeight="950.0" prefWidth="1500.0" visible="false" />
-      <Pane fx:id="helpOverlay" prefHeight="1055.0" prefWidth="1925.0" style="-fx-background-color: rgba(160,160,160,0.7);" visible="false">
+      <Pane fx:id="helpOverlay" onMouseClicked="#toggleHelpOverlay" prefHeight="1055.0" prefWidth="1925.0" style="-fx-background-color: rgba(160,160,160,0.7);" visible="false">
          <children>
             <Text fill="WHITE" layoutX="9.0" layoutY="101.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Leave the game, you will not be able to rejoin" wrappingWidth="289.3332862193565">
                <font>
@@ -806,8 +806,33 @@
       </Pane>
       <ImageView fx:id="helpBtn" fitHeight="40.0" fitWidth="40.0" layoutX="1850.0" layoutY="14.0" onMouseClicked="#toggleHelpOverlay">
          <image>
-            <Image url="@../../../../../../../../../../../Downloads/icons8-help-80.png" />
+            <Image url="file:res/gui/Game/help.png" />
          </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </ImageView>
+      <Pane fx:id="messagePopup" layoutX="1001.0" layoutY="962.0" prefHeight="86.0" prefWidth="301.0" style="-fx-background-color: ededed; -fx-border-color: #999; -fx-border-radius: 15;">
+         <children>
+            <Text fx:id="msgPopupText" layoutX="14.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Baard accepted your trade request" wrappingWidth="255.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <Text fill="#a7a7a7" layoutX="237.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Click to hide" wrappingWidth="64.99996481619746">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Text>
+            <Label layoutX="14.0" layoutY="10.0" text="Message">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+         </children>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Pane>
    </children>
 </AnchorPane>

@@ -40,7 +40,6 @@ import java.util.TimerTask;
 public class GameController {
     // Timer for checking database updates
     private Timer databaseTimer = new Timer();
-    private Timer chatTimer = new Timer();
     private Timer roundTimer = new Timer();
     private final int ROUND_COUNTDOWN_TIME = 60;
     private int time;
@@ -89,6 +88,10 @@ public class GameController {
     // Container for trade
     @FXML private Pane tradeContainer;
 
+    // Message popup
+    @FXML private Pane messagePopup;
+    @FXML private Text msgPopupText;
+
     /**
      * Launches when the scene is loaded.
      */
@@ -116,6 +119,9 @@ public class GameController {
             chatContainer.getChildren().add(chat);
         }
         catch (IOException e) { e.printStackTrace(); }
+
+        // Setup messagePop
+        MessagePopupController.setup(messagePopup, msgPopupText);
 
         // Start forfeit timer
         Timer forfeitTimer = new Timer();
@@ -158,7 +164,8 @@ public class GameController {
                 gameLogic.getEntityManager().removePlayer(USERNAME);
                 databaseTimer.cancel(); // Stop databaseTimer thread
                 databaseTimer.purge();
-                chatTimer.cancel();
+                ChatController.getChatTimer().cancel();
+                ChatController.getChatTimer().purge();
 
                 // Logout user
                 Handler.getAccountDAO().setInactive(USERNAME);
@@ -184,12 +191,15 @@ public class GameController {
         if (alertDialog.getResult().getButtonData().isDefaultButton()) {
             databaseTimer.cancel(); // Stop timer thread
             databaseTimer.purge();
-            chatTimer.cancel();
+            ChatController.getChatTimer().cancel();
+            ChatController.getChatTimer().purge();
+
             // Remove player from lobby
             int lobbyId = Handler.getLobbyDAO().getLobbyId(USERNAME);
             System.out.println("lobby id when leaving... " + lobbyId);
             Handler.getLobbyDAO().removePlayer(USERNAME, Handler.getLobbyDAO().getLobbyId(USERNAME));
             gameLogic.getEntityManager().removePlayer(USERNAME);
+
             // Change view to dashboard
             Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
             databaseTimer.cancel(); // Stop timer thread
@@ -203,6 +213,9 @@ public class GameController {
     public void toggleHelpOverlay() {
         if (helpOverlay.isVisible()) helpOverlay.setVisible(false);
         else helpOverlay.setVisible(true);
+
+        // TESTING
+        MessagePopupController.show("Baard accepted your trade!");
     }
 
     /**
