@@ -12,7 +12,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
@@ -427,60 +426,121 @@ public class GameControllerDrawFx {
     }
 
     /**
+     * Method to draw houses on a property
      * @param housegrid GridPane on the board for houses
-     * @param property  The property the house will be drawn on
+     * @param street The property the house will be drawn on
      */
-    static void addHouse(GridPane housegrid, Property property) {
+    static void drawHouse(GridPane housegrid, Street street) {
 
-        int pos = property.getPosition();
-        Rectangle house = new Rectangle(13, 13);
+        int pos = street.getPosition();
+        int numberOfHouses = street.getHouses();
+        String propertyname = street.getName();
 
         int[] posXY = posToXY(pos);
 
-        //The boxes have to be drawn and placed differently depending on which of the four sides of the board theyre on
-        //Bottom
-        if (pos > 0 && pos < 9) {
-            HBox box = new HBox();
-            box.setSpacing(3);
-            box.setPrefWidth(65);
-            box.setStyle("-fx-padding: 5px;");
-            GridPane.setConstraints(box, posXY[0], posXY[1]);
-            box.setAlignment(Pos.TOP_CENTER);
-            housegrid.getChildren().add(box);
-            box.getChildren().addAll(house);
+        ArrayList<ImageView> houses = new ArrayList<>();
+
+        if(street.getHotels() == 1) {
+            numberOfHouses = 5;
         }
-        //Left side
+
+        if(numberOfHouses < 5) {
+            for (int i = 0; i < numberOfHouses; i++) {
+                houses.add(new ImageView("file:res/gui/Game/house.png"));
+            }
+        }
+
+        //Setting size and rotation of the houses
+        for (ImageView house : houses) {
+            house.setFitHeight(21);
+            house.setFitWidth(21);
+
+            rotateHouse(house, pos);
+        }
+
+        //if its the first house being drawn on a street, it will need a container:
+        if (numberOfHouses == 1) {
+            //Checks which of the 4 sides of the board the street is on to correctly align the container in the GridPane grid:
+            //Bottom
+            if (pos > 0 && pos < 9) {
+                HBox box = new HBox();
+                box.setId(propertyname);
+                box.setSpacing(2);
+                box.setPrefWidth(65);
+                GridPane.setConstraints(box, posXY[0], posXY[1]);
+                box.setAlignment(Pos.TOP_CENTER);
+                box.getChildren().addAll(houses);
+                housegrid.getChildren().add(box);
+            }
+            //Left side
+            if (pos > 9 && pos < 18) {
+                VBox box = new VBox();
+                box.setId(propertyname);
+                box.setSpacing(2);
+                box.setPrefHeight(65);
+                GridPane.setConstraints(box, posXY[0], posXY[1]);
+                box.setAlignment(Pos.CENTER_RIGHT);
+                box.getChildren().addAll(houses);
+                housegrid.getChildren().add(box);
+            }
+            //Top
+            if (pos > 18 && pos < 27) {
+                HBox box = new HBox();
+                box.setId(propertyname);
+                box.setSpacing(2);
+                box.setPrefWidth(65);
+                GridPane.setConstraints(box, posXY[0], posXY[1]);
+                box.setAlignment(Pos.BOTTOM_CENTER);
+                box.getChildren().addAll(houses);
+                housegrid.getChildren().add(box);
+            }
+            //Right side
+            if (pos > 27 && pos < 36) {
+                VBox box = new VBox();
+                box.setId(propertyname);
+                box.setSpacing(2);
+                box.setPrefHeight(65);
+                GridPane.setConstraints(box, posXY[0], posXY[1]);
+                box.setAlignment(Pos.CENTER_LEFT);
+                box.getChildren().addAll(houses);
+                housegrid.getChildren().add(box);
+            }
+        }
+
+        //for the rest of the houses we find the already made container
+        if(numberOfHouses > 1 && numberOfHouses <= 4) {
+            for (Node box : housegrid.getChildren()) {
+                if (box.getId() == propertyname) {
+                    ((Pane) box).getChildren().clear();
+                    ((Pane) box).getChildren().addAll(houses);
+                }
+            }
+        }
+
+        //if the street has a hotel
+        if(numberOfHouses == 5){
+            for (Node box : housegrid.getChildren()) {
+                if (box.getId() == propertyname) {
+                    ImageView hotel = new ImageView("file:res/gui/Game/house.png");
+                    hotel.setFitWidth(32);
+                    hotel.setFitHeight(32);
+                    rotateHouse(hotel, pos);
+                    ((Pane) box).getChildren().clear();
+                    ((Pane) box).getChildren().add(hotel);
+                }
+            }
+        }
+    }
+
+    private static void rotateHouse(ImageView house, int pos) {
         if (pos > 9 && pos < 18) {
-            VBox box = new VBox();
-            box.setSpacing(3);
-            box.setPrefHeight(65);
-            box.setStyle("-fx-padding: 5px;");
-            GridPane.setConstraints(box, posXY[0], posXY[1]);
-            box.setAlignment(Pos.CENTER_RIGHT);
-            housegrid.getChildren().add(box);
-            box.getChildren().addAll(house);
+            house.setStyle("-fx-rotate: 90;");
         }
-        //Top
         if (pos > 18 && pos < 27) {
-            HBox box = new HBox();
-            box.setSpacing(3);
-            box.setPrefWidth(65);
-            box.setStyle("-fx-padding: 5px;");
-            GridPane.setConstraints(box, posXY[0], posXY[1]);
-            box.setAlignment(Pos.BOTTOM_CENTER);
-            housegrid.getChildren().add(box);
-            box.getChildren().addAll(house);
+            house.setStyle("-fx-rotate: 180;");
         }
-        //Right side
         if (pos > 27 && pos < 36) {
-            VBox box = new VBox();
-            box.setSpacing(3);
-            box.setPrefHeight(65);
-            box.setStyle("-fx-padding: 5px;");
-            GridPane.setConstraints(box, posXY[0], posXY[1]);
-            box.setAlignment(Pos.CENTER_LEFT);
-            housegrid.getChildren().add(box);
-            box.getChildren().addAll(house);
+            house.setStyle("-fx-rotate: -90;");
         }
     }
 }
