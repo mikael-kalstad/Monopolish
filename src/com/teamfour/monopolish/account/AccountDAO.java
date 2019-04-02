@@ -109,6 +109,7 @@ public class AccountDAO extends DataAccessObject {
             account = new Account(rs.getString(1), rs.getString(2), rs.getDate(3).toLocalDate(),
                     0, false);
 
+            rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
             throw new SQLException();
