@@ -838,6 +838,6 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Pane>
-      <Pane fx:id="messagePopupContainer" layoutX="960.0" layoutY="919.0" prefHeight="121.0" prefWidth="330.0" />
+      <Pane fx:id="messagePopupContainer" layoutX="960.0" layoutY="1018.0" prefHeight="46.0" prefWidth="330.0" />
    </children>
 </AnchorPane>

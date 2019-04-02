@@ -396,6 +396,7 @@ public class GameController {
                     e.printStackTrace();
                 }
             } else {
+                MessagePopupController.show("The dices are equal, throw again!");
                 diceCounter++;
             }
         }
