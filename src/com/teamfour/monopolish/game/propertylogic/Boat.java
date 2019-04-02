@@ -1,6 +1,6 @@
 package com.teamfour.monopolish.game.propertylogic;
 
-public class Railroad extends Property {
+public class Boat extends Property {
     // Attributes
     private int[] rent;
 
@@ -14,7 +14,7 @@ public class Railroad extends Property {
      * @param categorycolor the categorycolor of the property
      * @param owner         the current owner of the property
      */
-    public Railroad(int p_id, String name, int price, int position, String categorycolor, String owner) {
+    public Boat(int p_id, String name, int price, int position, String categorycolor, String owner) {
         super(p_id, name, price, position, categorycolor, owner);
         calculateRent();
     }

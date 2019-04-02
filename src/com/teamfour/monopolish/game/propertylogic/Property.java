@@ -6,17 +6,19 @@ package com.teamfour.monopolish.game.propertylogic;
  * @version     1.1
  */
 
-public class Property {
+public abstract class Property {
+    protected static final int STREET = 0;
+    protected static final int BOAT = 1;
+    protected static final int TRAIN = 2;
 
     //Attributes
-    private final int ID;
-    private final String NAME;
-    private int price;
-    private int[] rent = new int[9];
-    private int position;
-    private boolean pawned = false;
-    private String owner;
-    private final String CATEGORYCOLOR;
+    protected final int ID;
+    protected final String NAME;
+    protected int price;
+    protected int position;
+    protected boolean pawned = false;
+    protected String owner;
+    protected final String CATEGORYCOLOR;
 
     /**
      * Constructor
@@ -34,19 +36,6 @@ public class Property {
         this.position = position;
         this.CATEGORYCOLOR = categorycolor;
         this.owner = owner;
-        calculateRent();
-
-        rent[7] = price;
-        rent[8] = price;
-    }
-
-    /**
-     * Calculates rent of the different levels of house/hotel construction
-     */
-    private void calculateRent() {
-        for (int i = 0; i < rent.length - 2; i++) {
-            rent[i] = (int)(price * 0.1 * (i + 1));
-        }
     }
 
     @Override
@@ -99,16 +88,23 @@ public class Property {
         return NAME;
     }
 
+    /**
+     * Returns an int of what type of property this object is
+     * @return
+     */
+    public int getType() {
+        if (this instanceof Street)
+            return STREET;
+        else if (this instanceof Boat)
+            return BOAT;
+        else
+            return TRAIN;
+    }
+
+    public abstract String[] getAllRent();
+
     public int getPrice() {
         return price;
-    }
-
-    public int[] getRent() {
-        return rent;
-    }
-
-    public int getRentLevel() {
-        return rent[0];
     }
 
     public String getCategorycolor(){

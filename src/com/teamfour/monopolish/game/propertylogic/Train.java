@@ -1,6 +1,6 @@
 package com.teamfour.monopolish.game.propertylogic;
 
-public class Utility extends Property {
+public class Train extends Property {
     /**
      * Constructor
      *
@@ -11,12 +11,12 @@ public class Utility extends Property {
      * @param categorycolor the categorycolor of the property
      * @param owner         the current owner of the property
      */
-    public Utility(int p_id, String name, int price, int position, String categorycolor, String owner) {
+    public Train(int p_id, String name, int price, int position, String categorycolor, String owner) {
         super(p_id, name, price, position, categorycolor, owner);
     }
 
-    public int getRent(int utilitiesOwned, int diceFactor) {
-        if (utilitiesOwned == 1) {
+    public int getRent(int trainsOwned, int diceFactor) {
+        if (trainsOwned == 1) {
             return diceFactor * 80;
         } else {
             return diceFactor * 200;

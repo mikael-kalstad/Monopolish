@@ -1,11 +1,7 @@
 package com.teamfour.monopolish.game.propertylogic;
 
-import com.teamfour.monopolish.database.ConnectionPool;
 import com.teamfour.monopolish.database.DataAccessObject;
-import com.teamfour.monopolish.game.entities.Entity;
-import com.teamfour.monopolish.game.entities.player.Player;
 
-import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -14,14 +10,13 @@ import java.util.ArrayList;
  *
  *
  * @author      lisawil
- * @version     1.0
+ * @version     1.1
  */
 
 public class PropertyDAO extends DataAccessObject {
     /**
      * creates gameproperties in the database and Property objects for the game.
      * @param game_id the id of the current game
-     *
      */
     public ArrayList<Property> getAllProperties(int game_id) throws SQLException {
         ArrayList<Property> props = new ArrayList<>();
@@ -34,14 +29,8 @@ public class PropertyDAO extends DataAccessObject {
             ResultSet rs = cStmt.executeQuery();
 
             while (rs.next()) {
-                int propertyId = rs.getInt(1);
-                String name = rs.getString(2);
-                int price = rs.getInt(3);
-                int position = rs.getInt(4);
-                String categoryColor = rs.getString(5);
-                String owner = rs.getString(6);
-
-                props.add(new Property(propertyId, name, price, position, categoryColor, owner));
+                Property property = getPropertyFromResultSet(rs);
+                props.add(property);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -60,7 +49,7 @@ public class PropertyDAO extends DataAccessObject {
      */
 
     public ArrayList<Property> getPropertiesByOwner(int gameId, String username) throws SQLException {
-        ArrayList<Property> properties = new ArrayList<>();
+        ArrayList<Property> props = new ArrayList<>();
 
         try {
             getConnection();
@@ -72,14 +61,8 @@ public class PropertyDAO extends DataAccessObject {
             ResultSet rs = cStmt.executeQuery();
 
             while (rs.next()) {
-                int propertyId = rs.getInt(1);
-                String name = rs.getString(2);
-                int price = rs.getInt(3);
-                int position = rs.getInt(4);
-                String categoryColor = rs.getString(5);
-                String owner = rs.getString(6);
-
-                properties.add(new Property(propertyId, name, price, position, categoryColor, owner));
+                Property property = getPropertyFromResultSet(rs);
+                props.add(property);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -88,7 +71,7 @@ public class PropertyDAO extends DataAccessObject {
             releaseConnection();
         }
 
-        return properties;
+        return props;
     }
 
     /**
@@ -96,7 +79,6 @@ public class PropertyDAO extends DataAccessObject {
      * @param prop the property that is updated
      * @param game_id the id of the current game
      */
-
     public void updateProperty(Property prop, int game_id) throws SQLException {
         try {
             getConnection();
@@ -134,5 +116,35 @@ public class PropertyDAO extends DataAccessObject {
             releaseConnection();
         }
     }
-}
 
+    // HELPER METHODS
+
+    /**
+     * Takes an MySQL ResultSet and inserts the data into a Property object.
+     * USE WITH CAUTION!! The inserted resultset must be have 7 columns of data
+     * @param rs ResultSet to extract from
+     * @return Resulting property
+     * @throws SQLException
+     */
+    private Property getPropertyFromResultSet(ResultSet rs) throws SQLException {
+        // Get all attributes from resultset
+        int propertyId = rs.getInt(1);
+        String name = rs.getString(2);
+        int price = rs.getInt(3);
+        int position = rs.getInt(4);
+        String categoryColor = rs.getString(5);
+        String owner = rs.getString(6);
+        int propertyType = rs.getInt(7);
+
+        // Check which type of property this is and cast accordingly
+        Property property;
+        if (propertyType == Property.STREET)
+            property = new Street(propertyId, name, price, position, categoryColor, owner);
+        else if (propertyType == Property.BOAT)
+            property = new Boat(propertyId, name, price, position, categoryColor, owner);
+        else
+            property = new Train(propertyId, name, price, position, categoryColor, owner);
+
+        return property;
+    }
+}

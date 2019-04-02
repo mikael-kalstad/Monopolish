@@ -41,7 +41,7 @@ BEGIN
   INSERT INTO gameproperty (game_id, property_id)
   SELECT g_id, property_id FROM property;
 
-  select gp.property_id, p.name, p.price, p.position, p.categorycolor, IFNULL(a.username, '')
+  select gp.property_id, p.name, p.price, p.position, p.categorycolor, IFNULL(a.username, ''), p.property_type
   from gameproperty gp
   join property p on gp.property_id = p.property_id
   left join player p2 on gp.user_id = p2.user_id

@@ -3,6 +3,7 @@ package com.teamfour.monopolish.game;
 import com.teamfour.monopolish.game.entities.EntityManager;
 import com.teamfour.monopolish.game.entities.player.Player;
 import com.teamfour.monopolish.game.propertylogic.Property;
+import com.teamfour.monopolish.game.propertylogic.Street;
 import com.teamfour.monopolish.gui.controllers.Handler;
 
 import java.sql.SQLException;
@@ -140,7 +141,7 @@ public class GameLogic {
     public boolean rentTransaction() throws SQLException {
         int position = entityManager.getYou().getPosition();
         String owner = entityManager.getOwnerAtProperty(position);
-        int price = entityManager.getPropertyAtPosition(position).getRent()[0];
+        int price = ((Street)entityManager.getPropertyAtPosition(position)).getRent();
         entityManager.transferMoneyFromTo(entityManager.getYou().getUsername(), owner, price);
         updateToDatabase();
 
