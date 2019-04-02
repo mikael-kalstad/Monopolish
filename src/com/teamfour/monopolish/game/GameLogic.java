@@ -138,14 +138,14 @@ public class GameLogic {
         }
     }
 
-    public int rentTransaction() throws SQLException {
+    public boolean rentTransaction() throws SQLException {
         int position = entityManager.getYou().getPosition();
         String owner = entityManager.getOwnerAtProperty(position);
         int price = entityManager.getPropertyAtPosition(position).getRent()[0];
         entityManager.transferMoneyFromTo(entityManager.getYou().getUsername(), owner, price);
         updateToDatabase();
 
-        return entityManager.getYou().getMoney();
+        return true;
     }
 
     /**

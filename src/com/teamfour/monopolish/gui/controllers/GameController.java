@@ -58,7 +58,7 @@ public class GameController {
 
     // Elements in board
     @FXML private AnchorPane cardContainer;
-    @FXML private Button buypropertyBtn;
+    @FXML private Button propertyBtn;
     @FXML private Label propertyOwned;
     @FXML private GridPane gamegrid;
     @FXML private ListView eventlog;
@@ -399,7 +399,7 @@ public class GameController {
         try {
             // Disable buttons
             endturnBtn.setDisable(true);
-            buypropertyBtn.setDisable(true);
+            propertyBtn.setDisable(true);
 
             // Finish turn in gamelogic and wait for your next turn
             gameLogic.finishYourTurn();
@@ -427,25 +427,31 @@ public class GameController {
             String propertyOwner = gameLogic.getEntityManager().getOwnerAtProperty(yourPosition);
             if (propertyOwner == null || propertyOwner.equals("")) {
                 // If property is available, show button
-                buypropertyBtn.setDisable(false);
-                buypropertyBtn.setVisible(true);
+                propertyBtn.setDisable(false);
+                propertyBtn.setVisible(true);
+                propertyBtn.setOnMouseClicked(event -> buyProperty());
                 propertyOwned.setVisible(false);
             } else {
-                // If owned, display name of owner
-                buypropertyBtn.setDisable(true);
-                buypropertyBtn.setVisible(false);
                 propertyOwned.setVisible(true);
                 propertyOwned.setText("Owned by " + propertyOwner);
 
                 // If this is not your property, prepare to get rented! Or something
-                if (!propertyOwner.equals(USERNAME))
-                    rentTransaction();
+                if (propertyOwner.equals(USERNAME)) {
+                    propertyBtn.setDisable(true);
+                    propertyBtn.setVisible(false);
+                } else {
+                    propertyBtn.setDisable(false);
+                    propertyBtn.setVisible(true);
+                    propertyBtn.setText("Pay rent");
+                    propertyBtn.setOnMouseClicked(event -> rentTransaction());
+                    rolldiceBtn.setDisable(true);
+                }
             }
         } else {
             // If no property here, make sure to clear the property
             cardContainer.getChildren().clear();
             propertyOwned.setVisible(false);
-            buypropertyBtn.setVisible(false);
+            propertyBtn.setVisible(false);
         }
 
         // If on free parking, get a free-parking token
@@ -642,9 +648,12 @@ public class GameController {
         return null;
     }
 
+    /**
+     * Attempts to pay the player with the current owned property with the proper rent
+     */
     public void rentTransaction() {
         Alert messageBox;
-        // TODO: Everything
+        // Check if your player has a free parking token
         if (gameLogic.getPlayer(USERNAME).hasFreeParking()) {
             messageBox = new Alert(Alert.AlertType.INFORMATION,
                     "You have a 'Free Parking' token! You don't have to pay rent here", ButtonType.OK);
@@ -660,6 +669,7 @@ public class GameController {
                                 "You have paid rent!", ButtonType.OK);
             messageBox.showAndWait();
         }
+        rolldiceBtn.setDisable(false);
     }
 
     /**
@@ -687,7 +697,7 @@ public class GameController {
             updateBoard();
 
             // Update property information label
-            buypropertyBtn.setVisible(false);
+            propertyBtn.setVisible(false);
             propertyOwned.setVisible(true);
             propertyOwned.setText("Owned by " + USERNAME);
         }
