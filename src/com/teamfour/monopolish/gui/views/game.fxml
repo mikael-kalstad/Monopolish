@@ -629,16 +629,14 @@
                   <Font size="13.0" />
                </font>
             </Label>
-            <Text fx:id="roundTimeValue" fill="#cd5b5b" layoutX="309.0" layoutY="494.0" strokeType="OUTSIDE" strokeWidth="0.0" text="30">
+            <Button fx:id="payBailBtn" disable="true" layoutX="254.0" layoutY="453.0" mnemonicParsing="false" onAction="#payBail" prefHeight="50.0" prefWidth="160.0" style="-fx-background-color: #81c784;" text="Pay bail" textFill="WHITE">
                <font>
-                  <Font size="45.0" />
+                  <Font size="18.0" />
                </font>
-            </Text>
-            <Label layoutX="270.0" layoutY="518.0" text="Time left in your round " textFill="#b2b2b2">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
          </children>
       </Pane>
       <AnchorPane layoutX="419.0" layoutY="171.0" prefHeight="719.0" prefWidth="720.0" style="-fx-background-color: #DCEDC8;">

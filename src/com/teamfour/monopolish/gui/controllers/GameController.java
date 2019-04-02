@@ -9,6 +9,7 @@ import javafx.animation.ParallelTransition;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -37,9 +38,6 @@ import java.util.TimerTask;
 public class GameController {
     // Timer for checking database updates
     private Timer databaseTimer = new Timer();
-    private Timer roundTimer = new Timer();
-    private final int ROUND_COUNTDOWN_TIME = 60;
-    private int time;
 
     // GameLogic for handling more intricate game operations
     private GameLogic gameLogic;
@@ -345,6 +343,7 @@ public class GameController {
     public void rollDice() {
         // Get values for two dices
         int[] diceValues = null;
+        int diceCounter = 0;
         try { diceValues = gameLogic.throwDice(); }
         catch (SQLException e) { e.printStackTrace(); }
 
@@ -381,6 +380,7 @@ public class GameController {
         pt.play();
 
         int[] finalDiceValues = diceValues;
+        addToEventlog(s);
 
         Property property = gameLogic.getEntityManager().getPropertyAtPosition(gameLogic.getEntityManager().getYou().getPosition());
 
@@ -393,6 +393,17 @@ public class GameController {
 
             if (gameLogic.getPlayer(USERNAME).getPosition() == gameLogic.getBoard().getGoToJailPosition())
                 MessagePopupController.show("You are out of jail, free as a bird!");
+
+            if (diceCounter == 2) {
+                try {
+                    gameLogic.setPlayerInJail(USERNAME, true);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                MessagePopupController.show("The dices are equal, throw again!");
+                diceCounter++;
+            }
         }
 
         // Update board view to show where player moved
@@ -436,6 +447,7 @@ public class GameController {
 
         // PROPERTY TILE HANDLING
         if(gameLogic.getBoard().getTileType(yourPosition) == Board.PROPERTY) {
+            cardContainer.getChildren().clear();
             // Draw property card with
             Pane card = GameControllerDrawFx.createPropertyCard(gameLogic.getEntityManager().getPropertyAtPosition(gameLogic.getPlayer(USERNAME).getPosition()));
             cardContainer.getChildren().add(card);
@@ -450,7 +462,7 @@ public class GameController {
                 payRentBtn.setVisible(false);
                 propertyOwned.setVisible(false);
             } else {
-                // If this is not your property, prepare to get rented! Or something
+                // If this is your property, just display a label informing so
                 if (propertyOwner.equals(USERNAME)) {
                     buyPropertyBtn.setDisable(true);
                     buyPropertyBtn.setVisible(false);
@@ -459,6 +471,7 @@ public class GameController {
                     propertyOwned.setVisible(true);
                     propertyOwned.setText("Owned by you");
                 } else {
+                    // If this is someone else's property, activate the pay rent button
                     propertyOwned.setVisible(false);
                     payRentBtn.setDisable(false);
                     payRentBtn.setVisible(true);
@@ -539,39 +552,6 @@ public class GameController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        // Iniate round timer
-        /*time = ROUND_COUNTDOWN_TIME;
-        roundTimer = new Timer();
-
-        TimerTask countdown = new TimerTask() {
-            @Override
-            public void run() {
-                if (time > 0) {
-                    Platform.runLater(() -> roundTimeValue.setText(String.valueOf(time)));
-                    time--;
-                } else {
-                    System.out.println("END OF YOUR TURN!");
-                    endTurn();
-                    roundTimer.cancel();
-                    roundTimeValue.setText(String.valueOf(ROUND_COUNTDOWN_TIME));
-                }
-            }
-        };
-
-        long delay = 1000L; // Delay before update refreshTimer starts
-        long period = 1000L; // Delay between each update/refresh
-        roundTimer.scheduleAtFixedRate(countdown, delay, period);*/
-
-        /*
-        String winner = "";
-
-        if ((winner = gameLogic.getEntityManager().findWinner()) != null) {
-            System.out.println(winner + " is winner!");
-            Alert winnerAlert = new Alert(Alert.AlertType.INFORMATION, winner + " is winner!", ButtonType.OK);
-            winnerAlert.showAndWait();
-        }
-        */
 
         // If this is your turn, stop the database check databaseTimer and enable the button to roll dice
         if (yourTurn) {
@@ -754,5 +734,9 @@ public class GameController {
         if (buyprompt.getResult() == ButtonType.NO) {
             buyprompt.close();
         }
+    }
+
+    public void payBail() {
+
     }
 }
