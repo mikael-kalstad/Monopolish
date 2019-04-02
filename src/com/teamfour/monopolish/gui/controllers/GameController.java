@@ -445,6 +445,7 @@ public class GameController {
                 // If property is available, show button
                 propertyBtn.setDisable(false);
                 propertyBtn.setVisible(true);
+                propertyBtn.setText("Buy property");
                 propertyBtn.setOnMouseClicked(event -> buyProperty());
                 propertyOwned.setVisible(false);
             } else {
@@ -696,6 +697,7 @@ public class GameController {
                                 "You have paid rent!", ButtonType.OK);
             messageBox.showAndWait();
         }
+        propertyBtn.setDisable(true);
         endturnBtn.setDisable(false);
     }
 
