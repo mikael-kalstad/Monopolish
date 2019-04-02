@@ -3,7 +3,7 @@ package com.teamfour.monopolish.gui.controllers;
 import com.teamfour.monopolish.game.GameLogic;
 import com.teamfour.monopolish.game.Board;
 import com.teamfour.monopolish.game.entities.player.Player;
-import com.teamfour.monopolish.game.propertylogic.Property;
+import com.teamfour.monopolish.game.property.Property;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.animation.ParallelTransition;
 import javafx.animation.RotateTransition;
@@ -31,7 +31,7 @@ import java.util.TimerTask;
  * to click certain buttons, what happens when you click them, and handles all graphical interfaces and updates
  *
  * @author Bård Hestmark
- * @version 1.8
+ * @version 1.9
  */
 
 public class GameController {
@@ -257,8 +257,6 @@ public class GameController {
         // Show properties dialog and set username
         propertiesContainer.setVisible(true);
         propertiesUsername.setText(username);
-
-        System.out.println("User has " + gameLogic.getPlayer(username).getProperties().size() + " properties");
 
         // Add all properties that the user owns to the dialog
         for (Property p : gameLogic.getPlayer(username).getProperties()) {
@@ -492,7 +490,6 @@ public class GameController {
      * Updates all the scene's graphics to reflect the changes in the database
      */
     public void updateBoard() {
-        System.out.println("Active threads: " + Thread.activeCount());
         String[] turns = gameLogic.getTurns();
         String[] colors = new String[turns.length];
         int[] positions = null;
@@ -695,9 +692,12 @@ public class GameController {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            messageBox = new Alert(Alert.AlertType.INFORMATION,
-                                "You have paid rent!", ButtonType.OK);
-            messageBox.showAndWait();
+//            messageBox = new Alert(Alert.AlertType.INFORMATION,
+//                                "You have paid rent!", ButtonType.OK);
+//            messageBox.showAndWait();
+
+            // REMEMBER TO CHANGE INDEX (END OF THIS HUUUUGE LINE) TO ACTUAL RENT WHEN HOUSE AND HOTEL IS IMPLEMENTED
+            MessagePopupController.show("You have paid " + gameLogic.getEntityManager().getPropertyAtPosition(gameLogic.getEntityManager().getYou().getPosition()).getAllRent()[0]);
         }
         endturnBtn.setDisable(false);
     }
@@ -716,8 +716,9 @@ public class GameController {
                 if (!gameLogic.propertyTransaction()) {
                     Alert messageBox = new Alert(Alert.AlertType.INFORMATION, "You do not have enough funds to purchase this property.");
                     messageBox.showAndWait();
+                } else {
+                    MessagePopupController.show("Purchase successful, you now the owner of " + gameLogic.getEntityManager().getPropertyAtPosition(gameLogic.getEntityManager().getYou().getPosition()).getName());
                 }
-                System.out.println("BUYING PROPERTY...");
             } catch (SQLException e) {
                 e.printStackTrace();
             }

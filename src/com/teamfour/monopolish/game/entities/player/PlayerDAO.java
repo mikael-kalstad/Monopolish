@@ -32,6 +32,7 @@ public class PlayerDAO extends DataAccessObject {
 
                 players.add(new Player(cStmt.executeQuery().getString("username")));
             }
+            cStmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
             throw new SQLException();
@@ -56,7 +57,6 @@ public class PlayerDAO extends DataAccessObject {
             cStmt.setString(2, username);
 
             players.add(new Player(cStmt.executeQuery().getString("username")));
-
         } catch (SQLException e) {
             e.printStackTrace();
             throw new SQLException();
@@ -144,6 +144,7 @@ public class PlayerDAO extends DataAccessObject {
 
                 players.add(new Player(username, money, position, inJail, bankrupt, active));
             }
+            rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -164,10 +165,8 @@ public class PlayerDAO extends DataAccessObject {
             cStmt = connection.prepareCall("{call player_endgame(?)}");
 
             for (int i = 0; i < 10; i++) {
-
                 cStmt.setInt(1, game_id);
                 cStmt.executeQuery();
-
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -198,9 +197,8 @@ public class PlayerDAO extends DataAccessObject {
                 list[counter][1] = rs.getString(2);
 
                 counter++;
-                }
-
-
+            }
+            rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -228,8 +226,6 @@ public class PlayerDAO extends DataAccessObject {
             cStmt.setInt(3, forfeitStatus);
 
             cStmt.executeQuery();
-
-
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -260,7 +256,7 @@ public class PlayerDAO extends DataAccessObject {
                 list[0] = rs.getInt(1);
                 list[1] = rs.getInt(2);
             }
-
+            rs.close();
         } catch(SQLException sql){
             sql.printStackTrace();
         } finally{

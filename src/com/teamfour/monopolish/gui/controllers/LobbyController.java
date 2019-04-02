@@ -153,7 +153,6 @@ public class LobbyController {
      *  </ul>
      */
     public void refresh() {
-        System.out.println("Lobby timer is runnin.");
         // Check if any lobbies in database are empty
         Handler.getLobbyDAO().removeEmptyLobbies();
 
@@ -318,7 +317,7 @@ public class LobbyController {
         if (newLobbyNameInput.getText().trim().isEmpty()) {
             LobbyDrawFx.setBorderStyle(newLobbyNameInput, INPUT_COLOR_REQUIRED);
             newLobbyMsg.setVisible(true);
-            LobbyDrawFx.setTextColor(newLobbyMsg, INPUT_COLOR_REQUIRED);
+            FxUtils.setTextColor(newLobbyMsg, INPUT_COLOR_REQUIRED);
         }
         // If input is not empty create new lobby
         else {
@@ -437,7 +436,7 @@ public class LobbyController {
             // Check if game should start
             if (numOfPlayers > 1 && numOfReady == numOfPlayers && !game_starting) {
                 statusValue.setText(STATUS_STARTING);
-                LobbyDrawFx.setTextColor(statusValue, PLAYER_COLOR_RED);
+                FxUtils.setTextColor(statusValue, PLAYER_COLOR_RED);
                 startGame(lobby_id);
                 game_starting = true;
             }
@@ -445,7 +444,7 @@ public class LobbyController {
             // Check if game is starting
             if (game_starting) {
                 statusValue.setText(STATUS_STARTING);
-                LobbyDrawFx.setTextColor(statusValue, PLAYER_COLOR_RED);
+                FxUtils.setTextColor(statusValue, PLAYER_COLOR_RED);
             }
         }
 
@@ -455,14 +454,14 @@ public class LobbyController {
             if (numOfPlayers > 1 && numOfReady == numOfPlayers) {
                 joinBtn.setDisable(true);
                 statusValue.setText(STATUS_STARTED);
-                LobbyDrawFx.setTextColor(statusValue, PLAYER_COLOR_RED);
+                FxUtils.setTextColor(statusValue, PLAYER_COLOR_RED);
             }
 
             // Check if game is full
             else if (numOfPlayers == 4) {
                 joinBtn.setDisable(true);
                 statusValue.setText(STATUS_FULL);
-                LobbyDrawFx.setTextColor(statusValue, PLAYER_COLOR_RED);
+                FxUtils.setTextColor(statusValue, PLAYER_COLOR_RED);
             }
 
             // Lobby open to join
@@ -471,7 +470,7 @@ public class LobbyController {
                 readyBtn.setDisable(true);
                 joinBtn.setDisable(false);
                 statusValue.setText(STATUS_OPEN);
-                LobbyDrawFx.setTextColor(statusValue, PLAYER_COLOR_GREEN);
+                FxUtils.setTextColor(statusValue, PLAYER_COLOR_GREEN);
             }
         }
 

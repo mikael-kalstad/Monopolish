@@ -1,4 +1,4 @@
-package com.teamfour.monopolish.game.propertylogic;
+package com.teamfour.monopolish.game.property;
 
 import com.teamfour.monopolish.database.DataAccessObject;
 
@@ -32,6 +32,7 @@ public class PropertyDAO extends DataAccessObject {
                 Property property = getPropertyFromResultSet(rs);
                 props.add(property);
             }
+            rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
             throw new SQLException();
@@ -64,6 +65,7 @@ public class PropertyDAO extends DataAccessObject {
                 Property property = getPropertyFromResultSet(rs);
                 props.add(property);
             }
+            rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
             throw new SQLException();
@@ -106,8 +108,8 @@ public class PropertyDAO extends DataAccessObject {
             getConnection();
             cStmt = connection.prepareCall("{call property_clean(?)}");
 
-                cStmt.setInt(1, game_id);
-                cStmt.executeQuery();
+            cStmt.setInt(1, game_id);
+            cStmt.executeQuery();
 
         } catch (SQLException e) {
             e.printStackTrace();

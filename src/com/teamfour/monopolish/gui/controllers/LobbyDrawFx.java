@@ -9,7 +9,6 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.RowConstraints;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 
 /**
@@ -31,16 +30,6 @@ class LobbyDrawFx {
                 "-fx-background-color: white;" +
                 "-fx-text-inner-color: black;"
         );
-    }
-
-    /**
-     * Change text color of a text element
-     *
-     * @param element Target text node
-     * @param color New color of the text
-     */
-    static void setTextColor(Text element, String color) {
-        element.setFill(Paint.valueOf(color));
     }
 
     /**
@@ -107,7 +96,7 @@ class LobbyDrawFx {
                 "-fx-font-size: 17px;" +
                 "-fx-font-weight: bold;"
         );
-        setTextColor(statusValue, "green");
+        FxUtils.setTextColor(statusValue, "green");
         statusValue.setId("statusValue");
 
         // Status container

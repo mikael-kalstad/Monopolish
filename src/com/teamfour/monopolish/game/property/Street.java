@@ -1,4 +1,4 @@
-package com.teamfour.monopolish.game.propertylogic;
+package com.teamfour.monopolish.game.property;
 
 public class Street extends Property {
     private final int MAX_HOUSES = 4;

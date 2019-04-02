@@ -2,11 +2,9 @@ package com.teamfour.monopolish.game;
 
 import com.teamfour.monopolish.database.DataAccessObject;
 
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
@@ -63,6 +61,7 @@ public class GameDAO extends DataAccessObject {
 
             if (rs.next())
                 player = rs.getString(1);
+            rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
             throw new SQLException();
