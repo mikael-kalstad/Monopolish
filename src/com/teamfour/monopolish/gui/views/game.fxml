@@ -806,7 +806,7 @@
       </Pane>
       <ImageView fx:id="helpBtn" fitHeight="40.0" fitWidth="40.0" layoutX="1850.0" layoutY="14.0" onMouseClicked="#toggleHelpOverlay">
          <image>
-            <Image url="@../../../../../../../../../../../Downloads/icons8-help-80.png" />
+            <Image url="file:res/gui/Game/help.png" />
          </image>
       </ImageView>
    </children>
