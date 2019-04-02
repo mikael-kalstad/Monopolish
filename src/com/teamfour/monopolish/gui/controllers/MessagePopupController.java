@@ -14,7 +14,7 @@ import java.util.TimerTask;
 public class MessagePopupController {
     private static @FXML Pane container;
     private static @FXML Text textElement;
-    private static final int ANIMATION_DURATION = 200;
+    private static final int ANIMATION_DURATION = 400;
     private static final int COUNTDOWN_TIME = 8;
     private static int time = COUNTDOWN_TIME;
     private static boolean visible = false;
