@@ -55,7 +55,7 @@ public class GameController {
 
     // Elements in board
     @FXML private AnchorPane cardContainer;
-    @FXML private Button propertyBtn;
+    @FXML private Button buyPropertyBtn, payRentBtn;
     @FXML private Label propertyOwned;
     @FXML private GridPane gamegrid;
     @FXML private ListView eventlog;
@@ -415,7 +415,7 @@ public class GameController {
         try {
             // Disable buttons
             endturnBtn.setDisable(true);
-            propertyBtn.setDisable(true);
+            buyPropertyBtn.setDisable(true);
 
             // Finish turn in gamelogic and wait for your next turn
             gameLogic.finishYourTurn();
@@ -443,24 +443,24 @@ public class GameController {
             String propertyOwner = gameLogic.getEntityManager().getOwnerAtProperty(yourPosition);
             if (propertyOwner == null || propertyOwner.equals("")) {
                 // If property is available, show button
-                propertyBtn.setDisable(false);
-                propertyBtn.setVisible(true);
-                propertyBtn.setText("Buy property");
-                propertyBtn.setOnMouseClicked(event -> buyProperty());
+                buyPropertyBtn.setDisable(false);
+                buyPropertyBtn.setVisible(true);
+                payRentBtn.setDisable(true);
+                payRentBtn.setVisible(false);
                 propertyOwned.setVisible(false);
             } else {
                 // If this is not your property, prepare to get rented! Or something
                 if (propertyOwner.equals(USERNAME)) {
-                    propertyBtn.setDisable(true);
-                    propertyBtn.setVisible(false);
+                    buyPropertyBtn.setDisable(true);
+                    buyPropertyBtn.setVisible(false);
+                    payRentBtn.setDisable(true);
+                    payRentBtn.setVisible(false);
                     propertyOwned.setVisible(true);
                     propertyOwned.setText("Owned by you");
                 } else {
                     propertyOwned.setVisible(false);
-                    propertyBtn.setDisable(false);
-                    propertyBtn.setVisible(true);
-                    propertyBtn.setText("Pay rent to " + propertyOwner);
-                    propertyBtn.setOnMouseClicked(event -> rentTransaction());
+                    payRentBtn.setDisable(false);
+                    payRentBtn.setVisible(true);
                     endturnBtn.setDisable(true);
                     rolldiceBtn.setDisable(true);
                 }
@@ -469,7 +469,7 @@ public class GameController {
             // If no property here, make sure to clear the property
             cardContainer.getChildren().clear();
             propertyOwned.setVisible(false);
-            propertyBtn.setVisible(false);
+            buyPropertyBtn.setVisible(false);
         }
 
         // If on free parking, get a free-parking token
@@ -700,11 +700,15 @@ public class GameController {
             // REMEMBER TO CHANGE INDEX (END OF THIS HUUUUGE LINE) TO ACTUAL RENT WHEN HOUSE AND HOTEL IS IMPLEMENTED
             MessagePopupController.show("You have paid " + gameLogic.getEntityManager().getPropertyAtPosition(gameLogic.getEntityManager().getYou().getPosition()).getAllRent()[0]);
         }
-        propertyBtn.setDisable(true);
-        endturnBtn.setDisable(false);
+        payRentBtn.setDisable(true);
         int[] currentDice = gameLogic.getDice().getCurrentDice();
-        if (currentDice[0] == currentDice[1] && !gameLogic.getEntityManager().getPlayer(USERNAME).isInJail())
+        if (currentDice[0] == currentDice[1] && !gameLogic.getEntityManager().getPlayer(USERNAME).isInJail()) {
             rolldiceBtn.setDisable(false);
+            endturnBtn.setDisable(true);
+        } else {
+            endturnBtn.setDisable(false);
+        }
+
     }
 
     /**
@@ -722,7 +726,7 @@ public class GameController {
                     Alert messageBox = new Alert(Alert.AlertType.INFORMATION, "You do not have enough funds to purchase this property.");
                     messageBox.showAndWait();
                 } else {
-                    MessagePopupController.show("Purchase successful, you now the owner of " + gameLogic.getEntityManager().getPropertyAtPosition(gameLogic.getEntityManager().getYou().getPosition()).getName());
+                    MessagePopupController.show("Purchase successful, you are now the owner of " + gameLogic.getEntityManager().getPropertyAtPosition(gameLogic.getEntityManager().getYou().getPosition()).getName());
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -733,7 +737,7 @@ public class GameController {
             updateBoard();
 
             // Update property information label
-            propertyBtn.setVisible(false);
+            buyPropertyBtn.setVisible(false);
             propertyOwned.setVisible(true);
             propertyOwned.setText("Owned by you");
         }

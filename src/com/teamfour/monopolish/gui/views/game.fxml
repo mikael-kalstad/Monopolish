@@ -668,7 +668,15 @@
                   </Text>
                </children>
             </AnchorPane>
-            <Button fx:id="propertyBtn" layoutX="281.0" layoutY="275.0" mnemonicParsing="false" onMouseClicked="#buyProperty" prefHeight="50.0" prefWidth="160.0" style="-fx-background-color: #03A9F4;" text="Buy property" textFill="#fafafa" visible="false">
+            <Button fx:id="buyPropertyBtn" layoutX="281.0" layoutY="275.0" mnemonicParsing="false" onMouseClicked="#buyProperty" prefHeight="50.0" prefWidth="160.0" style="-fx-background-color: #03A9F4;" text="Buy property" textFill="#fafafa" visible="false">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="payRentBtn" layoutX="281.0" layoutY="275.0" mnemonicParsing="false" onMouseClicked="#rentTransaction" prefHeight="50.0" prefWidth="160.0" style="-fx-background-color: #ef5350;" text="Pay rent" textFill="#fafafa" visible="false">
                <font>
                   <Font size="18.0" />
                </font>
