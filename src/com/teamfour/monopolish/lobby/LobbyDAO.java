@@ -58,7 +58,6 @@ public class LobbyDAO extends DataAccessObject {
             cStmt.setString(2, lobbyname);
             cStmt.registerOutParameter(3, Types.INTEGER);
 
-
             if (cStmt.executeUpdate() > 0) lobby_id = cStmt.getInt(3);
         }catch (SQLException sql){
             sql.printStackTrace();
@@ -188,6 +187,7 @@ public class LobbyDAO extends DataAccessObject {
             while (rs.next()) {
                 users.add(rs.getString(1));
             }
+            rs.close();
         }catch (SQLException sql){
             sql.printStackTrace();
         }finally {
@@ -211,6 +211,7 @@ public class LobbyDAO extends DataAccessObject {
                 String[] info = {rs.getString(1), rs.getString(2), String.valueOf(rs.getBoolean(3)), rs.getString(4)};
                 lobbyInfo.add(info);
             }
+            rs.close();
         }catch (SQLException sql){
             sql.printStackTrace();
         }finally {
@@ -231,6 +232,7 @@ public class LobbyDAO extends DataAccessObject {
             ResultSet rs = cStmt.executeQuery();
 
             if (rs.next()) num = rs.getInt(1);
+            rs.close();
         }
         catch (SQLException e) {
             e.printStackTrace();

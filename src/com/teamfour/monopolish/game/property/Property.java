@@ -1,4 +1,4 @@
-package com.teamfour.monopolish.game.propertylogic;
+package com.teamfour.monopolish.game.property;
 
 /**
  * Represents the properties in a game

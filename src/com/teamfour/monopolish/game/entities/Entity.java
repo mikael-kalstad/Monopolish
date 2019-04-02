@@ -1,7 +1,7 @@
 package com.teamfour.monopolish.game.entities;
 
 import com.teamfour.monopolish.game.entities.player.Player;
-import com.teamfour.monopolish.game.propertylogic.*;
+import com.teamfour.monopolish.game.property.*;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -97,7 +97,6 @@ public abstract class Entity {
     public void updatePropertiesFromDatabase(int gameId) throws SQLException {
         properties.clear();
         properties = propertyDAO.getPropertiesByOwner(gameId, null);
-        System.out.println("Properties amount: " + properties.size());
     }
 
     @Override

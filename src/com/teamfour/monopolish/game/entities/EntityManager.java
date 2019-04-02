@@ -1,7 +1,7 @@
 package com.teamfour.monopolish.game.entities;
 
 import com.teamfour.monopolish.game.entities.player.*;
-import com.teamfour.monopolish.game.propertylogic.Property;
+import com.teamfour.monopolish.game.property.Property;
 import com.teamfour.monopolish.gui.controllers.Handler;
 
 import java.sql.SQLException;

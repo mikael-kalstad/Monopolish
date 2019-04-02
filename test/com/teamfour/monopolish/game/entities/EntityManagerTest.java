@@ -5,8 +5,8 @@ import com.teamfour.monopolish.account.AccountDAO;
 import com.teamfour.monopolish.database.ConnectionPool;
 import com.teamfour.monopolish.game.GameDAO;
 import com.teamfour.monopolish.game.entities.player.Player;
-import com.teamfour.monopolish.game.propertylogic.Property;
-import com.teamfour.monopolish.game.propertylogic.Street;
+import com.teamfour.monopolish.game.property.Property;
+import com.teamfour.monopolish.game.property.Street;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

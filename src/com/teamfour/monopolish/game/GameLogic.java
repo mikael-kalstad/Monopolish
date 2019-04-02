@@ -2,8 +2,8 @@ package com.teamfour.monopolish.game;
 
 import com.teamfour.monopolish.game.entities.EntityManager;
 import com.teamfour.monopolish.game.entities.player.Player;
-import com.teamfour.monopolish.game.propertylogic.Property;
-import com.teamfour.monopolish.game.propertylogic.Street;
+import com.teamfour.monopolish.game.property.Property;
+import com.teamfour.monopolish.game.property.Street;
 import com.teamfour.monopolish.gui.controllers.Handler;
 
 import java.sql.SQLException;
@@ -216,7 +216,6 @@ public class GameLogic {
 
         if (turnNumber == 0)
             System.out.println("Round " + (roundNumber + 1));
-        System.out.println("It is " + currentPlayer + "'s turn.");
     }
 
     // SETTERS & GETTERS

@@ -1,6 +1,6 @@
 package com.teamfour.monopolish.gui.controllers;
 
-import com.teamfour.monopolish.game.propertylogic.Property;
+import com.teamfour.monopolish.game.property.Property;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;

@@ -1,8 +1,8 @@
 package com.teamfour.monopolish.gui.controllers;
 
-import com.teamfour.monopolish.game.propertylogic.Property;
-import com.teamfour.monopolish.game.propertylogic.Boat;
-import com.teamfour.monopolish.game.propertylogic.Street;
+import com.teamfour.monopolish.game.property.Property;
+import com.teamfour.monopolish.game.property.Boat;
+import com.teamfour.monopolish.game.property.Street;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
