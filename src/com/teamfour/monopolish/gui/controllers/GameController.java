@@ -15,10 +15,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -222,10 +219,11 @@ public class GameController {
     public void forfeit() {
         // Load forfeit GUI
         addElementToContainer(ViewConstants.FORFEIT.getValue(), forfeitContainer);
-        // Show background and disable click
-        backgroundOverlay.setVisible(true);
-        backgroundOverlay.onMouseClickedProperty().set(e -> {});
 
+        // Show background overlay
+        backgroundOverlay.setVisible(true);
+
+        // Hide properties dialog and show forfeit dialog
         propertiesContainer.setVisible(false);
         forfeitContainer.setVisible(true);
     }
@@ -513,7 +511,8 @@ public class GameController {
         }
 
         roundValue.setText(String.valueOf(gameLogic.getRoundNumber() + 1));
-        userMoney.setText(String.valueOf(gameLogic.getPlayer(USERNAME).getMoney()));
+        // Updated in updatePlayerInfo()?
+        //userMoney.setText(String.valueOf(gameLogic.getPlayer(USERNAME).getMoney()));
         statusValue.setText("Waiting for " + gameLogic.getCurrentPlayer() + " to finish their turn");
 
         if (positions != null)

@@ -2,7 +2,7 @@ package com.teamfour.monopolish.game.propertylogic;
 
 public class Boat extends Property {
     // Attributes
-    private int[] rent;
+    private int[] rent = new int[3];
 
     /**
      * Constructor

@@ -14,7 +14,7 @@ import java.util.TimerTask;
 public class MessagePopupController {
     private static @FXML Pane container;
     private static @FXML Text textElement;
-    private static final int ANIMATION_DURATION = 200;
+    private static final int ANIMATION_DURATION = 400;
     private static final int COUNTDOWN_TIME = 8;
     private static int time = COUNTDOWN_TIME;
     private static boolean visible = false;
@@ -70,6 +70,7 @@ public class MessagePopupController {
         int translateY = 200;
         double opacityFrom = 1.0;
         double opacityTo = 0.0;
+        visible = false;
 
         // Reverse animation
         if (show) {
@@ -78,8 +79,6 @@ public class MessagePopupController {
             opacityTo = 1.0;
             visible = true;
         }
-
-        visible = false;
 
         // Setup translate- and fade-transition
         TranslateTransition tt = new TranslateTransition(Duration.millis(ANIMATION_DURATION), container);

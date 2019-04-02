@@ -20,6 +20,7 @@ public class ForfeitController {
     @FXML private Text voteCountContinue;
 
     // Countdown time
+    Timer countdownTimer = new Timer();
     @FXML private Text timeValue;
 
     // Text showing what you voted
@@ -105,9 +106,35 @@ public class ForfeitController {
      */
     private void refresh() {
         // Timer for refresh
-        Timer refreshTimer = new Timer();
+//        Timer refreshTimer = new Timer();
+//
+//        TimerTask refreshTask = new TimerTask() {
+//            @Override
+//            public void run() {
+//                int[] votes = Handler.getPlayerDAO().getForfeitStatus(GAME_ID);
+//                votesForQuit = votes[0];
+//                votesForContinue = votes[1];
+//
+//                // Update vote counts
+//                voteCountQuit.setText(String.valueOf(votes[0]));
+//                voteCountContinue.setText(String.valueOf(votes[1]));
+//
+//                if (votesForQuit + votesForContinue == NUM_OF_PLAYERS) {
+//                    if (votesForQuit > votesForContinue) {
+//                        refreshTimer.cancel();
+//                        refreshTimer.purge();
+//                        endGame();
+//                    } else {
+//                        Handler.getForfeitContainer().setVisible(false);
+//                    }
+//                }
+//            }
+//        };
+//
+//        // Update/refresh every second
+//        refreshTimer.scheduleAtFixedRate(refreshTask, 0L, 1000L);
 
-        TimerTask refreshTask = new TimerTask() {
+        TimerTask countdownTask = new TimerTask() {
             @Override
             public void run() {
                 int[] votes = Handler.getPlayerDAO().getForfeitStatus(GAME_ID);
@@ -118,27 +145,8 @@ public class ForfeitController {
                 voteCountQuit.setText(String.valueOf(votes[0]));
                 voteCountContinue.setText(String.valueOf(votes[1]));
 
-                if (votesForQuit + votesForContinue == NUM_OF_PLAYERS) {
-                    if (votesForQuit > votesForContinue) {
-                        refreshTimer.cancel();
-                        refreshTimer.purge();
-                        endGame();
-                    } else {
-                        Handler.getForfeitContainer().setVisible(false);
-                    }
-                }
-            }
-        };
+                checkVotes();
 
-        // Update/refresh every second
-        refreshTimer.scheduleAtFixedRate(refreshTask, 0L, 1000L);
-
-        // Timer for countdown
-        Timer countdownTimer = new Timer();
-
-        TimerTask countdownTask = new TimerTask() {
-            @Override
-            public void run() {
                 if (time <= 5) {
                     timeValue.setStyle("-fx-text-fill: red");
                 }
@@ -147,15 +155,29 @@ public class ForfeitController {
                     time--;
                     timeValue.setText(String.valueOf(time));
                 } else {
-                    countdownTimer.cancel();
-                    countdownTimer.purge();
-                    Platform.runLater(() -> endGame());
+                    stopTimer();
+                    checkVotes();
                 }
             }
         };
 
         // Update/refresh every second
         countdownTimer.scheduleAtFixedRate(countdownTask, 0L, 1000L);
+    }
+
+    // Check if every player has voted and set action accordingly
+    private void checkVotes() {
+        if (votesForQuit + votesForContinue == NUM_OF_PLAYERS) {
+            if (votesForQuit > votesForContinue) endGame(); // Quit game
+            else Handler.getForfeitContainer().setVisible(false); // Continue game
+
+            stopTimer();
+        }
+    }
+
+    private void stopTimer() {
+        countdownTimer.cancel();
+        countdownTimer.purge();
     }
 
     private void endGame() {
