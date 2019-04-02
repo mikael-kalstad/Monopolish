@@ -1,7 +1,7 @@
 package com.teamfour.monopolish.gui.controllers;
 
 import com.teamfour.monopolish.game.GameLogic;
-import com.teamfour.monopolish.game.board.Board;
+import com.teamfour.monopolish.game.Board;
 import com.teamfour.monopolish.game.entities.player.Player;
 import com.teamfour.monopolish.game.propertylogic.Property;
 import com.teamfour.monopolish.gui.views.ViewConstants;
@@ -153,7 +153,6 @@ public class GameController {
             // Check if yes button is pressed
             if (alertDialog.getResult().getButtonData().isDefaultButton()) {
                 // Remove player from lobby
-                final String USERNAME = Handler.getAccount().getUsername();
                 Handler.getAccountDAO().setInactive(USERNAME);
                 Handler.getLobbyDAO().removePlayer(USERNAME, Handler.getLobbyDAO().getLobbyId(USERNAME));
                 gameLogic.getEntityManager().removePlayer(USERNAME);
@@ -187,7 +186,6 @@ public class GameController {
             databaseTimer.purge();
             chatTimer.cancel();
             // Remove player from lobby
-            final String USERNAME = Handler.getAccount().getUsername();
             int lobbyId = Handler.getLobbyDAO().getLobbyId(USERNAME);
             System.out.println("lobby id when leaving... " + lobbyId);
             Handler.getLobbyDAO().removePlayer(USERNAME, Handler.getLobbyDAO().getLobbyId(USERNAME));
@@ -441,19 +439,19 @@ public class GameController {
                 propertyBtn.setOnMouseClicked(event -> buyProperty());
                 propertyOwned.setVisible(false);
             } else {
-                propertyOwned.setVisible(true);
-                propertyOwned.setText("Owned by " + propertyOwner);
-
                 // If this is not your property, prepare to get rented! Or something
                 if (propertyOwner.equals(USERNAME)) {
                     propertyBtn.setDisable(true);
                     propertyBtn.setVisible(false);
+                    propertyOwned.setVisible(true);
+                    propertyOwned.setText("Owned by you");
                 } else {
+                    propertyOwned.setVisible(false);
                     propertyBtn.setDisable(false);
                     propertyBtn.setVisible(true);
-                    propertyBtn.setText("Pay rent");
+                    propertyBtn.setText("Pay rent to " + propertyOwner);
                     propertyBtn.setOnMouseClicked(event -> rentTransaction());
-                    rolldiceBtn.setDisable(true);
+                    endturnBtn.setDisable(true);
                 }
             }
         } else {
@@ -551,6 +549,14 @@ public class GameController {
         long delay = 1000L; // Delay before update refreshTimer starts
         long period = 1000L; // Delay between each update/refresh
         roundTimer.scheduleAtFixedRate(countdown, delay, period);*/
+
+        String winner = "";
+
+        if ((winner = gameLogic.getEntityManager().findWinner()) != null) {
+            System.out.println(winner + " is winner!");
+            Alert winnerAlert = new Alert(Alert.AlertType.INFORMATION, winner + " is winner!", ButtonType.OK);
+            winnerAlert.showAndWait();
+        }
 
         // If this is your turn, stop the database check databaseTimer and enable the button to roll dice
         if (yourTurn) {
@@ -708,7 +714,7 @@ public class GameController {
             // Update property information label
             propertyBtn.setVisible(false);
             propertyOwned.setVisible(true);
-            propertyOwned.setText("Owned by " + USERNAME);
+            propertyOwned.setText("Owned by you");
         }
         if (buyprompt.getResult() == ButtonType.NO) {
             buyprompt.close();

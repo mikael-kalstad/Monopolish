@@ -1,6 +1,6 @@
 package com.teamfour.monopolish.game.entities.player;
 
-import com.teamfour.monopolish.game.board.Board;
+import com.teamfour.monopolish.game.Board;
 import com.teamfour.monopolish.game.entities.Entity;
 
 import java.sql.SQLException;
