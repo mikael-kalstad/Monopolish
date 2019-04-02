@@ -755,5 +755,59 @@
       </Label>
       <Pane fx:id="chatContainer" layoutX="21.0" layoutY="700.0" prefHeight="315.0" prefWidth="235.0" />
       <Pane fx:id="tradeContainer" layoutX="210.0" layoutY="53.0" prefHeight="950.0" prefWidth="1500.0" visible="false" />
+      <Pane fx:id="helpOverlay" prefHeight="1055.0" prefWidth="1925.0" style="-fx-background-color: rgba(160,160,160,0.7);" visible="false">
+         <children>
+            <Text fill="WHITE" layoutX="9.0" layoutY="101.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Leave the game, you will not be able to rejoin" wrappingWidth="289.3332862193565">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="14.0" layoutY="187.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start a vote to quit the game with all players" wrappingWidth="280.29590189763076">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="1197.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your info" wrappingWidth="116.48438270699648">
+               <font>
+                  <Font name="System Bold" size="23.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="283.0" layoutY="1032.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Chat with your opponents" wrappingWidth="280.29590189763076">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="667.0" layoutY="767.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The dices you throw" wrappingWidth="223.629214885912">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="603.0" layoutY="489.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Properties you land on will appear here" wrappingWidth="350.29590189763076">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="14.0" layoutY="382.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Look at back previous events" wrappingWidth="316.9999873081176">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="1013.0" layoutY="750.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Info about your opponents" wrappingWidth="301.33334383431793">
+               <font>
+                  <Font name="System Bold" size="23.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="1574.0" layoutY="433.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You need to end your turn each round" wrappingWidth="350.29590189763076">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+      <ImageView fx:id="helpBtn" fitHeight="40.0" fitWidth="40.0" layoutX="1850.0" layoutY="14.0" onMouseClicked="#toggleHelpOverlay">
+         <image>
+            <Image url="@../../../../../../../../../../../Downloads/icons8-help-80.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

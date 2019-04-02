@@ -53,8 +53,9 @@ public class GameController {
     // Array for events in game
     private ArrayList<Text> eventList = new ArrayList<>();
 
-    // Background overlay for popups
+    // Background overlays
     @FXML private Pane backgroundOverlay;
+    @FXML private Pane helpOverlay;
 
     // Elements in board
     @FXML private AnchorPane cardContainer;
@@ -196,6 +197,14 @@ public class GameController {
             databaseTimer.cancel(); // Stop timer thread
             databaseTimer.purge();
         }
+    }
+
+    /**
+     * Toggle help overlay with help button
+     */
+    public void toggleHelpOverlay() {
+        if (helpOverlay.isVisible()) helpOverlay.setVisible(false);
+        else helpOverlay.setVisible(true);
     }
 
     /**
