@@ -462,6 +462,7 @@ public class GameController {
                     propertyBtn.setText("Pay rent to " + propertyOwner);
                     propertyBtn.setOnMouseClicked(event -> rentTransaction());
                     endturnBtn.setDisable(true);
+                    rolldiceBtn.setDisable(true);
                 }
             }
         } else {
@@ -560,6 +561,7 @@ public class GameController {
         long period = 1000L; // Delay between each update/refresh
         roundTimer.scheduleAtFixedRate(countdown, delay, period);*/
 
+        /*
         String winner = "";
 
         if ((winner = gameLogic.getEntityManager().findWinner()) != null) {
@@ -567,6 +569,7 @@ public class GameController {
             Alert winnerAlert = new Alert(Alert.AlertType.INFORMATION, winner + " is winner!", ButtonType.OK);
             winnerAlert.showAndWait();
         }
+        */
 
         // If this is your turn, stop the database check databaseTimer and enable the button to roll dice
         if (yourTurn) {
@@ -693,15 +696,15 @@ public class GameController {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-//            messageBox = new Alert(Alert.AlertType.INFORMATION,
-//                                "You have paid rent!", ButtonType.OK);
-//            messageBox.showAndWait();
 
             // REMEMBER TO CHANGE INDEX (END OF THIS HUUUUGE LINE) TO ACTUAL RENT WHEN HOUSE AND HOTEL IS IMPLEMENTED
             MessagePopupController.show("You have paid " + gameLogic.getEntityManager().getPropertyAtPosition(gameLogic.getEntityManager().getYou().getPosition()).getAllRent()[0]);
         }
         propertyBtn.setDisable(true);
         endturnBtn.setDisable(false);
+        int[] currentDice = gameLogic.getDice().getCurrentDice();
+        if (currentDice[0] == currentDice[1] && !gameLogic.getEntityManager().getPlayer(USERNAME).isInJail())
+            rolldiceBtn.setDisable(false);
     }
 
     /**
