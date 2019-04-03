@@ -97,6 +97,9 @@ public class GameController {
     private String MSG_NOTIFICATION_OFF = "Turn on notifications";
     private boolean showNotifications = true;
 
+    // Container for houses
+    @FXML private GridPane housegrid;
+
     /**
      * Launches when the scene is loaded.
      */
