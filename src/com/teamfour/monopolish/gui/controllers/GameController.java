@@ -45,6 +45,7 @@ public class GameController {
     private GameLogic gameLogic;
     private int current_money = 0;
     private final String USERNAME = Handler.getAccount().getUsername();
+    private int diceCounter = 0;
 
     // Array for events in game
     private ArrayList<Text> eventList = new ArrayList<>();
@@ -377,7 +378,7 @@ public class GameController {
     public void rollDice() {
         // Get values for two dices
         int[] diceValues = null;
-        int diceCounter = 0;
+        diceCounter = 0;
         try {
             diceValues = gameLogic.throwDice();
         }
@@ -436,6 +437,7 @@ public class GameController {
             else if (diceCounter == 2) {
                 try {
                     gameLogic.setPlayerInJail(USERNAME, true);
+                    MessagePopupController.show("Criminal scumbag! You are going to jail. Your mother is not proud...", "handcuffs.png");
                     payBailBtn.setDisable(true);
                     payBailBtn.setVisible(true);
                 } catch (SQLException e) { e.printStackTrace(); }
