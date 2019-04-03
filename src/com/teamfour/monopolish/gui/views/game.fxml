@@ -861,7 +861,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <Pane fx:id="freeParkingCard" layoutX="25.0" layoutY="261.0" prefHeight="77.0" prefWidth="255.0" style="-fx-background-color: ededed; -fx-border-color: #999; -fx-border-radius: 10;">
+      <Pane fx:id="freeParkingCard" layoutX="25.0" layoutY="261.0" prefHeight="77.0" prefWidth="255.0" style="-fx-background-color: ededed; -fx-border-color: #999; -fx-border-radius: 10;" visible="false">
          <children>
             <Text fill="#616161" layoutX="69.0" layoutY="45.0" onMouseClicked="#toggleNotification" strokeType="OUTSIDE" strokeWidth="0.0" text="You have free parking">
                <font>
