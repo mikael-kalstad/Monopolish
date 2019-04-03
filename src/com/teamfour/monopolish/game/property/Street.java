@@ -19,8 +19,11 @@ public class Street extends Property {
      * @param categorycolor the category color of the property
      * @param owner         the current owner of the property
      */
-    public Street(int p_id, String name, int price, int position, String categorycolor, String owner) {
+    public Street(int p_id, String name, int price, int position, String categorycolor, String owner, int houses,
+                  int hotels) {
         super(p_id, name, price, position, categorycolor, owner);
+        this.houses = houses;
+        this.hotels = hotels;
         calculateRent();
 
         rent[7] = price;
@@ -105,5 +108,9 @@ public class Street extends Property {
 
     public int getHotels() {
         return hotels;
+    }
+
+    public int getHouseAndHotels() {
+        return houses + hotels;
     }
 }

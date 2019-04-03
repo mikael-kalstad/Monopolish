@@ -98,6 +98,7 @@ create table gameproperty(
   property_id integer not null,
   pawned bit default 0,
   user_id integer,
+  rent_level INTEGER NOT NULL DEFAULT 0,
   PRIMARY KEY (game_id, property_id)
 );
 
