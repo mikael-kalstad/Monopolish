@@ -8,16 +8,16 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
-import java.util.Random;
-
 /**
  * Controller class for dashboard view
  *
  * @author Mikael Kalstad
- * @version 1.3
+ * @version 1.4
  */
 
 public class DashboardController {
+    private final String USERNAME = Handler.getAccount().getUsername();
+
     // Profile info
     @FXML Text username;
     @FXML Text gamesPlayed;
@@ -40,9 +40,8 @@ public class DashboardController {
     @FXML public void initialize() {
         // Prevent exception
         if (Handler.getAccount() != null) {
-            username.setText(Handler.getAccount().getUsername());
-            // Some DAO request goes here...
-            gamesPlayed.setText(String.valueOf(new Random().nextInt(10)));
+            username.setText(USERNAME);
+            gamesPlayed.setText(String.valueOf(Handler.getAccountDAO().getGamesPlayed(USERNAME)));
             personalHighscore.setText(FxUtils.thousandDecimalFormat(String.valueOf(Handler.getAccount().getHighscore())));
         }
 
@@ -53,12 +52,6 @@ public class DashboardController {
             Handler.getAccountDAO().setInactive(Handler.getAccount().getUsername());
         });
     }
-
-//    private String thousandDecimalFormat(String num) {
-//        if (num.length() < 4) return num;
-//        int thousandIndex = num.length() - 3;
-//        return num.substring(0, thousandIndex) + "." + num.substring(thousandIndex);
-//    }
 
     /**
      * Will update leaderboard dynamically bases on highscore data

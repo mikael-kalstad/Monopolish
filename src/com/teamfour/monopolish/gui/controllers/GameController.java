@@ -2,6 +2,8 @@ package com.teamfour.monopolish.gui.controllers;
 
 import com.teamfour.monopolish.game.Board;
 import com.teamfour.monopolish.game.GameLogic;
+import com.teamfour.monopolish.game.chanceCards.ChanceCard;
+import com.teamfour.monopolish.game.chanceCards.ChanceCardData;
 import com.teamfour.monopolish.game.entities.player.Player;
 import com.teamfour.monopolish.game.property.Property;
 import com.teamfour.monopolish.gui.views.ViewConstants;
@@ -122,7 +124,6 @@ public class GameController {
 
         // Setup messagePop
         MessagePopupController.setup(messagePopupContainer, 5);
-        ChanceCardController.setup(cardContainer);
 
         updateBoard();
 
@@ -557,7 +558,9 @@ public class GameController {
 
         // Player is on a chance card tile
         if (gameLogic.getBoard().getTileType(playerPosition) == 5) {
-            ChanceCardController.display("Fly away bird before gisk comes and gets you!", "file:res/gui/MessagePopup/bird.png");
+            // Get a random chance card and display it
+            ChanceCard chanceCard = ChanceCardData.getRandomChanceCard();
+            ChanceCardController.display(chanceCard, cardContainer);
         }
     }
 
