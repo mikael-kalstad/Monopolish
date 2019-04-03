@@ -5,7 +5,6 @@ import com.teamfour.monopolish.database.ConnectionPool;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 
@@ -126,6 +125,12 @@ public class LoginController {
 
         // Try to register if inputs are not empty
         if (!inputsEmpty()) {
+            //Check if user is already logged in
+//                if (Handler.getAccountDAO()) {
+//                    msg.setText(MSG_USER_LOGGED_IN_ERROR);
+//                    setTextColor(msg, COLOR_WARNING);
+//                }
+
             try {
                 ConnectionPool.create();
                 res = Handler.getAccountDAO().getAccountByCredentials(usernameInput.getText(), passwordInput.getText());
