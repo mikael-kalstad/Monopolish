@@ -151,10 +151,10 @@ public class AccountDAO extends DataAccessObject {
             cStmt.setString(1, username);
 
             rs = cStmt.executeQuery();
-            if(rs.next()) {
-                games = rs.getInt(1);
+            if(!rs.next()) {
+                return(0);
             }
-
+            games = rs.getInt(1);
             rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -175,9 +175,9 @@ public class AccountDAO extends DataAccessObject {
             cStmt.setString(1, username);
 
             rs = cStmt.executeQuery();
-            if(rs.next()) {
+            if(rs.next())
                 score = rs.getInt(1);
-            }
+
             rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
