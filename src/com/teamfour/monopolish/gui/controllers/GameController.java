@@ -101,6 +101,9 @@ public class GameController {
     // Container for houses
     @FXML private GridPane housegrid;
 
+    // Free parking card container
+    @FXML private Pane freeParkingCard;
+
     /**
      * Launches when the scene is loaded.
      */
@@ -119,6 +122,7 @@ public class GameController {
 
         // Setup messagePop
         MessagePopupController.setup(messagePopupContainer, 5);
+        ChanceCardController.setup(cardContainer);
 
         updateBoard();
 
@@ -486,6 +490,7 @@ public class GameController {
         // PROPERTY TILE HANDLING
         if(gameLogic.getBoard().getTileType(yourPosition) == Board.PROPERTY) {
             cardContainer.getChildren().clear();
+
             // Draw property card with
             Pane card = GameControllerDrawFx.createPropertyCard(gameLogic.getEntityManager().getPropertyAtPosition(gameLogic.getPlayer(USERNAME).getPosition()));
             cardContainer.getChildren().add(card);
@@ -525,14 +530,21 @@ public class GameController {
             payRentBtn.setVisible(false);
         }
 
+        int playerPosition = gameLogic.getPlayer(USERNAME).getPosition();
+
+        if (gameLogic.getPlayer(USERNAME).hasFreeParking()) {
+            freeParkingCard.setVisible(false);
+            gameLogic.getPlayer(USERNAME).setFreeParking(false);
+        }
+
         // If on free parking, get a free-parking token
-        if (gameLogic.getPlayer(USERNAME).getPosition() == gameLogic.getBoard().getFreeParkingPosition()) {
-            System.out.println("You are on free parking!");
+        else if (playerPosition == gameLogic.getBoard().getFreeParkingPosition()) {
             gameLogic.getPlayer(USERNAME).setFreeParking(true);
+            freeParkingCard.setVisible(true);
         }
 
         // If go-to jail, go to jail!
-        if (gameLogic.getPlayer(USERNAME).getPosition() == gameLogic.getBoard().getGoToJailPosition()) {
+        if (playerPosition == gameLogic.getBoard().getGoToJailPosition()) {
             try {
                 gameLogic.setPlayerInJail(USERNAME, true);
                 MessagePopupController.show("Criminal scumbag! You are going to jail. Your mother is not proud...", "handcuffs.png");
@@ -541,6 +553,11 @@ public class GameController {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+        }
+
+        // Player is on a chance card tile
+        if (gameLogic.getBoard().getTileType(playerPosition) == 5) {
+            ChanceCardController.display("Fly away bird before gisk comes and gets you!", "file:res/gui/MessagePopup/bird.png");
         }
     }
 
@@ -732,7 +749,7 @@ public class GameController {
                     "You have paid " +
                     property.getAllRent()[0] +
                     " in rent to " + property.getOwner()
-            );
+            , "dollarNegative.png");
         }
         payRentBtn.setDisable(true);
         int[] currentDice = gameLogic.getCurrentDice();

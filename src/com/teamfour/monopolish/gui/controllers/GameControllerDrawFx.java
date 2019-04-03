@@ -427,6 +427,10 @@ public class GameControllerDrawFx {
         return card;
     }
 
+    static void drawChanceCard(String msg) {
+
+    }
+
     /**
      * Method to draw houses on a property
      * @param housegrid GridPane on the board for houses

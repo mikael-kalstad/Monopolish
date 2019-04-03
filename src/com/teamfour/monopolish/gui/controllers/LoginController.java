@@ -5,6 +5,7 @@ import com.teamfour.monopolish.database.ConnectionPool;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 
@@ -29,6 +30,14 @@ public class LoginController {
     private final String MSG_WARNING = "*Username/email or password is wrong";
     private final String MSG_DATABASE_ERROR = "*Database error, try again";
     private final String MSG_USER_LOGGED_IN_ERROR = "*User already logged in";
+
+    // TESTING
+    @FXML private Pane chanceContainer;
+
+    @FXML public void initialize() {
+        ChanceCardController.setup(chanceContainer);
+        ChanceCardController.display("You can use this card to get out of jail boy", "file:res/gui/MessagePopup/bird.png");
+    }
 
     /**
      * Method to change styling to an input
