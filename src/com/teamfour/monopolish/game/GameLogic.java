@@ -147,9 +147,12 @@ public class GameLogic {
      * @throws SQLException
      */
     public boolean rentTransaction() throws SQLException {
+        // Get position, property object and owner name
         int position = entityManager.getYou().getPosition();
         Property currentProperty = entityManager.getPropertyAtPosition(position);
         String owner = currentProperty.getOwner();
+
+        // Get type of property
         int currentPropertyType = currentProperty.getType();
         int price;
         if (currentPropertyType == Property.STREET) {
@@ -164,6 +167,7 @@ public class GameLogic {
             price = ((Train)currentProperty).getRent(numberOfTrains, currentDice[0] + currentDice[1]);
         }
 
+        // Run transaction
         entityManager.transferMoneyFromTo(entityManager.getYou().getUsername(), currentProperty.getOwner(), price);
         updateToDatabase();
 

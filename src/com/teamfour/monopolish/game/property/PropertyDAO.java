@@ -120,7 +120,7 @@ public class PropertyDAO extends DataAccessObject {
     }
 
     public ArrayList<Property> getColorSet(int gameId, String colorHex) throws SQLException {
-        ArrayList<Property> properties = null;
+        ArrayList<Property> properties = new ArrayList<>();
         try {
             getConnection();
             cStmt = connection.prepareCall("{call property_get_color_set(?, ?)}");
