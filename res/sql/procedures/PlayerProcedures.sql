@@ -158,3 +158,10 @@ CREATE PROCEDURE player_get_forfeit(IN game_id INT)
   END;
 
 CALL player_get_forfeit(3);
+
+DROP PROCEDURE player_get_playerid;
+
+CREATE PROCEDURE player_get_playerid(IN uname VARCHAR(30), IN g_id INT)
+  BEGIN
+    SELECT p.player_id FROM player p, account a WHERE g_id = p.game_id AND a.username = uname;
+  end;

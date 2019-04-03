@@ -44,7 +44,8 @@ public class PlayerDAO extends DataAccessObject {
 
     /**
      * creates one player in the database and a Player object.
-     * @param game_id the id of the current game
+     *
+     * @param game_id  the id of the current game
      * @param username the username of the player that is created
      */
     public Player createPlayer(int game_id, String username) throws SQLException {
@@ -211,8 +212,8 @@ public class PlayerDAO extends DataAccessObject {
     /**
      * Set forfeit status on player in game
      *
-     * @param username usernmae
-     * @param gameId gameId
+     * @param username      usernmae
+     * @param gameId        gameId
      * @param forfeitStatus 0 = default, 1 = quit, 2 = continue
      */
     public void setForfeitStatus(String username, int gameId, int forfeitStatus) {
@@ -220,7 +221,7 @@ public class PlayerDAO extends DataAccessObject {
             getConnection();
 
             cStmt = connection.prepareCall("{call player_set_forfeit(?, ?, ?)}");  // player_id, game_id, forfeit_status
-                                                                                // 0 = default, 1 = quit, 2 = continue
+            // 0 = default, 1 = quit, 2 = continue
             cStmt.setString(1, username);
             cStmt.setInt(2, gameId);
             cStmt.setInt(3, forfeitStatus);
@@ -234,8 +235,6 @@ public class PlayerDAO extends DataAccessObject {
     }
 
     /**
-     *
-     *
      * @param gameId
      * @return // 0 = default, 1 = quit, 2 = continue
      */
@@ -257,9 +256,9 @@ public class PlayerDAO extends DataAccessObject {
                 list[1] = rs.getInt(2);
             }
             rs.close();
-        } catch(SQLException sql){
+        } catch (SQLException sql) {
             sql.printStackTrace();
-        } finally{
+        } finally {
             releaseConnection();
         }
         return list;
