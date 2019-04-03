@@ -1,6 +1,7 @@
 package com.teamfour.monopolish.gui.controllers;
 
 import com.teamfour.monopolish.game.Board;
+import com.teamfour.monopolish.game.Game;
 import com.teamfour.monopolish.game.GameLogic;
 import com.teamfour.monopolish.game.chanceCards.ChanceCard;
 import com.teamfour.monopolish.game.chanceCards.ChanceCardData;
@@ -37,7 +38,7 @@ import java.util.TimerTask;
  * to click certain buttons, what happens when you click them, and handles all graphical interfaces and updates
  *
  * @author Bård Hestmark
- * @version 1.9
+ * @version 1.10
  */
 
 public class GameController {
@@ -45,10 +46,10 @@ public class GameController {
     private Timer databaseTimer = new Timer();
 
     // GameLogic for handling more intricate game operations
-    private GameLogic gameLogic;
+    private Game game;
     private int current_money = 0;
     private final String USERNAME = Handler.getAccount().getUsername();
-    private int diceCounter = 0;
+    private boolean firstTurn = true;
 
     // Array for events in game
     private ArrayList<Text> eventList = new ArrayList<>();
@@ -117,15 +118,10 @@ public class GameController {
         Handler.setTradeContainer(tradeContainer);
 
         // Set gamelogic object in handler
-        Handler.setGameLogic(new GameLogic(Handler.getCurrentGameId()));
-        gameLogic = Handler.getGameLogic();
+        game = new Game(Handler.getCurrentGameId());
 
         // Load gamelogic and initialize the game setup
-        try {
-            gameLogic.setupGame();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        GameLogic.startGame();
 
         // Setup messagePop
         MessagePopupController.setup(messagePopupContainer, 5);
@@ -181,7 +177,7 @@ public class GameController {
                 // Remove player from lobby
                 Handler.getAccountDAO().setInactive(USERNAME);
                 Handler.getLobbyDAO().removePlayer(USERNAME, Handler.getLobbyDAO().getLobbyId(USERNAME));
-                gameLogic.getEntityManager().removePlayer(USERNAME);
+                game.getEntities().removePlayer(USERNAME);
                 databaseTimer.cancel(); // Stop databaseTimer thread
                 databaseTimer.purge();
                 ChatController.getChatTimer().cancel();
@@ -218,7 +214,7 @@ public class GameController {
             int lobbyId = Handler.getLobbyDAO().getLobbyId(USERNAME);
             System.out.println("lobby id when leaving... " + lobbyId);
             Handler.getLobbyDAO().removePlayer(USERNAME, Handler.getLobbyDAO().getLobbyId(USERNAME));
-            gameLogic.getEntityManager().removePlayer(USERNAME);
+            game.getEntities().removePlayer(USERNAME);
 
             // Change view to dashboard
             Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
@@ -301,7 +297,7 @@ public class GameController {
         propertiesUsername.setText(username);
 
         // Add all properties that the user owns to the dialog
-        for (Property p : gameLogic.getPlayer(username).getProperties()) {
+        for (Property p : game.getEntities().getPlayer(username).getProperties()) {
             Pane card = GameControllerDrawFx.createPropertyCard(p);
             propertiesContentContainer.getChildren().add(card);
         }
@@ -363,17 +359,16 @@ public class GameController {
         databaseTimer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
                 Platform.runLater(() -> {
-                    try {
-                        // If it's your turn, break out of the databaseTimer
-                        int result = gameLogic.isNewTurn();
-                        if (result == 1) {
-                            newTurn(true);
-                        } else if (result == 0) {
-                            newTurn(false);
+                    // If it's your turn, break out of the databaseTimer
+                    if (GameLogic.waitForTurn() || firstTurn) {
+                        if (game.getPlayers()[game.getCurrentTurn()].equals(USERNAME)) {
+                            firstTurn = false;
+                            // TODO: Your turn, break out
+                            yourTurn();
                         }
-                    } catch (SQLException e) {
-                        e.printStackTrace();
                     }
+                    firstTurn = false;
+                    updateBoard();
                 });
             }
         }, 0l, 1000l);
@@ -384,17 +379,12 @@ public class GameController {
      * This method will also update corresponding dice images in the GUI.
      */
     public void rollDice() {
-        // Get values for two dices
-        int[] diceValues = null;
-        diceCounter = 0;
-        try {
-            diceValues = gameLogic.throwDice();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        // Roll dice
+        GameLogic.rollDice();
+        int[] diceValues = game.getDice().getLastThrow();
 
         // Check if diceValues array is initialized or number of dices is not correct
-        if (diceValues == null || diceValues.length != 2) return;
+        //if (diceValues == null || diceValues.length != 2) return;
 
         // Update dice images and log on board
         dice1_img.setImage(new Image(("file:res/gui/dices/dice" + diceValues[0] + ".png")));
@@ -425,42 +415,13 @@ public class GameController {
         ParallelTransition pt = new ParallelTransition(rt1, rt2, tt1, tt2);
         pt.play();
 
-        int[] finalDiceValues = diceValues;
         addToEventlog(s);
-
-        Property property = gameLogic.getEntityManager().getPropertyAtPosition(gameLogic.getEntityManager().getYou().getPosition());
-
-        // If the player didn't throw two equal dices, disable the dice button. If not, the player can throw dice again
-        if (finalDiceValues[0] != finalDiceValues[1]) {
-            rolldiceBtn.setDisable(true);
-            endturnBtn.setDisable(false);
-        } else {
-            if (gameLogic.getPlayer(USERNAME).getPosition() == gameLogic.getBoard().getGoToJailPosition()) {
-                payBailBtn.setVisible(false);
-                MessagePopupController.show("You are out of jail, free as a bird!", "bird.png");
-                MessagePopupController.show("The dices are equal, throw again!", "again.png");
-            }
-            // DICE COUNTER should be a global variable?
-            else if (diceCounter == 2) {
-                try {
-                    gameLogic.setPlayerInJail(USERNAME, true);
-                    MessagePopupController.show("Criminal scumbag! You are going to jail. Your mother is not proud...", "handcuffs.png");
-                    payBailBtn.setDisable(true);
-                    payBailBtn.setVisible(true);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                MessagePopupController.show("The dices are equal, throw again!", "again.png");
-                diceCounter++;
-            }
-        }
 
         // Update board view to show where player moved
         updateBoard();
 
         // Check the tile you are currently on and call that event
-        callTileEvent();
+        updateClientControls();
 
         // Update board view again
         updateBoard();
@@ -470,42 +431,53 @@ public class GameController {
      * Ends your current turn
      */
     public void endTurn() {
-        try {
-            // Disable buttons
-            endturnBtn.setDisable(true);
-            rolldiceBtn.setDisable(true);
-            buyPropertyBtn.setDisable(true);
-            payBailBtn.setDisable(true);
+        // Disable buttons
+        endturnBtn.setDisable(true);
+        rolldiceBtn.setDisable(true);
+        buyPropertyBtn.setDisable(true);
+        payBailBtn.setDisable(true);
 
-            // Finish turn in gamelogic and wait for your next turn
-            gameLogic.finishYourTurn();
-            updateBoard();
-            waitForTurn();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        // Finish turn in gamelogic and wait for your next turn
+        GameLogic.endTurn();
+        updateBoard();
+        waitForTurn();
     }
 
     /**
      * Checks to see what form of tile you are on and call the event accordingly
      */
-    private void callTileEvent() {
+    private void updateClientControls() {
         // Remove previous cards
         cardContainer.getChildren().clear();
 
+        // If the player didn't throw two equal dices, disable the dice button. If not, the player can throw dice again
+        int[] diceValues = game.getDice().getLastThrow();
+        if (diceValues[0] != diceValues[1]) {
+            rolldiceBtn.setDisable(true);
+            endturnBtn.setDisable(false);
+        }
+
+        // If player is in jail, show button to pay bail
+        if (game.getEntities().getYou().isInJail()) {
+            payBailBtn.setVisible(true);
+        } else {
+            //payBailBtn.setDisable(true);
+            payBailBtn.setVisible(false);
+        }
+
         // Store your player's position
-        int yourPosition = gameLogic.getPlayer(USERNAME).getPosition();
+        int yourPosition = game.getEntities().getYou().getPosition();
 
         // PROPERTY TILE HANDLING
-        if (gameLogic.getBoard().getTileType(yourPosition) == Board.PROPERTY) {
+        if (game.getBoard().getTileType(yourPosition) == Board.PROPERTY) {
             cardContainer.getChildren().clear();
 
             // Draw property card with
-            Pane card = GameControllerDrawFx.createPropertyCard(gameLogic.getEntityManager().getPropertyAtPosition(gameLogic.getPlayer(USERNAME).getPosition()));
+            Pane card = GameControllerDrawFx.createPropertyCard(game.getEntities().getPropertyAtPosition(yourPosition));
             cardContainer.getChildren().add(card);
 
             // Get owner of property and set the button or label accordingly
-            String propertyOwner = gameLogic.getEntityManager().getOwnerAtProperty(yourPosition);
+            String propertyOwner = game.getEntities().getOwnerAtProperty(yourPosition);
             if (propertyOwner == null || propertyOwner.equals("")) {
                 // If property is available, show button
                 buyPropertyBtn.setDisable(false);
@@ -539,33 +511,14 @@ public class GameController {
             payRentBtn.setVisible(false);
         }
 
-        int playerPosition = gameLogic.getPlayer(USERNAME).getPosition();
-
-        if (gameLogic.getPlayer(USERNAME).hasFreeParking()) {
-            freeParkingCard.setVisible(false);
-            gameLogic.getPlayer(USERNAME).setFreeParking(false);
-        }
-
         // If on free parking, get a free-parking token
-        else if (playerPosition == gameLogic.getBoard().getFreeParkingPosition()) {
-            gameLogic.getPlayer(USERNAME).setFreeParking(true);
+        if (game.getBoard().getTileType(yourPosition) == Board.FREE_PARKING) {
+            game.getEntities().getYou().setFreeParking(true);
             freeParkingCard.setVisible(true);
         }
 
-        // If go-to jail, go to jail!
-        if (playerPosition == gameLogic.getBoard().getGoToJailPosition()) {
-            try {
-                gameLogic.setPlayerInJail(USERNAME, true);
-                MessagePopupController.show("Criminal scumbag! You are going to jail. Your mother is not proud...", "handcuffs.png");
-                payBailBtn.setVisible(true);
-                payBailBtn.setDisable(true);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
         // Player is on a chance card tile
-        if (gameLogic.getBoard().getTileType(playerPosition) == 5) {
+        if (game.getBoard().getTileType(yourPosition) == Board.CHANCE) {
             // Get a random chance card and display it
             ChanceCard chanceCard = ChanceCardData.getRandomChanceCard();
             ChanceCardController.display(chanceCard, cardContainer);
@@ -576,12 +529,12 @@ public class GameController {
      * Updates all the scene's graphics to reflect the changes in the database
      */
     public void updateBoard() {
-        String[] turns = gameLogic.getTurns();
+        String[] turns = game.getPlayers();
         String[] colors = new String[turns.length];
         int[] positions = null;
 
         try {
-            positions = gameLogic.getPlayerPositions();
+            positions = game.getEntities().getPlayerPositions();
 
             // Set player colors
             for (int i = 0; i < turns.length; i++) {
@@ -593,10 +546,10 @@ public class GameController {
             e.printStackTrace();
         }
 
-        roundValue.setText(String.valueOf(gameLogic.getRoundNumber() + 1));
+        roundValue.setText(String.valueOf(game.getRoundNumber() + 1));
         // Updated in updatePlayerInfo()?
         //userMoney.setText(String.valueOf(gameLogic.getPlayer(USERNAME).getMoney()));
-        statusValue.setText("Waiting for " + gameLogic.getCurrentPlayer() + " to finish their turn");
+        statusValue.setText("Waiting for " + game.getPlayers()[game.getCurrentTurn()] + " to finish their turn");
 
         if (positions != null)
             //addToEventlog(gameLogic.getCurrentPlayer() + " moved to " + gameLogic.getEntityManager().getPropertyAtPosition(positions[gameLogic.getTurnNumber()]).getName());
@@ -607,28 +560,12 @@ public class GameController {
     /**
      * This method runs at the start of each new turn, regardless if it's your turn or not
      * A couple things needs to be updated at the start of each turn
-     *
-     * @param yourTurn Is it your turn?
      */
-    public void newTurn(boolean yourTurn) {
-        try {
-            // Increment to a new turn in the gamelogic object
-            gameLogic.newTurn(yourTurn);
-
-            // Update the playing board accordingly to database updates
-            updateBoard();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        // If this is your turn, stop the database check databaseTimer and enable the button to roll dice
-        if (yourTurn) {
-            payBailBtn.setDisable(false);
-            databaseTimer.cancel();
-            databaseTimer.purge();
-            rolldiceBtn.setDisable(false);
-        }
+    public void yourTurn() {
+        payBailBtn.setDisable(false);
+        databaseTimer.cancel();
+        databaseTimer.purge();
+        rolldiceBtn.setDisable(false);
     }
 
     private void addToEventlog(String msg) {
@@ -744,29 +681,11 @@ public class GameController {
      * Attempts to pay the player with the current owned property with the proper rent
      */
     public void rentTransaction() {
-        // Check if your player has a free parking token
-        if (gameLogic.getPlayer(USERNAME).hasFreeParking()) {
-            MessagePopupController.show("You have a 'Free Parking' token! You don't have to pay rent here", "parking.png");
-            gameLogic.getPlayer(USERNAME).setFreeParking(false);
-        } else {
-            try {
-                gameLogic.rentTransaction();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+        GameLogic.payRent();
 
-            Property property = gameLogic.getEntityManager().getPropertyAtPosition(gameLogic.getEntityManager().getYou().getPosition());
-
-            // REMEMBER TO CHANGE INDEX (END OF THIS HUUUUGE LINE) TO ACTUAL RENT WHEN HOUSE AND HOTEL IS IMPLEMENTED
-            MessagePopupController.show(
-                    "You have paid " +
-                            property.getAllRent()[0] +
-                            " in rent to " + property.getOwner()
-                    , "dollarNegative.png");
-        }
         payRentBtn.setDisable(true);
-        int[] currentDice = gameLogic.getCurrentDice();
-        if (currentDice[0] == currentDice[1] && !gameLogic.getEntityManager().getPlayer(USERNAME).isInJail()) {
+        int[] currentDice = game.getDice().getLastThrow();
+        if (currentDice[0] == currentDice[1] && !game.getEntities().getYou().isInJail()) {
             rolldiceBtn.setDisable(false);
             endturnBtn.setDisable(true);
         } else {
@@ -784,25 +703,20 @@ public class GameController {
 
         if (buyprompt.getResult() == ButtonType.YES) {
             // Perform the transaction of property through gamelogic
-            try {
-                if (!gameLogic.propertyTransaction()) {
-                    Alert messageBox = new Alert(Alert.AlertType.INFORMATION, "You do not have enough funds to purchase this property.");
-                    messageBox.showAndWait();
-                } else {
-                    MessagePopupController.show("Purchase successful, you are now the owner of " + gameLogic.getEntityManager().getPropertyAtPosition(gameLogic.getEntityManager().getYou().getPosition()).getName());
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+            if (GameLogic.purchaseProperty()) {
+                // Update board
+                updateBoard();
+
+                // Update property information label
+                buyPropertyBtn.setVisible(false);
+                propertyOwned.setVisible(true);
+                propertyOwned.setText("Owned by you");
+            } else {
+                Alert messageBox = new Alert(Alert.AlertType.INFORMATION,
+                        "You do not have enough funds to purchase this property.");
+                messageBox.showAndWait();
             }
             buyprompt.close();
-
-            // Update board
-            updateBoard();
-
-            // Update property information label
-            buyPropertyBtn.setVisible(false);
-            propertyOwned.setVisible(true);
-            propertyOwned.setText("Owned by you");
         }
         if (buyprompt.getResult() == ButtonType.NO) {
             buyprompt.close();
@@ -813,16 +727,12 @@ public class GameController {
      * Pay bail to try and get out of jail
      */
     public void payBail() {
-        if (gameLogic.payBail()) {
-            try {
-                gameLogic.setPlayerInJail(USERNAME, false);
-                payBailBtn.setVisible(false);
-                MessagePopupController.show("You are out of jail, free as a bird!", "bird.png");
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+        if (GameLogic.payBail()) {
+            payBailBtn.setVisible(false);
         } else {
-            MessagePopupController.show("You do not have enough funds to pay bail.");
+            Alert messageBox = new Alert(Alert.AlertType.INFORMATION,
+                    "You do not have enough funds to pay bail.");
+            messageBox.showAndWait();
         }
     }
 

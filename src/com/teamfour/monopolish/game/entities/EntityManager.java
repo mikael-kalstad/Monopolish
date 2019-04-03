@@ -1,5 +1,6 @@
 package com.teamfour.monopolish.game.entities;
 
+import com.teamfour.monopolish.game.GameConstants;
 import com.teamfour.monopolish.game.entities.player.*;
 import com.teamfour.monopolish.game.property.Property;
 import com.teamfour.monopolish.game.property.Street;
@@ -211,7 +212,12 @@ public class EntityManager {
         return getPropertyAtPosition(position).getOwner();
     }
 
-    public void transactProperty(Entity receiver, Property property) {
+    public boolean purchaseProperty(Entity receiver, Property property) {
+        // If not enough money, return false
+        if (receiver.getMoney() < property.getPrice()) {
+            return false;
+        }
+
         Entity propertyOwner;
         String owner = property.getOwner();
         if (owner.equals("") || owner == null) {
@@ -231,6 +237,8 @@ public class EntityManager {
 
         // Transfer money
         receiver.transferMoney(propertyOwner, property.getPrice());
+
+        return true;
     }
 
     /**
@@ -248,7 +256,7 @@ public class EntityManager {
 
         // Update bank
         bank.updatePropertiesFromDatabase(gameId);
-        bank.setMoney(Bank.MAX_GAME_MONEY - moneyInGame);
+        bank.setMoney(GameConstants.MAX_GAME_MONEY - moneyInGame);
     }
 
     /**
@@ -314,7 +322,7 @@ public class EntityManager {
      * Generates a string array with the turn order of the players, based on their Player ID's
      * @return String array with the play order
      */
-    public String[] generateTurnOrder() {
+    public String[] getUsernames() {
         String[] turns = new String[players.size()];
         for (int i = 0; i < turns.length; i++) {
             turns[i] = players.get(i).getUsername();
@@ -342,5 +350,16 @@ public class EntityManager {
 
     public ArrayList<Player> getPlayers() {
         return (players);
+    }
+
+    public int[] getPlayerPositions() throws SQLException {
+        updateFromDatabase();
+        int[] positions = new int[players.size()];
+        for (int i = 0; i < positions.length; i++) {
+            positions[i] = players.get(i).getPosition();
+
+        }
+
+        return positions;
     }
 }

@@ -15,6 +15,7 @@ public class Dice extends StackPane {
     private Random random = new Random();
     private int numOfDices;
     private int numOfEyes;
+    private int[] lastThrow;
 
     /**
      * Constructor
@@ -25,6 +26,7 @@ public class Dice extends StackPane {
     public Dice(int numOfDices, int numOfEyes) {
         this.numOfDices = numOfDices;
         this.numOfEyes = numOfEyes;
+        lastThrow = new int[numOfDices];
     }
 
     /**
@@ -45,12 +47,15 @@ public class Dice extends StackPane {
      * @return array with dice values
      */
     public int[] throwDice() {
-        int[] result = new int[numOfDices];
         for (int i = 0; i < numOfDices; i++) {
             //result[i] = randomNum(1, numOfEyes);
-            result[i] = (int)(Math.random() * ((numOfEyes - 1) + 1)) + 1;
+            lastThrow[i] = (int)(Math.random() * ((numOfEyes - 1) + 1)) + 1;
         }
 
-        return result;
+        return lastThrow;
+    }
+
+    public int[] getLastThrow() {
+        return lastThrow;
     }
 }

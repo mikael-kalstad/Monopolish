@@ -1,19 +1,16 @@
 package com.teamfour.monopolish.game.entities;
 
+import com.teamfour.monopolish.game.GameConstants;
+
 /**
  * Represents the bank in the game. The bank has its own money and properties, along with a number of houses that can be
  * given to players
  *
  * @author      eirikhem
- * @version     1.0
+ * @version     1.2
  */
 
 public class Bank extends Entity {
-    // Static variables
-    public static final int STARTING_HOUSES = 32;
-    public static final int STARTING_HOTELS = 8;
-    public static final int MAX_GAME_MONEY = 500000;
-
     // Attributes
     int availableHouses;
     int availableHotels;
@@ -23,9 +20,9 @@ public class Bank extends Entity {
      */
     public Bank(int gameId) {
         super();
-        availableHouses = STARTING_HOUSES;
-        availableHotels = STARTING_HOTELS;
-        money = MAX_GAME_MONEY;
+        availableHouses = GameConstants.MAX_HOUSES;
+        availableHotels = GameConstants.MAX_HOTELS;
+        money = GameConstants.MAX_GAME_MONEY;
         // Get all properties from database
         // TODO: Fix this
         try {
