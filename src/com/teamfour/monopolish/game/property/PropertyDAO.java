@@ -48,7 +48,6 @@ public class PropertyDAO extends DataAccessObject {
      * @param gameId the game_id the id of the current game
      * @param username the username of the player whose properties are returned
      */
-
     public ArrayList<Property> getPropertiesByOwner(int gameId, String username) throws SQLException {
         ArrayList<Property> props = new ArrayList<>();
 
@@ -84,11 +83,17 @@ public class PropertyDAO extends DataAccessObject {
     public void updateProperty(Property prop, int game_id) throws SQLException {
         try {
             getConnection();
-            cStmt = connection.prepareCall("{call property_update(?, ?, ?, ?)}");
+            cStmt = connection.prepareCall("{call property_update(?, ?, ?, ?, ?)}");
                 cStmt.setInt(1, prop.getId());
                 cStmt.setInt(2, game_id);
                 cStmt.setBoolean(3, prop.isPawned());
                 cStmt.setString(4, prop.getOwner());
+                int rentLevel = 0;
+                if (prop.getType() == Property.STREET)
+                    rentLevel = ((Street)prop).getHouseAndHotels();
+
+                cStmt.setInt(5, rentLevel);
+
                 cStmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -162,11 +167,17 @@ public class PropertyDAO extends DataAccessObject {
         String categoryColor = rs.getString(5);
         String owner = rs.getString(6);
         int propertyType = rs.getInt(7);
+        int houses = rs.getInt(8);
+        int hotels = 0;
+        if (houses > 4) {
+            houses = 4;
+            hotels = 1;
+        }
 
         // Check which type of property this is and cast accordingly
         Property property;
         if (propertyType == Property.STREET)
-            property = new Street(propertyId, name, price, position, categoryColor, owner);
+            property = new Street(propertyId, name, price, position, categoryColor, owner, houses, hotels);
         else if (propertyType == Property.BOAT)
             property = new Boat(propertyId, name, price, position, categoryColor, owner);
         else

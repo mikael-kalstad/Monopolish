@@ -6,6 +6,7 @@ import com.teamfour.monopolish.game.chanceCards.ChanceCard;
 import com.teamfour.monopolish.game.chanceCards.ChanceCardData;
 import com.teamfour.monopolish.game.entities.player.Player;
 import com.teamfour.monopolish.game.property.Property;
+import com.teamfour.monopolish.game.property.Street;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.animation.ParallelTransition;
 import javafx.animation.RotateTransition;
@@ -109,7 +110,8 @@ public class GameController {
     /**
      * Launches when the scene is loaded.
      */
-    @FXML public void initialize() {
+    @FXML
+    public void initialize() {
         // Reference that is used in other controllers
         Handler.setForfeitContainer(forfeitContainer);
         Handler.setTradeContainer(tradeContainer);
@@ -119,8 +121,11 @@ public class GameController {
         gameLogic = Handler.getGameLogic();
 
         // Load gamelogic and initialize the game setup
-        try { gameLogic.setupGame(); }
-        catch (SQLException e) { e.printStackTrace(); }
+        try {
+            gameLogic.setupGame();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         // Setup messagePop
         MessagePopupController.setup(messagePopupContainer, 5);
@@ -134,8 +139,9 @@ public class GameController {
         try {
             Node chat = FXMLLoader.load(getClass().getResource(ViewConstants.FILE_PATH.getValue() + ViewConstants.CHAT.getValue()));
             chatContainer.getChildren().add(chat);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        catch (IOException e) { e.printStackTrace(); }
 
         // Start forfeit timer
         Timer forfeitTimer = new Timer();
@@ -266,15 +272,16 @@ public class GameController {
     /**
      * Load element from .fxml file and add to container
      *
-     * @param filename Target .fxml file
+     * @param filename  Target .fxml file
      * @param container Target container
      */
     private void addElementToContainer(String filename, Pane container) {
         try {
             Node element = FXMLLoader.load(getClass().getResource(ViewConstants.FILE_PATH.getValue() + filename));
             container.getChildren().add(element);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        catch (IOException e) { e.printStackTrace(); }
     }
 
     /**
@@ -382,8 +389,7 @@ public class GameController {
         diceCounter = 0;
         try {
             diceValues = gameLogic.throwDice();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -441,7 +447,9 @@ public class GameController {
                     MessagePopupController.show("Criminal scumbag! You are going to jail. Your mother is not proud...", "handcuffs.png");
                     payBailBtn.setDisable(true);
                     payBailBtn.setVisible(true);
-                } catch (SQLException e) { e.printStackTrace(); }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             } else {
                 MessagePopupController.show("The dices are equal, throw again!", "again.png");
                 diceCounter++;
@@ -489,7 +497,7 @@ public class GameController {
         int yourPosition = gameLogic.getPlayer(USERNAME).getPosition();
 
         // PROPERTY TILE HANDLING
-        if(gameLogic.getBoard().getTileType(yourPosition) == Board.PROPERTY) {
+        if (gameLogic.getBoard().getTileType(yourPosition) == Board.PROPERTY) {
             cardContainer.getChildren().clear();
 
             // Draw property card with
@@ -593,7 +601,7 @@ public class GameController {
         if (positions != null)
             //addToEventlog(gameLogic.getCurrentPlayer() + " moved to " + gameLogic.getEntityManager().getPropertyAtPosition(positions[gameLogic.getTurnNumber()]).getName());
 
-        updatePlayersInfo();
+            updatePlayersInfo();
     }
 
     /**
@@ -634,8 +642,9 @@ public class GameController {
 
     /**
      * Helper method for setting onclick in propertyIcon
+     *
      * @param container for the propertyIcon
-     * @param username target user
+     * @param username  target user
      */
     private void setPropertyOnClick(Pane container, String username) {
         container.setOnMouseClicked(e -> {
@@ -647,7 +656,7 @@ public class GameController {
      * This method will update players info in the sidebar.
      * It will render the GUI in the opponentsContainer.
      */
-    private void updatePlayersInfo(){
+    private void updatePlayersInfo() {
         opponentsContainer.getChildren().clear();
         ArrayList<Player> players = Handler.getPlayerDAO().getPlayersInGame(Handler.getCurrentGameId());
         String color;
@@ -716,6 +725,7 @@ public class GameController {
 
     /**
      * Go through a color list (located in Handler) and find the color associated with a player.
+     *
      * @param username Target user
      * @return Color associated with user
      */
@@ -750,9 +760,9 @@ public class GameController {
             // REMEMBER TO CHANGE INDEX (END OF THIS HUUUUGE LINE) TO ACTUAL RENT WHEN HOUSE AND HOTEL IS IMPLEMENTED
             MessagePopupController.show(
                     "You have paid " +
-                    property.getAllRent()[0] +
-                    " in rent to " + property.getOwner()
-            , "dollarNegative.png");
+                            property.getAllRent()[0] +
+                            " in rent to " + property.getOwner()
+                    , "dollarNegative.png");
         }
         payRentBtn.setDisable(true);
         int[] currentDice = gameLogic.getCurrentDice();
@@ -813,6 +823,13 @@ public class GameController {
             }
         } else {
             MessagePopupController.show("You do not have enough funds to pay bail.");
+        }
+    }
+
+    public void clickToBuyHouse(Property property) {
+        //ideally the number of houses on each street cannot be more than 1 greater than that of the other streets in the same colorset, this is not implementet here
+        if (((Street) property).addHouse()) {
+            GameControllerDrawFx.drawHouse(housegrid, (Street) property);
         }
     }
 }
