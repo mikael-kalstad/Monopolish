@@ -83,6 +83,5 @@
             <Font size="30.0" />
          </font>
       </Text>
-      <Pane fx:id="chanceContainer" layoutX="841.0" layoutY="594.0" prefHeight="240.0" prefWidth="190.0" style="-fx-border-color: #999;" />
    </children>
 </AnchorPane>

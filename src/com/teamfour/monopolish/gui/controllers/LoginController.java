@@ -31,14 +31,6 @@ public class LoginController {
     private final String MSG_DATABASE_ERROR = "*Database error, try again";
     private final String MSG_USER_LOGGED_IN_ERROR = "*User already logged in";
 
-    // TESTING
-    @FXML private Pane chanceContainer;
-
-    @FXML public void initialize() {
-        ChanceCardController.setup(chanceContainer);
-        ChanceCardController.display("You can use this card to get out of jail boy", "file:res/gui/MessagePopup/bird.png");
-    }
-
     /**
      * Method to change styling to an input
      *
