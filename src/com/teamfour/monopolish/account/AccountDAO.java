@@ -146,7 +146,7 @@ public class AccountDAO extends DataAccessObject {
         try {
             getConnection();
             //cStmt = connection.prepareCall("{call account_insert_user(?, ?, ?, ?, ?)}");
-            cStmt = connection.prepareCall("{call account_set_inactive(?)}");
+            cStmt = connection.prepareCall("{call account_games_played(?)}");
 
             cStmt.setString(1, username);
 
