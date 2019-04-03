@@ -93,19 +93,24 @@ public class EntityManager {
         return bank.getPropertyAtPosition(position);
     }
 
-    /**
-     * Transfers money from the bank to the specified username
-     * @param username Username of player
-     * @param amount Amount to be transferred
-     * @return True if successful
-     */
-    public boolean transferMoneyFromBank(String username, int amount) {
-        Player player = getPlayer(username);
-        if (bank.getMoney() < amount) {
-            return false;
-        }
+//      * Transfers money from the bank to the specified username
+//     * @param username Username of player
+//     * @param amount Amount to be transferred
+//     * @return True if successful
+//     */
+//    public boolean transferMoneyFromBank(String username, int amount) {
+//        Player player = getPlayer(username);
+//        if (bank.getMoney() < amount) {
+//            return false;
+//        }
+//
+//        return bank.transferMoney(player, amount);
+//    }/**
 
-        return bank.transferMoney(player, amount);
+
+    public void transferMoneyBank(String username, int amount) {
+        Player player = getPlayer(username);
+        bank.transferMoney(player, amount);
     }
 
     /**
@@ -162,21 +167,21 @@ public class EntityManager {
         return false;
     }
 
-    /**
-     * Transfers money from the specified player to the bank
-     * @param username Player's username
-     * @param amount Amount to be transferred
-     * @return True if successful,
-     *         false if no money
-     */
-    public boolean transferMoneyToBank(String username, int amount) {
-        Player player = getPlayer(username);
-        if (player.getMoney() < amount) {
-            return false;
-        }
-
-        return player.transferMoney(bank, amount);
-    }
+//    /**
+//     * Transfers money from the specified player to the bank
+//     * @param username Player's username
+//     * @param amount Amount to be transferred
+//     * @return True if successful,
+//     *         false if no money
+//     */
+//    public boolean transferMoneyToBank(String username, int amount) {
+//        Player player = getPlayer(username);
+//        if (player.getMoney() < amount) {
+//            return false;
+//        }
+//
+//        return player.transferMoney(bank, amount);
+//    }
 
     public boolean distributeStartMoney(int amount) {
         for (Player p : players) {

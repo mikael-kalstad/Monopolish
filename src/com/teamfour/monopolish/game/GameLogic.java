@@ -106,7 +106,7 @@ public class GameLogic {
 
         // If the player passed start, give them money
         if (entityManager.getYou().getPosition() < previousPosition) {
-            entityManager.transferMoneyFromBank(entityManager.getYou().getUsername(), PASS_START_MONEY);
+            entityManager.transferMoneyBank(entityManager.getYou().getUsername(), PASS_START_MONEY);
         }
 
         // Update position to database
@@ -246,7 +246,7 @@ public class GameLogic {
 
     public boolean payBail() {
         if (entityManager.getYou().getMoney() >= BAIL_MONEY) {
-            entityManager.transferMoneyToBank(entityManager.getYou().getUsername(), BAIL_MONEY);
+            entityManager.transferMoneyBank(entityManager.getYou().getUsername(), BAIL_MONEY);
             return true;
         } else {
             return false;

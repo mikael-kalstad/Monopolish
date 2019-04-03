@@ -53,17 +53,16 @@ public class EntityManagerTest {
     public void testGetPlayer(){
         assertTrue(instance.getPlayer("huey") instanceof Player);
     }
-  /*
-    @Test
-    @DisplayName("getPropertyAtPosition test")
-  public void testGetPropertyAtPosition(){
-        Property prop = new Street(22, "Kalvskinnet", 8000, 36, "#1565C0", null);
-        assertTrue(instance.getPropertyAtPosition(36).getId() == prop.getId()
-                && instance.getPropertyAtPosition(36).getPrice() == prop.getPrice()
-                && instance.getPropertyAtPosition(36).getCategorycolor() == prop.getCategorycolor()
-                && instance.getPropertyAtPosition(36).getName().equals(prop.getName()));
-    }
-    */
+
+//    @Test
+//    @DisplayName("getPropertyAtPosition test")
+//    public void testGetPropertyAtPosition(){
+//        Property prop = new Street(22, "Kalvskinnet", 8000, 36, "#1565C0", null);
+//        assertTrue(instance.getPropertyAtPosition(36).getId() == prop.getId()
+//                && instance.getPropertyAtPosition(36).getPrice() == prop.getPrice()
+//                && instance.getPropertyAtPosition(36).getCategorycolor() == prop.getCategorycolor()
+//                && instance.getPropertyAtPosition(36).getName().equals(prop.getName()));
+//    }
  /*   @Test
     public void testTransferMoneyFromBank(){
 
@@ -101,11 +100,10 @@ public class EntityManagerTest {
 
     }
  */
-    /*
     @AfterAll
     public static void slutt(){
         instance=null;
 
     }
-*/
+
 }

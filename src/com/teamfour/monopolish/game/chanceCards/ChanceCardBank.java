@@ -14,12 +14,6 @@ public class ChanceCardBank extends ChanceCard {
      * Transfer money from the bank to a player or from the player to the bank.
      */
     public void moneyTransaction() {
-        // Amount is negative, transfer from player to bank
-        if (super.getAmount() < 0)
-            Handler.getGameLogic().getEntityManager().transferMoneyToBank(super.getUSERNAME(), super.getAmount());
-
-            // Amount is positive, transfer from bank to player
-        else
-            Handler.getGameLogic().getEntityManager().transferMoneyFromBank(super.getUSERNAME(), super.getAmount());
+        Handler.getGameLogic().getEntityManager().transferMoneyBank(super.getUSERNAME(), super.getAmount());
     }
 }
