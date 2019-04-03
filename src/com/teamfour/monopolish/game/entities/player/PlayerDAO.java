@@ -263,4 +263,102 @@ public class PlayerDAO extends DataAccessObject {
         }
         return list;
     }
+
+    public void addTrade(String seller, String buyer, int price, int propertyId, int gameId) {
+        try {
+            //int sellerId = getPlayerId(seller, gameId);
+            //int buyerId = getPlayerId(buyer, gameId);
+            getConnection();
+            // seller_id, buyer_id, price, prperty_id
+            cStmt = connection.prepareCall("{call trading_add_trade(?, ?, ?, ?)}");
+
+            //cStmt.setInt(1, sellerId);
+            //cStmt.setInt(2, buyerId);
+            cStmt.setString(1,seller);
+            cStmt.setString(2, buyer);
+            cStmt.setInt(3, price);
+            cStmt.setInt(4, propertyId);
+
+            cStmt.executeQuery();
+            System.out.println("adding trade.....");
+
+
+        } catch (SQLException sql) {
+            sql.printStackTrace();
+        } finally {
+            releaseConnection();
+        }
+    }
+
+
+    public ArrayList<int[]> getTrade(String username, int gameId) {
+
+        ArrayList<int[]> props = new ArrayList<>();
+
+        try {
+            getConnection();
+            // seller_id, buyer_id, price, prperty_id
+            cStmt = connection.prepareCall("{call trading_get_trade(?)}");  // player_id, game_id, forfeit_status
+
+            cStmt.setString(1, username);
+
+            ResultSet rs = cStmt.executeQuery();
+
+            while (rs.next()) {
+                int[] data = new int[4];
+                data[0] = rs.getInt(1); // sellerId
+                data[1] = rs.getInt(2); // buyerId
+                data[2] = rs.getInt(3); // price
+                data[3] = rs.getInt(4); // propertyId
+
+                props.add(data);
+            }
+
+        } catch(SQLException sql){
+            sql.printStackTrace();
+        } finally{
+            releaseConnection();
+        }
+        return props;
+    }
+    public void acceptTrade(String seller, String buyer) {
+        try {
+            getConnection();
+
+            cStmt = connection.prepareCall("{call trading_accept_trade(?, ?)}");  // player_id
+
+            cStmt.setString(1, seller);
+            cStmt.setString(2, buyer);
+
+
+
+        } catch(SQLException sql){
+            sql.printStackTrace();
+        } finally{
+            releaseConnection();
+        }
+    }
+
+    public int getPlayerId(String username, int gameId) {
+        int playerId = 0;
+        try {
+            getConnection();
+            cStmt = connection.prepareCall("{call player_get_playerid(?, ?)}");  // userId, gameId
+
+            cStmt.setString(1, username);
+            cStmt.setInt(2, gameId);
+
+            ResultSet rs = cStmt.executeQuery();
+
+            while (rs.next()) {
+                playerId = rs.getInt(1);
+            }
+
+        } catch (SQLException sql) {
+            sql.printStackTrace();
+        } finally {
+            releaseConnection();
+        }
+        return playerId;
+    }
 }
