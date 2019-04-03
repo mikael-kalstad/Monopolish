@@ -433,8 +433,9 @@ public class GameControllerDrawFx {
 
     /**
      * Method to draw houses on a property
+     *
      * @param housegrid GridPane on the board for houses
-     * @param street The property the house will be drawn on
+     * @param street    The property the house will be drawn on
      */
     static void drawHouse(GridPane housegrid, Street street) {
 
@@ -446,11 +447,11 @@ public class GameControllerDrawFx {
 
         ArrayList<ImageView> houses = new ArrayList<>();
 
-        if(street.getHotels() == 1) {
+        if (street.getHotels() == 1) {
             numberOfHouses = 5;
         }
 
-        if(numberOfHouses < 5) {
+        if (numberOfHouses < 5) {
             for (int i = 0; i < numberOfHouses; i++) {
                 houses.add(new ImageView("file:res/gui/Game/house.png"));
             }
@@ -514,7 +515,7 @@ public class GameControllerDrawFx {
         }
 
         //for the rest of the houses we find the already made container
-        if(numberOfHouses > 1 && numberOfHouses <= 4) {
+        if (numberOfHouses > 1 && numberOfHouses <= 4) {
             for (Node box : housegrid.getChildren()) {
                 if (box.getId() == propertyname) {
                     ((Pane) box).getChildren().clear();
@@ -524,7 +525,7 @@ public class GameControllerDrawFx {
         }
 
         //if the street has a hotel
-        if(numberOfHouses == 5){
+        if (numberOfHouses == 5) {
             for (Node box : housegrid.getChildren()) {
                 if (box.getId() == propertyname) {
                     ImageView hotel = new ImageView("file:res/gui/Game/house.png");

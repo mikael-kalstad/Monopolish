@@ -5,8 +5,9 @@ import java.util.ArrayList;
 
 /**
  * Represents the properties in a game
- * @author      lisawil
- * @version     1.1
+ *
+ * @author lisawil
+ * @version 1.1
  */
 
 public abstract class Property {
@@ -17,33 +18,34 @@ public abstract class Property {
     //Attributes
     protected final int ID;
     protected final String NAME;
+    protected final String CATEGORYCOLOR;
     protected int price;
     protected int position;
     protected boolean pawned = false;
     protected String owner;
-    protected final String CATEGORYCOLOR;
-
-    public static ArrayList<Property> getFullColorSet(int gameId, String colorHex) throws SQLException {
-        PropertyDAO dao = new PropertyDAO();
-        return dao.getColorSet(gameId, colorHex);
-    }
 
     /**
      * Constructor
-     * @param p_id property id
-     * @param name name of property
-     * @param price the price of the property
-     * @param position the position the property is located on the board
+     *
+     * @param p_id          property id
+     * @param name          name of property
+     * @param price         the price of the property
+     * @param position      the position the property is located on the board
      * @param categorycolor the categorycolor of the property
-     * @param owner the current owner of the property
+     * @param owner         the current owner of the property
      */
-    public Property(int p_id, String name, int price, int position, String categorycolor, String owner){
+    public Property(int p_id, String name, int price, int position, String categorycolor, String owner) {
         this.ID = p_id;
         this.NAME = name;
         this.price = price;
         this.position = position;
         this.CATEGORYCOLOR = categorycolor;
         this.owner = owner;
+    }
+
+    public static ArrayList<Property> getFullColorSet(int gameId, String colorHex) throws SQLException {
+        PropertyDAO dao = new PropertyDAO();
+        return dao.getColorSet(gameId, colorHex);
     }
 
     @Override
@@ -54,32 +56,32 @@ public abstract class Property {
 
     /**
      * Compares the price of a property to another property
+     *
      * @param otherP
      * @return
      */
-    public int compareTo(Property otherP){
-        if(otherP == null){
-            return(-2);
+    public int compareTo(Property otherP) {
+        if (otherP == null) {
+            return (-2);
         }
-        if(otherP.getPrice() > this.price){
-            return(-1);
+        if (otherP.getPrice() > this.price) {
+            return (-1);
         }
-        if(otherP.getPrice()<this.price){
-            return(1);
-        }
-        else{
-            return(0);
+        if (otherP.getPrice() < this.price) {
+            return (1);
+        } else {
+            return (0);
         }
     }
 
-    public boolean equals(Property otherP){
-        if(otherP == null){
-            return(false);
+    public boolean equals(Property otherP) {
+        if (otherP == null) {
+            return (false);
         }
-        if(this == otherP){
+        if (this == otherP) {
             return (true);
         }
-        return(otherP.getId() == this.ID);
+        return (otherP.getId() == this.ID);
     }
 
     // SETTERS & GETTERS
@@ -98,6 +100,7 @@ public abstract class Property {
 
     /**
      * Returns an int of what type of property this object is
+     *
      * @return
      */
     public int getType() {
@@ -115,12 +118,16 @@ public abstract class Property {
         return price;
     }
 
-    public String getCategorycolor(){
+    public String getCategorycolor() {
         return CATEGORYCOLOR;
     }
 
     public boolean isPawned() {
         return pawned;
+    }
+
+    public void setPawned(boolean pawned) {
+        this.pawned = pawned;
     }
 
     public String getOwner() {
@@ -129,9 +136,5 @@ public abstract class Property {
 
     public void setOwner(String owner) {
         this.owner = owner;
-    }
-
-    public void setPawned(boolean pawned) {
-        this.pawned = pawned;
     }
 }

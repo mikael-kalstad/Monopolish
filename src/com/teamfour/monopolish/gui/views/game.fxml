@@ -16,11 +16,13 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="1040.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.monopolish.gui.controllers.GameController">
    <children>
+      <Rectangle arcHeight="30.0" arcWidth="30.0" blendMode="OVERLAY" height="975.0" layoutX="292.0" layoutY="43.0" stroke="BLACK" strokeType="INSIDE" width="975.0" />
       <AnchorPane layoutX="299.0" layoutY="50.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="960.0" prefWidth="960.0" AnchorPane.bottomAnchor="39.59999999999991" AnchorPane.leftAnchor="299.0" AnchorPane.topAnchor="50.0">
          <children>
             <GridPane gridLinesVisible="true">
@@ -403,7 +405,7 @@
                         </Label>
                      </children>
                   </AnchorPane>
-                  <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="9" GridPane.rowIndex="8">
+                  <AnchorPane prefWidth="120.0" style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="9" GridPane.rowIndex="8">
                      <children>
                         <VBox layoutX="-1.0" prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #1565C0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
                         <Label layoutX="6.0" layoutY="35.0" rotate="-90.0" text="Kalvskinnet" AnchorPane.leftAnchor="6.0">
@@ -411,7 +413,7 @@
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <Label layoutX="93.0" layoutY="42.0" rotate="-90.0" text="8000">
+                        <Label layoutX="90.0" layoutY="35.0" rotate="-90.0" text="8000">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -435,7 +437,7 @@
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <Label layoutX="95.0" layoutY="35.0" rotate="-90.0" text="7000">
+                        <Label layoutX="90.0" layoutY="35.0" rotate="-90.0" text="7000">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -459,7 +461,7 @@
                               <Font size="13.0" />
                            </font>
                         </Label>
-                        <Label layoutX="93.0" layoutY="36.0" rotate="-90.0" text="6400">
+                        <Label layoutX="90.0" layoutY="35.0" rotate="-90.0" text="6400">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -483,7 +485,7 @@
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <Label layoutX="93.0" layoutY="35.0" rotate="-90.0" text="6000">
+                        <Label layoutX="90.0" layoutY="35.0" rotate="-90.0" text="6000">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -498,7 +500,7 @@
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <Label layoutX="91.0" layoutY="35.0" rotate="-90.0" text="6000">
+                        <Label layoutX="90.0" layoutY="35.0" rotate="-90.0" text="6000">
                            <font>
                               <Font size="14.0" />
                            </font>
