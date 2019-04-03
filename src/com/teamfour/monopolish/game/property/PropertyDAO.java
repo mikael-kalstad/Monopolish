@@ -29,7 +29,7 @@ public class PropertyDAO extends DataAccessObject {
             ResultSet rs = cStmt.executeQuery();
 
             while (rs.next()) {
-                Property property = getPropertyFromResultSet(rs);
+                Property property = getGamePropertyFromResultSet(rs);
                 props.add(property);
             }
             rs.close();
@@ -62,7 +62,7 @@ public class PropertyDAO extends DataAccessObject {
             ResultSet rs = cStmt.executeQuery();
 
             while (rs.next()) {
-                Property property = getPropertyFromResultSet(rs);
+                Property property = getGamePropertyFromResultSet(rs);
                 props.add(property);
             }
             rs.close();
@@ -119,6 +119,31 @@ public class PropertyDAO extends DataAccessObject {
         }
     }
 
+    public ArrayList<Property> getColorSet(int gameId, String colorHex) throws SQLException {
+        ArrayList<Property> properties = new ArrayList<>();
+        try {
+            getConnection();
+            cStmt = connection.prepareCall("{call property_get_color_set(?, ?)}");
+
+            cStmt.setInt(1, gameId);
+            cStmt.setString(2, colorHex);
+
+            ResultSet rs = cStmt.executeQuery();
+
+            while (rs.next()) {
+                properties.add(getGamePropertyFromResultSet(rs));
+            }
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLException();
+        } finally {
+            releaseConnection();
+        }
+
+        return properties;
+    }
+
     // HELPER METHODS
 
     /**
@@ -128,7 +153,7 @@ public class PropertyDAO extends DataAccessObject {
      * @return Resulting property
      * @throws SQLException
      */
-    private Property getPropertyFromResultSet(ResultSet rs) throws SQLException {
+    private Property getGamePropertyFromResultSet(ResultSet rs) throws SQLException {
         // Get all attributes from resultset
         int propertyId = rs.getInt(1);
         String name = rs.getString(2);

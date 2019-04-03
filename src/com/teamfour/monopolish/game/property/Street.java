@@ -27,9 +27,18 @@ public class Street extends Property {
         rent[8] = price;
     }
 
-    public int getRent() {
+    /**
+     * Returns the current rent for this street, based on houses, color sets and such
+     * @param hasFullSet Check if the owner of this has a full color set
+     * @return The current rent
+     */
+    public int getCurrentRent(boolean hasFullSet) {
         int currentRent = 0;
-        if (hotels == 0) {
+
+        // If owner has a full color set and no houses, just return rent times 2
+        if (hasFullSet && houses == 0) {
+            currentRent = rent[0] * 2;
+        } else if (hotels == 0) {
             currentRent = rent[houses];
         } else {
             currentRent = rent[5];

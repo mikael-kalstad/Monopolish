@@ -50,6 +50,22 @@ BEGIN
   WHERE gp.game_id=g_id;
 END $$
 
+DROP PROCEDURE property_get_color_set;
+
+DELIMITER $$
+CREATE PROCEDURE property_get_color_set(
+  IN g_id INT,
+  IN color_hex VARCHAR(10)
+)
+  BEGIN
+    select gp.property_id, p.name, p.price, p.position, p.categorycolor, IFNULL(a.username, ''), p.property_type
+    from gameproperty gp
+           join property p on gp.property_id = p.property_id
+           left join player p2 on gp.user_id = p2.user_id
+           left join account a on p2.user_id = a.user_id
+    WHERE gp.game_id=g_id AND p.categorycolor LIKE color_hex group by p.property_id;
+  END $$
+DELIMITER ;
 
 delimiter $$
 create procedure property_update(

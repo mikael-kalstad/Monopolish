@@ -135,4 +135,21 @@ public abstract class Entity {
 
         return result;
     }
+
+    public boolean hasFullSet(int gameId, String colorHex) {
+        int fullSetSize = 0;
+        try {
+            fullSetSize = Property.getFullColorSet(gameId, colorHex).size();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        int yourSetSize = 0;
+        for (Property p : properties) {
+            if (p.getCategorycolor().equals(colorHex))
+                yourSetSize++;
+        }
+
+        return (fullSetSize == yourSetSize);
+    }
 }

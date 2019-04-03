@@ -218,6 +218,9 @@ public class GameController {
         }
     }
 
+    /**
+     * Toggles all notifications in the game, on or off
+     */
     public void toggleNotification() {
         // Turn of notifications and set image and text
         if (showNotifications) {
@@ -424,6 +427,7 @@ public class GameController {
             endturnBtn.setDisable(false);
         } else {
             if (gameLogic.getPlayer(USERNAME).getPosition() == gameLogic.getBoard().getGoToJailPosition()) {
+                payBailBtn.setVisible(true);
                 MessagePopupController.show("You are out of jail, free as a bird!", "bird.png");
                 MessagePopupController.show("The dices are equal, throw again!", "again.png");
             }
@@ -781,17 +785,20 @@ public class GameController {
         }
     }
 
+    /**
+     * Pay bail to try and get out of jail
+     */
     public void payBail() {
         if (gameLogic.payBail()) {
             try {
                 gameLogic.setPlayerInJail(USERNAME, false);
                 payBailBtn.setVisible(false);
-                MessagePopupController.show("Successfully paid bail!");
+                MessagePopupController.show("You are out of jail, free as a bird!", "bird.png");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         } else {
-
+            MessagePopupController.show("You do not have enough funds to pay bail.");
         }
     }
 }
