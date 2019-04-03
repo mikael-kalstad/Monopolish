@@ -100,6 +100,9 @@ public class GameController {
     // Container for houses
     @FXML private GridPane housegrid;
 
+    // Free parking card container
+    @FXML private Pane freeParkingCard;
+
     /**
      * Launches when the scene is loaded.
      */
@@ -519,9 +522,15 @@ public class GameController {
             payRentBtn.setVisible(false);
         }
 
+        if (gameLogic.getPlayer(USERNAME).hasFreeParking()) {
+            freeParkingCard.setVisible(false);
+            gameLogic.getPlayer(USERNAME).setFreeParking(false);
+        }
+
         // If on free parking, get a free-parking token
-        if (gameLogic.getPlayer(USERNAME).getPosition() == gameLogic.getBoard().getFreeParkingPosition()) {
+        else if (gameLogic.getPlayer(USERNAME).getPosition() == gameLogic.getBoard().getFreeParkingPosition()) {
             gameLogic.getPlayer(USERNAME).setFreeParking(true);
+            freeParkingCard.setVisible(true);
         }
 
         // If go-to jail, go to jail!
@@ -725,7 +734,7 @@ public class GameController {
                     "You have paid " +
                     property.getAllRent()[0] +
                     " in rent to " + property.getOwner()
-            );
+            , "dollarNegative.png");
         }
         payRentBtn.setDisable(true);
         int[] currentDice = gameLogic.getCurrentDice();
