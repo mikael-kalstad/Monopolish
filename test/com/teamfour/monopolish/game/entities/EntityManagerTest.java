@@ -54,6 +54,7 @@ public class EntityManagerTest {
         assertTrue(instance.getPlayer("huey") instanceof Player);
     }
 
+    /*
     @Test
     @DisplayName("getPropertyAtPosition test")
     public void testGetPropertyAtPosition(){
@@ -63,6 +64,7 @@ public class EntityManagerTest {
                 && instance.getPropertyAtPosition(36).getCategorycolor() == prop.getCategorycolor()
                 && instance.getPropertyAtPosition(36).getName().equals(prop.getName()));
     }
+    */
  /*   @Test
     public void testTransferMoneyFromBank(){
 
