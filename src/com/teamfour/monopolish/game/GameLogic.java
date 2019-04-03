@@ -152,8 +152,10 @@ public class GameLogic {
         String owner = currentProperty.getOwner();
         int currentPropertyType = currentProperty.getType();
         int price;
-        if (currentPropertyType == Property.STREET)
-            price = ((Street)currentProperty).getRent();
+        if (currentPropertyType == Property.STREET) {
+            boolean ownerHasFullSet = entityManager.getPlayer(owner).hasFullSet(gameId, currentProperty.getCategorycolor());
+            price = ((Street)currentProperty).getCurrentRent(ownerHasFullSet);
+        }
         else if (currentPropertyType == Property.BOAT) {
             int numberOfBoats = entityManager.getPlayer(owner).getBoatsOwned();
             price = ((Boat)currentProperty).getRent(numberOfBoats);

@@ -1,5 +1,8 @@
 package com.teamfour.monopolish.game.property;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 /**
  * Represents the properties in a game
  * @author      lisawil
@@ -19,6 +22,11 @@ public abstract class Property {
     protected boolean pawned = false;
     protected String owner;
     protected final String CATEGORYCOLOR;
+
+    public static ArrayList<Property> getFullColorSet(int gameId, String colorHex) throws SQLException {
+        PropertyDAO dao = new PropertyDAO();
+        return dao.getColorSet(gameId, colorHex);
+    }
 
     /**
      * Constructor
