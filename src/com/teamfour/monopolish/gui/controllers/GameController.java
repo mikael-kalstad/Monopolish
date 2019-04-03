@@ -777,6 +777,7 @@ public class GameController {
             try {
                 gameLogic.setPlayerInJail(USERNAME, false);
                 payBailBtn.setVisible(false);
+                MessagePopupController.show("Successfully paid bail!");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
