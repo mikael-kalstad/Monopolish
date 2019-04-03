@@ -64,7 +64,7 @@ public class GameLogic {
 
         // 3. Transfer money from bank to players
         System.out.println("Distributing money...");
-        entityManager.distributeMoneyFromBank(START_MONEY);
+        entityManager.distributeStartMoney(START_MONEY);
         // 4. Generate random turn order
         System.out.println("Getting turn order...");
         turns = entityManager.generateTurnOrder();
