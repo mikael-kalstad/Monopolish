@@ -263,6 +263,5 @@ public class PlayerDAO extends DataAccessObject {
             releaseConnection();
         }
         return list;
-
     }
 }
