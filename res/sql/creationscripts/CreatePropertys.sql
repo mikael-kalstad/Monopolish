@@ -35,10 +35,12 @@ INSERT INTO property VALUES(22, 'Kalvskinnet', 8000, 35, '#1565C0', 0);
 
 
 INSERT INTO property VALUES(23, 'KNM Helge Ingstad', 4000, 4, '#FFFFFF', 1);
-INSERT INTO property VALUES(24, 'Viking Sky', 4000, 15, '#FFFFFF', 1);
+INSERT INTO property VALUES(24, 'Viking Sky', 4000, 25, '#FFFFFF', 1);
 INSERT INTO property VALUES(25, 'TS Sola', 4000, 30, '#FFFFFF', 1);
 
 INSERT INTO property VALUES(26, 'VY', 3000, 11, '#00685E', 2);
 INSERT INTO property VALUES(27, 'AtB', 3000, 34, '#00685E', 2);
+
+
 
 

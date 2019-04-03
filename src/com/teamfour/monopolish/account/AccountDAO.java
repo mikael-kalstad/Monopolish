@@ -1,5 +1,6 @@
 package com.teamfour.monopolish.account;
 
+import com.mysql.cj.protocol.Resultset;
 import com.teamfour.monopolish.database.DataAccessObject;
 
 import java.sql.*;
@@ -137,5 +138,28 @@ public class AccountDAO extends DataAccessObject {
         } finally {
             releaseConnection();
         }
+    }
+
+    public int getGamesPlayed(String username) /*throws SQLException */{
+        ResultSet rs;
+        int games = 0;
+        try {
+            getConnection();
+            //cStmt = connection.prepareCall("{call account_insert_user(?, ?, ?, ?, ?)}");
+            cStmt = connection.prepareCall("{call account_set_inactive(?)}");
+
+            cStmt.setString(1, username);
+
+            rs = cStmt.executeQuery();
+            games = rs.getInt("games");
+
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            //throw new SQLException();
+        } finally {
+            releaseConnection();
+        }
+        return games;
     }
 }

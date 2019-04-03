@@ -2,7 +2,7 @@
 <project version="4">
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/res/sql/creationscripts/CreateTables.sql" dialect="MySQL" />
-    <file url="file://$PROJECT_DIR$/res/sql/procedures/AccountProcedures.sql" dialect="MariaDB" />
+    <file url="file://$PROJECT_DIR$/res/sql/procedures/AccountProcedures.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/res/sql/procedures/GamePropertyProcedures.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/res/sql/procedures/PlayerProcedures.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/src/com/teamfour/monopolish/account/AccountDAO.java" dialect="ClickHouse" />
