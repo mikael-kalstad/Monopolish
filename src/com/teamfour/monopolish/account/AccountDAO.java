@@ -145,7 +145,6 @@ public class AccountDAO extends DataAccessObject {
         int games = 0;
         try {
             getConnection();
-            //cStmt = connection.prepareCall("{call account_insert_user(?, ?, ?, ?, ?)}");
             cStmt = connection.prepareCall("{call account_games_played(?)}");
 
             cStmt.setString(1, username);
@@ -161,5 +160,27 @@ public class AccountDAO extends DataAccessObject {
             releaseConnection();
         }
         return games;
+    }
+
+    public int getHighscore(String username) /*throws SQLException */{
+        ResultSet rs;
+        int score = 0;
+        try {
+            getConnection();
+            cStmt = connection.prepareCall("{call account_highscore(?)}");
+
+            cStmt.setString(1, username);
+
+            rs = cStmt.executeQuery();
+            score = rs.getInt("highscore");
+
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            //throw new SQLException();
+        } finally {
+            releaseConnection();
+        }
+        return score;
     }
 }

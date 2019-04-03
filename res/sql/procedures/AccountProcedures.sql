@@ -123,3 +123,11 @@ BEGIN
   SELECT count(game.game_id) as games
   FROM game join player on game.game_id = player.game_id join account on player.user_id = account.user_id where username = u_name;
 END;
+
+DROP PROCEDURE IF EXISTS account_highscore;
+
+CREATE PROCEDURE account_highscore(IN u_name VARCHAR(30))
+BEGIN
+  SELECT max(score) as highscore
+  FROM player join account on player.user_id = account.user_id where username = u_name;
+END;
