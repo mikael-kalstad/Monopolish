@@ -1,7 +1,7 @@
 package com.teamfour.monopolish.gui.controllers;
 
-import com.teamfour.monopolish.game.GameLogic;
 import com.teamfour.monopolish.game.Board;
+import com.teamfour.monopolish.game.GameLogic;
 import com.teamfour.monopolish.game.entities.player.Player;
 import com.teamfour.monopolish.game.property.Property;
 import com.teamfour.monopolish.gui.views.ViewConstants;
@@ -9,14 +9,16 @@ import javafx.animation.ParallelTransition;
 import javafx.animation.RotateTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -88,6 +90,13 @@ public class GameController {
     @FXML private Text msgPopupText;
     @FXML private Pane messagePopupContainer;
 
+    // Notification toggle
+    @FXML private ImageView notificationLogo;
+    @FXML private Text notificationText;
+    private String MSG_NOTIFICATION_ON = "Turn off notifications";
+    private String MSG_NOTIFICATION_OFF = "Turn on notifications";
+    private boolean showNotifications = true;
+
     /**
      * Launches when the scene is loaded.
      */
@@ -105,7 +114,7 @@ public class GameController {
         catch (SQLException e) { e.printStackTrace(); }
 
         // Setup messagePop
-        MessagePopupController.setup(messagePopupContainer);
+        MessagePopupController.setup(messagePopupContainer, 5);
 
         updateBoard();
 
@@ -200,6 +209,21 @@ public class GameController {
             Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
             databaseTimer.cancel(); // Stop timer thread
             databaseTimer.purge();
+        }
+    }
+
+    public void toggleNotification() {
+        // Turn of notifications and set image and text
+        if (showNotifications) {
+            notificationLogo.setImage(new Image("file:res/gui/Game/toggleOff.png"));
+            notificationText.setText(MSG_NOTIFICATION_OFF);
+            showNotifications = false;
+            messagePopupContainer.setVisible(false);
+        } else {
+            notificationLogo.setImage(new Image("file:res/gui/Game/toggleOn.png"));
+            notificationText.setText(MSG_NOTIFICATION_ON);
+            showNotifications = true;
+            messagePopupContainer.setVisible(true);
         }
     }
 
@@ -393,21 +417,19 @@ public class GameController {
             rolldiceBtn.setDisable(true);
             endturnBtn.setDisable(false);
         } else {
-            MessagePopupController.show("The dices are equal, throw again!");
-
-            if (gameLogic.getPlayer(USERNAME).getPosition() == gameLogic.getBoard().getGoToJailPosition())
-                MessagePopupController.show("You are out of jail, free as a bird!");
-
-            if (diceCounter == 2) {
+            if (gameLogic.getPlayer(USERNAME).getPosition() == gameLogic.getBoard().getGoToJailPosition()) {
+                MessagePopupController.show("You are out of jail, free as a bird!", "bird.png");
+                MessagePopupController.show("The dices are equal, throw again!", "again.png");
+            }
+            // DICE COUNTER should be a global variable?
+            else if (diceCounter == 2) {
                 try {
                     gameLogic.setPlayerInJail(USERNAME, true);
                     payBailBtn.setDisable(true);
                     payBailBtn.setVisible(true);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                } catch (SQLException e) { e.printStackTrace(); }
             } else {
-                MessagePopupController.show("The dices are equal, throw again!");
+                MessagePopupController.show("The dices are equal, throw again!", "again.png");
                 diceCounter++;
             }
         }
@@ -503,7 +525,7 @@ public class GameController {
         if (gameLogic.getPlayer(USERNAME).getPosition() == gameLogic.getBoard().getGoToJailPosition()) {
             try {
                 gameLogic.setPlayerInJail(USERNAME, true);
-                MessagePopupController.show("Criminal scumbag! You are going to jail. Your mother is not proud...");
+                MessagePopupController.show("Criminal scumbag! You are going to jail. Your mother is not proud...", "handcuffs.png");
                 payBailBtn.setVisible(true);
                 payBailBtn.setDisable(true);
             } catch (SQLException e) {
@@ -624,7 +646,11 @@ public class GameController {
 
                 // Check if amount of money is changed
                 if (current_money != player.getMoney()) {
-                    MessagePopupController.show("Money transaction: " + (player.getMoney() - current_money));
+                    String msg = "Money transaction: " + (player.getMoney() - current_money);
+                    if (player.getMoney() - current_money > 0)
+                        MessagePopupController.show(msg, "dollarPositive.png");
+                    else
+                        MessagePopupController.show(msg, "dollarNegative.png");
                 }
                 current_money = player.getMoney();
 
@@ -632,15 +658,12 @@ public class GameController {
                 setPropertyOnClick(userPropertiesIcon, player.getUsername());
 
                 // Set img if it is assigned
-                //userColor.getChildren().clear(); // Reset
-
-                if (img != null) {
+                if (img == null) {
+                    userColor.getChildren().clear(); // Reset
+                } else {
                     img.setFitHeight(userColor.getHeight());
                     img.setFitWidth(userColor.getWidth());
                     userColor.getChildren().add(img);
-                } else {
-                    // Remove image
-                    userColor.getChildren().clear();
                 }
             }
 
@@ -683,7 +706,7 @@ public class GameController {
     public void rentTransaction() {
         // Check if your player has a free parking token
         if (gameLogic.getPlayer(USERNAME).hasFreeParking()) {
-            MessagePopupController.show("You have a 'Free Parking' token! You don't have to pay rent here");
+            MessagePopupController.show("You have a 'Free Parking' token! You don't have to pay rent here", "parking.png");
             gameLogic.getPlayer(USERNAME).setFreeParking(false);
         } else {
             try {

@@ -819,5 +819,21 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
+      <Text fx:id="notificationText" fill="#616161" layoutX="90.0" layoutY="209.0" onMouseClicked="#toggleNotification" strokeType="OUTSIDE" strokeWidth="0.0" text="Turn off notifications">
+         <font>
+            <Font size="17.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Text>
+      <ImageView fx:id="notificationLogo" fitHeight="30.0" fitWidth="52.0" layoutX="25.0" layoutY="188.0" onMouseClicked="#toggleNotification" preserveRatio="true">
+         <image>
+            <Image url="file:res/gui/Game/toggleOn.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
    </children>
 </AnchorPane>

@@ -7,6 +7,8 @@ import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -19,15 +21,30 @@ public class MessagePopupController {
     private static @FXML Pane container;
     private static final int TRANSLATE_Y = 120;
     private static final int ANIMATION_DURATION = 400;
-    private static final int COUNTDOWN_TIME = 5;
+    private static int COUNTDOWN_TIME = 5;
     private static int time = 0;
     private static Timer timer;
 
-    public static void setup(Pane container) {
+    /**
+     * Setup the container for the messages. Should only be run once when using this class.
+     *
+     * @param container Target container for message popups
+     * @param delay How long the message will be displayed before fading out.
+     */
+    public static void setup(Pane container, int delay) {
         MessagePopupController.container = container;
+        MessagePopupController.COUNTDOWN_TIME = delay;
     }
 
-    public static void show (String msg) {
+    /**
+     * Calling this method will display a message popup in the container defined in setup.
+     * A fade in and out animation will be displayed, the popups will stack on top of each other.
+     * After a delay the popup will fade out, this can be defined in setup.
+     *
+     * @param msg Displayed message in popup
+     * @param logoName Filename of the target logo, must be located in src/res/gui/MessagePopup
+     */
+    public static void show (String msg, String logoName) {
         Pane messagePopup = null;
         try {
             messagePopup = FXMLLoader.load(MessagePopupController.class.getResource(ViewConstants.FILE_PATH.getValue() + ViewConstants.MESSAGE_POPUP.getValue()));
@@ -39,6 +56,12 @@ public class MessagePopupController {
         // Find and set text element
         Text textElement = (Text) messagePopup.getChildren().get(0);
         textElement.setText(msg);
+
+        // Find and set logo if defined
+        if (logoName != null && !logoName.equals("")) {
+            ImageView logo = (ImageView) messagePopup.getChildren().get(1);
+            logo.setImage(new Image("file:res/gui/MessagePopup/" + logoName));
+        }
 
         messagePopup.setId(String.valueOf(time));
 
@@ -57,6 +80,17 @@ public class MessagePopupController {
 
         // Slide and fade container in
         animateMovement(true, messagePopup);
+    }
+
+    /**
+     * Calling this method will display a message popup in the container defined in setup.
+     *  A fade in and out animation will be displayed, the popups will stack on top of each other.
+     *  After a delay the popup will fade out, this can be defined in setup.
+     *  Notice this method will display a standard info logo.
+     * @param msg Displayed message in popup
+     */
+    public static void show(String msg) {
+        MessagePopupController.show(msg, null);
     }
 
     private static void startTimerCheck() {

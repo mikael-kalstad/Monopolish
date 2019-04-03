@@ -213,7 +213,9 @@ public class GameControllerDrawFx {
         container.add(colorContainer, 0, 0);
 
         // Set img if it is assigned
-        if (logo != null) {
+        if (logo == null) {
+            colorContainer.getChildren().clear(); // Reset
+        } else {
             logo.setFitHeight(colorContainer.getPrefHeight());
             logo.setFitWidth(colorContainer.getPrefWidth());
             colorContainer.getChildren().add(logo);
