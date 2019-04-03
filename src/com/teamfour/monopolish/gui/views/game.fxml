@@ -715,7 +715,7 @@
             </Label>
          </children>
       </AnchorPane>
-      <ListView fx:id="eventlog" layoutX="14.0" layoutY="408.0" prefHeight="200.0" prefWidth="260.0" />
+      <ListView fx:id="eventlog" layoutX="14.0" layoutY="408.0" prefHeight="200.0" prefWidth="260.0" visible="false" />
       <Button layoutX="51.0" layoutY="42.0" mnemonicParsing="false" onAction="#leave" prefHeight="40.0" prefWidth="126.0" style="-fx-background-color: ef5350;" text="Quit" textFill="#fafafa">
          <font>
             <Font size="16.0" />
@@ -737,8 +737,25 @@
             <Font name="System Bold" size="32.0" />
          </font>
       </Label>
-      <Pane fx:id="chatContainer" layoutX="21.0" layoutY="700.0" prefHeight="315.0" prefWidth="235.0" />
+      <Text fx:id="notificationText" fill="#616161" layoutX="90.0" layoutY="209.0" onMouseClicked="#toggleNotification" strokeType="OUTSIDE" strokeWidth="0.0" text="Turn off notifications">
+         <font>
+            <Font size="17.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Text>
+      <ImageView fx:id="notificationLogo" fitHeight="30.0" fitWidth="52.0" layoutX="25.0" layoutY="188.0" onMouseClicked="#toggleNotification" preserveRatio="true">
+         <image>
+            <Image url="file:res/gui/Game/toggleOn.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
       <Pane fx:id="messagePopupContainer" layoutX="12.0" layoutY="884.0" prefHeight="46.0" prefWidth="330.0" />
+      <Pane fx:id="chatContainer" layoutX="21.0" layoutY="700.0" prefHeight="315.0" prefWidth="235.0" />
+      <Pane fx:id="backgroundOverlay" prefHeight="1055.0" prefWidth="1920.0" style="-fx-background-color: rgba(160,160,160,0.4);" visible="false" />
       <Pane fx:id="propertiesContainer" layoutX="257.0" layoutY="105.0" prefHeight="855.0" prefWidth="1477.0" style="-fx-background-color: ededed; -fx-background-radius: 20;" visible="false">
          <children>
             <Text layoutX="609.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Properties">
@@ -786,7 +803,6 @@
          </children>
       </Pane>
       <Pane fx:id="tradeContainer" layoutX="210.0" layoutY="53.0" prefHeight="950.0" prefWidth="1500.0" visible="false" />
-      <Pane fx:id="backgroundOverlay" prefHeight="1055.0" prefWidth="1920.0" style="-fx-background-color: rgba(160,160,160,0.4);" visible="false" />
       <Pane fx:id="helpOverlay" onMouseClicked="#toggleHelpOverlay" prefHeight="1055.0" prefWidth="1925.0" style="-fx-background-color: rgba(160,160,160,0.7);" visible="false">
          <children>
             <Text fill="WHITE" layoutX="9.0" layoutY="101.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Leave the game, you will not be able to rejoin" wrappingWidth="289.3332862193565">
@@ -845,21 +861,22 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <Text fx:id="notificationText" fill="#616161" layoutX="90.0" layoutY="209.0" onMouseClicked="#toggleNotification" strokeType="OUTSIDE" strokeWidth="0.0" text="Turn off notifications">
-         <font>
-            <Font size="17.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Text>
-      <ImageView fx:id="notificationLogo" fitHeight="30.0" fitWidth="52.0" layoutX="25.0" layoutY="188.0" onMouseClicked="#toggleNotification" preserveRatio="true">
-         <image>
-            <Image url="file:res/gui/Game/toggleOn.png" />
-         </image>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </ImageView>
+      <Pane fx:id="freeParkingCard" layoutX="25.0" layoutY="261.0" prefHeight="77.0" prefWidth="255.0" style="-fx-background-color: ededed; -fx-border-color: #999; -fx-border-radius: 10;" visible="false">
+         <children>
+            <Text fill="#616161" layoutX="69.0" layoutY="45.0" onMouseClicked="#toggleNotification" strokeType="OUTSIDE" strokeWidth="0.0" text="You have free parking">
+               <font>
+                  <Font size="17.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Text>
+            <ImageView fitHeight="45.0" fitWidth="45.0" layoutX="14.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../res/gui/MessagePopup/parking.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>
