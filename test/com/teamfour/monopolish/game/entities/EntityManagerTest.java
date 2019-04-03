@@ -63,6 +63,7 @@ public class EntityManagerTest {
                 && instance.getPropertyAtPosition(36).getCategorycolor() == prop.getCategorycolor()
                 && instance.getPropertyAtPosition(36).getName().equals(prop.getName()));
     }
+    */
  /*   @Test
     public void testTransferMoneyFromBank(){
 
