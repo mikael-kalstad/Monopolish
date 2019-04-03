@@ -2,6 +2,7 @@ package com.teamfour.monopolish.game.entities;
 
 import com.teamfour.monopolish.game.entities.player.*;
 import com.teamfour.monopolish.game.property.Property;
+import com.teamfour.monopolish.game.property.Street;
 import com.teamfour.monopolish.gui.controllers.Handler;
 
 import java.sql.SQLException;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
  * as well as acting as an abstraction layer between all the objects and the rest of the application
  *
  * @author      eirikhem
- * @version     1.3
+ * @version     1.4
  */
 
 public class EntityManager {
@@ -32,6 +33,11 @@ public class EntityManager {
         this.bank = new Bank(gameId);
     }
 
+    /**
+     * Gets a player object based on their username
+     * @param username The player's username
+     * @return Player object
+     */
     public Player getPlayer(String username) {
         for (int i = 0; i < players.size(); i++) {
             if (players.get(i).getUsername().equals(username)) {
@@ -41,6 +47,11 @@ public class EntityManager {
         return (null);
     }
 
+    /**
+     *
+     * @param pos
+     * @return
+     */
     public Player getPlayerByPosition(int pos){
         for(int i = 0; i<players.size(); i++){
             if(players.get(i).getPosition() == pos){
@@ -55,12 +66,21 @@ public class EntityManager {
         return(temp.getPosition());
     }
 
+    /**
+     * Removes a player from this entitymanager
+     * @param username
+     */
     public void removePlayer(String username){
         playerDAO.removePlayer(gameId, username);
         Player temp = getPlayer(username);
         players.remove(temp);
     }
 
+    /**
+     * Returns a property object placed on the specified position
+     * @param position Position
+     * @return Property object
+     */
     public Property getPropertyAtPosition(int position) {
         Property prop = null;
         for (Player p : players) {
@@ -73,6 +93,12 @@ public class EntityManager {
         return bank.getPropertyAtPosition(position);
     }
 
+    /**
+     * Transfers money from the bank to the specified username
+     * @param username Username of player
+     * @param amount Amount to be transferred
+     * @return True if successful
+     */
     public boolean transferMoneyFromBank(String username, int amount) {
         Player player = getPlayer(username);
         if (bank.getMoney() < amount) {
@@ -82,6 +108,67 @@ public class EntityManager {
         return bank.transferMoney(player, amount);
     }
 
+    /**
+     * Grabs a house from the bank to specified property
+     * @param owner Owner of the property
+     * @param id Id of the property
+     * @return 1 if successful,
+     *         -1 if not enough money,
+     *         -2 if property was not found
+     */
+    public int transferHouseToProperty(String owner, int id) {
+        Player ownerPlayer = getPlayer(owner);
+        for (Property p : ownerPlayer.getProperties()) {
+            if (p.getId() == id && p instanceof Street) {
+                if (ownerPlayer.getMoney() >= ((Street) p).getHousePrice()) {
+                    ((Street)p).addHouse();
+                    bank.getHouses(1);
+                    return 1;
+                } else {
+                    return -1;
+                }
+            }
+        }
+
+        return -2;
+    }
+
+    /**
+     * Grabs a hotel from the bank to specified property
+     * @param owner Owner of the property
+     * @param id Id of the property
+     * @return 1 if successful,
+     *         -1 if not enough money,
+     *         -2 if property was not found
+     *         -3 if not enough houses to buy hotel
+     */
+    public boolean transferHotelToProperty(String owner, int id) {
+        Player ownerPlayer = getPlayer(owner);
+        for (Property p : ownerPlayer.getProperties()) {
+            if (p.getId() == id && p instanceof Street) {
+                if (ownerPlayer.getMoney() >= ((Street) p).getHotelPrice()) {
+                     if (((Street)p).addHotel()) {
+                         bank.getHotels(1);
+                         return true;
+                     } else {
+                         return false;
+                     }
+                } else {
+                    return false;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Transfers money from the specified player to the bank
+     * @param username Player's username
+     * @param amount Amount to be transferred
+     * @return True if successful,
+     *         false if no money
+     */
     public boolean transferMoneyToBank(String username, int amount) {
         Player player = getPlayer(username);
         if (player.getMoney() < amount) {
@@ -91,7 +178,7 @@ public class EntityManager {
         return player.transferMoney(bank, amount);
     }
 
-    public boolean distributeMoneyFromBank(int amount) {
+    public boolean distributeStartMoney(int amount) {
         for (Player p : players) {
             p.setMoney(0);
             bank.transferMoney(p, amount);
@@ -251,6 +338,4 @@ public class EntityManager {
     public ArrayList<Player> getPlayers() {
         return (players);
     }
-
-
 }

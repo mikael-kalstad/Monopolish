@@ -424,7 +424,7 @@ public class GameController {
             endturnBtn.setDisable(false);
         } else {
             if (gameLogic.getPlayer(USERNAME).getPosition() == gameLogic.getBoard().getGoToJailPosition()) {
-                payBailBtn.setVisible(true);
+                payBailBtn.setVisible(false);
                 MessagePopupController.show("You are out of jail, free as a bird!", "bird.png");
                 MessagePopupController.show("The dices are equal, throw again!", "again.png");
             }
