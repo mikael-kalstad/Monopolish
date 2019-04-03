@@ -141,16 +141,19 @@ public class AccountDAO extends DataAccessObject {
     }
 
     public int getGamesPlayed(String username) /*throws SQLException */{
-        ResultSet rs;
+
         int games = 0;
         try {
+            ResultSet rs;
             getConnection();
             cStmt = connection.prepareCall("{call account_games_played(?)}");
 
             cStmt.setString(1, username);
 
             rs = cStmt.executeQuery();
-            games = rs.getInt("games");
+            if(rs.next()) {
+                games = rs.getInt(1);
+            }
 
             rs.close();
         } catch (SQLException e) {
@@ -172,8 +175,9 @@ public class AccountDAO extends DataAccessObject {
             cStmt.setString(1, username);
 
             rs = cStmt.executeQuery();
-            score = rs.getInt("highscore");
-
+            if(rs.next()) {
+                score = rs.getInt(1);
+            }
             rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
