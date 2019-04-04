@@ -117,7 +117,7 @@ public class GameLogic {
     public static void goToJail() {
         Player yourPlayer = game.getEntities().getYou();
         yourPlayer.setInJail(true);
-        yourPlayer.moveTo(Board.JAIL);
+        yourPlayer.moveTo(game.getBoard().getJailPosition());
 
         MessagePopupController.show("Criminal scumbag! You are going to jail. Your mother is not proud...", "handcuffs.png");
 

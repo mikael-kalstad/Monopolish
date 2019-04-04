@@ -182,12 +182,15 @@ public class LobbyDAO extends DataAccessObject {
 
             cStmt.setInt(1, roomId);
 
-            ResultSet rs = cStmt.executeQuery();
+            ResultSet rs;
 
-            while (rs.next()) {
-                users.add(rs.getString(1));
+            if (cStmt.execute()) {
+                rs = cStmt.getResultSet();
+                while (rs.next()) {
+                    users.add(rs.getString(1));
+                }
+                rs.close();
             }
-            rs.close();
         }catch (SQLException sql){
             sql.printStackTrace();
         }finally {
@@ -205,13 +208,16 @@ public class LobbyDAO extends DataAccessObject {
             getConnection();
             cStmt = connection.prepareCall("{CALL getAllLobbies()}");
 
-            ResultSet rs = cStmt.executeQuery();
+            ResultSet rs;
 
-            while (rs.next()) {
-                String[] info = {rs.getString(1), rs.getString(2), String.valueOf(rs.getBoolean(3)), rs.getString(4)};
-                lobbyInfo.add(info);
+            if (cStmt.execute()) {
+                rs = cStmt.getResultSet();
+                while (rs.next()) {
+                    String[] info = {rs.getString(1), rs.getString(2), String.valueOf(rs.getBoolean(3)), rs.getString(4)};
+                    lobbyInfo.add(info);
+                }
+                rs.close();
             }
-            rs.close();
         }catch (SQLException sql){
             sql.printStackTrace();
         }finally {
@@ -229,10 +235,13 @@ public class LobbyDAO extends DataAccessObject {
             getConnection();
             cStmt = connection.prepareCall("{CALL getALlReadyInLobby(?)}");
             cStmt.setInt(1, lobby_id);
-            ResultSet rs = cStmt.executeQuery();
+            ResultSet rs;
 
-            if (rs.next()) num = rs.getInt(1);
-            rs.close();
+            if (cStmt.execute()) {
+                rs = cStmt.getResultSet();
+                while (rs.next()) num = rs.getInt(1);
+                rs.close();
+            }
         }
         catch (SQLException e) {
             e.printStackTrace();
@@ -248,7 +257,7 @@ public class LobbyDAO extends DataAccessObject {
         try {
             getConnection();
             cStmt = connection.prepareCall("{CALL lobby_removeEmptyLobbies()}");
-            cStmt.executeQuery();
+            cStmt.executeUpdate();
         }
         catch (SQLException e) {
             e.printStackTrace();
@@ -266,10 +275,14 @@ public class LobbyDAO extends DataAccessObject {
             getConnection();
             cStmt = connection.prepareCall("{CALL lobby_get_id(?)}");
             cStmt.setString(1, username);
-            ResultSet rs = cStmt.executeQuery();
-            if (rs.next())
-                lobby = rs.getInt(1);
-            rs.close();
+            ResultSet rs;
+
+            if (cStmt.execute()) {
+                rs = cStmt.getResultSet();
+                if (rs.next())
+                    lobby = rs.getInt(1);
+                rs.close();
+            }
         }
         catch (SQLException e) {
             e.printStackTrace();

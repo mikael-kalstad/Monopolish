@@ -80,7 +80,7 @@ public class PlayerDAO extends DataAccessObject {
 
             cStmt.setString(1, username);
             cStmt.setInt(2, game_id);
-            cStmt.executeQuery();
+            cStmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -132,20 +132,23 @@ public class PlayerDAO extends DataAccessObject {
 
             cStmt.setInt(1, gameId);
 
-            ResultSet rs = cStmt.executeQuery();
+            ResultSet rs;
 
-            while (rs.next()) {
-                String username = rs.getString(1);
-                int money = rs.getInt(2);
-                int position = rs.getInt(3);
-                boolean inJail = rs.getBoolean(4);
-                boolean bankrupt = rs.getBoolean(5);
-                int active = rs.getInt(6);
+            if (cStmt.execute()) {
+                rs = cStmt.getResultSet();
+                while (rs.next()) {
+                    String username = rs.getString(1);
+                    int money = rs.getInt(2);
+                    int position = rs.getInt(3);
+                    boolean inJail = rs.getBoolean(4);
+                    boolean bankrupt = rs.getBoolean(5);
+                    int active = rs.getInt(6);
 //                int score = rs.getInt(7);
 
-                players.add(new Player(username, money, position, inJail, bankrupt, active));
+                    players.add(new Player(username, money, position, inJail, bankrupt, active));
+                }
+                rs.close();
             }
-            rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -167,7 +170,7 @@ public class PlayerDAO extends DataAccessObject {
 
             for (int i = 0; i < 10; i++) {
                 cStmt.setInt(1, game_id);
-                cStmt.executeQuery();
+                cStmt.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -190,16 +193,18 @@ public class PlayerDAO extends DataAccessObject {
 
             cStmt = connection.prepareCall("{call player_get_highscore()}");
 
-            ResultSet rs = cStmt.executeQuery();
-            int counter = 0;
+            ResultSet rs;
+            if (cStmt.execute()) {
+                int counter = 0;
+                rs = cStmt.getResultSet();
+                while (rs.next()) {
+                    list[counter][0] = rs.getString(1);
+                    list[counter][1] = rs.getString(2);
 
-            while (rs.next()) {
-                list[counter][0] = rs.getString(1);
-                list[counter][1] = rs.getString(2);
-
-                counter++;
+                    counter++;
+                }
+                rs.close();
             }
-            rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -226,7 +231,7 @@ public class PlayerDAO extends DataAccessObject {
             cStmt.setInt(2, gameId);
             cStmt.setInt(3, forfeitStatus);
 
-            cStmt.executeQuery();
+            cStmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -249,13 +254,16 @@ public class PlayerDAO extends DataAccessObject {
 
             cStmt.setInt(1, gameId);
 
-            ResultSet rs = cStmt.executeQuery();
+            ResultSet rs;
 
-            while (rs.next()) {
-                list[0] = rs.getInt(1);
-                list[1] = rs.getInt(2);
+            if (cStmt.execute()) {
+                rs = cStmt.getResultSet();
+                while (rs.next()) {
+                    list[0] = rs.getInt(1);
+                    list[1] = rs.getInt(2);
+                }
+                rs.close();
             }
-            rs.close();
         } catch (SQLException sql) {
             sql.printStackTrace();
         } finally {
@@ -279,7 +287,7 @@ public class PlayerDAO extends DataAccessObject {
             cStmt.setInt(3, price);
             cStmt.setInt(4, propertyId);
 
-            cStmt.executeQuery();
+            cStmt.executeUpdate();
             System.out.println("adding trade.....");
 
 
@@ -302,18 +310,21 @@ public class PlayerDAO extends DataAccessObject {
 
             cStmt.setString(1, username);
 
-            ResultSet rs = cStmt.executeQuery();
+            ResultSet rs;
 
-            while (rs.next()) {
-                int[] data = new int[4];
-                data[0] = rs.getInt(1); // sellerId
-                data[1] = rs.getInt(2); // buyerId
-                data[2] = rs.getInt(3); // price
-                data[3] = rs.getInt(4); // propertyId
+            if (cStmt.execute()) {
+                rs = cStmt.getResultSet();
+                while (rs.next()) {
+                    int[] data = new int[4];
+                    data[0] = rs.getInt(1); // sellerId
+                    data[1] = rs.getInt(2); // buyerId
+                    data[2] = rs.getInt(3); // price
+                    data[3] = rs.getInt(4); // propertyId
 
-                props.add(data);
+                    props.add(data);
+                }
+                rs.close();
             }
-
         } catch(SQLException sql){
             sql.printStackTrace();
         } finally{
@@ -329,9 +340,6 @@ public class PlayerDAO extends DataAccessObject {
 
             cStmt.setString(1, seller);
             cStmt.setString(2, buyer);
-
-
-
         } catch(SQLException sql){
             sql.printStackTrace();
         } finally{
@@ -348,10 +356,13 @@ public class PlayerDAO extends DataAccessObject {
             cStmt.setString(1, username);
             cStmt.setInt(2, gameId);
 
-            ResultSet rs = cStmt.executeQuery();
+            ResultSet rs;
 
-            while (rs.next()) {
-                playerId = rs.getInt(1);
+            if (cStmt.execute()) {
+                rs = cStmt.getResultSet();
+                while (rs.next()) {
+                    playerId = rs.getInt(1);
+                }
             }
 
         } catch (SQLException sql) {
