@@ -10,6 +10,7 @@ import com.teamfour.monopolish.gui.controllers.Handler;
 import com.teamfour.monopolish.gui.controllers.MessagePopupController;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * This class contains static methods which can be used by the GameController to perform logical actions
@@ -276,7 +277,10 @@ public class GameLogic {
      */
     public static void endGame() {
         // End game in database
-        Handler.getPlayerDAO().endGame(Handler.getCurrentGameId());
+        String[] players = game.getPlayers();
+        for(int i = 0; i<players.length; i++){
+            Handler.getPlayerDAO().endGame(Handler.getCurrentGameId(), players[i]);
+        }
         Handler.getGameDAO().finishGame(Handler.getCurrentGameId());
 
         // Delete lobby

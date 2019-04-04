@@ -103,7 +103,6 @@ public class GameDAO extends DataAccessObject {
             close(cStmt);
             releaseConnection();
         }
-
         return (count > 0);
     }
 

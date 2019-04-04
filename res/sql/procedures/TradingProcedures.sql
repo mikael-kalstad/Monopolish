@@ -1,5 +1,7 @@
 /**
   Procedure to propose a trade
+
+  issued in
  */
 
 CREATE PROCEDURE trading_add_trade(
@@ -39,7 +41,7 @@ CREATE PROCEDURE trading_get_trade(
     SELECT a.username, t.prop_id, t.price
     FROM trading t JOIN player p ON t.buyer_id = p.player_id JOIN account a ON p.user_id = a.user_id
     WHERE b_id IN (t.buyer_id, t.seller_id);-- buyer = a.username AND p.user_id = a.user_id AND p.active = 1;
-  end;
+  END;
 
 DROP PROCEDURE trading_get_trade;
 

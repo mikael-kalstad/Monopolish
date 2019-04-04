@@ -83,6 +83,7 @@ DROP PROCEDURE game_set_current_player;
 CREATE PROCEDURE game_set_current_player(IN gameid INT, IN current_username VARCHAR(30))
   BEGIN
     DECLARE current_player_id INT;
+
     SET current_player_id = (SELECT p.player_id
     FROM player p
     JOIN account a on p.user_id = a.user_id
@@ -92,6 +93,8 @@ CREATE PROCEDURE game_set_current_player(IN gameid INT, IN current_username VARC
       UPDATE game
       SET currentplayer=current_player_id
       WHERE game_id=gameid;
+    ELSE
+
     END IF;
   END;
 -- END$$
