@@ -91,8 +91,8 @@ public class GameController {
     @FXML private Pane tradeContainer;
 
     // Message popup
-    @FXML private Pane messagePopup;
-    @FXML private Text msgPopupText;
+//    @FXML private Pane messagePopup;
+//    @FXML private Text msgPopupText;
     @FXML private Pane messagePopupContainer;
 
     // Notification toggle
@@ -126,18 +126,21 @@ public class GameController {
         // Setup messagePop
         MessagePopupController.setup(messagePopupContainer, 5);
 
+        // Load chat
+//        try {
+//            Node chat = FXMLLoader.load(getClass().getResource(ViewConstants.FILE_PATH.getValue() + ViewConstants.CHAT.getValue()));
+//            chatContainer.getChildren().add(chat);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        addElementToContainer(ViewConstants.CHAT.getValue(), chatContainer);
+
         updateBoard();
 
         // Start the game!
         waitForTurn();
 
-        // Load chat
-        try {
-            Node chat = FXMLLoader.load(getClass().getResource(ViewConstants.FILE_PATH.getValue() + ViewConstants.CHAT.getValue()));
-            chatContainer.getChildren().add(chat);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
 
         // Start forfeit timer
         Timer forfeitTimer = new Timer();
@@ -178,6 +181,7 @@ public class GameController {
                 Handler.getAccountDAO().setInactive(USERNAME);
                 Handler.getLobbyDAO().removePlayer(USERNAME, Handler.getLobbyDAO().getLobbyId(USERNAME));
                 game.getEntities().removePlayer(USERNAME);
+
                 databaseTimer.cancel(); // Stop databaseTimer thread
                 databaseTimer.purge();
                 ChatController.getChatTimer().cancel();
@@ -379,27 +383,27 @@ public class GameController {
      * This method will also update corresponding dice images in the GUI.
      */
     public void rollDice() {
-        // Roll dice
         GameLogic.rollDice();
         int[] diceValues = game.getDice().getLastThrow();
 
         // Check if diceValues array is initialized or number of dices is not correct
-        //if (diceValues == null || diceValues.length != 2) return;
+        if (diceValues == null || diceValues.length != 2) return;
 
         // Update dice images and log on board
         dice1_img.setImage(new Image(("file:res/gui/dices/dice" + diceValues[0] + ".png")));
         dice2_img.setImage(new Image(("file:res/gui/dices/dice" + diceValues[1] + ".png")));
-        String s = USERNAME + " threw dice:  " + diceValues[0] + ",  " + diceValues[1];
 
         // Animation constants
         final int DURATION = 600;
         final int ROTATE_ANGLE = 1080;
 
+        // Animate dice rotation
         RotateTransition rt1 = new RotateTransition(Duration.millis(DURATION), dice1_img);
         RotateTransition rt2 = new RotateTransition(Duration.millis(DURATION), dice2_img);
         rt1.setByAngle(ROTATE_ANGLE);
         rt2.setByAngle(-ROTATE_ANGLE);
 
+        // Animate dice movement
         TranslateTransition tt1 = new TranslateTransition(Duration.millis(DURATION), dice1_img);
         TranslateTransition tt2 = new TranslateTransition(Duration.millis(DURATION), dice2_img);
         tt1.setFromY(dice1_img.getY() + 100);
@@ -412,10 +416,9 @@ public class GameController {
         tt2.setToY(dice2_img.getY());
         tt2.setToX(dice1_img.getX());
 
+        // Run rotate- and translate (movement) animation in parallel
         ParallelTransition pt = new ParallelTransition(rt1, rt2, tt1, tt2);
         pt.play();
-
-        addToEventlog(s);
 
         // Update board view to show where player moved
         updateBoard();
@@ -450,8 +453,10 @@ public class GameController {
         // Remove previous cards
         cardContainer.getChildren().clear();
 
-        // If the player didn't throw two equal dices, disable the dice button. If not, the player can throw dice again
+        // Get dice values
         int[] diceValues = game.getDice().getLastThrow();
+
+        // If the player didn't throw two equal dices, disable the dice button. If not, the player can throw dice again
         if (diceValues[0] != diceValues[1]) {
             rolldiceBtn.setDisable(true);
             endturnBtn.setDisable(false);
@@ -461,7 +466,6 @@ public class GameController {
         if (game.getEntities().getYou().isInJail()) {
             payBailBtn.setVisible(true);
         } else {
-            //payBailBtn.setDisable(true);
             payBailBtn.setVisible(false);
         }
 
@@ -533,28 +537,27 @@ public class GameController {
         String[] colors = new String[turns.length];
         int[] positions = null;
 
+        // Get player positions and update GUI on the board
         try {
             positions = game.getEntities().getPlayerPositions();
 
             // Set player colors
             for (int i = 0; i < turns.length; i++) {
-                colors[i] = getPlayerColor(turns[i]);
+                colors[i] = Handler.getPlayerColor(turns[i]);
             }
 
+            // Draw player pieces on the board
             GameControllerDrawFx.createPlayerPieces(gamegrid, positions, colors);
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+        // Update round- and status-value
         roundValue.setText(String.valueOf(game.getRoundNumber() + 1));
-        // Updated in updatePlayerInfo()?
-        //userMoney.setText(String.valueOf(gameLogic.getPlayer(USERNAME).getMoney()));
         statusValue.setText("Waiting for " + game.getPlayers()[game.getCurrentTurn()] + " to finish their turn");
 
-        if (positions != null)
-            //addToEventlog(gameLogic.getCurrentPlayer() + " moved to " + gameLogic.getEntityManager().getPropertyAtPosition(positions[gameLogic.getTurnNumber()]).getName());
-
-            updatePlayersInfo();
+        // Update info for all players
+        if (positions != null) updatePlayersInfo();
     }
 
     /**
@@ -566,15 +569,6 @@ public class GameController {
         databaseTimer.cancel();
         databaseTimer.purge();
         rolldiceBtn.setDisable(false);
-    }
-
-    private void addToEventlog(String msg) {
-        eventList.add(new Text(msg));
-
-        int focus = eventList.size();
-        eventlog.getItems().clear();
-        eventlog.getItems().addAll(eventList);
-        eventlog.scrollTo(focus);
     }
 
     /**
@@ -594,15 +588,18 @@ public class GameController {
      * It will render the GUI in the opponentsContainer.
      */
     private void updatePlayersInfo() {
+        // Clear opponents before re-rendering
         opponentsContainer.getChildren().clear();
+
         ArrayList<Player> players = Handler.getPlayerDAO().getPlayersInGame(Handler.getCurrentGameId());
         String color;
         ImageView img;
 
         // Go through all the players, update info and render GUI
         for (Player player : players) {
+
             // Find color associated with user
-            color = getPlayerColor(player.getUsername());
+            color = Handler.getPlayerColor(player.getUsername());
             if (color == null) color = "red"; // Check if color has been assigned
 
             // Check if player has left, is in jail or bankrupt and change img accordingly
@@ -623,11 +620,14 @@ public class GameController {
                 // Check if amount of money is changed
                 if (current_money != player.getMoney()) {
                     String msg = "Money transaction: " + (player.getMoney() - current_money);
+
+                    // Display message popup with money transaction
                     if (player.getMoney() - current_money > 0)
                         MessagePopupController.show(msg, "dollarPositive.png");
                     else
                         MessagePopupController.show(msg, "dollarNegative.png");
                 }
+                // Update for next check
                 current_money = player.getMoney();
 
                 // Show your own properties on click
@@ -658,23 +658,6 @@ public class GameController {
                 setPropertyOnClick(imgContainer, player.getUsername());
             }
         }
-    }
-
-    /**
-     * Go through a color list (located in Handler) and find the color associated with a player.
-     *
-     * @param username Target user
-     * @return Color associated with user
-     */
-    private String getPlayerColor(String username) {
-        // Go through the arraylist located in Handler
-        for (String[] player : Handler.getColorList()) {
-            // Check if username is target username and return color associated with it if it is an match
-            if (player[0].equals(username)) {
-                return player[1];
-            }
-        }
-        return null;
     }
 
     /**

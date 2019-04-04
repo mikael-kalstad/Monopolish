@@ -61,6 +61,25 @@ public class Handler {
             colorList.add(player.clone());
         }
     }
+
+    /**
+     * Go through a color list and find the color associated with a player.
+     *
+     * @param username Target user
+     * @return Color associated with user
+     */
+    public static String getPlayerColor(String username) {
+        // Go through the arraylist located in Handler
+        for (String[] player : Handler.getColorList()) {
+
+            // Check if username is target username and return color associated with it if it is an match
+            if (player[0].equals(username)) {
+                return player[1];
+            }
+        }
+        return null;
+    }
+
     public static ArrayList<String[]> getColorList() { return colorList; }
 
     // Getter and setter for DAO objects

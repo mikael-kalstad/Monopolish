@@ -20,7 +20,7 @@ public class ForfeitController {
     @FXML private Text voteCountContinue;
 
     // Countdown time
-    Timer countdownTimer = new Timer();
+    private Timer countdownTimer = new Timer();
     @FXML private Text timeValue;
 
     // Text showing what you voted
