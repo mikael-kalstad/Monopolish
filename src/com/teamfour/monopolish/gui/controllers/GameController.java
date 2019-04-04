@@ -663,6 +663,7 @@ public class GameController {
     public void rentTransaction() {
         GameLogic.payRent();
 
+        freeParkingCard.setVisible(false);
         payRentBtn.setDisable(true);
         int[] currentDice = game.getDice().getLastThrow();
         if (currentDice[0] == currentDice[1] && !game.getEntities().getYou().isInJail()) {

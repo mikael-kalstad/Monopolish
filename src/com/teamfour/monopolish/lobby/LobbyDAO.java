@@ -204,7 +204,6 @@ public class LobbyDAO extends DataAccessObject {
     public ArrayList<String[]> getAllLobbies() {
         ArrayList<String[]> lobbyInfo = new ArrayList<>();
         try {
-
             getConnection();
             cStmt = connection.prepareCall("{CALL getAllLobbies()}");
 
@@ -239,7 +238,7 @@ public class LobbyDAO extends DataAccessObject {
 
             if (cStmt.execute()) {
                 rs = cStmt.getResultSet();
-                while (rs.next()) num = rs.getInt(1);
+                if (rs.next()) num = rs.getInt(1);
                 rs.close();
             }
         }
