@@ -220,7 +220,8 @@ public class GameController {
      */
     public void forfeit() {
         forfeit = true;
-        if (forfeitContainer == null) System.out.println("Forfeit container is null!");
+        System.out.println("Forfeit variable: " + forfeit);
+
         // Load forfeit GUI
         addElementToContainer(ViewConstants.FORFEIT.getValue(), forfeitContainer);
 
