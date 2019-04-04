@@ -183,7 +183,7 @@ public class ForfeitController {
             System.out.println("Forfeit variable in forfeitcontroller: " + GameController.forfeit);
 
             GameController.forfeit = false;
-            GameController.startForfeitTimer();
+            //GameController.startForfeitTimer();
         }
     }
 

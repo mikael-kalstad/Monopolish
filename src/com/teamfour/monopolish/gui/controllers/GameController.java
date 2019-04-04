@@ -129,22 +129,6 @@ public class GameController {
         // Setup chat
         addElementToContainer(ViewConstants.CHAT.getValue(), chatContainer);
 
-        // Setup forfeit task
-        forfeitTask = new TimerTask() {
-            @Override
-            public void run() {
-                // Get votes from database
-                int[] votes = Handler.getPlayerDAO().getForfeitStatus(Handler.getCurrentGameId());
-
-                // Show forfeit dialog if forfeit is initiated
-                if (votes[0] != 0 || votes[1] != 0 && !forfeit) {
-                    Platform.runLater(() -> {
-                        forfeit();
-                    });
-                }
-            }
-        };
-
         // Start
         startForfeitTimer();
 
@@ -240,9 +224,29 @@ public class GameController {
         // Hide properties dialog and show forfeit dialog
         propertiesContainer.setVisible(false);
         forfeitContainer.setVisible(true);
+
+        if (!forfeit) {
+            startForfeitTimer();
+        }
     }
 
-    public static void startForfeitTimer() {
+    public void startForfeitTimer() {
+        // Setup forfeit task
+        forfeitTask = new TimerTask() {
+            @Override
+            public void run() {
+                // Get votes from database
+                int[] votes = Handler.getPlayerDAO().getForfeitStatus(Handler.getCurrentGameId());
+
+                // Show forfeit dialog if forfeit is initiated
+                if (votes[0] != 0 || votes[1] != 0 && !forfeit) {
+                    Platform.runLater(() -> {
+                        forfeit();
+                    });
+                }
+            }
+        };
+
         // Check for forfeit every second
         forfeitTimer.scheduleAtFixedRate(forfeitTask, 0L, 1000L);
     }
