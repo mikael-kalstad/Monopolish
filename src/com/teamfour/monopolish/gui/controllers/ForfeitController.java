@@ -65,7 +65,7 @@ public class ForfeitController {
         int[] votes = Handler.getPlayerDAO().getForfeitStatus(GAME_ID);
 
         // If you are the first to forfeit, set automatically to quit.
-        if (votes[0] + votes[1] > 0) {
+        if (votes[0] + votes[1] == 0) {
             Handler.getPlayerDAO().setForfeitStatus(USERNAME, GAME_ID, 1);
             yourVoteText.setText(VOTE_QUIT_MSG);
             FxUtils.setTextColor(yourVoteText, "red");
@@ -177,7 +177,7 @@ public class ForfeitController {
         if (votesForQuit > votesForContinue) endGame();
         else {
             // Hide forfeit container and set variable
-            GameController.forfeitContainer.setVisible(false);
+            Handler.getForfeitContainer().setVisible(false);
             GameController.forfeit = false;
         }
     }
