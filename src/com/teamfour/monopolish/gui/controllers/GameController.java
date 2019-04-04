@@ -147,9 +147,12 @@ public class GameController {
                     Platform.runLater(() -> {
                         forfeit();
 
-                        // Stop timer
-                        forfeitTimer.cancel();
-                        forfeitTimer.purge();
+                        // Set timer on wait
+                        try {
+                            forfeitTimer.wait();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     });
                 }
             }

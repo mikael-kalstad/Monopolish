@@ -1,5 +1,6 @@
 package com.teamfour.monopolish.gui.controllers;
 
+import com.teamfour.monopolish.game.Game;
 import com.teamfour.monopolish.game.GameLogic;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.application.Platform;
@@ -178,8 +179,7 @@ public class ForfeitController {
             // Hide forfeit container and set variable
             Handler.getForfeitContainer().setVisible(false);
             GameController.forfeit = false;
-            GameController.forfeitTimer.cancel();
-            GameController.forfeitTimer.purge();
+            GameController.forfeitTimer.notify();
             System.out.println("Forfeit variable in forfeitcontroller: " + GameController.forfeit);
         }
     }
