@@ -47,7 +47,7 @@ import java.util.TimerTask;
 public class GameController {
     // Timer for checking database updates and forfeit
     private Timer databaseTimer = new Timer();
-    private Timer forfeitTimer = new Timer();
+    public static Timer forfeitTimer = new Timer();
 
     // GameLogic for handling more intricate game operations
     private Game game;
@@ -143,7 +143,13 @@ public class GameController {
 
                 // Show forfeit dialog if forfeit is initiated
                 if (votes[0] != 0 || votes[1] != 0 && !forfeit) {
-                    Platform.runLater(() -> forfeit());
+                    Platform.runLater(() -> {
+                        forfeit();
+
+                        // Stop timer
+                        forfeitTimer.cancel();
+                        forfeitTimer.purge();
+                    });
                 }
             }
         };
