@@ -53,7 +53,7 @@
       <Text fill="#5f5e5e" layoutX="39.0" layoutY="111.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select a box to give your vote. The majority of votes decides the outcome." />
       <Text fill="#5f5e5e" layoutX="39.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="If the majority votes to forfeit, the game will end and a winner will be declared" />
       <Circle centerY="-10.0" fill="#5b5b5b" layoutX="535.0" layoutY="75.0" radius="37.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-      <Text fx:id="timeValue" fill="WHITE" layoutX="514.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="60">
+      <Text fx:id="timeValue" fill="WHITE" layoutX="505.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="60" textAlignment="CENTER" wrappingWidth="60.71337890625">
          <font>
             <Font size="39.0" />
          </font>

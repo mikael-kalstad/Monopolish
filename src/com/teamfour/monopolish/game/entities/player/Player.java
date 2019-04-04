@@ -1,7 +1,9 @@
 package com.teamfour.monopolish.game.entities.player;
 
 import com.teamfour.monopolish.game.Board;
+import com.teamfour.monopolish.game.GameConstants;
 import com.teamfour.monopolish.game.entities.Entity;
+import com.teamfour.monopolish.gui.controllers.Handler;
 
 import java.sql.SQLException;
 
@@ -89,7 +91,7 @@ public class Player extends Entity {
         while (true) {
             position++;
             steps--;
-            if (position == Board.BOARD_LENGTH) {
+            if (position == GameConstants.BOARD_LENGTH) {
                 position = 0;
             }
             if (steps == 0) {
@@ -101,7 +103,7 @@ public class Player extends Entity {
     @Override
     public void updatePropertiesFromDatabase(int gameId) throws SQLException {
         properties.clear();
-        properties = propertyDAO.getPropertiesByOwner(gameId, USERNAME);
+        properties = Handler.getPropertyDAO().getPropertiesByOwner(gameId, USERNAME);
     }
 
     /**
@@ -109,7 +111,7 @@ public class Player extends Entity {
      * @param position
      */
     public void moveTo(int position) {
-        if (position >= (Board.BOARD_LENGTH) || position < 0)
+        if (position >= (GameConstants.BOARD_LENGTH) || position < 0)
             throw new IllegalArgumentException("Position is not within board bounds");
 
         this.position = position;

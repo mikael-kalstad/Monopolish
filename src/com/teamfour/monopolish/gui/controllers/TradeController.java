@@ -36,11 +36,11 @@ public class TradeController {
         ArrayList<Pane> offeredCards = new ArrayList<>();
         ArrayList<Pane> requestedCards = new ArrayList<>();
 
-        for (Property property : Handler.getGameLogic().getPlayer(Handler.getGameLogic().getYourPlayer().getUsername()).getProperties()){
+        for (Property property : Handler.getCurrentGame().getEntities().getYou().getProperties()){
             yourCards.add(GameControllerDrawFx.createPropertyCard(property));
         }
 
-        for (Property property : Handler.getGameLogic().getPlayer(TRADE_USERNAME).getProperties()){
+        for (Property property : Handler.getCurrentGame().getEntities().getPlayer(TRADE_USERNAME).getProperties()){
             opponentsCards.add(GameControllerDrawFx.createPropertyCard(property));
         }
 
@@ -92,7 +92,7 @@ public class TradeController {
             String input = offeredmoney.getText();
             try {
                 int check = Integer.parseInt(input);
-                if (check > Handler.getGameLogic().getYourPlayer().getMoney()) {
+                if (check > Handler.getCurrentGame().getEntities().getYou().getMoney()) {
                     throw new IllegalArgumentException("Not enough money");
                 }
                 invalidinput.setVisible(false);
@@ -109,7 +109,7 @@ public class TradeController {
             String input = requestedmoney.getText();
             try {
                 int check = Integer.parseInt(input);
-                if(check > Handler.getGameLogic().getPlayer(TRADE_USERNAME).getMoney()) {
+                if(check > Handler.getCurrentGame().getEntities().getPlayer(TRADE_USERNAME).getMoney()) {
                     throw new IllegalArgumentException("Not enough money");
                 }
                 invalidinput2.setVisible(false);

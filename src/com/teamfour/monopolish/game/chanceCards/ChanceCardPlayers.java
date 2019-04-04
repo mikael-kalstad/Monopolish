@@ -16,11 +16,11 @@ public class ChanceCardPlayers extends ChanceCard {
     public void moneyTransaction(String toUser) {
         // Amount is negative, transfer from current user to player
         if (super.getAmount() < 0)
-            Handler.getGameLogic().getEntityManager().transferMoneyFromTo(super.getUSERNAME(), toUser, super.getAmount());
+            Handler.getCurrentGame().getEntities().transferMoneyFromTo(super.getUSERNAME(), toUser, super.getAmount());
 
             // Amount is positive, transfer from player to current user
         else
-            Handler.getGameLogic().getEntityManager().transferMoneyFromTo(toUser, super.getUSERNAME(), super.getAmount());
+            Handler.getCurrentGame().getEntities().transferMoneyFromTo(toUser, super.getUSERNAME(), super.getAmount());
     }
 
 
