@@ -2,6 +2,7 @@ package com.teamfour.monopolish.game.entities;
 
 import com.teamfour.monopolish.game.entities.player.Player;
 import com.teamfour.monopolish.game.property.*;
+import com.teamfour.monopolish.gui.controllers.Handler;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -18,7 +19,6 @@ public abstract class Entity {
     // Attributes
     protected ArrayList<Property> properties;
     protected int money;
-    protected PropertyDAO propertyDAO;
 
     /**
      * Constructor
@@ -26,13 +26,11 @@ public abstract class Entity {
     public Entity() {
         properties = new ArrayList<>();
         money = 0;
-        propertyDAO = new PropertyDAO();
     }
 
     public Entity(int money) {
         properties = new ArrayList<>();
         this.money = money;
-        propertyDAO = new PropertyDAO();
     }
 
     public Property getPropertyAtPosition(int position) {
@@ -90,13 +88,13 @@ public abstract class Entity {
 
     public void updatePropertiesToDatabase(int gameId) throws SQLException {
         for (Property prop : properties) {
-            propertyDAO.updateProperty(prop, gameId);
+            Handler.getPropertyDAO().updateProperty(prop, gameId);
         }
     }
 
     public void updatePropertiesFromDatabase(int gameId) throws SQLException {
         properties.clear();
-        properties = propertyDAO.getPropertiesByOwner(gameId, null);
+        properties = Handler.getPropertyDAO().getPropertiesByOwner(gameId, null);
     }
 
     @Override
