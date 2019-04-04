@@ -5,6 +5,7 @@ import com.teamfour.monopolish.account.AccountDAO;
 import com.teamfour.monopolish.game.Game;
 import com.teamfour.monopolish.game.GameDAO;
 import com.teamfour.monopolish.game.entities.player.PlayerDAO;
+import com.teamfour.monopolish.game.property.PropertyDAO;
 import com.teamfour.monopolish.gui.views.SceneManager;
 import com.teamfour.monopolish.lobby.LobbyDAO;
 import javafx.fxml.FXML;
@@ -26,6 +27,7 @@ public class Handler {
     private static PlayerDAO playerDAO = new PlayerDAO();
     private static LobbyDAO lobbyDAO = new LobbyDAO();
     private static GameDAO gameDAO = new GameDAO();
+    private static PropertyDAO propertyDAO = new PropertyDAO();
 
     // Variables used in game
     private static ArrayList<String[]> colorList = new ArrayList<>();
@@ -97,4 +99,8 @@ public class Handler {
     public static void setForfeitContainer(Pane forfeitContainer) { Handler.forfeitContainer = forfeitContainer; }
     public static int getCurrentGameId() { return currentGameId; }
     public static void setCurrentGameId(int currentGameId) { Handler.currentGameId = currentGameId; }
+
+    public static PropertyDAO getPropertyDAO() {
+        return propertyDAO;
+    }
 }

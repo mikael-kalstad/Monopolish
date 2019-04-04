@@ -1,5 +1,7 @@
 package com.teamfour.monopolish.game.property;
 
+import com.teamfour.monopolish.gui.controllers.Handler;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -44,8 +46,7 @@ public abstract class Property {
     }
 
     public static ArrayList<Property> getFullColorSet(int gameId, String colorHex) throws SQLException {
-        PropertyDAO dao = new PropertyDAO();
-        return dao.getColorSet(gameId, colorHex);
+        return Handler.getPropertyDAO().getColorSet(gameId, colorHex);
     }
 
     @Override

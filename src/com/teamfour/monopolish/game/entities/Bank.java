@@ -1,6 +1,7 @@
 package com.teamfour.monopolish.game.entities;
 
 import com.teamfour.monopolish.game.GameConstants;
+import com.teamfour.monopolish.gui.controllers.Handler;
 
 /**
  * Represents the bank in the game. The bank has its own money and properties, along with a number of houses that can be
@@ -26,7 +27,7 @@ public class Bank extends Entity {
         // Get all properties from database
         // TODO: Fix this
         try {
-            properties = propertyDAO.getAllProperties(gameId);
+            properties = Handler.getPropertyDAO().getAllProperties(gameId);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -64,6 +64,10 @@ public class GameLogic {
         }
     }
 
+    /**
+     * Rolls the player dice and moves the player accordingly. Position, counters and
+     * jail stuff is handled here as well
+     */
     public static void rollDice() {
         Player yourPlayer = game.getEntities().getYou();
         // Throw dice and store in array
@@ -107,6 +111,9 @@ public class GameLogic {
         updateToDatabase();
     }
 
+    /**
+     * Moves the player to jail
+     */
     public static void goToJail() {
         Player yourPlayer = game.getEntities().getYou();
         yourPlayer.setInJail(true);
@@ -118,6 +125,9 @@ public class GameLogic {
         updateToDatabase();
     }
 
+    /**
+     * Moves the player out of jail
+     */
     public static void getOutOfJail() {
         Player yourPlayer = game.getEntities().getYou();
         yourPlayer.setInJail(false);
@@ -128,6 +138,10 @@ public class GameLogic {
         updateToDatabase();
     }
 
+    /**
+     * Attempts to pay bail with the player's money
+     * @return True if player has enough money
+     */
     public static boolean payBail() {
         Player yourPlayer = game.getEntities().getYou();
         if (yourPlayer.getMoney() >= GameConstants.BAIL_COST) {
@@ -139,6 +153,10 @@ public class GameLogic {
         }
     }
 
+    /**
+     * Attempt to buy property
+     * @return True if enough money
+     */
     public static boolean purchaseProperty() {
         Player yourPlayer = game.getEntities().getYou();
         Property propertyToPurchase = game.getEntities().getPropertyAtPosition(yourPlayer.getPosition());
@@ -152,6 +170,10 @@ public class GameLogic {
         return result;
     }
 
+    /**
+     * Makes the player pay rent to the owner of the current property. If the player doesn't have enough money,
+     * pay the last of their funds
+     */
     public static void payRent() {
         EntityManager entities = game.getEntities();
         Player yourPlayer = entities.getYou();
@@ -206,12 +228,20 @@ public class GameLogic {
         }
     }
 
+    /**
+     * Checks the database and sees if it's become a new turn since the last check
+     * @return True if new turn
+     */
     public static boolean waitForTurn() {
+        // Get the current player
         String currentPlayer = game.getPlayers()[game.getCurrentTurn()];
         updateFromDatabase();
+        // Get the new current player from database
         String newCurrentPlayer = game.getPlayers()[game.getCurrentTurn()];
         if (!currentPlayer.equals(newCurrentPlayer)) {
+            // If new turn, and turn number is 0, we know that it's a new round
             if (game.getCurrentTurn() == 0) game.incrementRound();
+            checkBankruptcy();
             return true;
         } else {
             return false;
@@ -220,6 +250,20 @@ public class GameLogic {
         // TODO: Bankruptcy check, game end blabla
     }
 
+    /**
+     * Check if your player is bankrupt, if so, set bankrupt and show a message.
+     */
+    public static void checkBankruptcy() {
+        Player yourPlayer = game.getEntities().getYou();
+        if (yourPlayer.checkBankrupt()) {
+            yourPlayer.setBankrupt(true);
+            MessagePopupController.show("You are now bankrupt!");
+        }
+    }
+
+    /**
+     * Ends your own turn
+     */
     public static void endTurn() {
         game.incrementTurn();
         updateToDatabase();
