@@ -27,7 +27,6 @@ public abstract class DataAccessObject {
             // TODO: SOmething
             e.printStackTrace();
         }
-
     }
 
     /**

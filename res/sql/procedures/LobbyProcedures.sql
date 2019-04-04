@@ -8,9 +8,16 @@ CREATE PROCEDURE new_lobby(IN username VARCHAR(30), IN lobby_name varchar(30), O
     DECLARE lobby_id INT;
     DECLARE account_id INT;
 
+    -- Generate unique room code
+    DECLARE code INT DEFAULT 0;
+    SET code = FLOOR(RAND()*(100000-1+1)+1);
+    WHILE (code IN (SELECT session_code FROM game)) DO
+      SET code = FLOOR(RAND()*(100000-1+1)+1);
+    END WHILE;
+
     SET lobby_id = (SELECT IFNULL((MAX(room_id)+1), 1)FROM lobby);
     SET account_id = (SELECT a.user_id FROM account a WHERE a.username LIKE username LIMIT 1);
-    INSERT INTO lobbyname(lobby_id, lobbyname) values (lobby_id, lobby_name);
+    INSERT INTO lobbyname(lobby_id, lobbyname, session_code) values (lobby_id, lobby_name, code);
     INSERT INTO lobby (room_id, user_id)
     VALUES (lobby_id, account_id);
   END;
