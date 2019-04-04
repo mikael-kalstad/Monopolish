@@ -40,7 +40,13 @@ public class ShowTradeController {
         requestedMoneyLabel.setText(Integer.toString(requestedMoney));
 
         acceptTradeBtn.setOnAction(e -> {
+            System.out.println("accepting trade......");
             //do the transaction
+            Handler.getCurrentGame().getEntities().acceptTrade(Handler.getCurrentGame().getEntities().getPlayer(playername),
+                    Handler.getCurrentGame().getEntities().getPlayer(Handler.getTradeUsername()));
+
+            Handler.getCurrentGame().getEntities().doTrade(Handler.getCurrentGame().getEntities().getYou(),
+                    Handler.getCurrentGame().getEntities().getPlayer(Handler.getTradeUsername()), offeredMoney, offeredproperties);
             //clear stuff
             //send to eventlog "X accepted Y's trade"
         });

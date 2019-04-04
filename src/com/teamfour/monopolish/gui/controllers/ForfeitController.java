@@ -1,11 +1,11 @@
 package com.teamfour.monopolish.gui.controllers;
 
+import com.teamfour.monopolish.game.Game;
 import com.teamfour.monopolish.game.GameLogic;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 
 import java.util.Timer;
@@ -65,7 +65,7 @@ public class ForfeitController {
         int[] votes = Handler.getPlayerDAO().getForfeitStatus(GAME_ID);
 
         // If you are the first to forfeit, set automatically to quit.
-        if (votes[0] + votes[1] > 0) {
+        if (votes[0] + votes[1] == 0) {
             Handler.getPlayerDAO().setForfeitStatus(USERNAME, GAME_ID, 1);
             yourVoteText.setText(VOTE_QUIT_MSG);
             FxUtils.setTextColor(yourVoteText, "red");
@@ -178,7 +178,12 @@ public class ForfeitController {
         else {
             // Hide forfeit container and set variable
             Handler.getForfeitContainer().setVisible(false);
+            Handler.getPlayerDAO().resetForfeitStatus(GAME_ID);
+
+            System.out.println("Forfeit variable in forfeitcontroller: " + GameController.forfeit);
+
             GameController.forfeit = false;
+            //GameController.startForfeitTimer();
         }
     }
 
@@ -190,6 +195,8 @@ public class ForfeitController {
         String res = "Game will continue";
         if (votesForQuit > votesForContinue) res = "Game will quit";
         System.out.println("FORFEIT RESULT: " + res);
+
+        GameController.stopTimers();
 
         // End the game
         GameLogic.endGame();

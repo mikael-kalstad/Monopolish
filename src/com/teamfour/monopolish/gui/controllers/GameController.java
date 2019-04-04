@@ -46,8 +46,9 @@ import java.util.TimerTask;
 
 public class GameController {
     // Timer for checking database updates and forfeit
-    private Timer databaseTimer = new Timer();
-    private Timer forfeitTimer = new Timer();
+    private static Timer databaseTimer = new Timer();
+    public static Timer forfeitTimer = new Timer();
+    public static TimerTask forfeitTask;
 
     // GameLogic for handling more intricate game operations
     private Game game;
@@ -61,7 +62,7 @@ public class GameController {
 
     // Elements in board
     @FXML private AnchorPane cardContainer;
-    @FXML private Button buyPropertyBtn, payRentBtn;
+    @FXML private Button buyPropertyBtn, payRentBtn, payIncomeTaxBtn;
     @FXML private Label propertyOwned;
     @FXML private GridPane gamegrid;
 
@@ -128,28 +129,14 @@ public class GameController {
         // Setup chat
         addElementToContainer(ViewConstants.CHAT.getValue(), chatContainer);
 
+        // Start
+        startForfeitTimer();
+
         // Update the board
         updateBoard();
 
         // Start the game!
         waitForTurn();
-
-        // Check periodically if someone initiated a forfeit
-        TimerTask forfeitTask = new TimerTask() {
-            @Override
-            public void run() {
-                // Get votes from database
-                int[] votes = Handler.getPlayerDAO().getForfeitStatus(Handler.getCurrentGameId());
-
-                // Show forfeit dialog if forfeit is initiated
-                if (votes[0] != 0 || votes[1] != 0 && !forfeit) {
-                    Platform.runLater(() -> forfeit());
-                }
-            }
-        };
-
-        // Check for forfeit every second
-        forfeitTimer.scheduleAtFixedRate(forfeitTask, 0L, 1000L);
 
         // Set default alert box for leaving when window is closed
         Handler.getSceneManager().getWindow().setOnCloseRequest(e -> {
@@ -165,6 +152,7 @@ public class GameController {
             // Check if yes button is pressed
             if (alertDialog.getResult().getButtonData().isDefaultButton()) {
                 endGameForPlayer();
+                stopTimers();
 
                 // Logout user
                 Handler.getAccountDAO().setInactive(USERNAME);
@@ -201,11 +189,14 @@ public class GameController {
      */
     public void endGameForPlayer() {
         // Remove player from lobby
-        Handler.getAccountDAO().setInactive(USERNAME);
+//        Handler.getAccountDAO().setInactive(USERNAME);
         Handler.getLobbyDAO().removePlayer(USERNAME, Handler.getLobbyDAO().getLobbyId(USERNAME));
         game.getEntities().removePlayer(USERNAME);
 
-        // Stop timers
+        stopTimers();
+    }
+
+    public static void stopTimers() {
         databaseTimer.cancel();
         databaseTimer.purge();
         ChatController.getChatTimer().cancel();
@@ -219,8 +210,11 @@ public class GameController {
      * A forfeit dialog will appear on the screen
      */
     public void forfeit() {
+        forfeitTimer.cancel();
+        forfeitTimer.purge();
         forfeit = true;
-        if (forfeitContainer == null) System.out.println("Forfeit container is null!");
+        System.out.println("Forfeit variable: " + forfeit);
+
         // Load forfeit GUI
         addElementToContainer(ViewConstants.FORFEIT.getValue(), forfeitContainer);
 
@@ -230,6 +224,32 @@ public class GameController {
         // Hide properties dialog and show forfeit dialog
         propertiesContainer.setVisible(false);
         forfeitContainer.setVisible(true);
+
+        if (!forfeit) {
+            startForfeitTimer();
+            backgroundOverlay.setVisible(false);
+        }
+    }
+
+    public void startForfeitTimer() {
+        // Setup forfeit task
+        forfeitTask = new TimerTask() {
+            @Override
+            public void run() {
+                // Get votes from database
+                int[] votes = Handler.getPlayerDAO().getForfeitStatus(Handler.getCurrentGameId());
+
+                // Show forfeit dialog if forfeit is initiated
+                if (votes[0] != 0 || votes[1] != 0 && !forfeit) {
+                    Platform.runLater(() -> {
+                        forfeit();
+                    });
+                }
+            }
+        };
+
+        // Check for forfeit every second
+        forfeitTimer.scheduleAtFixedRate(forfeitTask, 0L, 1000L);
     }
 
     /**
@@ -436,7 +456,7 @@ public class GameController {
     }
 
     /**
-     * Checks to see what form of tile you are on and call the event accordingly
+     * Checks to see what form of tile you are on and enable / disable player controls accordingly
      */
     private void updateClientControls() {
         // Remove previous cards
@@ -516,6 +536,16 @@ public class GameController {
             // Get a random chance card and display it
             ChanceCard chanceCard = ChanceCardData.getRandomChanceCard();
             ChanceCardController.display(chanceCard, cardContainer);
+        }
+
+        if (game.getBoard().getTileType(yourPosition) == Board.COMMUNITY_TAX) {
+            payIncomeTaxBtn.setVisible(true);
+            payIncomeTaxBtn.setDisable(false);
+            endturnBtn.setDisable(true);
+            rolldiceBtn.setDisable(true);
+        } else {
+            payIncomeTaxBtn.setVisible(false);
+            payIncomeTaxBtn.setDisable(true);
         }
     }
 
@@ -665,6 +695,7 @@ public class GameController {
      */
     public void rentTransaction() {
         GameLogic.payRent();
+        updateBoard();
 
         freeParkingCard.setVisible(false);
         payRentBtn.setDisable(true);
@@ -725,6 +756,22 @@ public class GameController {
         //ideally the number of houses on each street cannot be more than 1 greater than that of the other streets in the same colorset, this is not implementet here
         if (((Street) property).addHouse()) {
             GameControllerDrawFx.drawHouse(housegrid, (Street) property);
+        }
+    }
+
+    /**
+     * Pay income tax
+     */
+    public void payTax() {
+        GameLogic.payTax();
+        updateBoard();
+        payIncomeTaxBtn.setDisable(true);
+        int[] currentDice = game.getDice().getLastThrow();
+        if (currentDice[0] == currentDice[1] && !game.getEntities().getYou().isInJail()) {
+            rolldiceBtn.setDisable(false);
+            endturnBtn.setDisable(true);
+        } else {
+            endturnBtn.setDisable(false);
         }
     }
 }
