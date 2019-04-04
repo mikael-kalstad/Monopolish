@@ -19,6 +19,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -61,7 +62,7 @@ public class GameController {
 
     // Elements in board
     @FXML private AnchorPane cardContainer;
-    @FXML private Button buyPropertyBtn, payRentBtn;
+    @FXML private Button buyPropertyBtn, payRentBtn, payIncomeTaxBtn;
     @FXML private Label propertyOwned;
     @FXML private GridPane gamegrid;
 
@@ -517,6 +518,16 @@ public class GameController {
             ChanceCard chanceCard = ChanceCardData.getRandomChanceCard();
             ChanceCardController.display(chanceCard, cardContainer);
         }
+
+        if (game.getBoard().getTileType(yourPosition) == Board.COMMUNITY_TAX) {
+            payIncomeTaxBtn.setVisible(true);
+            payRentBtn.setDisable(false);
+            payRentBtn.setVisible(true);
+            endturnBtn.setDisable(true);
+            rolldiceBtn.setDisable(true);
+        } else {
+            payIncomeTaxBtn.setVisible(false);
+        }
     }
 
     /**
@@ -725,6 +736,21 @@ public class GameController {
         //ideally the number of houses on each street cannot be more than 1 greater than that of the other streets in the same colorset, this is not implementet here
         if (((Street) property).addHouse()) {
             GameControllerDrawFx.drawHouse(housegrid, (Street) property);
+        }
+    }
+
+    /**
+     * Pay income tax
+     */
+    public void payTax() {
+        GameLogic.payTax();
+        payIncomeTaxBtn.setDisable(true);
+        int[] currentDice = game.getDice().getLastThrow();
+        if (currentDice[0] == currentDice[1] && !game.getEntities().getYou().isInJail()) {
+            rolldiceBtn.setDisable(false);
+            endturnBtn.setDisable(true);
+        } else {
+            endturnBtn.setDisable(false);
         }
     }
 }
