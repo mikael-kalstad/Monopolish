@@ -23,9 +23,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -44,7 +47,7 @@ import java.util.TimerTask;
 public class GameController {
     // Timer for checking database updates and forfeit
     private Timer databaseTimer = new Timer();
-    Timer forfeitTimer = new Timer();
+    private Timer forfeitTimer = new Timer();
 
     // GameLogic for handling more intricate game operations
     private Game game;
@@ -548,10 +551,20 @@ public class GameController {
      * A couple things needs to be updated at the start of each turn
      */
     public void yourTurn() {
+        // Play a sound to indicate that it is your turn
+        String soundFile = "res/sounds/pling.mp3";
+
+        Media sound = new Media(new File(soundFile).toURI().toString());
+        MediaPlayer player = new MediaPlayer(sound);
+        player.play();
+
+        // Set buttons state
         payBailBtn.setDisable(false);
+        rolldiceBtn.setDisable(false);
+
+        // Stop timer temporarily
         databaseTimer.cancel();
         databaseTimer.purge();
-        rolldiceBtn.setDisable(false);
     }
 
     /**

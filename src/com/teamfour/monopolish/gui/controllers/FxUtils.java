@@ -5,6 +5,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 
+/**
+ * Class with different util methods used in controllers.
+ */
 public class FxUtils {
     /**
      * Limit input length and show warning if defined

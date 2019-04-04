@@ -20,10 +20,10 @@ import java.util.ArrayList;
 
 
 /**
- * Class for drawing players and player position on the board
+ * Class for drawing different GUI elements used in the game view by the gameController.
  *
  * @author Bård Hestmark
- * @version 1.7
+ * @version 1.9
  */
 
 public class GameControllerDrawFx {
