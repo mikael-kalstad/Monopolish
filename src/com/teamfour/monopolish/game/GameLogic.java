@@ -170,6 +170,10 @@ public class GameLogic {
         return result;
     }
 
+    /**
+     * Makes the player pay rent to the owner of the current property. If the player doesn't have enough money,
+     * pay the last of their funds
+     */
     public static void payRent() {
         EntityManager entities = game.getEntities();
         Player yourPlayer = entities.getYou();
@@ -237,12 +241,24 @@ public class GameLogic {
         if (!currentPlayer.equals(newCurrentPlayer)) {
             // If new turn, and turn number is 0, we know that it's a new round
             if (game.getCurrentTurn() == 0) game.incrementRound();
+            checkBankruptcy();
             return true;
         } else {
             return false;
         }
 
         // TODO: Bankruptcy check, game end blabla
+    }
+
+    /**
+     * Check if your player is bankrupt, if so, set bankrupt and show a message.
+     */
+    public static void checkBankruptcy() {
+        Player yourPlayer = game.getEntities().getYou();
+        if (yourPlayer.checkBankrupt()) {
+            yourPlayer.setBankrupt(true);
+            MessagePopupController.show("You are now bankrupt!");
+        }
     }
 
     /**
