@@ -32,4 +32,12 @@ public class Board {
     public int getTileType(int position) {
         return tiles[position];
     }
+
+    public int getJailPosition() {
+        for (int i = 0; i < tiles.length; i++) {
+            if (tiles[i] == JAIL) return i;
+        }
+
+        return -1;
+    }
 }

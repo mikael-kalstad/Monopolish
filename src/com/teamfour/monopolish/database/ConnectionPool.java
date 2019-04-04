@@ -104,7 +104,8 @@ public class ConnectionPool {
         if (connection == null)
             return false;
         connectionPool.add(connection);
-        return usedConnections.remove(connection);
+        usedConnections.remove(usedConnections.size() - 1);
+        return true;
     }
 
     /**

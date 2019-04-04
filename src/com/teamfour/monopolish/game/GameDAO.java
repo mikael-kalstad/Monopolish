@@ -57,11 +57,14 @@ public class GameDAO extends DataAccessObject {
 
             cStmt.setInt(1, gameId);
 
-            ResultSet rs = cStmt.executeQuery();
+            ResultSet rs;
 
-            if (rs.next())
-                player = rs.getString(1);
-            rs.close();
+            if (cStmt.execute()) {
+                rs = cStmt.getResultSet();
+                if (rs.next())
+                    player = rs.getString(1);
+                rs.close();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new SQLException();
@@ -163,16 +166,19 @@ public class GameDAO extends DataAccessObject {
             cStmt = connection.prepareCall("{call chat_get(?)}");
             cStmt.setInt(1, gameId);
 
-            ResultSet rs = cStmt.executeQuery();
+            ResultSet rs;
 
-            while(rs.next()){
-                String[] chatLine = new String[3];
-                chatLine[0] = rs.getString("username");
-                chatLine[1] = rs.getString("time_String");
-                chatLine[2] = rs.getString("message");
-                chatList.add(chatLine);
+            if (cStmt.execute()) {
+                rs = cStmt.getResultSet();
+                while (rs.next()) {
+                    String[] chatLine = new String[3];
+                    chatLine[0] = rs.getString("username");
+                    chatLine[1] = rs.getString("time_String");
+                    chatLine[2] = rs.getString("message");
+                    chatList.add(chatLine);
+                }
+                rs.close();
             }
-            rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -192,8 +198,7 @@ public class GameDAO extends DataAccessObject {
             cStmt.setString(1, username);
             cStmt.setString(2, message);
 
-            cStmt.executeQuery();
-
+            cStmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -208,7 +213,7 @@ public class GameDAO extends DataAccessObject {
             cStmt.setInt(1, gameId);
             cStmt.setString(2, message);
 
-            cStmt.executeQuery();
+            cStmt.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -224,9 +229,14 @@ public class GameDAO extends DataAccessObject {
             cStmt = connection.prepareCall("{call event_get(?)}");
             cStmt.setInt(1, gameId);
 
-            ResultSet rs = cStmt.executeQuery();
-            event_text = rs.getString("event_text");
-            rs.close();
+            ResultSet rs;
+
+            if (cStmt.execute()) {
+                rs = cStmt.getResultSet();
+                while (rs.next())
+                    event_text = rs.getString("event_text");
+                rs.close();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

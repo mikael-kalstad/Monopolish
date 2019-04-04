@@ -26,13 +26,16 @@ public class PropertyDAO extends DataAccessObject {
 
             cStmt.setInt(1, game_id);
 
-            ResultSet rs = cStmt.executeQuery();
+            ResultSet rs;
 
-            while (rs.next()) {
-                Property property = getGamePropertyFromResultSet(rs);
-                props.add(property);
+            if (cStmt.execute()) {
+                rs = cStmt.getResultSet();
+                while (rs.next()) {
+                    Property property = getGamePropertyFromResultSet(rs);
+                    props.add(property);
+                }
+                rs.close();
             }
-            rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
             throw new SQLException();
@@ -58,13 +61,16 @@ public class PropertyDAO extends DataAccessObject {
             cStmt.setInt(1, gameId);
             cStmt.setString(2, username);
 
-            ResultSet rs = cStmt.executeQuery();
+            ResultSet rs;
 
-            while (rs.next()) {
-                Property property = getGamePropertyFromResultSet(rs);
-                props.add(property);
+            if (cStmt.execute()) {
+                rs = cStmt.getResultSet();
+                while (rs.next()) {
+                    Property property = getGamePropertyFromResultSet(rs);
+                    props.add(property);
+                }
+                rs.close();
             }
-            rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
             throw new SQLException();
@@ -114,7 +120,7 @@ public class PropertyDAO extends DataAccessObject {
             cStmt = connection.prepareCall("{call property_clean(?)}");
 
             cStmt.setInt(1, game_id);
-            cStmt.executeQuery();
+            cStmt.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -133,12 +139,15 @@ public class PropertyDAO extends DataAccessObject {
             cStmt.setInt(1, gameId);
             cStmt.setString(2, colorHex);
 
-            ResultSet rs = cStmt.executeQuery();
+            ResultSet rs;
 
-            while (rs.next()) {
-                properties.add(getGamePropertyFromResultSet(rs));
+            if (cStmt.execute()) {
+                rs = cStmt.getResultSet();
+                while (rs.next()) {
+                    properties.add(getGamePropertyFromResultSet(rs));
+                }
+                rs.close();
             }
-            rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
             throw new SQLException();

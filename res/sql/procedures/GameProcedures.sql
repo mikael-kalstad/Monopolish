@@ -5,32 +5,40 @@ Procedure to generate a new game
 -- DELIMITER $$
 DROP PROCEDURE game_insert;
 
-CREATE PROCEDURE game_insert(IN lobby_id int, IN user_name VARCHAR(30), OUT gameid INT)
+CREATE PROCEDURE game_insert(IN lobby int, IN user_name VARCHAR(30), OUT gameid INT)
   proc_label:BEGIN
+    DECLARE session INT DEFAULT 0;
     -- If this game session already has been created, get that game ID
+    /*
     SET gameid=(SELECT p.game_id
     FROM lobby l
     LEFT JOIN player p ON l.user_id=p.user_id
     LEFT JOIN account a on p.user_id = a.user_id
     LEFT JOIN game g on p.game_id = g.game_id
     WHERE a.username LIKE user_name AND l.room_id=lobby_id AND (p.active=1 AND g.endtime IS NULL) LIMIT 1);
+    */
+
+    SET gameid=(SELECT g.game_id FROM game g
+                LEFT JOIN lobbyname ln ON g.session_code=ln.session_code
+                WHERE ln.lobby_id=lobby LIMIT 1);
 
     -- If not, be the one who creates the game session!
     IF (gameid IS NULL) THEN
       -- To ensure that a user is not active in two games at the same time, we make sure
       -- to set their status in any other game to LEFT as a fail-safe
       UPDATE player SET player.active=2
-      WHERE user_id IN (SELECT user_id FROM lobby WHERE room_id=lobby_id);
+      WHERE user_id IN (SELECT user_id FROM lobby WHERE room_id=lobby);
 
       -- Create a new game
-      INSERT INTO game (starttime)
-      VALUES (NOW());
+      SET session = (SELECT session_code FROM lobbyname ln WHERE ln.lobby_id=lobby LIMIT 1);
+      INSERT INTO game (starttime, session_code)
+      VALUES (NOW(), session);
       -- Get the new Game ID
       SET gameid = LAST_INSERT_ID();
 
       -- Get all players waiting in the lobby and put them in the player table
       INSERT INTO player (game_id, user_id)
-      SELECT gameid, l.user_id FROM lobby l WHERE l.room_id=lobby_id;
+      SELECT gameid, l.user_id FROM lobby l WHERE l.room_id=lobby;
     end if;
   END;
 -- END$$

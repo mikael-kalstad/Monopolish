@@ -27,7 +27,6 @@ public abstract class DataAccessObject {
             // TODO: SOmething
             e.printStackTrace();
         }
-
     }
 
     /**
@@ -35,11 +34,13 @@ public abstract class DataAccessObject {
      */
     protected void releaseConnection() {
         ConnectionPool.getMainConnectionPool().releaseConnection(connection);
+        /*
         try {
             cStmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        */
 
         connection = null;
     }
