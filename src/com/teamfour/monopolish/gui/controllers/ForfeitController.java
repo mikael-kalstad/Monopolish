@@ -177,7 +177,7 @@ public class ForfeitController {
         if (votesForQuit > votesForContinue) endGame();
         else {
             // Hide forfeit container and set variable
-            GameController.forfeitContainer.setVisible(false);
+            Handler.getForfeitContainer().setVisible(false);
             GameController.forfeit = false;
         }
     }

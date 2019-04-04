@@ -78,7 +78,7 @@ public class GameController {
 
     // Container for chat element
     @FXML private Pane chatContainer;
-    @FXML public static Pane forfeitContainer;
+    @FXML public Pane forfeitContainer;
     public static boolean forfeit = false;
 
     // Properties dialog
@@ -220,7 +220,7 @@ public class GameController {
      */
     public void forfeit() {
         forfeit = true;
-
+        if (forfeitContainer == null) System.out.println("Forfeit container is null!");
         // Load forfeit GUI
         addElementToContainer(ViewConstants.FORFEIT.getValue(), forfeitContainer);
 
