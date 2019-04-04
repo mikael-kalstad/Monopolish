@@ -219,6 +219,11 @@ public class GameLogic {
         updateToDatabase();
     }
 
+    public static void payTax() {
+        game.getEntities().transferMoneyBank(game.getEntities().getYou().getUsername(), -GameConstants.INCOME_TAX);
+        updateToDatabase();
+    }
+
     public static void updateToDatabase() {
         try {
             game.getEntities().updateToDatabase();

@@ -13,6 +13,7 @@ public class GameConstants {
     public static final int BAIL_COST = 1000;
     public static final int ROUND_MONEY = 4000;
     public static final int MAX_GAME_MONEY = 500000;
+    public static final int INCOME_TAX = 4000;
 
     // Board settings
     public static final int BOARD_LENGTH = 36;
