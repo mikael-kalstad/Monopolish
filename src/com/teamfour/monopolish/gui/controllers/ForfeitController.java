@@ -125,6 +125,7 @@ public class ForfeitController {
                 if (votesForQuit + votesForContinue == NUM_OF_PLAYERS) {
                     if (votesForQuit > votesForContinue) endGame(); // Quit game
                     else Handler.getForfeitContainer().setVisible(false); // Continue game
+                    Handler.getPlayerDAO().setForfeitStatus(USERNAME, GAME_ID, 0);
 
                     stopTimer();
                 }

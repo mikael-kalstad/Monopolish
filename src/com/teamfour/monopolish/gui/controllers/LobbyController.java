@@ -121,7 +121,9 @@ public class LobbyController {
                     Handler.getAccountDAO().setInactive(Handler.getAccount().getUsername());
                     Handler.getLobbyDAO().removePlayer(USERNAME, current_lobby_id);
 
-                    refreshTimer.cancel(); // Stop refreshTimer thread
+                    // Stop refreshTimer thread
+                    refreshTimer.cancel();
+                    refreshTimer.purge();
 
                     // Logout user
                     Handler.getAccountDAO().setInactive(USERNAME);
