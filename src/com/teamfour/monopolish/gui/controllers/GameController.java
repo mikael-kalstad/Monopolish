@@ -227,6 +227,7 @@ public class GameController {
 
         if (!forfeit) {
             startForfeitTimer();
+            backgroundOverlay.setVisible(false);
         }
     }
 
