@@ -46,8 +46,9 @@ import java.util.TimerTask;
 
 public class GameController {
     // Timer for checking database updates and forfeit
-    private Timer databaseTimer = new Timer();
+    private static Timer databaseTimer = new Timer();
     public static Timer forfeitTimer = new Timer();
+    public static TimerTask forfeitTask;
 
     // GameLogic for handling more intricate game operations
     private Game game;
@@ -128,37 +129,14 @@ public class GameController {
         // Setup chat
         addElementToContainer(ViewConstants.CHAT.getValue(), chatContainer);
 
+        // Start
+        startForfeitTimer();
+
         // Update the board
         updateBoard();
 
         // Start the game!
         waitForTurn();
-
-        // Check periodically if someone initiated a forfeit
-        TimerTask forfeitTask = new TimerTask() {
-            @Override
-            public void run() {
-                // Get votes from database
-                int[] votes = Handler.getPlayerDAO().getForfeitStatus(Handler.getCurrentGameId());
-
-                // Show forfeit dialog if forfeit is initiated
-                if (votes[0] != 0 || votes[1] != 0 && !forfeit) {
-                    Platform.runLater(() -> {
-                        forfeit();
-
-                        // Set timer on wait
-                        try {
-                            forfeitTimer.wait();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    });
-                }
-            }
-        };
-
-        // Check for forfeit every second
-        forfeitTimer.scheduleAtFixedRate(forfeitTask, 0L, 1000L);
 
         // Set default alert box for leaving when window is closed
         Handler.getSceneManager().getWindow().setOnCloseRequest(e -> {
@@ -174,6 +152,7 @@ public class GameController {
             // Check if yes button is pressed
             if (alertDialog.getResult().getButtonData().isDefaultButton()) {
                 endGameForPlayer();
+                stopTimers();
 
                 // Logout user
                 Handler.getAccountDAO().setInactive(USERNAME);
@@ -210,11 +189,14 @@ public class GameController {
      */
     public void endGameForPlayer() {
         // Remove player from lobby
-        Handler.getAccountDAO().setInactive(USERNAME);
+//        Handler.getAccountDAO().setInactive(USERNAME);
         Handler.getLobbyDAO().removePlayer(USERNAME, Handler.getLobbyDAO().getLobbyId(USERNAME));
         game.getEntities().removePlayer(USERNAME);
 
-        // Stop timers
+        stopTimers();
+    }
+
+    public static void stopTimers() {
         databaseTimer.cancel();
         databaseTimer.purge();
         ChatController.getChatTimer().cancel();
@@ -228,6 +210,8 @@ public class GameController {
      * A forfeit dialog will appear on the screen
      */
     public void forfeit() {
+        forfeitTimer.cancel();
+        forfeitTimer.purge();
         forfeit = true;
         System.out.println("Forfeit variable: " + forfeit);
 
@@ -240,6 +224,32 @@ public class GameController {
         // Hide properties dialog and show forfeit dialog
         propertiesContainer.setVisible(false);
         forfeitContainer.setVisible(true);
+
+        if (!forfeit) {
+            startForfeitTimer();
+            backgroundOverlay.setVisible(false);
+        }
+    }
+
+    public void startForfeitTimer() {
+        // Setup forfeit task
+        forfeitTask = new TimerTask() {
+            @Override
+            public void run() {
+                // Get votes from database
+                int[] votes = Handler.getPlayerDAO().getForfeitStatus(Handler.getCurrentGameId());
+
+                // Show forfeit dialog if forfeit is initiated
+                if (votes[0] != 0 || votes[1] != 0 && !forfeit) {
+                    Platform.runLater(() -> {
+                        forfeit();
+                    });
+                }
+            }
+        };
+
+        // Check for forfeit every second
+        forfeitTimer.scheduleAtFixedRate(forfeitTask, 0L, 1000L);
     }
 
     /**

@@ -178,9 +178,12 @@ public class ForfeitController {
         else {
             // Hide forfeit container and set variable
             Handler.getForfeitContainer().setVisible(false);
-            GameController.forfeit = false;
-            GameController.forfeitTimer.notify();
+            Handler.getPlayerDAO().resetForfeitStatus(GAME_ID);
+
             System.out.println("Forfeit variable in forfeitcontroller: " + GameController.forfeit);
+
+            GameController.forfeit = false;
+            //GameController.startForfeitTimer();
         }
     }
 
@@ -192,6 +195,8 @@ public class ForfeitController {
         String res = "Game will continue";
         if (votesForQuit > votesForContinue) res = "Game will quit";
         System.out.println("FORFEIT RESULT: " + res);
+
+        GameController.stopTimers();
 
         // End the game
         GameLogic.endGame();
