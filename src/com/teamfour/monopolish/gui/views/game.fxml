@@ -145,7 +145,10 @@
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <ImageView fitHeight="50.0" fitWidth="52.0" layoutX="20.0" layoutY="60.0" opacity="0.7" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fitHeight="50.0" fitWidth="52.0" layoutX="20.0" layoutY="60.0" opacity="0.7" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="file:res/gui/Game/tax.png" />
+                           </image></ImageView>
                      </children>
                   </AnchorPane>
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="8" GridPane.rowIndex="9">
