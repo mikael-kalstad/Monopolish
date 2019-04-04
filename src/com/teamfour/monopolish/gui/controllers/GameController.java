@@ -446,7 +446,7 @@ public class GameController {
     }
 
     /**
-     * Checks to see what form of tile you are on and call the event accordingly
+     * Checks to see what form of tile you are on and enable / disable player controls accordingly
      */
     private void updateClientControls() {
         // Remove previous cards
@@ -530,10 +530,12 @@ public class GameController {
 
         if (game.getBoard().getTileType(yourPosition) == Board.COMMUNITY_TAX) {
             payIncomeTaxBtn.setVisible(true);
+            payIncomeTaxBtn.setDisable(false);
             endturnBtn.setDisable(true);
             rolldiceBtn.setDisable(true);
         } else {
             payIncomeTaxBtn.setVisible(false);
+            payIncomeTaxBtn.setDisable(true);
         }
     }
 
@@ -683,6 +685,7 @@ public class GameController {
      */
     public void rentTransaction() {
         GameLogic.payRent();
+        updateBoard();
 
         freeParkingCard.setVisible(false);
         payRentBtn.setDisable(true);
@@ -751,6 +754,7 @@ public class GameController {
      */
     public void payTax() {
         GameLogic.payTax();
+        updateBoard();
         payIncomeTaxBtn.setDisable(true);
         int[] currentDice = game.getDice().getLastThrow();
         if (currentDice[0] == currentDice[1] && !game.getEntities().getYou().isInJail()) {
