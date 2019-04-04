@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="950.0" prefWidth="1500.0" style="-fx-background-color: #424242;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.monopolish.gui.controllers.TradeController">
+<AnchorPane prefHeight="950.0" prefWidth="1500.0" style="-fx-background-color: #616161; -fx-background-radius: 50;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.monopolish.gui.controllers.TradeController">
    <children>
       <AnchorPane layoutX="25.0" layoutY="116.0" prefHeight="500.0" prefWidth="712.5" style="-fx-background-color: #EEEEEE;">
          <children>

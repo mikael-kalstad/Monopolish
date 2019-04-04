@@ -19,6 +19,8 @@ public class PropertyDAO extends DataAccessObject {
      * @param game_id the id of the current game
      */
     public ArrayList<Property> getAllProperties(int game_id) throws SQLException {
+        CallableStatement cStmt = null;
+        ResultSet rs = null;
         ArrayList<Property> props = new ArrayList<>();
         try {
             getConnection();
@@ -26,20 +28,19 @@ public class PropertyDAO extends DataAccessObject {
 
             cStmt.setInt(1, game_id);
 
-            ResultSet rs;
-
             if (cStmt.execute()) {
                 rs = cStmt.getResultSet();
                 while (rs.next()) {
                     Property property = getGamePropertyFromResultSet(rs);
                     props.add(property);
                 }
-                rs.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new SQLException();
         } finally {
+            close(rs);
+            close(cStmt);
             releaseConnection();
         }
 
@@ -52,8 +53,9 @@ public class PropertyDAO extends DataAccessObject {
      * @param username the username of the player whose properties are returned
      */
     public ArrayList<Property> getPropertiesByOwner(int gameId, String username) throws SQLException {
+        CallableStatement cStmt = null;
+        ResultSet rs = null;
         ArrayList<Property> props = new ArrayList<>();
-
         try {
             getConnection();
             cStmt = connection.prepareCall("{CALL property_get_by_owner(?, ?)}");
@@ -61,20 +63,19 @@ public class PropertyDAO extends DataAccessObject {
             cStmt.setInt(1, gameId);
             cStmt.setString(2, username);
 
-            ResultSet rs;
-
             if (cStmt.execute()) {
                 rs = cStmt.getResultSet();
                 while (rs.next()) {
                     Property property = getGamePropertyFromResultSet(rs);
                     props.add(property);
                 }
-                rs.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new SQLException();
         } finally {
+            close(rs);
+            close(cStmt);
             releaseConnection();
         }
 
@@ -87,6 +88,7 @@ public class PropertyDAO extends DataAccessObject {
      * @param game_id the id of the current game
      */
     public void updateProperty(Property prop, int game_id) throws SQLException {
+        CallableStatement cStmt = null;
         try {
             getConnection();
             cStmt = connection.prepareCall("{call property_update(?, ?, ?, ?, ?)}");
@@ -105,6 +107,7 @@ public class PropertyDAO extends DataAccessObject {
             e.printStackTrace();
             throw new SQLException();
         } finally {
+            close(cStmt);
             releaseConnection();
         }
     }
@@ -115,6 +118,7 @@ public class PropertyDAO extends DataAccessObject {
      *
      */
     public void endGame(int game_id) throws SQLException {
+        CallableStatement cStmt = null;
         try {
             getConnection();
             cStmt = connection.prepareCall("{call property_clean(?)}");
@@ -126,11 +130,14 @@ public class PropertyDAO extends DataAccessObject {
             e.printStackTrace();
             throw new SQLException();
         } finally {
+            close(cStmt);
             releaseConnection();
         }
     }
 
     public ArrayList<Property> getColorSet(int gameId, String colorHex) throws SQLException {
+        CallableStatement cStmt = null;
+        ResultSet rs = null;
         ArrayList<Property> properties = new ArrayList<>();
         try {
             getConnection();
@@ -138,8 +145,6 @@ public class PropertyDAO extends DataAccessObject {
 
             cStmt.setInt(1, gameId);
             cStmt.setString(2, colorHex);
-
-            ResultSet rs;
 
             if (cStmt.execute()) {
                 rs = cStmt.getResultSet();
@@ -152,6 +157,8 @@ public class PropertyDAO extends DataAccessObject {
             e.printStackTrace();
             throw new SQLException();
         } finally {
+            close(rs);
+            close(cStmt);
             releaseConnection();
         }
 

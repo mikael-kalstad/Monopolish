@@ -2,6 +2,7 @@ package com.teamfour.monopolish.game;
 
 import com.teamfour.monopolish.database.DataAccessObject;
 
+import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -23,6 +24,7 @@ public class GameDAO extends DataAccessObject {
      * @throws SQLException
      */
     public int insertGame(int lobbyId, String username) {
+        CallableStatement cStmt = null;
         int gameId = -1;
         try {
             getConnection();
@@ -37,6 +39,7 @@ public class GameDAO extends DataAccessObject {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
+            close(cStmt);
             releaseConnection();
         }
 
@@ -50,14 +53,14 @@ public class GameDAO extends DataAccessObject {
      * @throws SQLException
      */
     public String getCurrentPlayer(int gameId) throws SQLException {
+        CallableStatement cStmt = null;
+        ResultSet rs = null;
         String player = "";
         try {
             getConnection();
             cStmt = connection.prepareCall("{call game_get_current_player(?)}");
 
             cStmt.setInt(1, gameId);
-
-            ResultSet rs;
 
             if (cStmt.execute()) {
                 rs = cStmt.getResultSet();
@@ -83,6 +86,7 @@ public class GameDAO extends DataAccessObject {
      * @throws SQLException
      */
     public boolean setCurrentPlayer(int gameId, String currentPlayer) throws SQLException {
+        CallableStatement cStmt = null;
         int count = 0;
         try {
             getConnection();
@@ -96,6 +100,7 @@ public class GameDAO extends DataAccessObject {
             e.printStackTrace();
             throw new SQLException();
         } finally {
+            close(cStmt);
             releaseConnection();
         }
 
@@ -108,6 +113,7 @@ public class GameDAO extends DataAccessObject {
      * @return True if operation was successful
      */
     public boolean finishGame(int gameId) {
+        CallableStatement cStmt = null;
         int count = 0;
         try {
             getConnection();
@@ -119,6 +125,7 @@ public class GameDAO extends DataAccessObject {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
+            close(cStmt);
             releaseConnection();
         }
 
@@ -132,6 +139,7 @@ public class GameDAO extends DataAccessObject {
      * @throws SQLException
      */
     public int getWinner(int gameId) throws SQLException {
+        CallableStatement cStmt = null;
         int winnerId = -1;
         try {
             getConnection();
@@ -147,6 +155,7 @@ public class GameDAO extends DataAccessObject {
             e.printStackTrace();
             throw new SQLException();
         } finally {
+            close(cStmt);
             releaseConnection();
         }
 
@@ -160,13 +169,13 @@ public class GameDAO extends DataAccessObject {
      */
 
     public ArrayList<String[]> getChat(int gameId) {
+        CallableStatement cStmt = null;
+        ResultSet rs = null;
         ArrayList<String[]> chatList= new ArrayList<String[]>();
         try {
             getConnection();
             cStmt = connection.prepareCall("{call chat_get(?)}");
             cStmt.setInt(1, gameId);
-
-            ResultSet rs;
 
             if (cStmt.execute()) {
                 rs = cStmt.getResultSet();
@@ -177,11 +186,12 @@ public class GameDAO extends DataAccessObject {
                     chatLine[2] = rs.getString("message");
                     chatList.add(chatLine);
                 }
-                rs.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
+            close(rs);
+            close(cStmt);
             releaseConnection();
         }
         return chatList;
@@ -192,6 +202,7 @@ public class GameDAO extends DataAccessObject {
      * @param message the chat-message
      */
     public void addChatMessage(String username, String message){
+        CallableStatement cStmt = null;
         try {
             getConnection();
             cStmt = connection.prepareCall("{call chat_add(?,?)}");
@@ -202,11 +213,13 @@ public class GameDAO extends DataAccessObject {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
+            close(cStmt);
             releaseConnection();
         }
     }
 
     public void addEvent(int gameId, String message){
+        CallableStatement cStmt = null;
         try {
             getConnection();
             cStmt = connection.prepareCall("{call event_add(?,?)}");
@@ -218,28 +231,30 @@ public class GameDAO extends DataAccessObject {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
+            close(cStmt);
             releaseConnection();
         }
     }
 
     public String getEvent(int gameId) {
+        CallableStatement cStmt = null;
+        ResultSet rs = null;
         String event_text ="";
         try {
             getConnection();
             cStmt = connection.prepareCall("{call event_get(?)}");
             cStmt.setInt(1, gameId);
 
-            ResultSet rs;
-
             if (cStmt.execute()) {
                 rs = cStmt.getResultSet();
                 while (rs.next())
                     event_text = rs.getString("event_text");
-                rs.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
+            close(rs);
+            close(cStmt);
             releaseConnection();
         }
         return event_text;
