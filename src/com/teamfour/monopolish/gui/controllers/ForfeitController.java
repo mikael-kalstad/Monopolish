@@ -1,5 +1,6 @@
 package com.teamfour.monopolish.gui.controllers;
 
+import com.teamfour.monopolish.game.GameLogic;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -10,6 +11,11 @@ import javafx.scene.text.Text;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * Controller class for forfeit view.
+ * When initialized a timer will check for votes.
+ * When countdown is over the game will either end or continue based on the votes.
+ */
 public class ForfeitController {
     // Containers for voting
     @FXML private Pane voteQuit;
@@ -75,8 +81,8 @@ public class ForfeitController {
         String hoverColor = "#d13734";
         String backgroundRadius = " 0 0 0 15";
 
+        // Continue color
         if (container.getId().equals("voteContinue")) {
-            // Continue color
             color = "#52d35e";
             hoverColor = "#01870e";
             backgroundRadius = "0 0 15 0";
@@ -123,14 +129,18 @@ public class ForfeitController {
                     stopTimer();
                 }
 
+                // Change the time to red when the time is 5 or less.
                 if (time <= 5) {
                     FxUtils.setTextColor(timeValue, "red");
                 }
 
+                // Check if time is positive
                 if (time > 0) {
                     time--;
                     timeValue.setText(String.valueOf(time));
-                } else {
+                }
+                // Countdown is over, do action based on votes
+                else {
                     stopTimer();
 
                     if (votesForQuit > votesForContinue) endGame(); // Quit game
@@ -143,24 +153,25 @@ public class ForfeitController {
         countdownTimer.scheduleAtFixedRate(countdownTask, 0L, 1000L);
     }
 
+    /**
+     * Stop the countdown timer
+     */
     private void stopTimer() {
         countdownTimer.cancel();
         countdownTimer.purge();
     }
 
+    /**
+     * End the game and switch to Dashboard
+     */
     private void endGame() {
+        // TESTING PURPOSES
         String res = "Game will continue";
         if (votesForQuit > votesForContinue) res = "Game will quit";
-
         System.out.println("FORFEIT RESULT: " + res);
 
-        // End game in database
-        Handler.getPlayerDAO().endGame(GAME_ID);
-        Handler.getGameDAO().finishGame(GAME_ID);
-
-        // Delete lobby
-        int lobbyId = Handler.getLobbyDAO().getLobbyId(USERNAME);
-        Handler.getLobbyDAO().deleteLobby(lobbyId);
+        // End the game
+        GameLogic.endGame();
 
         // Switch to dashboard!
         Platform.runLater(() -> Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue()));

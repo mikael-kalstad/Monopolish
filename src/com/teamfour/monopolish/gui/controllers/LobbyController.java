@@ -118,7 +118,7 @@ public class LobbyController {
                 // Check if yes button is pressed
                 if (alertDialog.getResult().getButtonData().isDefaultButton()) {
                     // Remove user if in a lobby
-                    Handler.getAccountDAO().setInactive(Handler.getAccount().getUsername());    // Sets user to inactive in DB
+                    Handler.getAccountDAO().setInactive(Handler.getAccount().getUsername());
                     Handler.getLobbyDAO().removePlayer(USERNAME, current_lobby_id);
 
                     refreshTimer.cancel(); // Stop refreshTimer thread

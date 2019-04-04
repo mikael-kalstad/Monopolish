@@ -225,6 +225,21 @@ public class GameLogic {
         updateToDatabase();
     }
 
+    /**
+     * Will be run when the game is finished or the players choose to forfeit.
+     * It will update and clean up the database to make sure scores are saved,
+     * and that the game and lobby is deleted to avoid issues when players play again later.
+     */
+    public static void endGame() {
+        // End game in database
+        Handler.getPlayerDAO().endGame(Handler.getCurrentGameId());
+        Handler.getGameDAO().finishGame(Handler.getCurrentGameId());
+
+        // Delete lobby
+        int lobbyId = Handler.getLobbyDAO().getLobbyId(Handler.getAccount().getUsername());
+        Handler.getLobbyDAO().deleteLobby(lobbyId);
+    }
+
     public static void updateFromDatabase() {
         try {
             // Update entities

@@ -42,17 +42,15 @@ import java.util.TimerTask;
  */
 
 public class GameController {
-    // Timer for checking database updates
+    // Timer for checking database updates and forfeit
     private Timer databaseTimer = new Timer();
+    Timer forfeitTimer = new Timer();
 
     // GameLogic for handling more intricate game operations
     private Game game;
     private int current_money = 0;
     private final String USERNAME = Handler.getAccount().getUsername();
     private boolean firstTurn = true;
-
-    // Array for events in game
-    private ArrayList<Text> eventList = new ArrayList<>();
 
     // Background overlays
     @FXML private Pane backgroundOverlay;
@@ -63,7 +61,6 @@ public class GameController {
     @FXML private Button buyPropertyBtn, payRentBtn;
     @FXML private Label propertyOwned;
     @FXML private GridPane gamegrid;
-    @FXML private ListView eventlog;
 
     // Dice images in board
     @FXML ImageView dice1_img, dice2_img;
@@ -91,8 +88,6 @@ public class GameController {
     @FXML private Pane tradeContainer;
 
     // Message popup
-//    @FXML private Pane messagePopup;
-//    @FXML private Text msgPopupText;
     @FXML private Pane messagePopupContainer;
 
     // Notification toggle
@@ -126,37 +121,25 @@ public class GameController {
         // Setup messagePop
         MessagePopupController.setup(messagePopupContainer, 5);
 
-        // Load chat
-//        try {
-//            Node chat = FXMLLoader.load(getClass().getResource(ViewConstants.FILE_PATH.getValue() + ViewConstants.CHAT.getValue()));
-//            chatContainer.getChildren().add(chat);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        // Setup chat
         addElementToContainer(ViewConstants.CHAT.getValue(), chatContainer);
 
+        // Update the board
         updateBoard();
 
         // Start the game!
         waitForTurn();
 
-
-
-        // Start forfeit timer
-        Timer forfeitTimer = new Timer();
-
+        // Check periodically if someone initiated a forfeit
         TimerTask forfeitTask = new TimerTask() {
             @Override
             public void run() {
+                // Get votes from database
                 int[] votes = Handler.getPlayerDAO().getForfeitStatus(Handler.getCurrentGameId());
 
+                // Show forfeit dialog if forfeit is initiated
                 if (votes[0] != 0 || votes[1] != 0 && !forfeitContainer.isVisible()) {
-                    // Show forfeit dialog
                     Platform.runLater(() -> forfeit());
-
-                    // Stop timer
-                    forfeitTimer.cancel();
-                    forfeitTimer.purge();
                 }
             }
         };
@@ -177,15 +160,7 @@ public class GameController {
 
             // Check if yes button is pressed
             if (alertDialog.getResult().getButtonData().isDefaultButton()) {
-                // Remove player from lobby
-                Handler.getAccountDAO().setInactive(USERNAME);
-                Handler.getLobbyDAO().removePlayer(USERNAME, Handler.getLobbyDAO().getLobbyId(USERNAME));
-                game.getEntities().removePlayer(USERNAME);
-
-                databaseTimer.cancel(); // Stop databaseTimer thread
-                databaseTimer.purge();
-                ChatController.getChatTimer().cancel();
-                ChatController.getChatTimer().purge();
+                endGameForPlayer();
 
                 // Logout user
                 Handler.getAccountDAO().setInactive(USERNAME);
@@ -209,48 +184,30 @@ public class GameController {
         alertDialog.showAndWait();
 
         if (alertDialog.getResult().getButtonData().isDefaultButton()) {
-            databaseTimer.cancel(); // Stop timer thread
-            databaseTimer.purge();
-            ChatController.getChatTimer().cancel();
-            ChatController.getChatTimer().purge();
-
-            // Remove player from lobby
-            int lobbyId = Handler.getLobbyDAO().getLobbyId(USERNAME);
-            System.out.println("lobby id when leaving... " + lobbyId);
-            Handler.getLobbyDAO().removePlayer(USERNAME, Handler.getLobbyDAO().getLobbyId(USERNAME));
-            game.getEntities().removePlayer(USERNAME);
+            endGameForPlayer();
 
             // Change view to dashboard
             Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
-            databaseTimer.cancel(); // Stop timer thread
-            databaseTimer.purge();
         }
     }
 
     /**
-     * Toggles all notifications in the game, on or off
+     * This method will be run before leaving or quitting the game.
+     * It will sort out all DB queries and stop all timers required.
      */
-    public void toggleNotification() {
-        // Turn of notifications and set image and text
-        if (showNotifications) {
-            notificationLogo.setImage(new Image("file:res/gui/Game/toggleOff.png"));
-            notificationText.setText(MSG_NOTIFICATION_OFF);
-            showNotifications = false;
-            messagePopupContainer.setVisible(false);
-        } else {
-            notificationLogo.setImage(new Image("file:res/gui/Game/toggleOn.png"));
-            notificationText.setText(MSG_NOTIFICATION_ON);
-            showNotifications = true;
-            messagePopupContainer.setVisible(true);
-        }
-    }
+    public void endGameForPlayer() {
+        // Remove player from lobby
+        Handler.getAccountDAO().setInactive(USERNAME);
+        Handler.getLobbyDAO().removePlayer(USERNAME, Handler.getLobbyDAO().getLobbyId(USERNAME));
+        game.getEntities().removePlayer(USERNAME);
 
-    /**
-     * Toggle help overlay with help button
-     */
-    public void toggleHelpOverlay() {
-        if (helpOverlay.isVisible()) helpOverlay.setVisible(false);
-        else helpOverlay.setVisible(true);
+        // Stop timers
+        databaseTimer.cancel();
+        databaseTimer.purge();
+        ChatController.getChatTimer().cancel();
+        ChatController.getChatTimer().purge();
+        forfeitTimer.cancel();
+        forfeitTimer.purge();
     }
 
     /**
@@ -282,6 +239,32 @@ public class GameController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Toggles all notifications in the game, on or off
+     */
+    public void toggleNotification() {
+        // Turn of notifications and set image and text
+        if (showNotifications) {
+            notificationLogo.setImage(new Image("file:res/gui/Game/toggleOff.png"));
+            notificationText.setText(MSG_NOTIFICATION_OFF);
+            showNotifications = false;
+            messagePopupContainer.setVisible(false);
+        } else {
+            notificationLogo.setImage(new Image("file:res/gui/Game/toggleOn.png"));
+            notificationText.setText(MSG_NOTIFICATION_ON);
+            showNotifications = true;
+            messagePopupContainer.setVisible(true);
+        }
+    }
+
+    /**
+     * Toggle help overlay with help button
+     */
+    public void toggleHelpOverlay() {
+        if (helpOverlay.isVisible()) helpOverlay.setVisible(false);
+        else helpOverlay.setVisible(true);
     }
 
     /**
