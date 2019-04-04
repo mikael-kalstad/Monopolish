@@ -10,9 +10,9 @@ CREATE PROCEDURE new_lobby(IN username VARCHAR(30), IN lobby_name varchar(30), O
 
     -- Generate unique room code
     DECLARE code INT DEFAULT 0;
-    SET code = FLOOR(RAND()*(100000-1+1)+1);
+    SET code = FLOOR(RAND()*(999999-1+1)+1);
     WHILE (code IN (SELECT session_code FROM game)) DO
-      SET code = FLOOR(RAND()*(100000-1+1)+1);
+      SET code = FLOOR(RAND()*(999999-1+1)+1);
     END WHILE;
 
     SET lobby_id = (SELECT IFNULL((MAX(room_id)+1), 1)FROM lobby);

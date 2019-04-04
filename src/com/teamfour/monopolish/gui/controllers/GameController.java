@@ -442,6 +442,7 @@ public class GameController {
         // If the player didn't throw two equal dices, disable the dice button. If not, the player can throw dice again
         if (diceValues[0] != diceValues[1]) {
             rolldiceBtn.setDisable(true);
+            payBailBtn.setDisable(true);
             endturnBtn.setDisable(false);
         }
 
@@ -695,6 +696,7 @@ public class GameController {
     public void payBail() {
         if (GameLogic.payBail()) {
             payBailBtn.setVisible(false);
+            payBailBtn.setDisable(true);
         } else {
             Alert messageBox = new Alert(Alert.AlertType.INFORMATION,
                     "You do not have enough funds to pay bail.");
