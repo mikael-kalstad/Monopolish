@@ -51,21 +51,32 @@ public class ForfeitController {
         voteQuit.onMouseClickedProperty().set(e -> {
             Handler.getPlayerDAO().setForfeitStatus(USERNAME, GAME_ID, 1);
             yourVoteText.setText(VOTE_QUIT_MSG);
-            yourVoteText.setFill(Paint.valueOf("red"));
+            FxUtils.setTextColor(yourVoteText, "red");
         });
 
         // User want to continue the game
         voteContinue.onMouseClickedProperty().set(e -> {
             Handler.getPlayerDAO().setForfeitStatus(USERNAME, GAME_ID, 2);
             yourVoteText.setText(VOTE_CONTINUE_MSG);
-            yourVoteText.setFill(Paint.valueOf("green"));
+            FxUtils.setTextColor(yourVoteText, "green");
         });
+
+        // Get votes in forfeit
+        int[] votes = Handler.getPlayerDAO().getForfeitStatus(GAME_ID);
+
+        // If you are the first to forfeit, set automatically to quit.
+        if (votes[0] + votes[1] > 0) {
+            Handler.getPlayerDAO().setForfeitStatus(USERNAME, GAME_ID, 1);
+            yourVoteText.setText(VOTE_QUIT_MSG);
+            FxUtils.setTextColor(yourVoteText, "red");
+        }
 
         // Change color on hover to show selection
         setOnHover(voteQuit);
         setOnHover(voteContinue);
 
         // Start refreshing method
+        System.out.println("Initialize is RUN!!!");
         refresh();
     }
 
@@ -113,6 +124,7 @@ public class ForfeitController {
         TimerTask countdownTask = new TimerTask() {
             @Override
             public void run() {
+                // Get votes in forfeit
                 int[] votes = Handler.getPlayerDAO().getForfeitStatus(GAME_ID);
                 votesForQuit = votes[0];
                 votesForContinue = votes[1];
@@ -123,10 +135,7 @@ public class ForfeitController {
 
                 // Check if every player has voted and set action accordingly
                 if (votesForQuit + votesForContinue == NUM_OF_PLAYERS) {
-                    if (votesForQuit > votesForContinue) endGame(); // Quit game
-                    else Handler.getForfeitContainer().setVisible(false); // Continue game
-                    Handler.getPlayerDAO().setForfeitStatus(USERNAME, GAME_ID, 0);
-
+                    checkVotes();
                     stopTimer();
                 }
 
@@ -140,12 +149,11 @@ public class ForfeitController {
                     time--;
                     timeValue.setText(String.valueOf(time));
                 }
+
                 // Countdown is over, do action based on votes
                 else {
                     stopTimer();
-
-                    if (votesForQuit > votesForContinue) endGame(); // Quit game
-                    else Handler.getForfeitContainer().setVisible(false); // Continue game
+                    checkVotes();
                 }
             }
         };
@@ -160,6 +168,18 @@ public class ForfeitController {
     private void stopTimer() {
         countdownTimer.cancel();
         countdownTimer.purge();
+    }
+
+    /**
+     * Check which option has the most votes and handle action based on the votes.
+     */
+    private void checkVotes() {
+        if (votesForQuit > votesForContinue) endGame();
+        else {
+            // Hide forfeit container and set variable
+            GameController.forfeitContainer.setVisible(false);
+            GameController.forfeit = false;
+        }
     }
 
     /**

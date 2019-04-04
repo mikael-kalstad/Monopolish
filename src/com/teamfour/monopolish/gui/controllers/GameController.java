@@ -78,7 +78,8 @@ public class GameController {
 
     // Container for chat element
     @FXML private Pane chatContainer;
-    @FXML private Pane forfeitContainer;
+    @FXML public static Pane forfeitContainer;
+    public static boolean forfeit = false;
 
     // Properties dialog
     @FXML private Pane propertiesContainer;
@@ -141,7 +142,7 @@ public class GameController {
                 int[] votes = Handler.getPlayerDAO().getForfeitStatus(Handler.getCurrentGameId());
 
                 // Show forfeit dialog if forfeit is initiated
-                if (votes[0] != 0 || votes[1] != 0 && !forfeitContainer.isVisible()) {
+                if (votes[0] != 0 || votes[1] != 0 && !forfeit) {
                     Platform.runLater(() -> forfeit());
                 }
             }
@@ -218,6 +219,8 @@ public class GameController {
      * A forfeit dialog will appear on the screen
      */
     public void forfeit() {
+        forfeit = true;
+
         // Load forfeit GUI
         addElementToContainer(ViewConstants.FORFEIT.getValue(), forfeitContainer);
 
