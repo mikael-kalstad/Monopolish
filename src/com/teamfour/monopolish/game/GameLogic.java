@@ -145,7 +145,7 @@ public class GameLogic {
     public static boolean payBail() {
         Player yourPlayer = game.getEntities().getYou();
         if (yourPlayer.getMoney() >= GameConstants.BAIL_COST) {
-            game.getEntities().transferMoneyBank(yourPlayer.getUsername(), GameConstants.BAIL_COST);
+            game.getEntities().transferMoneyBank(yourPlayer.getUsername(), -GameConstants.BAIL_COST);
             getOutOfJail();
             return true;
         } else {

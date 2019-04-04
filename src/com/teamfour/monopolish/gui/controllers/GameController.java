@@ -530,8 +530,6 @@ public class GameController {
 
         if (game.getBoard().getTileType(yourPosition) == Board.COMMUNITY_TAX) {
             payIncomeTaxBtn.setVisible(true);
-            payRentBtn.setDisable(false);
-            payRentBtn.setVisible(true);
             endturnBtn.setDisable(true);
             rolldiceBtn.setDisable(true);
         } else {
