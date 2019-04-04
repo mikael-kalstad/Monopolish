@@ -21,6 +21,7 @@ public class AccountDAO extends DataAccessObject {
      * @throws SQLException
      */
     public int insertAccount(Account account, String password) throws SQLException {
+        CallableStatement cStmt = null;
         int status = 0;
         try {
             getConnection();
@@ -48,6 +49,7 @@ public class AccountDAO extends DataAccessObject {
             e.printStackTrace();
             throw new SQLException();
         } finally {
+            close(cStmt);
             releaseConnection();
         }
 
@@ -62,6 +64,7 @@ public class AccountDAO extends DataAccessObject {
      * @return 1 if successful, 0 if no user, -1 if wrong password
      */
     public int resetPassword(String username, String currentPassword, String newPassword) throws SQLException {
+        CallableStatement cStmt = null;
         int status = 0;
         try {
             getConnection();
@@ -79,6 +82,7 @@ public class AccountDAO extends DataAccessObject {
             e.printStackTrace();
             throw new SQLException();
         } finally {
+            close(cStmt);
             releaseConnection();
         }
 
@@ -92,7 +96,8 @@ public class AccountDAO extends DataAccessObject {
      * @return Null if credentials are wrong
      */
     public Account getAccountByCredentials(String username, String password) throws SQLException {
-        ResultSet rs;
+        CallableStatement cStmt = null;
+        ResultSet rs = null;
         Account account = null;
         try {
             getConnection();
@@ -109,13 +114,13 @@ public class AccountDAO extends DataAccessObject {
 
                 account = new Account(rs.getString(1), rs.getString(2), rs.getDate(3).toLocalDate(),
                         0, false);
-
-                rs.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new SQLException();
         } finally {
+            close(rs);
+            close(cStmt);
             releaseConnection();
         }
 
@@ -123,7 +128,7 @@ public class AccountDAO extends DataAccessObject {
     }
 
     public void setInactive(String username) /*throws SQLException */{
-
+        CallableStatement cStmt = null;
         try {
             getConnection();
             //cStmt = connection.prepareCall("{call account_insert_user(?, ?, ?, ?, ?)}");
@@ -137,15 +142,16 @@ public class AccountDAO extends DataAccessObject {
             e.printStackTrace();
             //throw new SQLException();
         } finally {
+            close(cStmt);
             releaseConnection();
         }
     }
 
     public int getGamesPlayed(String username) /*throws SQLException */{
-
+        CallableStatement cStmt = null;
+        ResultSet rs = null;
         int games = 0;
         try {
-            ResultSet rs;
             getConnection();
             cStmt = connection.prepareCall("{call account_games_played(?)}");
 
@@ -157,19 +163,21 @@ public class AccountDAO extends DataAccessObject {
                     return (0);
                 }
                 games = rs.getInt(1);
-                rs.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
             //throw new SQLException();
         } finally {
+            close(rs);
+            close(cStmt);
             releaseConnection();
         }
         return games;
     }
 
     public int getHighscore(String username) /*throws SQLException */{
-        ResultSet rs;
+        CallableStatement cStmt = null;
+        ResultSet rs = null;
         int score = 0;
         try {
             getConnection();
@@ -181,13 +189,13 @@ public class AccountDAO extends DataAccessObject {
                 rs = cStmt.getResultSet();
                 if (rs.next())
                     score = rs.getInt(1);
-
-                rs.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
             //throw new SQLException();
         } finally {
+            close(rs);
+            close(cStmt);
             releaseConnection();
         }
         return score;

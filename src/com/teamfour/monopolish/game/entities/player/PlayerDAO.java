@@ -3,6 +3,7 @@ package com.teamfour.monopolish.game.entities.player;
 import com.teamfour.monopolish.database.ConnectionPool;
 import com.teamfour.monopolish.database.DataAccessObject;
 
+import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class PlayerDAO extends DataAccessObject {
      */
 
     public ArrayList<Player> createPlayers(int game_id, String[] usernames) throws SQLException {
+        CallableStatement cStmt = null;
         ArrayList<Player> players = null;
         try {
             getConnection();
@@ -49,6 +51,7 @@ public class PlayerDAO extends DataAccessObject {
      * @param username the username of the player that is created
      */
     public Player createPlayer(int game_id, String username) throws SQLException {
+        CallableStatement cStmt = null;
         ArrayList<Player> players = null;
         try {
             getConnection();
@@ -74,6 +77,7 @@ public class PlayerDAO extends DataAccessObject {
      * @param username the username of the player that is removed
      */
     public void removePlayer(int game_id, String username) {
+        CallableStatement cStmt = null;
         try {
             getConnection();
             cStmt = connection.prepareCall("{call player_remove(?, ?)}");
@@ -84,6 +88,7 @@ public class PlayerDAO extends DataAccessObject {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
+            close(cStmt);
             releaseConnection();
         }
     }
@@ -95,6 +100,7 @@ public class PlayerDAO extends DataAccessObject {
      * @param game_id the id of the current game
      */
     public boolean updatePlayer(Player player, int game_id) throws SQLException {
+        CallableStatement cStmt = null;
         int count = 0;
         try {
             getConnection();
@@ -113,6 +119,7 @@ public class PlayerDAO extends DataAccessObject {
             e.printStackTrace();
             throw new SQLException();
         } finally {
+            close(cStmt);
             releaseConnection();
         }
 
@@ -125,14 +132,14 @@ public class PlayerDAO extends DataAccessObject {
      * @param gameId the id of the current game
      */
     public ArrayList<Player> getPlayersInGame(int gameId) {
+        CallableStatement cStmt = null;
+        ResultSet rs = null;
         ArrayList<Player> players = new ArrayList<>();
         try {
             getConnection();
             cStmt = connection.prepareCall("{call player_getByGameId(?)}");
 
             cStmt.setInt(1, gameId);
-
-            ResultSet rs;
 
             if (cStmt.execute()) {
                 rs = cStmt.getResultSet();
@@ -147,11 +154,12 @@ public class PlayerDAO extends DataAccessObject {
 
                     players.add(new Player(username, money, position, inJail, bankrupt, active));
                 }
-                rs.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
+            close(rs);
+            close(cStmt);
             releaseConnection();
         }
 
@@ -164,6 +172,7 @@ public class PlayerDAO extends DataAccessObject {
      * @param game_id the id of the current game
      */
     public void endGame(int game_id) {
+        CallableStatement cStmt = null;
         try {
             getConnection();
             cStmt = connection.prepareCall("{call player_endgame(?)}");
@@ -175,6 +184,7 @@ public class PlayerDAO extends DataAccessObject {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
+            close(cStmt);
             releaseConnection();
         }
     }
@@ -186,6 +196,8 @@ public class PlayerDAO extends DataAccessObject {
      */
 
     public String[][] getHighscoreList() {
+        CallableStatement cStmt = null;
+        ResultSet rs = null;
         String[][] list = new String[10][2];
 
         try {
@@ -193,7 +205,6 @@ public class PlayerDAO extends DataAccessObject {
 
             cStmt = connection.prepareCall("{call player_get_highscore()}");
 
-            ResultSet rs;
             if (cStmt.execute()) {
                 int counter = 0;
                 rs = cStmt.getResultSet();
@@ -203,11 +214,12 @@ public class PlayerDAO extends DataAccessObject {
 
                     counter++;
                 }
-                rs.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
+            close(rs);
+            close(cStmt);
             releaseConnection();
         }
 
@@ -222,6 +234,7 @@ public class PlayerDAO extends DataAccessObject {
      * @param forfeitStatus 0 = default, 1 = quit, 2 = continue
      */
     public void setForfeitStatus(String username, int gameId, int forfeitStatus) {
+        CallableStatement cStmt = null;
         try {
             getConnection();
 
@@ -235,6 +248,7 @@ public class PlayerDAO extends DataAccessObject {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
+            close(cStmt);
             releaseConnection();
         }
     }
@@ -245,6 +259,8 @@ public class PlayerDAO extends DataAccessObject {
      */
 
     public int[] getForfeitStatus(int gameId) {
+        CallableStatement cStmt = null;
+        ResultSet rs = null;
         int[] list = new int[2];
 
         try {
@@ -254,25 +270,25 @@ public class PlayerDAO extends DataAccessObject {
 
             cStmt.setInt(1, gameId);
 
-            ResultSet rs;
-
             if (cStmt.execute()) {
                 rs = cStmt.getResultSet();
                 while (rs.next()) {
                     list[0] = rs.getInt(1);
                     list[1] = rs.getInt(2);
                 }
-                rs.close();
             }
         } catch (SQLException sql) {
             sql.printStackTrace();
         } finally {
+            close(rs);
+            close(cStmt);
             releaseConnection();
         }
         return list;
     }
 
     public void addTrade(String seller, String buyer, int price, int propertyId, int gameId) {
+        CallableStatement cStmt = null;
         try {
             //int sellerId = getPlayerId(seller, gameId);
             //int buyerId = getPlayerId(buyer, gameId);
@@ -290,17 +306,18 @@ public class PlayerDAO extends DataAccessObject {
             cStmt.executeUpdate();
             System.out.println("adding trade.....");
 
-
         } catch (SQLException sql) {
             sql.printStackTrace();
         } finally {
+            close(cStmt);
             releaseConnection();
         }
     }
 
 
     public ArrayList<int[]> getTrade(String username, int gameId) {
-
+        CallableStatement cStmt = null;
+        ResultSet rs = null;
         ArrayList<int[]> props = new ArrayList<>();
 
         try {
@@ -309,8 +326,6 @@ public class PlayerDAO extends DataAccessObject {
             cStmt = connection.prepareCall("{call trading_get_trade(?)}");  // player_id, game_id, forfeit_status
 
             cStmt.setString(1, username);
-
-            ResultSet rs;
 
             if (cStmt.execute()) {
                 rs = cStmt.getResultSet();
@@ -323,16 +338,18 @@ public class PlayerDAO extends DataAccessObject {
 
                     props.add(data);
                 }
-                rs.close();
             }
         } catch(SQLException sql){
             sql.printStackTrace();
         } finally{
+            close(rs);
+            close(cStmt);
             releaseConnection();
         }
         return props;
     }
     public void acceptTrade(String seller, String buyer) {
+        CallableStatement cStmt = null;
         try {
             getConnection();
 
@@ -343,11 +360,14 @@ public class PlayerDAO extends DataAccessObject {
         } catch(SQLException sql){
             sql.printStackTrace();
         } finally{
+            close(cStmt);
             releaseConnection();
         }
     }
 
     public int getPlayerId(String username, int gameId) {
+        CallableStatement cStmt = null;
+        ResultSet rs = null;
         int playerId = 0;
         try {
             getConnection();
@@ -355,8 +375,6 @@ public class PlayerDAO extends DataAccessObject {
 
             cStmt.setString(1, username);
             cStmt.setInt(2, gameId);
-
-            ResultSet rs;
 
             if (cStmt.execute()) {
                 rs = cStmt.getResultSet();
@@ -368,6 +386,8 @@ public class PlayerDAO extends DataAccessObject {
         } catch (SQLException sql) {
             sql.printStackTrace();
         } finally {
+            close(rs);
+            close(cStmt);
             releaseConnection();
         }
         return playerId;

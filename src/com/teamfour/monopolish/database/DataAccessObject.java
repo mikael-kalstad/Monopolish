@@ -2,6 +2,7 @@ package com.teamfour.monopolish.database;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -15,7 +16,6 @@ import java.sql.SQLException;
 public abstract class DataAccessObject {
     // Attributes
     protected Connection connection;
-    protected CallableStatement cStmt;
 
     /**
      * Gets a connection from the main connection pool
@@ -34,14 +34,22 @@ public abstract class DataAccessObject {
      */
     protected void releaseConnection() {
         ConnectionPool.getMainConnectionPool().releaseConnection(connection);
-        /*
+
+        connection = null;
+    }
+
+    protected void close(Object object) {
+        if (object == null) return;
         try {
-            cStmt.close();
+            if (object instanceof ResultSet) {
+                ((ResultSet) object).close();
+            } else if (object instanceof CallableStatement) {
+                ((CallableStatement)object).close();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        */
 
-        connection = null;
+
     }
 }
