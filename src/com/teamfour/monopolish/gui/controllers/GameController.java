@@ -718,7 +718,7 @@ public class GameController {
         }
     }
 
-    public void clickToBuyHouse(Property property) {
+    public void clickToBuyHouse(Property property){
         //ideally the number of houses on each street cannot be more than 1 greater than that of the other streets in the same colorset, this is not implementet here
         if (((Street) property).addHouse()) {
             GameControllerDrawFx.drawHouse(housegrid, (Street) property);
