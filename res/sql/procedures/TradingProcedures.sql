@@ -62,4 +62,21 @@ CALL trading_accept_trade('giske', 'yourmum');
 
 CALL trading_accept_trade('yourmum', 'giske');
 
-DROP PROCEDURE trading_accept_trade
+DROP PROCEDURE trading_accept_trade;
+
+
+drop view if exists seller;
+drop view if exists buyer;
+drop view if exists trading_view;
+
+
+create view seller as
+  select (username) sellername, seller_id from trading join player p on trading.seller_id = p.player_id
+    join account a on p.user_id = a.user_id;
+
+create view buyer as
+  select (username) buyername, buyer_id from trading join player p on trading.buyer_id = p.player_id
+    join account a on p.user_id = a.user_id;
+
+create view trading_view as
+  select buyer.*, seller.*, price, prop_id from buyer join seller join trading on trading.seller_id = seller.seller_id and trading.buyer_id = buyer.buyer_id;
