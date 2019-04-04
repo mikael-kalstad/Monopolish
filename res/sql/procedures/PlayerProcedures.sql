@@ -165,3 +165,10 @@ CREATE PROCEDURE player_get_playerid(IN uname VARCHAR(30), IN g_id INT)
   BEGIN
     SELECT p.player_id FROM player p, account a WHERE g_id = p.game_id AND a.username = uname;
   end;
+
+DROP PROCEDURE player_reset_forfeit;
+
+CREATE PROCEDURE player_reset_forfeit(IN gameId INT)
+  BEGIN
+    UPDATE player p SET p.forfeit = 0 WHERE p.game_id = gameId;
+  end;

@@ -253,6 +253,23 @@ public class PlayerDAO extends DataAccessObject {
         }
     }
 
+    public void resetForfeitStatus(int gameId) {
+        CallableStatement cStmt = null;
+        try {
+            getConnection();
+
+            cStmt = connection.prepareCall("{call player_reset_forfeit(?)}");
+            cStmt.setInt(1, gameId);
+
+            cStmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(cStmt);
+            releaseConnection();
+        }
+    }
+
     /**
      * @param gameId
      * @return // 0 = default, 1 = quit, 2 = continue

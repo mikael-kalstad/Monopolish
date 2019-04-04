@@ -180,6 +180,7 @@ public class ForfeitController {
             Handler.getForfeitContainer().setVisible(false);
             GameController.forfeit = false;
             GameController.forfeitTimer.notify();
+            Handler.getPlayerDAO().resetForfeitStatus(GAME_ID);
             System.out.println("Forfeit variable in forfeitcontroller: " + GameController.forfeit);
         }
     }
