@@ -43,7 +43,27 @@ CREATE PROCEDURE trading_get_trade(
 
 DROP PROCEDURE trading_get_trade;
 
-CALL trading_get_trade('b');
+CALL trading_get_trade('giske');
+
+-- ---------------
+
+CREATE PROCEDURE trading_get_trade2(
+  IN buyer VARCHAR(30)
+)
+  BEGIN
+    -- DECLARE b_id INT;
+    DECLARE b_id VARCHAR(30);
+
+    SELECT t.sellername, t.buyername, t.price, t.prop_id
+    FROM trading_view t
+    WHERE t.buyername = buyer;
+  end;
+
+CALL trading_get_trade2('giske');
+
+DROP PROCEDURE trading_get_trade2;
+
+
 
 CREATE PROCEDURE trading_accept_trade(
   IN seller VARCHAR(30),

@@ -332,10 +332,10 @@ public class PlayerDAO extends DataAccessObject {
     }
 
 
-    public ArrayList<int[]> getTrade(String username, int gameId) {
+    public ArrayList<String[]> getTrade(String username, int gameId) {
         CallableStatement cStmt = null;
         ResultSet rs = null;
-        ArrayList<int[]> props = new ArrayList<>();
+        ArrayList<String[]> props = new ArrayList<>();
 
         try {
             getConnection();
@@ -347,11 +347,11 @@ public class PlayerDAO extends DataAccessObject {
             if (cStmt.execute()) {
                 rs = cStmt.getResultSet();
                 while (rs.next()) {
-                    int[] data = new int[4];
-                    data[0] = rs.getInt(1); // sellerId
-                    data[1] = rs.getInt(2); // buyerId
-                    data[2] = rs.getInt(3); // price
-                    data[3] = rs.getInt(4); // propertyId
+                    String[] data = new String[4];
+                    data[0] = rs.getString(1); // sellerId
+                    data[1] = rs.getString(2); // buyerId
+                    data[2] = rs.getString(3); // price
+                    data[3] = rs.getString(4); // propertyId
 
                     props.add(data);
                 }

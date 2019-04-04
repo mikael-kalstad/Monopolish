@@ -145,19 +145,19 @@ DROP PROCEDURE player_get_forfeit;
 /**
   Procedure that takes in game_id and counts how many players want to quit the game
  */
-CREATE PROCEDURE player_get_forfeit(IN game_id INT)
+CREATE PROCEDURE player_get_forfeit(IN g_id INT)
   BEGIN
     DECLARE quit INT;
     DECLARE fortsett INT;
 
-    SELECT COUNT(DISTINCT p.player_id) FROM player p, account a WHERE game_id = p.game_id AND p.forfeit = 1 INTO quit;
-    SELECT COUNT(DISTINCT p.player_id) FROM player p, account a WHERE game_id = p.game_id AND p.forfeit = 2 INTO fortsett;
+    SELECT COUNT(DISTINCT p.player_id) FROM player p, account a WHERE p.game_id = g_id AND p.forfeit = 1 INTO quit;
+    SELECT COUNT(DISTINCT p.player_id) FROM player p, account a WHERE p.game_id = g_id AND p.forfeit = 2 INTO fortsett;
 
     SELECT quit, fortsett;
 
   END;
 
-CALL player_get_forfeit(3);
+CALL player_get_forfeit(138);
 
 DROP PROCEDURE player_get_playerid;
 
