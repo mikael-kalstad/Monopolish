@@ -14,6 +14,10 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 
+/**
+ * Controller class for chanceCard view.
+ * Will handle action on click and also display animation.
+ */
 public class ChanceCardController {
     private static boolean unOpened = true;
 

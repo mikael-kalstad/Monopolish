@@ -18,7 +18,7 @@ import java.sql.SQLException;
  * 'GameController.java'
  *
  * @author      eirikhem
- * @version     1.0
+ * @version     1.1
  */
 
 public class GameLogic {
@@ -163,7 +163,7 @@ public class GameLogic {
         boolean result = game.getEntities().purchaseProperty(yourPlayer, propertyToPurchase);
 
         if (result) {
-            MessagePopupController.show("Purchase successful, you are now the owner of " + propertyToPurchase);
+            MessagePopupController.show("Purchase successful, you are now the owner of " + propertyToPurchase.getName());
             updateToDatabase();
         }
 
