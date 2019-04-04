@@ -111,7 +111,7 @@ public class EntityManager {
 
     public void transferMoneyBank(String username, int amount) {
         Player player = getPlayer(username);
-        player.transferMoney(bank, amount);
+        bank.transferMoney(player, amount);
     }
 
     /**
