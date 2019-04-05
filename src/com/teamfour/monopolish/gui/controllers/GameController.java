@@ -94,7 +94,9 @@ public class GameController {
     // Message popup
     @FXML private Pane messagePopupContainer;
 
-    // Notification toggle
+    // Settings
+    @FXML private Pane settingsContent;
+    private boolean showSettings = false;
     @FXML private ImageView notificationToggle;
     @FXML private ImageView soundToggle;
     private static boolean playSounds = true;
@@ -274,6 +276,19 @@ public class GameController {
     }
 
     /**
+     * Toggle showing settings box (show/hide).
+     */
+    public void toggleSettings() {
+        if (showSettings) {
+            showSettings = false;
+            settingsContent.setVisible(false);
+        } else {
+            showSettings = true;
+            settingsContent.setVisible(true);
+        }
+    }
+
+    /**
      * Toggles all notifications in the game, on or off
      */
     public void toggleNotification() {
@@ -293,12 +308,12 @@ public class GameController {
      * Toggle sounds on or off
      */
     public void toggleSounds() {
-        if (!playSounds) {
-            playSounds = true;
+        if (playSounds) {
+            playSounds = false;
             soundToggle.setImage(new Image("file:res/gui/Game/toggleOff.png"));
         }
         else {
-            playSounds = false;
+            playSounds = true;
             soundToggle.setImage(new Image("file:res/gui/Game/toggleOn.png"));
         }
     }
@@ -535,6 +550,9 @@ public class GameController {
                     rolldiceBtn.setDisable(true);
                 }
             }
+            // KNM Helge Ingstad
+            if (yourPosition == 4) Handler.playSound("res/sounds/drei.mp3");
+
         } else {
             // If no property here, make sure to clear the property
             cardContainer.getChildren().clear();

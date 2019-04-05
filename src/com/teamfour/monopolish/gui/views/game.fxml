@@ -3,7 +3,6 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -20,7 +19,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="1040.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.monopolish.gui.controllers.GameController">
+<AnchorPane prefHeight="1040.0" prefWidth="1920.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.monopolish.gui.controllers.GameController">
    <children>
       <Rectangle arcHeight="30.0" arcWidth="30.0" blendMode="OVERLAY" height="975.0" layoutX="292.0" layoutY="43.0" stroke="BLACK" strokeType="INSIDE" width="975.0" />
       <AnchorPane layoutX="299.0" layoutY="50.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="960.0" prefWidth="960.0" AnchorPane.bottomAnchor="39.59999999999991" AnchorPane.leftAnchor="299.0" AnchorPane.topAnchor="50.0">
@@ -621,11 +620,6 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Pane>
-            <Label layoutX="256.0" layoutY="198.0" text="Your properties" textFill="#b2b2b2">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
             <Label layoutX="68.0" layoutY="355.0" text="Status" textFill="#fafafa">
                <font>
                   <Font name="System Bold" size="28.0" />
@@ -676,16 +670,6 @@
                </font>
             </Label>
             <Pane fx:id="userColor" layoutX="90.0" layoutY="112.0" prefHeight="75.0" prefWidth="75.0" style="-fx-background-color: lightblue;" />
-            <Label layoutX="98.0" layoutY="198.0" text="Your color" textFill="#b2b2b2">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-            <Label layoutX="448.0" layoutY="198.0" text="Your money" textFill="#b2b2b2">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
             <Button fx:id="payBailBtn" disable="true" layoutX="254.0" layoutY="453.0" mnemonicParsing="false" onAction="#payBail" prefHeight="50.0" prefWidth="160.0" style="-fx-background-color: #81c784;" text="Pay bail" textFill="WHITE" visible="false">
                <font>
                   <Font size="18.0" />
@@ -754,12 +738,11 @@
             </Label>
          </children>
       </AnchorPane>
-      <ListView fx:id="eventlog" layoutX="14.0" layoutY="408.0" prefHeight="200.0" prefWidth="260.0" visible="false" />
-      <Pane fx:id="freeParkingCard" layoutX="25.0" layoutY="261.0" prefHeight="77.0" prefWidth="255.0" style="-fx-background-color: ededed; -fx-border-color: #999; -fx-border-radius: 10;" visible="false">
+      <Pane fx:id="freeParkingCard" layoutX="40.0" layoutY="237.0" prefHeight="77.0" prefWidth="235.0" style="-fx-background-color: ededed; -fx-border-radius: 10;" visible="false">
          <children>
-            <Text fill="#616161" layoutX="69.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You have free parking">
+            <Text fill="#616161" layoutX="67.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You have free parking">
                <font>
-                  <Font size="17.0" />
+                  <Font size="15.0" />
                </font>
                <cursor>
                   <Cursor fx:constant="HAND" />
@@ -772,7 +755,7 @@
             </ImageView>
          </children>
       </Pane>
-      <Button layoutX="51.0" layoutY="42.0" mnemonicParsing="false" onAction="#leave" prefHeight="40.0" prefWidth="126.0" style="-fx-background-color: ef5350;" text="Quit" textFill="#fafafa">
+      <Button layoutX="40.0" layoutY="131.0" mnemonicParsing="false" onAction="#leave" prefHeight="40.0" prefWidth="95.0" style="-fx-background-color: ef5350;" text="Quit" textFill="#fafafa">
          <font>
             <Font size="16.0" />
          </font>
@@ -780,7 +763,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button layoutX="51.0" layoutY="113.0" mnemonicParsing="false" onAction="#forfeit" prefHeight="40.0" prefWidth="126.0" style="-fx-background-color: #FF9800;" text="Forfeit" textFill="#fafafa">
+      <Button layoutX="180.0" layoutY="131.0" mnemonicParsing="false" onAction="#forfeit" prefHeight="40.0" prefWidth="95.0" style="-fx-background-color: #FF9800;" text="Forfeit" textFill="#fafafa">
          <font>
             <Font size="16.0" />
          </font>
@@ -793,23 +776,62 @@
             <Font name="System Bold" size="32.0" />
          </font>
       </Label>
-      <Text fill="#616161" layoutX="90.0" layoutY="209.0" onMouseClicked="#toggleNotification" strokeType="OUTSIDE" strokeWidth="0.0" text="Notifications">
-         <font>
-            <Font size="17.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Text>
-      <ImageView fx:id="notificationToggle" fitHeight="30.0" fitWidth="52.0" layoutX="25.0" layoutY="188.0" onMouseClicked="#toggleNotification" preserveRatio="true">
-         <image>
-            <Image url="file:res/gui/Game/toggleOn.png" />
-         </image>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </ImageView>
       <Pane fx:id="messagePopupContainer" layoutX="12.0" layoutY="884.0" prefHeight="46.0" prefWidth="330.0" />
+      <Pane fx:id="settingsContent" layoutX="40.0" layoutY="108.0" onMouseEntered="#toggleSettings" onMouseExited="#toggleSettings" prefHeight="113.0" prefWidth="235.0" style="-fx-background-color: ededed; -fx-border-width: 1 0 0 0; -fx-border-color: #999;" visible="false">
+         <children>
+            <Text fill="#616161" layoutX="108.0" layoutY="86.0" onMouseClicked="#toggleSounds" strokeType="OUTSIDE" strokeWidth="0.0" text="Sounds">
+               <font>
+                  <Font size="17.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Text>
+            <Text fill="#616161" layoutX="108.0" layoutY="41.0" onMouseClicked="#toggleNotification" strokeType="OUTSIDE" strokeWidth="0.0" text="Notifications">
+               <font>
+                  <Font size="17.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Text>
+            <ImageView fx:id="notificationToggle" fitHeight="25.0" fitWidth="45.0" layoutX="31.0" layoutY="21.0" onMouseClicked="#toggleNotification" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="file:res/gui/Game/toggleOn.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="soundToggle" fitHeight="25.0" fitWidth="45.0" layoutX="31.0" layoutY="66.0" onMouseClicked="#toggleSounds" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="file:res/gui/Game/toggleOn.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+         </children>
+      </Pane>
+      <Pane layoutX="40.0" layoutY="50.0" onMouseEntered="#toggleSettings" onMouseExited="#toggleSettings" prefHeight="58.0" prefWidth="235.0" style="-fx-background-color: ededed;">
+         <children>
+            <Text fill="#403f3f" layoutX="79.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Settings">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Text>
+            <ImageView fitHeight="40.0" fitWidth="32.0" layoutX="26.0" layoutY="10.0" preserveRatio="true">
+               <image>
+                  <Image url="file:res/gui/Game/settings.png" />
+               </image>
+            </ImageView>
+            <Text fill="#6f6e6e" layoutX="79.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hover to open">
+               <font>
+                  <Font size="9.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
       <Pane fx:id="chatContainer" layoutX="21.0" layoutY="700.0" prefHeight="315.0" prefWidth="235.0" />
       <Pane fx:id="backgroundOverlay" prefHeight="1055.0" prefWidth="1920.0" style="-fx-background-color: rgba(160,160,160,0.4);" visible="false" />
       <Pane fx:id="propertiesContainer" layoutX="257.0" layoutY="105.0" prefHeight="855.0" prefWidth="1477.0" style="-fx-background-color: ededed; -fx-background-radius: 20;" visible="false">
@@ -861,12 +883,12 @@
       <Pane fx:id="tradeContainer" layoutX="210.0" layoutY="53.0" prefHeight="950.0" prefWidth="1500.0" visible="false" />
       <Pane fx:id="helpOverlay" onMouseClicked="#toggleHelpOverlay" prefHeight="1055.0" prefWidth="1925.0" style="-fx-background-color: rgba(160,160,160,0.7);" visible="false">
          <children>
-            <Text fill="WHITE" layoutX="9.0" layoutY="101.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Leave the game, you will not be able to rejoin" wrappingWidth="289.3332862193565">
+            <Text fill="WHITE" layoutX="28.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hover over with the mouse to see settings" wrappingWidth="289.3332862193565">
                <font>
                   <Font size="14.0" />
                </font>
             </Text>
-            <Text fill="WHITE" layoutX="14.0" layoutY="187.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start a vote to quit the game with all players" wrappingWidth="280.29590189763076">
+            <Text fill="WHITE" layoutX="159.0" layoutY="203.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Forfeit will start a vote to quit the game with all players" wrappingWidth="150.18750838935375">
                <font>
                   <Font size="14.0" />
                </font>
@@ -876,7 +898,7 @@
                   <Font name="System Bold" size="23.0" />
                </font>
             </Text>
-            <Text fill="WHITE" layoutX="283.0" layoutY="1032.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Chat with your opponents" wrappingWidth="280.29590189763076">
+            <Text fill="WHITE" layoutX="14.0" layoutY="968.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Chat with your opponents, click the blue area to open or close" wrappingWidth="418.29590189763076">
                <font>
                   <Font size="23.0" />
                </font>
@@ -891,7 +913,7 @@
                   <Font size="20.0" />
                </font>
             </Text>
-            <Text fill="WHITE" layoutX="14.0" layoutY="382.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Look at back previous events" wrappingWidth="316.9999873081176">
+            <Text fill="WHITE" layoutX="14.0" layoutY="316.0" strokeType="OUTSIDE" strokeWidth="0.0" text="If you have free parking token it will be shown here" wrappingWidth="316.9999873081176">
                <font>
                   <Font size="20.0" />
                </font>
@@ -901,7 +923,32 @@
                   <Font name="System Bold" size="23.0" />
                </font>
             </Text>
-            <Text fill="WHITE" layoutX="1574.0" layoutY="433.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You need to end your turn each round" wrappingWidth="350.29590189763076">
+            <Text fill="WHITE" layoutX="1560.0" layoutY="535.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You need to end your turn each round" wrappingWidth="350.29590189763076">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Text>
+            <Label layoutX="1560.0" layoutY="205.0" text="Your properties" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <Label layoutX="1402.0" layoutY="205.0" text="Your color" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <Label layoutX="1749.0" layoutY="205.0" text="Your money" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <Text fill="WHITE" layoutX="14.0" layoutY="203.0" strokeType="OUTSIDE" strokeWidth="0.0" text="If you quit you will leave the game. You can not rejoin later." wrappingWidth="144.71925124526024">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="14.0" layoutY="572.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Notifications will dynamically be shown here, this can be turned off in the settings" wrappingWidth="316.9999873081176">
                <font>
                   <Font size="20.0" />
                </font>
@@ -916,22 +963,6 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
-      </ImageView>
-      <Text fill="#616161" layoutX="90.0" layoutY="252.0" onMouseClicked="#toggleSounds" strokeType="OUTSIDE" strokeWidth="0.0" text="Sounds">
-         <font>
-            <Font size="17.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Text>
-      <ImageView fx:id="soundToggle" fitHeight="30.0" fitWidth="52.0" layoutX="25.0" layoutY="232.0" onMouseClicked="#toggleSounds" preserveRatio="true">
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-         <image>
-            <Image url="file:res/gui/Game/toggleOn.png" />
-         </image>
       </ImageView>
    </children>
 </AnchorPane>

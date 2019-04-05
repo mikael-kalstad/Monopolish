@@ -17,6 +17,11 @@ public class ChanceCard {
         this.amount = amount;
     }
 
+    ChanceCard(String msg, String logoPath) {
+        this.msg = msg;
+        this.logoPath = logoPath;
+    }
+
     public String getUSERNAME() {
         return USERNAME;
     }
