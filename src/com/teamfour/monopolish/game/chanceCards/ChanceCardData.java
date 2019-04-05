@@ -16,7 +16,7 @@ public class ChanceCardData {
             new ChanceCardBank("You received money on your tax return, $1800", "file:res/gui/MessagePopup/dollarPositive.png", 1800),
             new ChanceCardBank("You owe money on your tax return, $1300", "file:res/gui/MessagePopup/dollarNegative.png", -1300),
             new ChanceCardBank("Congratulations, you have won the lottery! Maybe it is time to buy that Yacht? Maybe not... 333.373 other people also won the lottery, total reward comes at $15.", "file:res/gui/MessagePopup/dollarNegative.png", 15),
-            new ChanceCardBank("'Microsoft' called to warn you about some awful virus on your computer, you should have know something was up with that accent. Total cost $2500.", "file:res/gui/MessagePopup/bug.png", -2500),
+            new ChanceCardBank("'Microsoft' called to warn you about some awful virus on your computer, you should have know something was up with that accent. Total cost $2500.", "file:res/gui/chanceCard/bug.png", -2500),
             // Changing position is not working ATM if you are debugging here...
             new ChangeCardPosition("One of the most wonderful things in life is to wake up and enjoy a cuddle with somebody; unless you are in prison. To bad you are going to prison.", "file:res/gui/MessagePopup/handcuffs.png", 9),
             new ChangeCardPosition("Go to start!", "file:res/gui/MessagePopup/again.png", 0),
