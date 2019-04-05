@@ -1,5 +1,5 @@
 /**
-  Generates propertys
+  Generates properties
  */
 
 

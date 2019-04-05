@@ -109,11 +109,14 @@ public class EntityManager {
 //    }/**
 
 
-    public void transferMoneyBank(String username, int amount) {
+    public void transferMoneyFromBank(String username, int amount) {
         Player player = getPlayer(username);
+        if (amount > 0 && bank.getMoney() < amount)
+            amount = bank.getMoney();
+        else if (amount < 0 && player.getMoney() < Math.abs(amount))
+            amount = -player.getMoney();
 
-        if (amount > 0) bank.transferMoney(player, amount);
-        else player.transferMoney(bank, amount);
+        bank.transferMoney(player, amount);
     }
 
     /**

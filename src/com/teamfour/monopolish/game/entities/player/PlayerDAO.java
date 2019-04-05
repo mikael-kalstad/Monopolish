@@ -189,6 +189,31 @@ public class PlayerDAO extends DataAccessObject {
         }
     }
 
+
+    /**
+     * ends the game and registers each player's score in the database
+     *
+     * @param game_id the id of the current game
+     */
+    public void endGame(int game_id, String username) {
+        CallableStatement cStmt = null;
+        try {
+            getConnection();
+            cStmt = connection.prepareCall("{call player_endgame(?,?)}");
+
+            for (int i = 0; i < 10; i++) {
+                cStmt.setInt(1, game_id);
+                cStmt.setString(2, username);
+                cStmt.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(cStmt);
+            releaseConnection();
+        }
+    }
+
     /**
      * Makes a String[][] with top 10 highscores
      *

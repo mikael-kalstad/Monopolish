@@ -10,6 +10,7 @@ import com.teamfour.monopolish.gui.controllers.Handler;
 import com.teamfour.monopolish.gui.controllers.MessagePopupController;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * This class contains static methods which can be used by the GameController to perform logical actions
@@ -97,6 +98,10 @@ public class GameLogic {
             game.setThrowCounter(0);
         }
 
+        if (game.getBoard().getTileType(yourPlayer.getPosition()) == Board.FREE_PARKING) {
+            yourPlayer.setFreeParking(true);
+        }
+
         // If the player lands on a goToJail tile, go straight to jail
         if (game.getBoard().getTileType(yourPlayer.getPosition()) == Board.GO_TO_JAIL) {
             goToJail();
@@ -104,7 +109,7 @@ public class GameLogic {
 
         // If the player passed start, give them money
         if (yourPlayer.getPosition() < previousPosition) {
-            game.getEntities().transferMoneyBank(yourPlayer.getUsername(), GameConstants.ROUND_MONEY);
+            game.getEntities().transferMoneyFromBank(yourPlayer.getUsername(), GameConstants.ROUND_MONEY);
         }
 
         // Update to database
@@ -145,7 +150,7 @@ public class GameLogic {
     public static boolean payBail() {
         Player yourPlayer = game.getEntities().getYou();
         if (yourPlayer.getMoney() >= GameConstants.BAIL_COST) {
-            game.getEntities().transferMoneyBank(yourPlayer.getUsername(), GameConstants.BAIL_COST);
+            game.getEntities().transferMoneyFromBank(yourPlayer.getUsername(), -GameConstants.BAIL_COST);
             getOutOfJail();
             return true;
         } else {
@@ -221,7 +226,7 @@ public class GameLogic {
     }
 
     public static void payTax() {
-        game.getEntities().transferMoneyBank(game.getEntities().getYou().getUsername(), -GameConstants.INCOME_TAX);
+        game.getEntities().transferMoneyFromBank(game.getEntities().getYou().getUsername(), -GameConstants.INCOME_TAX);
         updateToDatabase();
     }
 
@@ -282,7 +287,10 @@ public class GameLogic {
      */
     public static void endGame() {
         // End game in database
-        Handler.getPlayerDAO().endGame(Handler.getCurrentGameId());
+        String[] players = game.getPlayers();
+        for(int i = 0; i<players.length; i++){
+            Handler.getPlayerDAO().endGame(Handler.getCurrentGameId(), players[i]);
+        }
         Handler.getGameDAO().finishGame(Handler.getCurrentGameId());
 
         // Delete lobby
