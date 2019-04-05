@@ -47,12 +47,12 @@ import java.util.TimerTask;
 public class GameController {
     // Timer for checking database updates and forfeit
     private static Timer databaseTimer = new Timer();
-    public static Timer forfeitTimer = new Timer();
-    public static TimerTask forfeitTask;
+    public static Timer forfeitTimer;
+    public static boolean forfeitTimerRunning;
 
     // GameLogic for handling more intricate game operations
     private Game game;
-    private int current_money = 0;
+    public static int current_money = 0;
     private final String USERNAME = Handler.getAccount().getUsername();
     private boolean firstTurn = true;
 
@@ -74,7 +74,6 @@ public class GameController {
     @FXML private Label roundValue, statusValue;
     @FXML private Label username, userMoney;
     @FXML private Pane userColor, userPropertiesIcon;
-    @FXML private Text roundTimeValue;
     @FXML private Pane opponentsContainer;
 
     // Container for chat element
@@ -96,10 +95,9 @@ public class GameController {
     @FXML private Pane messagePopupContainer;
 
     // Notification toggle
-    @FXML private ImageView notificationLogo;
-    @FXML private Text notificationText;
-    private String MSG_NOTIFICATION_ON = "Turn off notifications";
-    private String MSG_NOTIFICATION_OFF = "Turn on notifications";
+    @FXML private ImageView notificationToggle;
+    @FXML private ImageView soundToggle;
+    private static boolean playSounds = true;
     private boolean showNotifications = true;
 
     // Container for houses
@@ -213,6 +211,8 @@ public class GameController {
         forfeitTimer.cancel();
         forfeitTimer.purge();
         forfeit = true;
+        forfeitTimerRunning = false;
+
         System.out.println("Forfeit variable: " + forfeit);
 
         // Load forfeit GUI
@@ -225,15 +225,20 @@ public class GameController {
         propertiesContainer.setVisible(false);
         forfeitContainer.setVisible(true);
 
-        if (!forfeit) {
-            startForfeitTimer();
-            backgroundOverlay.setVisible(false);
-        }
+        /*while (forfeit) {
+            // Check if forfeit timer should run
+            if (!forfeit && !forfeitTimerRunning) {
+                startForfeitTimer();
+                backgroundOverlay.setVisible(true);
+            }
+        }*/
     }
 
     public void startForfeitTimer() {
+        forfeitTimerRunning = true;
+
         // Setup forfeit task
-        forfeitTask = new TimerTask() {
+        TimerTask forfeitTask = new TimerTask() {
             @Override
             public void run() {
                 // Get votes from database
@@ -248,6 +253,7 @@ public class GameController {
             }
         };
 
+        forfeitTimer = new Timer();
         // Check for forfeit every second
         forfeitTimer.scheduleAtFixedRate(forfeitTask, 0L, 1000L);
     }
@@ -273,15 +279,27 @@ public class GameController {
     public void toggleNotification() {
         // Turn of notifications and set image and text
         if (showNotifications) {
-            notificationLogo.setImage(new Image("file:res/gui/Game/toggleOff.png"));
-            notificationText.setText(MSG_NOTIFICATION_OFF);
+            notificationToggle.setImage(new Image("file:res/gui/Game/toggleOff.png"));
             showNotifications = false;
             messagePopupContainer.setVisible(false);
         } else {
-            notificationLogo.setImage(new Image("file:res/gui/Game/toggleOn.png"));
-            notificationText.setText(MSG_NOTIFICATION_ON);
+            notificationToggle.setImage(new Image("file:res/gui/Game/toggleOn.png"));
             showNotifications = true;
             messagePopupContainer.setVisible(true);
+        }
+    }
+
+    /**
+     * Toggle sounds on or off
+     */
+    public void toggleSounds() {
+        if (!playSounds) {
+            playSounds = true;
+            soundToggle.setImage(new Image("file:res/gui/Game/toggleOff.png"));
+        }
+        else {
+            playSounds = false;
+            soundToggle.setImage(new Image("file:res/gui/Game/toggleOn.png"));
         }
     }
 
@@ -586,11 +604,7 @@ public class GameController {
      */
     public void yourTurn() {
         // Play a sound to indicate that it is your turn
-        String soundFile = "res/sounds/pling.mp3";
-
-        Media sound = new Media(new File(soundFile).toURI().toString());
-        MediaPlayer player = new MediaPlayer(sound);
-        player.play();
+        if (playSounds) Handler.playSound("res/sounds/pling.mp3");
 
         // Set buttons state
         payBailBtn.setDisable(false);
@@ -653,9 +667,12 @@ public class GameController {
 
                     // Display message popup with money transaction
                     if (player.getMoney() - current_money > 0)
-                        MessagePopupController.show(msg, "dollarPositive.png");
+                        MessagePopupController.show(msg, "dollarPositive.png", "Bank");
                     else
-                        MessagePopupController.show(msg, "dollarNegative.png");
+                        MessagePopupController.show(msg, "dollarNegative.png", "Bank");
+
+                    // Play a sound to indicate that it is your turn
+                   if (playSounds) Handler.playSound("res/sounds/coin.wav");
                 }
                 // Update for next check
                 current_money = player.getMoney();

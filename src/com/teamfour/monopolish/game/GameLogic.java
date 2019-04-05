@@ -90,7 +90,7 @@ public class GameLogic {
                     getOutOfJail();
                 yourPlayer.move(steps);
             }
-            MessagePopupController.show("The dices are equal, throw again!", "again.png");
+            MessagePopupController.show("The dices are equal, throw again!", "again.png", "Game");
         } else {
             if (!isInJail)
                 yourPlayer.move(steps);
@@ -119,7 +119,7 @@ public class GameLogic {
         yourPlayer.setInJail(true);
         yourPlayer.moveTo(game.getBoard().getJailPosition());
 
-        MessagePopupController.show("Criminal scumbag! You are going to jail. Your mother is not proud...", "handcuffs.png");
+        MessagePopupController.show("Criminal scumbag! You are going to jail. Your mother is not proud...", "handcuffs.png", "Jail");
 
         // Update to database
         updateToDatabase();
@@ -132,7 +132,7 @@ public class GameLogic {
         Player yourPlayer = game.getEntities().getYou();
         yourPlayer.setInJail(false);
 
-        MessagePopupController.show("You are out of jail, free as a bird!", "bird.png");
+        MessagePopupController.show("You are out of jail, free as a bird!", "bird.png", "Jail");
 
         // Update to database
         updateToDatabase();
@@ -163,7 +163,7 @@ public class GameLogic {
         boolean result = game.getEntities().purchaseProperty(yourPlayer, propertyToPurchase);
 
         if (result) {
-            MessagePopupController.show("Purchase successful, you are now the owner of " + propertyToPurchase.getName());
+            MessagePopupController.show("Purchase successful, you are now the owner of " + propertyToPurchase.getName(), "Real estate");
             updateToDatabase();
         }
 
@@ -214,7 +214,8 @@ public class GameLogic {
                 "You have paid " +
                 currentProperty.getAllRent()[0] +
                 " in rent to " + currentProperty.getOwner()
-                , "dollarNegative.png");
+                , "dollarNegative.png"
+                , "Real estate");
 
         updateToDatabase();
     }
@@ -262,7 +263,7 @@ public class GameLogic {
         Player yourPlayer = game.getEntities().getYou();
         if (yourPlayer.checkBankrupt()) {
             yourPlayer.setBankrupt(true);
-            MessagePopupController.show("You are now bankrupt!");
+            MessagePopupController.show("You are now bankrupt!", "Bank");
         }
     }
 

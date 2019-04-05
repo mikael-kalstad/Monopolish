@@ -793,7 +793,7 @@
             <Font name="System Bold" size="32.0" />
          </font>
       </Label>
-      <Text fx:id="notificationText" fill="#616161" layoutX="90.0" layoutY="209.0" onMouseClicked="#toggleNotification" strokeType="OUTSIDE" strokeWidth="0.0" text="Turn off notifications">
+      <Text fill="#616161" layoutX="90.0" layoutY="209.0" onMouseClicked="#toggleNotification" strokeType="OUTSIDE" strokeWidth="0.0" text="Notifications">
          <font>
             <Font size="17.0" />
          </font>
@@ -801,7 +801,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
-      <ImageView fx:id="notificationLogo" fitHeight="30.0" fitWidth="52.0" layoutX="25.0" layoutY="188.0" onMouseClicked="#toggleNotification" preserveRatio="true">
+      <ImageView fx:id="notificationToggle" fitHeight="30.0" fitWidth="52.0" layoutX="25.0" layoutY="188.0" onMouseClicked="#toggleNotification" preserveRatio="true">
          <image>
             <Image url="file:res/gui/Game/toggleOn.png" />
          </image>
@@ -916,6 +916,22 @@
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
+      </ImageView>
+      <Text fill="#616161" layoutX="90.0" layoutY="252.0" onMouseClicked="#toggleSounds" strokeType="OUTSIDE" strokeWidth="0.0" text="Sounds">
+         <font>
+            <Font size="17.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Text>
+      <ImageView fx:id="soundToggle" fitHeight="30.0" fitWidth="52.0" layoutX="25.0" layoutY="232.0" onMouseClicked="#toggleSounds" preserveRatio="true">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <image>
+            <Image url="file:res/gui/Game/toggleOn.png" />
+         </image>
       </ImageView>
    </children>
 </AnchorPane>

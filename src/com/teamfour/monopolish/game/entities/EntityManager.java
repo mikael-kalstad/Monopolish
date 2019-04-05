@@ -111,7 +111,9 @@ public class EntityManager {
 
     public void transferMoneyBank(String username, int amount) {
         Player player = getPlayer(username);
-        player.transferMoney(bank, amount);
+
+        if (amount > 0) bank.transferMoney(player, amount);
+        else player.transferMoney(bank, amount);
     }
 
     /**
@@ -194,7 +196,6 @@ public class EntityManager {
     }
 
     public boolean transferMoneyFromTo(String from, String to, int amount) {
-        boolean result = false;
         Player fromPlayer = getPlayer(from);
         Player toPlayer = getPlayer(to);
 

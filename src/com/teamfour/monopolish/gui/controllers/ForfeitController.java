@@ -181,9 +181,7 @@ public class ForfeitController {
             Handler.getPlayerDAO().resetForfeitStatus(GAME_ID);
 
             System.out.println("Forfeit variable in forfeitcontroller: " + GameController.forfeit);
-
             GameController.forfeit = false;
-            //GameController.startForfeitTimer();
         }
     }
 

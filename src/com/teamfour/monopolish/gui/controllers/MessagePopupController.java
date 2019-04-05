@@ -7,6 +7,7 @@ import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -43,8 +44,9 @@ public class MessagePopupController {
      *
      * @param msg Displayed message in popup
      * @param logoName Filename of the target logo, must be located in src/res/gui/MessagePopup
+     * @param title Title of the message popup
      */
-    public static void show (String msg, String logoName) {
+    public static void show (String msg, String logoName, String title) {
         Pane messagePopup = null;
         try {
             messagePopup = FXMLLoader.load(MessagePopupController.class.getResource(ViewConstants.FILE_PATH.getValue() + ViewConstants.MESSAGE_POPUP.getValue()));
@@ -61,6 +63,12 @@ public class MessagePopupController {
         if (logoName != null && !logoName.equals("")) {
             ImageView logo = (ImageView) messagePopup.getChildren().get(1);
             logo.setImage(new Image("file:res/gui/MessagePopup/" + logoName));
+        }
+
+        // Find and set title if defined
+        if (title != null && !title.equals("")) {
+            Label titleValue = (Label) messagePopup.getChildren().get(3);
+            titleValue.setText(title);
         }
 
         messagePopup.setId(String.valueOf(time));
@@ -92,6 +100,16 @@ public class MessagePopupController {
     public static void show(String msg) {
         MessagePopupController.show(msg, null);
     }
+
+    /**
+     * Calling this method will display a message popup in the container defined in setup.
+     *  A fade in and out animation will be displayed, the popups will stack on top of each other.
+     *  After a delay the popup will fade out, this can be defined in setup.
+     *  Notice this method will display a standard info logo.
+     * @param msg Displayed message in popup
+     * @param logoName Filename of the target logo, must be located in src/res/gui/MessagePopup
+     */
+    public static void show (String msg, String logoName) { MessagePopupController.show(msg, logoName, null); }
 
     private static void startTimerCheck() {
         // Start timer

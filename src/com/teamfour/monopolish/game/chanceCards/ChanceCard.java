@@ -3,7 +3,7 @@ package com.teamfour.monopolish.game.chanceCards;
 import com.teamfour.monopolish.gui.controllers.Handler;
 
 /**
- * Super class with data about a chance card
+ * Super class for chance cards, contains general data about chance cards.
  */
 public class ChanceCard {
     private final String USERNAME = Handler.getAccount().getUsername();
@@ -32,4 +32,6 @@ public class ChanceCard {
     public int getAmount() {
         return amount;
     }
+
+    public void setAmount(int amount) { this.amount = amount; }
 }

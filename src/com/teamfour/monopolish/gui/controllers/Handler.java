@@ -10,7 +10,10 @@ import com.teamfour.monopolish.gui.views.SceneManager;
 import com.teamfour.monopolish.lobby.LobbyDAO;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -81,6 +84,16 @@ public class Handler {
             }
         }
         return null;
+    }
+
+    /**
+     * Play a sound in the application
+     * @param soundFile Path to the sound file
+     */
+    public static void playSound(String soundFile) {
+        Media sound = new Media(new File(soundFile).toURI().toString());
+        MediaPlayer player = new MediaPlayer(sound);
+        player.play();
     }
 
     public static ArrayList<String[]> getColorList() { return colorList; }

@@ -1,7 +1,12 @@
 package com.teamfour.monopolish.gui.controllers;
 
+import com.teamfour.monopolish.game.Game;
+import com.teamfour.monopolish.game.GameLogic;
 import com.teamfour.monopolish.game.chanceCards.ChanceCard;
 import com.teamfour.monopolish.game.chanceCards.ChanceCardBank;
+import com.teamfour.monopolish.game.chanceCards.ChanceCardPlayers;
+import com.teamfour.monopolish.game.chanceCards.ChanceCardPrank;
+import com.teamfour.monopolish.game.entities.EntityManager;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.animation.ScaleTransition;
 import javafx.animation.SequentialTransition;
@@ -36,6 +41,7 @@ public class ChanceCardController {
         // Clear and add chance card to container
         container.getChildren().clear();
         container.getChildren().add(card);
+        unOpened = true;
 
         // Set content msg and logo
         if (card == null) return;
@@ -79,12 +85,25 @@ public class ChanceCardController {
         st.setOnFinished(e -> {
             // Check if card has been opened before
             if (unOpened) {
-                if (cardInfo instanceof ChanceCardBank) {
+                // Chance card of type Prank
+                if (cardInfo instanceof ChanceCardPrank) {
+                    cardInfo.setAmount(GameController.current_money);
+                    ((ChanceCardPrank) cardInfo).moneyTransaction();
+                }
+
+                // Chance card of type Players
+                else if(cardInfo instanceof ChanceCardPlayers) {
+                    ((ChanceCardPlayers) cardInfo).setPlayers(Handler.getCurrentGame().getPlayers());
+                    ((ChanceCardPlayers) cardInfo).moneyTransaction();
+                }
+
+                // Chance card of type Bank
+                else if (cardInfo instanceof ChanceCardBank) {
                     ((ChanceCardBank) cardInfo).moneyTransaction();
                 }
-//                else if (cardInfo instanceof ChanceCardPlayers) {
-//                    ((ChanceCardPlayers) cardInfo).moneyTransaction();
-//                }
+            } else {
+                // Stop playing sound when turning the card
+                if (cardInfo instanceof ChanceCardPrank) ChanceCardPrank.stopSound();
             }
             unOpened = false;
         });
