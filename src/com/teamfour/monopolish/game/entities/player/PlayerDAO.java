@@ -223,6 +223,7 @@ public class PlayerDAO extends DataAccessObject {
         }
     }
 
+    // Who has removed procedure for this DAO???
     public void resetForfeitStatus(int gameId) {
         Connection connection = getConnection();
         CallableStatement cStmt = null;

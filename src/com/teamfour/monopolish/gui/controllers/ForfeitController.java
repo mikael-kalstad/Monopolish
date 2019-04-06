@@ -61,15 +61,15 @@ public class ForfeitController {
             FxUtils.setTextColor(yourVoteText, "green");
         });
 
-        // Get votes in forfeit
-        int[] votes = Handler.getPlayerDAO().getForfeitStatus(GAME_ID);
-
-        // If you are the first to forfeit, set automatically to quit.
-        if (votes[0] + votes[1] == 0) {
-            Handler.getPlayerDAO().setForfeitStatus(USERNAME, GAME_ID, 1);
-            yourVoteText.setText(VOTE_QUIT_MSG);
-            FxUtils.setTextColor(yourVoteText, "red");
-        }
+//        // Get votes in forfeit
+//        int[] votes = Handler.getPlayerDAO().getForfeitStatus(GAME_ID);
+//
+//        // If you are the first to forfeit, set automatically to quit.
+//        if (votes[0] + votes[1] == 0) {
+//            Handler.getPlayerDAO().setForfeitStatus(USERNAME, GAME_ID, 1);
+//            yourVoteText.setText(VOTE_QUIT_MSG);
+//            FxUtils.setTextColor(yourVoteText, "red");
+//        }
 
         // Change color on hover to show selection
         setOnHover(voteQuit);
@@ -178,13 +178,9 @@ public class ForfeitController {
         else {
             // Hide forfeit container and set variable
             Handler.getForfeitContainer().setVisible(false);
-            //Handler.getPlayerDAO().resetForfeitStatus(GAME_ID);
-
             Handler.getGameDAO().setForfeit(GAME_ID, false);
 
-            System.out.println("Forfeit variable in forfeitcontroller: " + GameController.forfeit);
-            GameController.forfeit = false;
-            System.out.println("Forfeit variable in forfeitcontroller after: " + GameController.forfeit);
+            //GameController.forfeit = false;
         }
     }
 

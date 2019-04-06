@@ -44,11 +44,12 @@ import java.util.TimerTask;
 public class GameController {
     // Timer for checking database updates and forfeit
     private static Timer databaseTimer = new Timer();
-    public static Timer forfeitTimer;
+    public static Timer forfeitTimer = new Timer();
 
     // GameLogic for handling more intricate game operations
     private Game game;
-    public static int current_money = 0;
+    private final int GAME_ID = Handler.getCurrentGameId();
+    static int current_money = 0;
     private final String USERNAME = Handler.getAccount().getUsername();
     private boolean firstTurn = true;
 
@@ -92,11 +93,12 @@ public class GameController {
 
     // Settings
     @FXML private Pane settingsContent;
-    private boolean showSettings = false;
     @FXML private ImageView notificationToggle;
     @FXML private ImageView soundToggle;
-    private static boolean playSounds = true;
+    private boolean showSettings = false;
     private boolean showNotifications = true;
+    private static boolean playSounds = true;
+
 
     // Container for houses
     @FXML private GridPane housegrid;
@@ -107,8 +109,7 @@ public class GameController {
     /**
      * Launches when the scene is loaded.
      */
-    @FXML
-    public void initialize() {
+    @FXML public void initialize() {
         System.out.println("GAME CONTROLLER INITIALIZE, should only run once");
 
         // Reference that is used in other controllers
@@ -116,7 +117,7 @@ public class GameController {
         Handler.setTradeContainer(tradeContainer);
 
         // Set gamelogic object in handler
-        game = new Game(Handler.getCurrentGameId());
+        game = new Game(GAME_ID);
 
         // Load gamelogic and initialize the game setup
         GameLogic.startGame();
@@ -153,7 +154,7 @@ public class GameController {
                 stopTimers();
 
                 // Logout user
-                Handler.getAccountDAO().setInactive(USERNAME);
+                Handler.getAccountDAO().setActive(USERNAME);
 
                 // Close the window
                 Handler.getSceneManager().getWindow().close();
@@ -207,11 +208,9 @@ public class GameController {
      * A forfeit dialog will appear on the screen
      */
     public void forfeit() {
-        forfeitTimer.cancel();
-        forfeitTimer.purge();
         forfeit = true;
 
-        Handler.getGameDAO().setForfeit(Handler.getCurrentGameId(), true);
+        Handler.getGameDAO().setForfeit(GAME_ID, true);
 
         // Load forfeit GUI
         addElementToContainer(ViewConstants.FORFEIT.getValue(), forfeitContainer);
@@ -231,25 +230,29 @@ public class GameController {
         TimerTask forfeitTask = new TimerTask() {
             @Override
             public void run() {
-//                // Get votes from database
-//                int[] votes = Handler.getPlayerDAO().getForfeitStatus(Handler.getCurrentGameId());
-//
-//                // Show forfeit dialog if forfeit is initiated
-//                if (votes[0] != 0 || votes[1] != 0 && !forfeit) {
-//                    Platform.runLater(() -> {
-//                        forfeit();
-//                    });
-//                }
+                System.out.println("FORFEIT variable in timer: " + forfeit);
+                boolean gameForfeit = Handler.getGameDAO().getForfeit(GAME_ID);
 
-                if (!forfeit && Handler.getGameDAO().getForfeit(Handler.getCurrentGameId())) {
+                if (!forfeit && gameForfeit) {
                     Platform.runLater(() -> forfeit());
-                } else {
+                } else if (!gameForfeit) {
                     backgroundOverlay.setVisible(false);
+                    System.out.println("REMOVING BACKGROUND OVERLAY!");
                 }
+
+                // Check if forfeit checks should be reset
+//                if (Handler.getPlayerDAO().getForfeitCheck(GAME_ID)) {
+//
+//                    // Reset all player forfeit votes
+//                    for (String u : Handler.getCurrentGame().getPlayers()) {
+//                        Handler.getPlayerDAO().setForfeitStatus(u, GAME_ID, 0);
+//                        Handler.getPlayerDAO().setForfeitCheck(GAME_ID, u, false);
+//                        forfeit = false;
+//                    }
+//                }
             }
         };
 
-        forfeitTimer = new Timer();
         // Check for forfeit every second
         forfeitTimer.scheduleAtFixedRate(forfeitTask, 0L, 1000L);
     }
@@ -263,6 +266,7 @@ public class GameController {
     private void addElementToContainer(String filename, Pane container) {
         try {
             Node element = FXMLLoader.load(getClass().getResource(ViewConstants.FILE_PATH.getValue() + filename));
+            container.getChildren().clear(); // Reset container
             container.getChildren().add(element);
         } catch (IOException e) {
             e.printStackTrace();

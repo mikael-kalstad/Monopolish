@@ -118,23 +118,19 @@ public class LobbyController {
                 // Check if yes button is pressed
                 if (alertDialog.getResult().getButtonData().isDefaultButton()) {
                     // Remove user if in a lobby
-                    Handler.getAccountDAO().setInactive(Handler.getAccount().getUsername());
                     Handler.getLobbyDAO().removePlayer(USERNAME, current_lobby_id);
 
                     // Stop refreshTimer thread
                     refreshTimer.cancel();
                     refreshTimer.purge();
 
-                    // Logout user
-                    Handler.getAccountDAO().setInactive(USERNAME);
-
                     // Close the window
                     Handler.getSceneManager().getWindow().close();
                 }
-            } else {
-                // Logout user
-                Handler.getAccountDAO().setInactive(USERNAME);
             }
+
+            // Logout user
+            Handler.getAccountDAO().setActive(USERNAME);
         });
     }
 
