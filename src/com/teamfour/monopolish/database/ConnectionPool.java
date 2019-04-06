@@ -102,12 +102,10 @@ public class ConnectionPool {
     }
 
     public boolean releaseConnection(Connection connection) {
-        if (!usedConnections.remove(connection))
-            //throw new RuntimeException("Connection: " + connection + ". Removing used connection failed!");
         if (connection == null)
             return false;
-        if (!connectionPool.add(connection))
-            System.out.println("Re-adding connection failed!");
+        usedConnections.remove(connection);
+        connectionPool.add(connection);
         return true;
     }
 
