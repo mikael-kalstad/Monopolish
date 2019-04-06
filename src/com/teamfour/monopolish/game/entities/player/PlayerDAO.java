@@ -4,6 +4,7 @@ import com.teamfour.monopolish.database.ConnectionPool;
 import com.teamfour.monopolish.database.DataAccessObject;
 
 import java.sql.CallableStatement;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,9 +22,9 @@ public class PlayerDAO extends DataAccessObject {
      * @param username the username of the player that is removed
      */
     public void removePlayer(int game_id, String username) {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         try {
-            getConnection();
             cStmt = connection.prepareCall("{call player_remove(?, ?)}");
 
             cStmt.setString(1, username);
@@ -33,7 +34,7 @@ public class PlayerDAO extends DataAccessObject {
             e.printStackTrace();
         } finally {
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
     }
 
@@ -44,10 +45,10 @@ public class PlayerDAO extends DataAccessObject {
      * @param game_id the id of the current game
      */
     public boolean updatePlayer(Player player, int game_id) throws SQLException {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         int count = 0;
         try {
-            getConnection();
             cStmt = connection.prepareCall("{call player_update(?, ?, ?, ?, ?, ?, ?, ?)}");
 
             cStmt.setString(1, player.getUsername());
@@ -65,7 +66,7 @@ public class PlayerDAO extends DataAccessObject {
             throw new SQLException();
         } finally {
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
 
         return (count > 0);
@@ -77,11 +78,11 @@ public class PlayerDAO extends DataAccessObject {
      * @param gameId the id of the current game
      */
     public ArrayList<Player> getPlayersInGame(int gameId) {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         ResultSet rs = null;
         ArrayList<Player> players = new ArrayList<>();
         try {
-            getConnection();
             cStmt = connection.prepareCall("{call player_getByGameId(?)}");
 
             cStmt.setInt(1, gameId);
@@ -106,7 +107,7 @@ public class PlayerDAO extends DataAccessObject {
         } finally {
             close(rs);
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
 
         return players;
@@ -118,9 +119,9 @@ public class PlayerDAO extends DataAccessObject {
      * @param game_id the id of the current game
      */
     public void endGame(int game_id) {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         try {
-            getConnection();
             cStmt = connection.prepareCall("{call player_endgame(?)}");
 
             for (int i = 0; i < 10; i++) {
@@ -131,7 +132,7 @@ public class PlayerDAO extends DataAccessObject {
             e.printStackTrace();
         } finally {
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
     }
 
@@ -142,9 +143,9 @@ public class PlayerDAO extends DataAccessObject {
      * @param game_id the id of the current game
      */
     public void endGame(int game_id, String username) {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         try {
-            getConnection();
             cStmt = connection.prepareCall("{call player_endgame(?,?)}");
 
             for (int i = 0; i < 10; i++) {
@@ -156,7 +157,7 @@ public class PlayerDAO extends DataAccessObject {
             e.printStackTrace();
         } finally {
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
     }
 
@@ -167,13 +168,12 @@ public class PlayerDAO extends DataAccessObject {
      */
 
     public String[][] getHighscoreList() {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         ResultSet rs = null;
         String[][] list = new String[10][2];
 
         try {
-            getConnection();
-
             cStmt = connection.prepareCall("{call player_get_highscore()}");
 
             if (cStmt.execute()) {
@@ -191,7 +191,7 @@ public class PlayerDAO extends DataAccessObject {
         } finally {
             close(rs);
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
 
         return list;
@@ -205,10 +205,9 @@ public class PlayerDAO extends DataAccessObject {
      * @param forfeitStatus 0 = default, 1 = quit, 2 = continue
      */
     public void setForfeitStatus(String username, int gameId, int forfeitStatus) {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         try {
-            getConnection();
-
             cStmt = connection.prepareCall("{call player_set_forfeit(?, ?, ?)}");  // player_id, game_id, forfeit_status
             // 0 = default, 1 = quit, 2 = continue
             cStmt.setString(1, username);
@@ -220,15 +219,14 @@ public class PlayerDAO extends DataAccessObject {
             e.printStackTrace();
         } finally {
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
     }
 
     public void resetForfeitStatus(int gameId) {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         try {
-            getConnection();
-
             cStmt = connection.prepareCall("{call player_reset_forfeit(?)}");
             cStmt.setInt(1, gameId);
 
@@ -237,7 +235,7 @@ public class PlayerDAO extends DataAccessObject {
             e.printStackTrace();
         } finally {
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
     }
 
@@ -247,13 +245,12 @@ public class PlayerDAO extends DataAccessObject {
      */
 
     public int[] getForfeitStatus(int gameId) {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         ResultSet rs = null;
         int[] list = new int[2];
 
         try {
-            getConnection();
-
             cStmt = connection.prepareCall("{call player_get_forfeit(?)}");  // player_id, game_id, forfeit_status
 
             cStmt.setInt(1, gameId);
@@ -270,17 +267,17 @@ public class PlayerDAO extends DataAccessObject {
         } finally {
             close(rs);
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
         return list;
     }
 
     public void addTrade(String seller, String buyer, int price, int propertyId, int gameId) {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         try {
             //int sellerId = getPlayerId(seller, gameId);
             //int buyerId = getPlayerId(buyer, gameId);
-            getConnection();
             // seller_id, buyer_id, price, prperty_id
             cStmt = connection.prepareCall("{call trading_add_trade(?, ?, ?, ?)}");
 
@@ -298,18 +295,18 @@ public class PlayerDAO extends DataAccessObject {
             sql.printStackTrace();
         } finally {
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
     }
 
 
     public ArrayList<String[]> getTrade(String username, int gameId) {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         ResultSet rs = null;
         ArrayList<String[]> props = new ArrayList<>();
 
         try {
-            getConnection();
             // seller_id, buyer_id, price, prperty_id
             cStmt = connection.prepareCall("{call trading_get_trade(?)}");  // player_id, game_id, forfeit_status
 
@@ -332,15 +329,14 @@ public class PlayerDAO extends DataAccessObject {
         } finally{
             close(rs);
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
         return props;
     }
     public void acceptTrade(String seller, String buyer) {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         try {
-            getConnection();
-
             cStmt = connection.prepareCall("{call trading_accept_trade(?, ?)}");  // player_id
 
             cStmt.setString(1, seller);
@@ -349,16 +345,16 @@ public class PlayerDAO extends DataAccessObject {
             sql.printStackTrace();
         } finally{
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
     }
 
     public int getPlayerId(String username, int gameId) {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         ResultSet rs = null;
         int playerId = 0;
         try {
-            getConnection();
             cStmt = connection.prepareCall("{call player_get_playerid(?, ?)}");  // userId, gameId
 
             cStmt.setString(1, username);
@@ -376,7 +372,7 @@ public class PlayerDAO extends DataAccessObject {
         } finally {
             close(rs);
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
         return playerId;
     }

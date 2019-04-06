@@ -3,10 +3,7 @@ package com.teamfour.monopolish.lobby;
 import com.teamfour.monopolish.database.DataAccessObject;
 
 import javax.xml.transform.Result;
-import java.sql.CallableStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
 import java.util.ArrayList;
 
 /**
@@ -25,10 +22,10 @@ public class LobbyDAO extends DataAccessObject {
      * @return The lobby id
      */
     public int insertLobby(String username) {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         int roomId = -1;
         try {
-            getConnection();
             cStmt = connection.prepareCall("{call lobby_insert(?, ?)}");
 
             cStmt.setString(1, username);
@@ -40,7 +37,7 @@ public class LobbyDAO extends DataAccessObject {
             sql.printStackTrace();
         }finally {
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
         return roomId;
     }
@@ -52,10 +49,10 @@ public class LobbyDAO extends DataAccessObject {
      * @return The lobby id
      */
     public int newLobby(String username, String lobbyname) {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         int lobby_id = -1;
         try {
-            getConnection();
             cStmt = connection.prepareCall("{call new_lobby(?, ?, ?)}");
 
             cStmt.setString(1, username);
@@ -67,7 +64,7 @@ public class LobbyDAO extends DataAccessObject {
             sql.printStackTrace();
         }finally{
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
         return lobby_id+1;
     }
@@ -80,10 +77,10 @@ public class LobbyDAO extends DataAccessObject {
      * @throws SQLException
      */
     public boolean addPlayer(String username, int lobby_id) {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         boolean res = false;
         try {
-            getConnection();
             cStmt = connection.prepareCall("{call join_lobby(?, ?, ?)}");
 
             cStmt.setString(1, username);
@@ -95,7 +92,7 @@ public class LobbyDAO extends DataAccessObject {
             sql.printStackTrace();
         }finally {
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
         return res;
     }
@@ -108,10 +105,10 @@ public class LobbyDAO extends DataAccessObject {
      * @throws SQLException
      */
     public boolean removePlayer(String username, int lobby_id) {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         int count = 0;
         try {
-            getConnection();
             cStmt = connection.prepareCall("{call lobby_delete_user(?, ?)}");
 
             cStmt.setInt(1, lobby_id);
@@ -122,7 +119,7 @@ public class LobbyDAO extends DataAccessObject {
             sql.printStackTrace();
         }finally {
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
         return (count > 0);
     }
@@ -136,10 +133,10 @@ public class LobbyDAO extends DataAccessObject {
      * @throws SQLException
      */
     public boolean setReady(int roomId, String username, boolean ready) {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         int count = 0;
         try {
-            getConnection();
             System.out.println("Setting ready in procedure.. " + ready);
             cStmt = connection.prepareCall("{call lobby_set_player_ready(?, ?, ?)}");
 
@@ -152,7 +149,7 @@ public class LobbyDAO extends DataAccessObject {
             sql.printStackTrace();
         }finally {
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
         return (count > 0);
     }
@@ -164,10 +161,10 @@ public class LobbyDAO extends DataAccessObject {
      * @throws SQLException
      */
     public boolean deleteLobby(int roomId) {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         int count = 0;
         try {
-            getConnection();
             cStmt = connection.prepareCall("{call lobby_delete(?)}");
 
             cStmt.setInt(1, roomId);
@@ -177,7 +174,7 @@ public class LobbyDAO extends DataAccessObject {
             sql.printStackTrace();
         }finally {
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
         return (count > 0);
     }
@@ -188,11 +185,11 @@ public class LobbyDAO extends DataAccessObject {
      * @return
      */
     public ArrayList<String> getUsersInLobby(int roomId) {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         ResultSet rs = null;
         ArrayList<String> users = new ArrayList<>();
         try {
-            getConnection();
             cStmt = connection.prepareCall("{CALL lobby_get_users_in_lobby(?)}");
 
             cStmt.setInt(1, roomId);
@@ -208,7 +205,7 @@ public class LobbyDAO extends DataAccessObject {
         }finally {
             close(rs);
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
         return users;
     }
@@ -217,11 +214,11 @@ public class LobbyDAO extends DataAccessObject {
      * Retrieves all active lobbies
      */
     public ArrayList<String[]> getAllLobbies() {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         ArrayList<String[]> lobbyInfo = new ArrayList<>();
         ResultSet rs = null;
         try {
-            getConnection();
             cStmt = connection.prepareCall("{CALL getAllLobbies()}");
 
             if (cStmt.execute()) {
@@ -236,7 +233,7 @@ public class LobbyDAO extends DataAccessObject {
         }finally {
             close(rs);
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
         return lobbyInfo;
     }
@@ -245,11 +242,11 @@ public class LobbyDAO extends DataAccessObject {
      * @param lobby_id Id of the lobby session
      */
     public int getAllReadyInLobby(int lobby_id) {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         int num = 0;
         ResultSet rs = null;
         try {
-            getConnection();
             cStmt = connection.prepareCall("{CALL getALlReadyInLobby(?)}");
             cStmt.setInt(1, lobby_id);
 
@@ -263,7 +260,7 @@ public class LobbyDAO extends DataAccessObject {
         }finally {
             close(rs);
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
         return num;
     }
@@ -271,9 +268,9 @@ public class LobbyDAO extends DataAccessObject {
      * removes any empty lobbies
      */
     public void removeEmptyLobbies() {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         try {
-            getConnection();
             cStmt = connection.prepareCall("{CALL lobby_removeEmptyLobbies()}");
             cStmt.executeUpdate();
         }
@@ -281,7 +278,7 @@ public class LobbyDAO extends DataAccessObject {
             e.printStackTrace();
         }finally {
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
     }
     /**
@@ -289,11 +286,11 @@ public class LobbyDAO extends DataAccessObject {
      * @param username Username
      */
     public int getLobbyId(String username) {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         int lobby = 0;
         ResultSet rs = null;
         try {
-            getConnection();
             cStmt = connection.prepareCall("{CALL lobby_get_id(?)}");
             cStmt.setString(1, username);
 
@@ -308,7 +305,7 @@ public class LobbyDAO extends DataAccessObject {
         }finally {
             close(rs);
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
         return lobby;
     }

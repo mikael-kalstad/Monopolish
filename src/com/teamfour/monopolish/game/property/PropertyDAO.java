@@ -19,11 +19,11 @@ public class PropertyDAO extends DataAccessObject {
      * @param game_id the id of the current game
      */
     public ArrayList<Property> getAllProperties(int game_id) throws SQLException {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         ResultSet rs = null;
         ArrayList<Property> props = new ArrayList<>();
         try {
-            getConnection();
             cStmt = connection.prepareCall("{call property_get_all(?)}");
 
             cStmt.setInt(1, game_id);
@@ -41,7 +41,7 @@ public class PropertyDAO extends DataAccessObject {
         } finally {
             close(rs);
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
 
         return (props);
@@ -53,11 +53,11 @@ public class PropertyDAO extends DataAccessObject {
      * @param username the username of the player whose properties are returned
      */
     public ArrayList<Property> getPropertiesByOwner(int gameId, String username) throws SQLException {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         ResultSet rs = null;
         ArrayList<Property> props = new ArrayList<>();
         try {
-            getConnection();
             cStmt = connection.prepareCall("{CALL property_get_by_owner(?, ?)}");
 
             cStmt.setInt(1, gameId);
@@ -76,7 +76,7 @@ public class PropertyDAO extends DataAccessObject {
         } finally {
             close(rs);
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
 
         return props;
@@ -88,9 +88,9 @@ public class PropertyDAO extends DataAccessObject {
      * @param game_id the id of the current game
      */
     public void updateProperty(Property prop, int game_id) throws SQLException {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         try {
-            getConnection();
             cStmt = connection.prepareCall("{call property_update(?, ?, ?, ?, ?)}");
                 cStmt.setInt(1, prop.getId());
                 cStmt.setInt(2, game_id);
@@ -108,7 +108,7 @@ public class PropertyDAO extends DataAccessObject {
             throw new SQLException();
         } finally {
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
     }
 
@@ -118,9 +118,9 @@ public class PropertyDAO extends DataAccessObject {
      *
      */
     public void endGame(int game_id) throws SQLException {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         try {
-            getConnection();
             cStmt = connection.prepareCall("{call property_clean(?)}");
 
             cStmt.setInt(1, game_id);
@@ -131,16 +131,16 @@ public class PropertyDAO extends DataAccessObject {
             throw new SQLException();
         } finally {
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
     }
 
     public ArrayList<Property> getColorSet(int gameId, String colorHex) throws SQLException {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         ResultSet rs = null;
         ArrayList<Property> properties = new ArrayList<>();
         try {
-            getConnection();
             cStmt = connection.prepareCall("{call property_get_color_set(?, ?)}");
 
             cStmt.setInt(1, gameId);
@@ -159,7 +159,7 @@ public class PropertyDAO extends DataAccessObject {
         } finally {
             close(rs);
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
 
         return properties;

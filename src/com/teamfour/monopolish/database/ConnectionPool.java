@@ -52,7 +52,9 @@ public class ConnectionPool {
 
         List<Connection> pool = new ArrayList<>(INITIAL_POOL_SIZE);
         for (int i = 0; i < INITIAL_POOL_SIZE; i++) {
+            Connection connection = createConnection(url, username, password);
             pool.add(createConnection(url, username, password));
+            System.out.println(System.identityHashCode(connection));
         }
         mainConnectionPool = new ConnectionPool(url, username, password, pool);
     }
@@ -87,10 +89,14 @@ public class ConnectionPool {
      * Retrieves a connection from the pool
      * @return An available connection
      */
-    public Connection getConnection() throws SQLException {
+    public Connection getConnection() {
         if (connectionPool.isEmpty()) {
             if (usedConnections.size() < MAX_POOL_SIZE) {
-                connectionPool.add(createConnection(url, username, password));
+                try {
+                    connectionPool.add(createConnection(url, username, password));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
                 System.out.println("Adding connection. New size: " + connectionPool.size());
             } else {
                 throw new RuntimeException("Maximum pool size reached, no available connections!");
@@ -102,9 +108,10 @@ public class ConnectionPool {
     }
 
     public boolean releaseConnection(Connection connection) {
+        usedConnections.remove(connection);
         if (connection == null)
             return false;
-        usedConnections.remove(connection);
+
         connectionPool.add(connection);
         return true;
     }

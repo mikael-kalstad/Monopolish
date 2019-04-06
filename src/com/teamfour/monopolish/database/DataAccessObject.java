@@ -14,27 +14,20 @@ import java.sql.SQLException;
  */
 
 public abstract class DataAccessObject {
-    // Attributes
-    protected Connection connection;
-
     /**
      * Gets a connection from the main connection pool
      */
-    protected void getConnection() {
-        try {
-            connection = ConnectionPool.getMainConnectionPool().getConnection();
-        } catch (SQLException e) {
-            // TODO: SOmething
-            e.printStackTrace();
-        }
+    protected Connection getConnection() {
+        Connection connection = null;
+        connection = ConnectionPool.getMainConnectionPool().getConnection();
+        return connection;
     }
 
     /**
      * Releases the current connection and closes the using statement
      */
-    protected void releaseConnection() {
+    protected void releaseConnection(Connection connection) {
         ConnectionPool.getMainConnectionPool().releaseConnection(connection);
-
         connection = null;
     }
 
@@ -49,7 +42,5 @@ public abstract class DataAccessObject {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
     }
 }
