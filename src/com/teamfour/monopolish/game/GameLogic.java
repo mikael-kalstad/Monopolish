@@ -10,7 +10,6 @@ import com.teamfour.monopolish.gui.controllers.Handler;
 import com.teamfour.monopolish.gui.controllers.MessagePopupController;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 /**
  * This class contains static methods which can be used by the GameController to perform logical actions
@@ -19,7 +18,7 @@ import java.util.ArrayList;
  * 'GameController.java'
  *
  * @author      eirikhem
- * @version     1.1
+ * @version     1.2
  */
 
 public class GameLogic {
@@ -61,7 +60,7 @@ public class GameLogic {
 
             System.out.println("Setup completed");
         } catch (SQLException e) {
-            // TODO: Error message?
+            
         }
     }
 
@@ -190,40 +189,41 @@ public class GameLogic {
         if (yourPlayer.hasFreeParking()) {
             MessagePopupController.show("You have a 'Free Parking' token! You don't have to pay rent here", "parking.png");
             yourPlayer.setFreeParking(false);
-            return;
-        }
-
-        // Get position, property object and owner name
-        int position = yourPlayer.getPosition();
-        Property currentProperty = entities.getPropertyAtPosition(position);
-        String owner = currentProperty.getOwner();
-
-        // Get type of property
-        int currentPropertyType = currentProperty.getType();
-        int price;
-        if (currentPropertyType == Property.STREET) {
-            boolean ownerHasFullSet = entities.getPlayer(owner).hasFullSet(game.getGameId(),
-                    currentProperty.getCategorycolor());
-            price = ((Street)currentProperty).getCurrentRent(ownerHasFullSet);
-        }
-        else if (currentPropertyType == Property.BOAT) {
-            int numberOfBoats = entities.getPlayer(owner).getBoatsOwned();
-            price = ((Boat)currentProperty).getRent(numberOfBoats);
         } else {
-            int numberOfTrains = entities.getPlayer(owner).getTrainsOwned();
-            int[] lastThrow = game.getDice().getLastThrow();
-            price = ((Train)currentProperty).getRent(numberOfTrains, lastThrow[0] + lastThrow[1]);
+
+            // Get position, property object and owner name
+            int position = yourPlayer.getPosition();
+            Property currentProperty = entities.getPropertyAtPosition(position);
+            String owner = currentProperty.getOwner();
+
+            // Get type of property
+            int currentPropertyType = currentProperty.getType();
+            int price;
+            if (currentPropertyType == Property.STREET) {
+                boolean ownerHasFullSet = entities.getPlayer(owner).hasFullSet(game.getGameId(),
+                        currentProperty.getCategorycolor());
+                price = ((Street) currentProperty).getCurrentRent(ownerHasFullSet);
+            } else if (currentPropertyType == Property.BOAT) {
+                int numberOfBoats = entities.getPlayer(owner).getBoatsOwned();
+                price = ((Boat) currentProperty).getRent(numberOfBoats);
+            } else {
+                int numberOfTrains = entities.getPlayer(owner).getTrainsOwned();
+                int[] lastThrow = game.getDice().getLastThrow();
+                price = ((Train) currentProperty).getRent(numberOfTrains, lastThrow[0] + lastThrow[1]);
+            }
+
+            // Run transaction
+            entities.transferMoneyFromTo(yourPlayer.getUsername(), currentProperty.getOwner(), price);
+
+            MessagePopupController.show(
+                    "You have paid " +
+                            currentProperty.getAllRent()[0] +
+                            " in rent to " + currentProperty.getOwner()
+                    , "dollarNegative.png"
+                    , "Real estate");
         }
 
-        // Run transaction
-        entities.transferMoneyFromTo(yourPlayer.getUsername(), currentProperty.getOwner(), price);
-
-        MessagePopupController.show(
-                "You have paid " +
-                currentProperty.getAllRent()[0] +
-                " in rent to " + currentProperty.getOwner()
-                , "dollarNegative.png"
-                , "Real estate");
+        // Finally, update to database
         updateToDatabase();
     }
 
