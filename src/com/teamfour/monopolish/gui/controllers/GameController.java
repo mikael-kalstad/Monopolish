@@ -244,15 +244,15 @@ public class GameController {
                 }
 
                 // Check if forfeit checks should be reset
-                if (Handler.getPlayerDAO().getForfeitCheck(GAME_ID)) {
-
-                    // Reset all player forfeit votes
-                    for (String u : Handler.getCurrentGame().getPlayers()) {
-                        Handler.getPlayerDAO().setForfeitStatus(u, GAME_ID, 0);
-                        Handler.getPlayerDAO().setForfeitCheck(GAME_ID, u, false);
-                        forfeit = false;
-                    }
-                }
+//                if (Handler.getPlayerDAO().getForfeitCheck(GAME_ID)) {
+//
+//                    // Reset all player forfeit votes
+//                    for (String u : Handler.getCurrentGame().getPlayers()) {
+//                        Handler.getPlayerDAO().setForfeitStatus(u, GAME_ID, 0);
+//                        Handler.getPlayerDAO().setForfeitCheck(GAME_ID, u, false);
+//                        forfeit = false;
+//                    }
+//                }
             }
         };
 
