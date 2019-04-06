@@ -7,7 +7,6 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <Pane fx:id="cover" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="240.0" prefWidth="190.0" style="-fx-background-color: #333;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.monopolish.gui.controllers.ChanceCardController">
    <children>
       <Text fill="#bdbdbd" layoutX="47.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Chance card">
@@ -27,12 +26,12 @@
       </Text>
       <Pane fx:id="backside" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="240.0" prefWidth="190.0" style="-fx-background-color: ededed;" visible="false">
          <children>
-            <Text fx:id="msg" fill="#6f6f6f" layoutX="18.0" layoutY="79.0" lineSpacing="3.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You can use this card to get out of jail. This card will make you free as a bird." wrappingWidth="153.1475830078125">
+            <Text fx:id="msg" fill="#6f6f6f" layoutX="16.0" layoutY="79.0" lineSpacing="3.0" strokeType="OUTSIDE" strokeWidth="0.0" text="One of the most wonderful things in life is to wake up and enjoy a cuddle with somebody; unless you are in prison. Go to prison." wrappingWidth="158.1475830078125">
                <font>
-                  <Font size="14.0" />
+                  <Font size="11.0" />
                </font>
             </Text>
-            <ImageView fx:id="logo" fitHeight="58.0" fitWidth="53.0" layoutX="68.0" layoutY="173.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="logo" fitHeight="52.0" fitWidth="46.0" layoutX="72.0" layoutY="180.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../../../../res/gui/MessagePopup/bird.png" />
                </image>
