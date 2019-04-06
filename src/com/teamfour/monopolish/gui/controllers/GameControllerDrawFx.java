@@ -348,6 +348,34 @@ public class GameControllerDrawFx {
         element.setFill(Paint.valueOf("#787878"));
     }
 
+    static Pane createJailCard(boolean inJail) {
+        Pane card = new AnchorPane();
+        card.setId("jailCard");
+        Pane header = new AnchorPane();
+        String headerText;
+        if (inJail) {
+            headerText = "You are in jail";
+        } else {
+            headerText = "You are visiting jail";
+        }
+
+        Label headerLabel = new Label(headerText);
+
+        card.getChildren().addAll(header);
+
+        card.setPrefSize(190, 240);
+        header.setPrefSize(190, 50);
+
+        AnchorPane.setTopAnchor(header, 0.0);
+
+        card.setStyle("-fx-background-color: #ffffff;");
+        header.setStyle("-fx-background-color: #ffffff;");
+        headerLabel.setStyle("-fx-font-size: 18px");
+
+        header.getChildren().add(headerLabel);
+
+        return card;
+    }
 
     /**
      * A method to generate a javafx property card

@@ -60,7 +60,7 @@ public class GameLogic {
 
             System.out.println("Setup completed");
         } catch (SQLException e) {
-            
+
         }
     }
 
@@ -227,14 +227,23 @@ public class GameLogic {
         updateToDatabase();
     }
 
+    /**
+     * Makes the player pay tax to the bank
+     */
     public static void payTax() {
         game.getEntities().transferMoneyFromBank(game.getEntities().getYou().getUsername(), -GameConstants.INCOME_TAX);
         updateToDatabase();
     }
 
+    /**
+     * Update all game elements to the database
+     */
     public static void updateToDatabase() {
         try {
+            // Updates all entities
             game.getEntities().updateToDatabase();
+
+            // Updates the current player
             Handler.getGameDAO().setCurrentPlayer(game.getGameId(), game.getPlayers()[game.getCurrentTurn()]);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -300,10 +309,17 @@ public class GameLogic {
         Handler.getLobbyDAO().deleteLobby(lobbyId);
     }
 
+    /**
+     * Update all elements in the game from the database, so that changes that other players have
+     * done gets shown in your own client
+     */
     public static void updateFromDatabase() {
         try {
             // Update entities
             game.getEntities().updateFromDatabase();
+
+            // Load player list again
+            game.setPlayers(game.getEntities().getUsernames());
 
             // Update turn number
             String currentPlayer = Handler.getGameDAO().getCurrentPlayer(game.getGameId());

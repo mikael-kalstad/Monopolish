@@ -23,12 +23,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -557,7 +554,6 @@ public class GameController {
 
         } else {
             // If no property here, make sure to clear the property
-            cardContainer.getChildren().clear();
             propertyOwned.setVisible(false);
             buyPropertyBtn.setVisible(false);
             payRentBtn.setVisible(false);
@@ -567,6 +563,13 @@ public class GameController {
         if (game.getBoard().getTileType(yourPosition) == Board.FREE_PARKING) {
             game.getEntities().getYou().setFreeParking(true);
             freeParkingCard.setVisible(true);
+        }
+
+        // If on a jail tile, show the jail information card
+        if (game.getBoard().getTileType(yourPosition) == Board.JAIL) {
+            boolean inJail = game.getEntities().getYou().isInJail();
+            Pane card = GameControllerDrawFx.createJailCard(inJail);
+            cardContainer.getChildren().addAll(card);
         }
 
         // Player is on a chance card tile

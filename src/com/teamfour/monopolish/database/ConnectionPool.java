@@ -97,7 +97,6 @@ public class ConnectionPool {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                System.out.println("Adding connection. New size: " + connectionPool.size());
             } else {
                 throw new RuntimeException("Maximum pool size reached, no available connections!");
             }
@@ -108,9 +107,10 @@ public class ConnectionPool {
     }
 
     public boolean releaseConnection(Connection connection) {
-        usedConnections.remove(connection);
         if (connection == null)
             return false;
+
+        usedConnections.remove(connection);
 
         connectionPool.add(connection);
         return true;

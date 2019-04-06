@@ -378,11 +378,11 @@ public class PlayerDAO extends DataAccessObject {
     }
 
     public boolean getForfeitCheck(int gameId){
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         ResultSet rs = null;
         boolean checked = false;
         try {
-            getConnection();
             cStmt = connection.prepareCall("{call get_check_forfeit(?)}");
             cStmt.setInt(1, gameId);
             if (cStmt.execute()) {
@@ -396,12 +396,13 @@ public class PlayerDAO extends DataAccessObject {
         } finally {
             close(rs);
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
         return(checked);
     }
 
     public void setForfeitCheck(int gameId, String username, boolean check){
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         try {
             getConnection();
@@ -415,7 +416,7 @@ public class PlayerDAO extends DataAccessObject {
         } finally {
 
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
     }
 
