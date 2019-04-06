@@ -2,10 +2,7 @@ package com.teamfour.monopolish.gui.controllers;
 
 import com.teamfour.monopolish.game.Game;
 import com.teamfour.monopolish.game.GameLogic;
-import com.teamfour.monopolish.game.chanceCards.ChanceCard;
-import com.teamfour.monopolish.game.chanceCards.ChanceCardBank;
-import com.teamfour.monopolish.game.chanceCards.ChanceCardPlayers;
-import com.teamfour.monopolish.game.chanceCards.ChanceCardPrank;
+import com.teamfour.monopolish.game.chanceCards.*;
 import com.teamfour.monopolish.game.entities.EntityManager;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.animation.ScaleTransition;
@@ -100,6 +97,11 @@ public class ChanceCardController {
                 // Chance card of type Bank
                 else if (cardInfo instanceof ChanceCardBank) {
                     ((ChanceCardBank) cardInfo).moneyTransaction();
+                }
+
+                // Chance card of type position
+                else if (cardInfo instanceof ChanceCardPosition) {
+                    ((ChanceCardPosition) cardInfo).moveToPosition();
                 }
             } else {
                 // Stop playing sound when turning the card
