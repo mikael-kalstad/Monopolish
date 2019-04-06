@@ -37,6 +37,6 @@ public class ChanceCardPrank extends ChanceCard {
         player.play();
         player.setVolume(100);
 
-        Handler.getCurrentGame().getEntities().transferMoneyBank(super.getUSERNAME(), super.getAmount());
+        Handler.getCurrentGame().getEntities().transferMoneyFromBank(super.getUSERNAME(), super.getAmount());
     }
 }
