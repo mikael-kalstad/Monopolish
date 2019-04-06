@@ -114,6 +114,12 @@ CREATE PROCEDURE account_set_inactive(IN u_name VARCHAR(30))
     UPDATE `account` SET `active` = 0 WHERE `username` = u_name;
   END;
 
+DROP PROCEDURE account_get_active;
+
+CREATE PROCEDURE account_get_active(IN u_name VARCHAR(30))
+  BEGIN
+    SELECT active from account WHERE username = u_name;
+  end;
 
 
 DROP PROCEDURE IF EXISTS account_games_played;

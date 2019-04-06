@@ -47,9 +47,9 @@ public class DashboardController {
 
         setLeaderBoard(Handler.getPlayerDAO().getHighscoreList());
 
+        // Logout user on window close
         Handler.getSceneManager().getWindow().setOnCloseRequest(e -> {
-            // Logout user
-            Handler.getAccountDAO().setInactive(Handler.getAccount().getUsername());
+            Handler.getAccountDAO().setActive(Handler.getAccount().getUsername());
         });
     }
 
@@ -154,7 +154,8 @@ public class DashboardController {
      * Change view to login
      */
     public void logout() {
-        Handler.getAccountDAO().setInactive(Handler.getAccount().getUsername());    // Sets user to inactive in DB
+        // Logout user
+        Handler.getAccountDAO().setActive(Handler.getAccount().getUsername());
         Handler.getSceneManager().setScene(ViewConstants.LOGIN.getValue());
         Handler.resetAccount(); // Make sure account is reset when login out
     }

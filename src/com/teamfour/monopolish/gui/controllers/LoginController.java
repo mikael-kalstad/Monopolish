@@ -5,15 +5,14 @@ import com.teamfour.monopolish.database.ConnectionPool;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 
 /**
- * Controller class for registration view
+ * Controller class for login view
  *
  * @author Mikael Kalstad
- * @version 1.5
+ * @version 1.6
  */
 public class LoginController {
     @FXML private TextField usernameInput;
@@ -30,6 +29,9 @@ public class LoginController {
     private final String MSG_WARNING = "*Username/email or password is wrong";
     private final String MSG_DATABASE_ERROR = "*Database error, try again";
     private final String MSG_USER_LOGGED_IN_ERROR = "*User already logged in";
+
+    // Check if connection pool is already created
+    private boolean connectionCreated = false;
 
     /**
      * Method to change styling to an input
@@ -61,7 +63,7 @@ public class LoginController {
      * @return true if any inputs are empty, false if all inputs are not empty
      */
     private boolean inputsEmpty() {
-        return (usernameInput.getText().trim().isEmpty() && !passwordInput.getText().trim().isEmpty());
+        return (usernameInput.getText().trim().isEmpty() || passwordInput.getText().trim().isEmpty());
     }
 
     /**
@@ -72,13 +74,17 @@ public class LoginController {
      * @param textElement A Text that will have styling applied
      * @param warning If true show warning msg
      */
-    private void checkInput(TextField input, Text textElement, boolean warning, boolean dbError) {
+    private void checkInput(TextField input, Text textElement, boolean warning, boolean dbError, boolean alreadyLoggedIn) {
         // Required styling
         if (input.getText().trim().isEmpty()) {
             setBorderStyle(input, COLOR_REQUIRED);
             textElement.setText(MSG_REQUIRED);
             setTextColor(textElement, COLOR_REQUIRED);
             textElement.setVisible(true);
+        }
+        // Do not show warning if some input is empty
+        else if (inputsEmpty()) {
+            setBorderStyle(input, COLOR_NORMAL);
         }
         // Database error
         else if (dbError) {
@@ -87,7 +93,14 @@ public class LoginController {
             setTextColor(textElement, COLOR_WARNING);
             textElement.setVisible(true);
         }
-        // Warning styling
+        // User already logged in warning
+        else if (alreadyLoggedIn) {
+            setBorderStyle(input, COLOR_WARNING);
+            textElement.setText(MSG_USER_LOGGED_IN_ERROR);
+            setTextColor(textElement, COLOR_WARNING);
+            textElement.setVisible(true);
+        }
+        // Wrong username/email or password styling
         else if (warning) {
             setBorderStyle(input, COLOR_WARNING);
             textElement.setText(MSG_WARNING);
@@ -123,25 +136,36 @@ public class LoginController {
         Account res;
         boolean canLogin = false;
         boolean dbError = false;
+        boolean alreadyLoggedIn = false;
+
+        System.out.println("Inputs empty? " + inputsEmpty());
 
         // Try to register if inputs are not empty
         if (!inputsEmpty()) {
-            //Check if user is already logged in
-//                if (Handler.getAccountDAO()) {
-//                    msg.setText(MSG_USER_LOGGED_IN_ERROR);
-//                    setTextColor(msg, COLOR_WARNING);
-//                }
-
             try {
-                ConnectionPool.create();
-                res = Handler.getAccountDAO().getAccountByCredentials(usernameInput.getText(), passwordInput.getText());
+                // Only create connection if it is not already created
+                if (!connectionCreated) {
+                    ConnectionPool.create();
+                    connectionCreated = true;
+                }
 
-                // Username/email and password is correct
-                if (res != null) {
-                    Handler.setAccount(res); // Set local account object
-                    Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
-                    canLogin = true;
-                    dbError = false;
+                //Check if user is already logged in
+                if (Handler.getAccountDAO().getActive(usernameInput.getText())) {
+                    alreadyLoggedIn = true;
+                }
+
+                // User is not already logged in or does not exists
+                else {
+                    // Get response from database with inputs
+                    res = Handler.getAccountDAO().getAccountByCredentials(usernameInput.getText(), passwordInput.getText());
+
+                    // Username/email and password is correct
+                    if (res != null) {
+                        Handler.setAccount(res); // Set local account object
+                        Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
+                        canLogin = true;
+                        dbError = false;
+                    }
                 }
             }
             catch (Exception e) {
@@ -150,8 +174,8 @@ public class LoginController {
         }
 
         // Check inputs
-        checkInput(usernameInput, msg, !canLogin, dbError);
-        checkInput(passwordInput, msg, !canLogin, dbError);
+        checkInput(usernameInput, msg, !canLogin, dbError, alreadyLoggedIn);
+        checkInput(passwordInput, msg, !canLogin, dbError, alreadyLoggedIn);
     }
 
     // Go to register view

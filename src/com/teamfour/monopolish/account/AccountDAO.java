@@ -127,24 +127,48 @@ public class AccountDAO extends DataAccessObject {
         return account;
     }
 
-    public void setInactive(String username) /*throws SQLException */{
+    public void setActive(String username) /*throws SQLException */{
         CallableStatement cStmt = null;
         try {
             getConnection();
-            //cStmt = connection.prepareCall("{call account_insert_user(?, ?, ?, ?, ?)}");
             cStmt = connection.prepareCall("{call account_set_inactive(?)}");
 
             cStmt.setString(1, username);
-
             cStmt.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
-            //throw new SQLException();
         } finally {
             close(cStmt);
             releaseConnection();
         }
+    }
+
+    public boolean getActive(String username) {
+        CallableStatement cStmt = null;
+        ResultSet rs = null;
+        boolean active = false;
+
+        try {
+            getConnection();
+            cStmt = connection.prepareCall("{call account_get_active(?)}");
+
+            cStmt.setString(1, username);
+
+            if (cStmt.execute()) {
+                rs = cStmt.getResultSet();
+                while (rs.next())
+                    active = rs.getBoolean("active");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(rs);
+            close(cStmt);
+            releaseConnection();
+        }
+        return active;
     }
 
     public int getGamesPlayed(String username) /*throws SQLException */{

@@ -102,11 +102,13 @@ public class ConnectionPool {
     }
 
     public boolean releaseConnection(Connection connection) {
-        if (connection == null)
+        if (connection == null) {
             return false;
-        usedConnections.remove(connection);
-        connectionPool.add(connection);
-        return true;
+        } else {
+            usedConnections.remove(connection);
+            connectionPool.add(connection);
+            return true;
+        }
     }
 
     /**
