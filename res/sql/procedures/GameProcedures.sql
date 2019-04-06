@@ -134,3 +134,12 @@ CREATE PROCEDURE game_get_winner(IN gameid INT, OUT winner_id INT)
     select user_id into winner_id from player where game_id = gameid order by score desc LIMIT 1;
   END;
 -- END$$
+
+
+DROP PROCEDURE IF EXISTS get_forfeit;
+
+CREATE PROCEDURE get_forfeit(in gameid int)
+  BEGIN
+    select forfeit from game where gameid = game.game_id;
+  END;
+

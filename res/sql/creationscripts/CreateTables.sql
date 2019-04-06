@@ -130,9 +130,14 @@ CREATE TABLE trading(
   PRIMARY KEY (trade_id)
 ); # represents trade deals
 
+
+ALTER TABLE game
+  ADD forfeit bit default 0;
+
 /*
 ADD FOREIGN KEYS
 */
+
 ALTER TABLE trading
   ADD FOREIGN KEY (seller_id) REFERENCES player(player_id);
 ALTER TABLE trading
