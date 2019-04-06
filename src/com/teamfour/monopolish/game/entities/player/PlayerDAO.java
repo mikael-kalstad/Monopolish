@@ -379,22 +379,19 @@ public class PlayerDAO extends DataAccessObject {
     public boolean getForfeitCheck(int gameId){
         Connection connection = getConnection();
         CallableStatement cStmt = null;
-        ResultSet rs = null;
+
         boolean checked = false;
         try {
             cStmt = connection.prepareCall("{call get_check_forfeit(?)}");
             cStmt.setInt(1, gameId);
             cStmt.registerOutParameter(2, Types.BIT);
-            if (cStmt.execute()) {
-                rs = cStmt.getResultSet();
-                while (rs.next()) {
-                    checked = rs.getBoolean(2);
-                }
-            }
+
+            cStmt.execute();
+            checked = cStmt.getBoolean(2);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            close(rs);
+
             close(cStmt);
             releaseConnection(connection);
         }
