@@ -3,10 +3,8 @@ package com.teamfour.monopolish.game.entities.player;
 import com.teamfour.monopolish.database.ConnectionPool;
 import com.teamfour.monopolish.database.DataAccessObject;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.lang.reflect.Type;
+import java.sql.*;
 import java.util.ArrayList;
 /**
  * Handles Player-DB connection and methods
@@ -386,10 +384,11 @@ public class PlayerDAO extends DataAccessObject {
         try {
             cStmt = connection.prepareCall("{call get_check_forfeit(?)}");
             cStmt.setInt(1, gameId);
+            cStmt.registerOutParameter(2, Types.BIT);
             if (cStmt.execute()) {
                 rs = cStmt.getResultSet();
                 while (rs.next()) {
-                    checked = rs.getBoolean(1);
+                    checked = rs.getBoolean(2);
                 }
             }
         } catch (SQLException e) {
