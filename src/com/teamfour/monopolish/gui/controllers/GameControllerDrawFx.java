@@ -3,6 +3,7 @@ package com.teamfour.monopolish.gui.controllers;
 import com.teamfour.monopolish.game.property.Boat;
 import com.teamfour.monopolish.game.property.Property;
 import com.teamfour.monopolish.game.property.Street;
+import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
@@ -437,19 +438,29 @@ public class GameControllerDrawFx {
      * @param housegrid GridPane on the board for houses
      * @param street    The property the house will be drawn on
      */
-    static void drawHouse(GridPane housegrid, Street street) {
-
-        int pos = street.getPosition();
+    static boolean drawHouse(GridPane housegrid, Street street) {
         int numberOfHouses = street.getHouses();
         String propertyname = street.getName();
-
-        int[] posXY = posToXY(pos);
-
-        ArrayList<ImageView> houses = new ArrayList<>();
+        boolean hascontainer = false;
 
         if (street.getHotels() == 1) {
             numberOfHouses = 5;
         }
+
+        if(numberOfHouses == 0){return false;}
+
+        for (Node box : housegrid.getChildren()) {
+            if (box.getId()!= null && box.getId().equals(propertyname)) {
+                hascontainer = true;
+                if (numberOfHouses == (((Pane) box).getChildren()).size() || (numberOfHouses == 5 && (((Pane) box).getChildren()).size() == 1)){
+                    return false;
+                }
+            }
+        }
+
+        int pos = street.getPosition();
+        int[] posXY = posToXY(pos);
+        ArrayList<ImageView> houses = new ArrayList<>();
 
         if (numberOfHouses < 5) {
             for (int i = 0; i < numberOfHouses; i++) {
@@ -466,7 +477,7 @@ public class GameControllerDrawFx {
         }
 
         //if its the first house being drawn on a street, it will need a container:
-        if (numberOfHouses == 1) {
+        if (!hascontainer) {
             //Checks which of the 4 sides of the board the street is on to correctly align the container in the GridPane grid:
             //Bottom
             if (pos > 0 && pos < 9) {
@@ -478,6 +489,7 @@ public class GameControllerDrawFx {
                 box.setAlignment(Pos.TOP_CENTER);
                 box.getChildren().addAll(houses);
                 housegrid.getChildren().add(box);
+                return true;
             }
             //Left side
             if (pos > 9 && pos < 18) {
@@ -489,6 +501,7 @@ public class GameControllerDrawFx {
                 box.setAlignment(Pos.CENTER_RIGHT);
                 box.getChildren().addAll(houses);
                 housegrid.getChildren().add(box);
+                return true;
             }
             //Top
             if (pos > 18 && pos < 27) {
@@ -500,6 +513,7 @@ public class GameControllerDrawFx {
                 box.setAlignment(Pos.BOTTOM_CENTER);
                 box.getChildren().addAll(houses);
                 housegrid.getChildren().add(box);
+                return true;
             }
             //Right side
             if (pos > 27 && pos < 36) {
@@ -511,15 +525,17 @@ public class GameControllerDrawFx {
                 box.setAlignment(Pos.CENTER_LEFT);
                 box.getChildren().addAll(houses);
                 housegrid.getChildren().add(box);
+                return true;
             }
         }
 
         //for the rest of the houses we find the already made container
-        if (numberOfHouses > 1 && numberOfHouses <= 4) {
+        if (hascontainer) {
             for (Node box : housegrid.getChildren()) {
-                if (box.getId() == propertyname) {
+                if (box.getId()!= null && box.getId().equals(propertyname)) {
                     ((Pane) box).getChildren().clear();
                     ((Pane) box).getChildren().addAll(houses);
+                    return true;
                 }
             }
         }
@@ -527,16 +543,18 @@ public class GameControllerDrawFx {
         //if the street has a hotel
         if (numberOfHouses == 5) {
             for (Node box : housegrid.getChildren()) {
-                if (box.getId() == propertyname) {
+                if (box.getId()!= null && box.getId().equals(propertyname)) {
                     ImageView hotel = new ImageView("file:res/gui/Game/house.png");
                     hotel.setFitWidth(32);
                     hotel.setFitHeight(32);
                     rotateHouse(hotel, pos);
                     ((Pane) box).getChildren().clear();
                     ((Pane) box).getChildren().add(hotel);
+                    return true;
                 }
             }
         }
+        return false;
     }
 
     private static void rotateHouse(ImageView house, int pos) {

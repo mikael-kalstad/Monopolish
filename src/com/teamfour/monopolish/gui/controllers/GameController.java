@@ -343,6 +343,11 @@ public class GameController {
         for (Property p : game.getEntities().getPlayer(username).getProperties()) {
             Pane card = GameControllerDrawFx.createPropertyCard(p);
             propertiesContentContainer.getChildren().add(card);
+            //if(game.getEntities().getPlayer(username).hasFullSet(Handler.getCurrentGameId(), p.getCategorycolor())){
+            card.setOnMouseClicked(event -> {
+                ((Street)p).addHouse();
+            });
+            //}
         }
 
         // Check if trade btn and msg should be shown
@@ -601,6 +606,15 @@ public class GameController {
 
             // Draw player pieces on the board
             GameControllerDrawFx.createPlayerPieces(gamegrid, positions, colors);
+
+            for(String player : turns){
+                for(Property property : game.getEntities().getPlayer(player).getProperties()){
+                    if(property instanceof Street) {
+                        GameControllerDrawFx.drawHouse(housegrid, (Street) property);
+                    }
+                }
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -781,13 +795,6 @@ public class GameController {
             Alert messageBox = new Alert(Alert.AlertType.INFORMATION,
                     "You do not have enough funds to pay bail.");
             messageBox.showAndWait();
-        }
-    }
-
-    public void clickToBuyHouse(Property property){
-        //ideally the number of houses on each street cannot be more than 1 greater than that of the other streets in the same colorset, this is not implementet here
-        if (((Street) property).addHouse()) {
-            GameControllerDrawFx.drawHouse(housegrid, (Street) property);
         }
     }
 

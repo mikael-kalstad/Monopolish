@@ -376,4 +376,47 @@ public class PlayerDAO extends DataAccessObject {
         }
         return playerId;
     }
+
+    public boolean getForfeitCheck(int gameId){
+        CallableStatement cStmt = null;
+        ResultSet rs = null;
+        boolean checked = false;
+        try {
+            getConnection();
+            cStmt = connection.prepareCall("{call get_check_forfeit(?)}");
+            cStmt.setInt(1, gameId);
+            if (cStmt.execute()) {
+                rs = cStmt.getResultSet();
+                while (rs.next()) {
+                    checked = rs.getBoolean(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(rs);
+            close(cStmt);
+            releaseConnection();
+        }
+        return(checked);
+    }
+
+    public void setForfeitCheck(int gameId, String username, boolean check){
+        CallableStatement cStmt = null;
+        try {
+            getConnection();
+            cStmt = connection.prepareCall("{call set_check_forfeit(?,?,?)}");
+            cStmt.setInt(1, gameId);
+            cStmt.setString(2, username);
+            cStmt.setBoolean(3, check);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+
+            close(cStmt);
+            releaseConnection();
+        }
+    }
+
 }
