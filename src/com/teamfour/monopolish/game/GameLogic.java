@@ -319,7 +319,7 @@ public class GameLogic {
             game.getEntities().updateFromDatabase();
 
             // Load player list again
-            game.setPlayers(game.getEntities().getUsernames());
+            //game.setPlayers(game.getEntities().getUsernames());
 
             // Update turn number
             String currentPlayer = Handler.getGameDAO().getCurrentPlayer(game.getGameId());
@@ -332,5 +332,16 @@ public class GameLogic {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void onPlayerLeave() {
+        String yourUsername = game.getEntities().getYou().getUsername();
+        // If it's your turn, end your own turn
+        if (game.getPlayers()[game.getCurrentTurn()].equals(yourUsername)) {
+            endTurn();
+        }
+
+        Handler.getLobbyDAO().removePlayer(yourUsername, Handler.getLobbyDAO().getLobbyId(yourUsername));
+        game.getEntities().removePlayer(yourUsername);
     }
 }

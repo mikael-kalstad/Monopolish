@@ -49,7 +49,7 @@ public class DashboardController {
 
         // Logout user on window close
         Handler.getSceneManager().getWindow().setOnCloseRequest(e -> {
-            Handler.getAccountDAO().setActive(Handler.getAccount().getUsername());
+            Handler.getAccountDAO().setInactive(Handler.getAccount().getUsername());
         });
     }
 
@@ -155,7 +155,7 @@ public class DashboardController {
      */
     public void logout() {
         // Logout user
-        Handler.getAccountDAO().setActive(Handler.getAccount().getUsername());
+        Handler.getAccountDAO().setInactive(Handler.getAccount().getUsername());
         Handler.getSceneManager().setScene(ViewConstants.LOGIN.getValue());
         Handler.resetAccount(); // Make sure account is reset when login out
     }
