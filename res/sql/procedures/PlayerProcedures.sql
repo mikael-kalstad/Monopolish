@@ -7,6 +7,8 @@ DROP PROCEDURE IF EXISTS player_set_forfeit;
 DROP PROCEDURE IF EXISTS player_get_forfeit;
 DROP PROCEDURE IF EXISTS player_get_playerid;
 DROP PROCEDURE IF EXISTS player_get_highscore;
+DROP PROCEDURE IF EXISTS get_forfeit_check;
+DROP PROCEDURE IF EXISTS set_forfeit_check;
 
 /*
 removes a player from active gameplay
@@ -66,7 +68,7 @@ create procedure player_update(
   in in_jail bit,
   in bankrupt_in bit,
   in active_in int,
-  in freeparking BIT,
+  in freeparking BIT
 )
 begin
   declare u_id int;
@@ -217,6 +219,29 @@ CREATE PROCEDURE player_get_forfeit(IN game_id INT)
     SELECT quit, not_quit;
 
   END;
+
+
+CREATE PROCEDURE get_forfeit_check(IN gameid INT)
+BEGIN
+  declare players int;
+  declare checked int;
+  declare check_bit bit;
+
+  select count(user_id) into players from game join player on game.game_id = player.game_id where gameid = game.game_id;
+  select count(player_id) into checked from player where gameid = player.game_id and forfeit_check = 1;
+  select if(players>checked, 0, 1) into check_bit from player where gameid = game_id;
+
+  select check_bit;
+END;
+
+
+CREATE PROCEDURE set_forfeit_check(IN gameid INT, in user_name varchar(30), in check_in bit)
+BEGIN
+  declare p_id int;
+  select player_id into p_id from player join account on player.user_id = account.user_id where user_name = user_name and player.game_id = gameid;
+
+  update player set forfeit_check = check_in where player_id = p_id;
+END;
 
 /*
 

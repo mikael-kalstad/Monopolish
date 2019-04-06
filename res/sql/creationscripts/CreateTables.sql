@@ -69,7 +69,8 @@ CREATE TABLE player
   active int not null default 1, -- active in game = 1, quit = 2, game is finished = 0
   score INT DEFAULT 0,
   forfeit INT DEFAULT 0,
-  free_parking BIT NOT NULL DEFAULT 0
+  free_parking BIT NOT NULL DEFAULT 0,
+  forfeit_check bit not null default 0
 ); # represents a player and its stats
 
 -- active = 1 : aktiv,
@@ -91,6 +92,7 @@ create table game(
   starttime datetime not null,
   endtime datetime,
   currentplayer integer,
+  forfeit bit default 0,
   primary key(game_id)
 ); # represents the current status of the game
 
@@ -129,10 +131,6 @@ CREATE TABLE trading(
   accepted BIT NOT NULL DEFAULT 0,
   PRIMARY KEY (trade_id)
 ); # represents trade deals
-
-
-ALTER TABLE game
-  ADD forfeit bit default 0;
 
 /*
 ADD FOREIGN KEYS

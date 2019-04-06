@@ -1,6 +1,7 @@
 package com.teamfour.monopolish.account;
 
 import com.mysql.cj.protocol.Resultset;
+import com.teamfour.monopolish.database.ConnectionPool;
 import com.teamfour.monopolish.database.DataAccessObject;
 
 import java.sql.*;
@@ -21,10 +22,10 @@ public class AccountDAO extends DataAccessObject {
      * @throws SQLException
      */
     public int insertAccount(Account account, String password) throws SQLException {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         int status = 0;
         try {
-            getConnection();
             //cStmt = connection.prepareCall("{call account_insert_user(?, ?, ?, ?, ?)}");
             cStmt = connection.prepareCall("{call account_insert_user(?, ?, ?, ?)}");
 
@@ -50,7 +51,7 @@ public class AccountDAO extends DataAccessObject {
             throw new SQLException();
         } finally {
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
 
         return status;
@@ -64,10 +65,10 @@ public class AccountDAO extends DataAccessObject {
      * @return 1 if successful, 0 if no user, -1 if wrong password
      */
     public int resetPassword(String username, String currentPassword, String newPassword) throws SQLException {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         int status = 0;
         try {
-            getConnection();
             cStmt = connection.prepareCall("{call account_reset_password(?, ?, ?, ?)}");
 
             cStmt.setString(1, username);
@@ -83,7 +84,7 @@ public class AccountDAO extends DataAccessObject {
             throw new SQLException();
         } finally {
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
 
         return status;
@@ -96,11 +97,11 @@ public class AccountDAO extends DataAccessObject {
      * @return Null if credentials are wrong
      */
     public Account getAccountByCredentials(String username, String password) throws SQLException {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         ResultSet rs = null;
         Account account = null;
         try {
-            getConnection();
             cStmt = connection.prepareCall("{call account_validate_user(?, ?)}");
 
             cStmt.setString(1, username);
@@ -121,7 +122,7 @@ public class AccountDAO extends DataAccessObject {
         } finally {
             close(rs);
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
 
         return account;
@@ -140,7 +141,7 @@ public class AccountDAO extends DataAccessObject {
             e.printStackTrace();
         } finally {
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
     }
 
@@ -172,11 +173,11 @@ public class AccountDAO extends DataAccessObject {
     }
 
     public int getGamesPlayed(String username) /*throws SQLException */{
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         ResultSet rs = null;
         int games = 0;
         try {
-            getConnection();
             cStmt = connection.prepareCall("{call account_games_played(?)}");
 
             cStmt.setString(1, username);
@@ -194,17 +195,17 @@ public class AccountDAO extends DataAccessObject {
         } finally {
             close(rs);
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
         return games;
     }
 
     public int getHighscore(String username) /*throws SQLException */{
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         ResultSet rs = null;
         int score = 0;
         try {
-            getConnection();
             cStmt = connection.prepareCall("{call account_highscore(?)}");
 
             cStmt.setString(1, username);
@@ -220,7 +221,7 @@ public class AccountDAO extends DataAccessObject {
         } finally {
             close(rs);
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
         return score;
     }

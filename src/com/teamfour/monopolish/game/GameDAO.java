@@ -2,10 +2,7 @@ package com.teamfour.monopolish.game;
 
 import com.teamfour.monopolish.database.DataAccessObject;
 
-import java.sql.CallableStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
 import java.util.ArrayList;
 
 /**
@@ -24,10 +21,10 @@ public class GameDAO extends DataAccessObject {
      * @throws SQLException
      */
     public int insertGame(int lobbyId, String username) {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         int gameId = -1;
         try {
-            getConnection();
             cStmt = connection.prepareCall("{call game_insert(?, ?, ?)}");
 
             cStmt.setInt(1, lobbyId);
@@ -40,7 +37,7 @@ public class GameDAO extends DataAccessObject {
             e.printStackTrace();
         } finally {
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
 
         return gameId;
@@ -53,11 +50,11 @@ public class GameDAO extends DataAccessObject {
      * @throws SQLException
      */
     public String getCurrentPlayer(int gameId) throws SQLException {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         ResultSet rs = null;
         String player = "";
         try {
-            getConnection();
             cStmt = connection.prepareCall("{call game_get_current_player(?)}");
 
             cStmt.setInt(1, gameId);
@@ -66,13 +63,14 @@ public class GameDAO extends DataAccessObject {
                 rs = cStmt.getResultSet();
                 if (rs.next())
                     player = rs.getString(1);
-                rs.close();
             }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new SQLException();
         } finally {
-            releaseConnection();
+            close(rs);
+            close(cStmt);
+            releaseConnection(connection);
         }
 
         return player;
@@ -86,10 +84,10 @@ public class GameDAO extends DataAccessObject {
      * @throws SQLException
      */
     public boolean setCurrentPlayer(int gameId, String currentPlayer) throws SQLException {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         int count = 0;
         try {
-            getConnection();
             cStmt = connection.prepareCall("{call game_set_current_player(?, ?)}");
 
             cStmt.setInt(1, gameId);
@@ -101,7 +99,7 @@ public class GameDAO extends DataAccessObject {
             throw new SQLException();
         } finally {
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
         return (count > 0);
     }
@@ -112,10 +110,10 @@ public class GameDAO extends DataAccessObject {
      * @return True if operation was successful
      */
     public boolean finishGame(int gameId) {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         int count = 0;
         try {
-            getConnection();
             cStmt = connection.prepareCall("{call game_close(?)}");
 
             cStmt.setInt(1, gameId);
@@ -125,7 +123,7 @@ public class GameDAO extends DataAccessObject {
             e.printStackTrace();
         } finally {
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
 
         return (count > 0);
@@ -138,10 +136,10 @@ public class GameDAO extends DataAccessObject {
      * @throws SQLException
      */
     public int getWinner(int gameId) throws SQLException {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         int winnerId = -1;
         try {
-            getConnection();
             cStmt = connection.prepareCall("{call game_get_winner(?, ?)}");
 
             cStmt.setInt(1, gameId);
@@ -155,7 +153,7 @@ public class GameDAO extends DataAccessObject {
             throw new SQLException();
         } finally {
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
 
         return winnerId;
@@ -168,11 +166,11 @@ public class GameDAO extends DataAccessObject {
      */
 
     public ArrayList<String[]> getChat(int gameId) {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         ResultSet rs = null;
         ArrayList<String[]> chatList= new ArrayList<String[]>();
         try {
-            getConnection();
             cStmt = connection.prepareCall("{call chat_get(?)}");
             cStmt.setInt(1, gameId);
 
@@ -191,7 +189,7 @@ public class GameDAO extends DataAccessObject {
         } finally {
             close(rs);
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
         return chatList;
     }
@@ -201,9 +199,9 @@ public class GameDAO extends DataAccessObject {
      * @param message the chat-message
      */
     public void addChatMessage(String username, String message){
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         try {
-            getConnection();
             cStmt = connection.prepareCall("{call chat_add(?,?)}");
             cStmt.setString(1, username);
             cStmt.setString(2, message);
@@ -213,14 +211,14 @@ public class GameDAO extends DataAccessObject {
             e.printStackTrace();
         } finally {
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
     }
 
     public void addEvent(int gameId, String message){
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         try {
-            getConnection();
             cStmt = connection.prepareCall("{call event_add(?,?)}");
             cStmt.setInt(1, gameId);
             cStmt.setString(2, message);
@@ -231,16 +229,16 @@ public class GameDAO extends DataAccessObject {
             e.printStackTrace();
         } finally {
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
     }
 
     public String getEvent(int gameId) {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         ResultSet rs = null;
         String event_text ="";
         try {
-            getConnection();
             cStmt = connection.prepareCall("{call event_get(?)}");
             cStmt.setInt(1, gameId);
 
@@ -254,17 +252,17 @@ public class GameDAO extends DataAccessObject {
         } finally {
             close(rs);
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
         return event_text;
     }
 
     public boolean getForfeit(int gameId){
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         ResultSet rs = null;
         boolean forfeit = false;
         try {
-            getConnection();
             cStmt = connection.prepareCall("{call get_forfeit(?)}");
             cStmt.setInt(1, gameId);
             if (cStmt.execute()) {
@@ -278,27 +276,26 @@ public class GameDAO extends DataAccessObject {
         } finally {
             close(rs);
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
         return forfeit;
     }
 
 
     public void setForfeit(int gameId, boolean forfeit){
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         try {
-            getConnection();
             cStmt = connection.prepareCall("{call set_forfeit(?,?)}");
             cStmt.setInt(1, gameId);
             cStmt.setBoolean(2, forfeit);
             cStmt.execute();
-
-
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
     }
+
 }
