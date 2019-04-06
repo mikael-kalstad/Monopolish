@@ -129,6 +129,7 @@ public class AccountDAO extends DataAccessObject {
     }
 
     public void setActive(String username) /*throws SQLException */{
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         try {
             getConnection();
@@ -146,6 +147,7 @@ public class AccountDAO extends DataAccessObject {
     }
 
     public boolean getActive(String username) {
+        Connection connection = getConnection();
         CallableStatement cStmt = null;
         ResultSet rs = null;
         boolean active = false;
@@ -167,7 +169,7 @@ public class AccountDAO extends DataAccessObject {
         } finally {
             close(rs);
             close(cStmt);
-            releaseConnection();
+            releaseConnection(connection);
         }
         return active;
     }
