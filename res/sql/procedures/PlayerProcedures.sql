@@ -228,7 +228,7 @@ BEGIN
 
   select count(user_id) into players from game join player on game.game_id = player.game_id where gameid = game.game_id;
   select count(player_id) into checked from player where gameid = player.game_id and forfeit_check = 1;
-  select if(players>checked, 0, 1) into check_bit from player where gameid = game_id;
+  select if(players>checked, 0, 1) into check_bit;
 
 END;
 
