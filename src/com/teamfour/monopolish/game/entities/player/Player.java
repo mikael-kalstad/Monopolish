@@ -46,7 +46,7 @@ public class Player extends Entity {
      * @param money
      */
     public Player(String username, int money, int position, boolean inJail,
-                  boolean bankrupt, int active) {
+                  boolean bankrupt, int active, boolean freeParking) {
         super(money);
         this.USERNAME = username;
         this.money = money;
@@ -54,6 +54,7 @@ public class Player extends Entity {
         this.inJail = inJail;
         this.bankrupt = bankrupt;
         this.active = active;
+        this.freeParking = freeParking;
     }
 
     public boolean checkBankrupt() {

@@ -14,62 +14,6 @@ import java.util.ArrayList;
  * @version     1.0
  */
 public class PlayerDAO extends DataAccessObject {
-
-    /**
-     * creates players in the database and Player objects.
-     *
-     * @param game_id   the id of the current game
-     * @param usernames the usernames of the players that's created
-     */
-
-    public ArrayList<Player> createPlayers(int game_id, String[] usernames) throws SQLException {
-        CallableStatement cStmt = null;
-        ArrayList<Player> players = null;
-        try {
-            getConnection();
-            cStmt = connection.prepareCall("{call player_create(?, ?)}");
-            for (int i = 0; i < usernames.length; i++) {
-                cStmt.setInt(1, game_id);
-                cStmt.setString(2, usernames[i]);
-
-                players.add(new Player(cStmt.executeQuery().getString("username")));
-            }
-            cStmt.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new SQLException();
-        } finally {
-            releaseConnection();
-        }
-        return (null);
-    }
-
-    /**
-     * creates one player in the database and a Player object.
-     *
-     * @param game_id  the id of the current game
-     * @param username the username of the player that is created
-     */
-    public Player createPlayer(int game_id, String username) throws SQLException {
-        CallableStatement cStmt = null;
-        ArrayList<Player> players = null;
-        try {
-            getConnection();
-            cStmt = connection.prepareCall("{call player_create(?, ?)}");
-
-            cStmt.setInt(1, game_id);
-            cStmt.setString(2, username);
-
-            players.add(new Player(cStmt.executeQuery().getString("username")));
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new SQLException();
-        } finally {
-            releaseConnection();
-        }
-        return (null);
-    }
-
     /**
      * removes a player that forfiets the game, by giving this player active status == 2
      *
@@ -104,7 +48,7 @@ public class PlayerDAO extends DataAccessObject {
         int count = 0;
         try {
             getConnection();
-            cStmt = connection.prepareCall("{call player_update(?, ?, ?, ?, ?, ?, ?)}");
+            cStmt = connection.prepareCall("{call player_update(?, ?, ?, ?, ?, ?, ?, ?)}");
 
             cStmt.setString(1, player.getUsername());
             cStmt.setInt(2, game_id);
@@ -113,6 +57,7 @@ public class PlayerDAO extends DataAccessObject {
             cStmt.setBoolean(5, player.isInJail());
             cStmt.setBoolean(6, player.isBankrupt());
             cStmt.setInt(7, player.getActive());
+            cStmt.setBoolean(8, player.hasFreeParking());
 
             count = cStmt.executeUpdate();
         } catch (SQLException e) {
@@ -150,9 +95,10 @@ public class PlayerDAO extends DataAccessObject {
                     boolean inJail = rs.getBoolean(4);
                     boolean bankrupt = rs.getBoolean(5);
                     int active = rs.getInt(6);
+                    boolean freeParking = rs.getBoolean(7);
 //                int score = rs.getInt(7);
 
-                    players.add(new Player(username, money, position, inJail, bankrupt, active));
+                    players.add(new Player(username, money, position, inJail, bankrupt, active, freeParking));
                 }
             }
         } catch (SQLException e) {
