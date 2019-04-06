@@ -155,7 +155,7 @@ public class LoginController {
 //                }
 
                 // User is not already logged in or does not exists
-                else {
+//                else {
                     // Get response from database with inputs
                     res = Handler.getAccountDAO().getAccountByCredentials(usernameInput.getText(), passwordInput.getText());
 
@@ -166,7 +166,7 @@ public class LoginController {
                         canLogin = true;
                         dbError = false;
                     }
-                }
+//                }
             }
             catch (Exception e) {
                 dbError = true;
