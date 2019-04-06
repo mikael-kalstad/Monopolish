@@ -138,8 +138,6 @@ public class LoginController {
         boolean dbError = false;
         boolean alreadyLoggedIn = false;
 
-        System.out.println("Inputs empty? " + inputsEmpty());
-
         // Try to register if inputs are not empty
         if (!inputsEmpty()) {
             try {
