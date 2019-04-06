@@ -259,7 +259,7 @@ public class GameDAO extends DataAccessObject {
         return event_text;
     }
 
-    public boolean getForfeit(int gameId, String message){
+    public boolean getForfeit(int gameId){
         CallableStatement cStmt = null;
         ResultSet rs = null;
         boolean forfeit = false;
@@ -281,5 +281,24 @@ public class GameDAO extends DataAccessObject {
             releaseConnection();
         }
         return forfeit;
+    }
+
+
+    public void setForfeit(int gameId, boolean forfeit){
+        CallableStatement cStmt = null;
+        try {
+            getConnection();
+            cStmt = connection.prepareCall("{call set_forfeit(?)}");
+            cStmt.setInt(1, gameId);
+            cStmt.setBoolean(2, forfeit);
+            cStmt.execute();
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(cStmt);
+            releaseConnection();
+        }
     }
 }

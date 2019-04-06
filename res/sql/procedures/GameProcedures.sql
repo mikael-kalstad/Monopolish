@@ -143,3 +143,10 @@ CREATE PROCEDURE get_forfeit(in gameid int)
     select forfeit from game where gameid = game.game_id;
   END;
 
+
+DROP PROCEDURE IF EXISTS set_forfeit;
+
+CREATE PROCEDURE set_forfeit(in gameid int, in forfeit_in BIT)
+BEGIN
+  update game set forfeit = forfeit_in where gameid = game_id;
+END;
