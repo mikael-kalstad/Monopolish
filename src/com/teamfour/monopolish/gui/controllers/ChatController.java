@@ -35,6 +35,8 @@ public class ChatController {
         // "Close" chat / move it down
         chatContainer.setTranslateY(275);
 
+        System.out.println("CHAT INITIALIZE, should only run once");
+
         // Update chat messages periodically
         TimerTask task = new TimerTask() {
             @Override
@@ -58,22 +60,7 @@ public class ChatController {
                         chatMessageScrollPane.setVvalue(1);
                     }
 
-                    if (!chatOpen && current_msg_count < chatMessagesContainer.getChildren().size()) {
-                        unreadValue.setVisible(true);
-                        unreadContainer.setVisible(true);
-                        String unreadMsgCount = "9+";
-                        if (chatMessagesContainer.getChildren().size() - current_msg_count < 10) {
-                            unreadMsgCount = String.valueOf(chatMessagesContainer.getChildren().size() - current_msg_count);
-                            unreadValue.setStyle("-fx-font-size: 16px");
-                        } else {
-                            unreadValue.setStyle("-fx-font-size: 12px");
-                        }
-                        unreadValue.setText(unreadMsgCount);
-                    }
-                    else {
-                        unreadValue.setVisible(false);
-                        unreadContainer.setVisible(false);
-                    }
+                    notificationCheck();
                 });
             }
         };
@@ -83,26 +70,29 @@ public class ChatController {
         long period = 1000L; // Delay between each update/refresh
         chatTimer.scheduleAtFixedRate(task, delay, period);
 
-//        // Check if chat input has reached max number of characters
-//        chatInput.textProperty().addListener((observable, oldValue, newValue) -> {
-//            // Check if input is longer than allowed
-//            if (chatInput.getText().length() > CHAT_MAX_CHARACTERS) {
-//                // Set input text to value before going over the limit
-//                chatInput.setText(oldValue);
-//
-//                // Set cursor to the end of the input
-//                chatInput.positionCaret(chatInput.getText().length());
-//
-//                // Change border style and show warning
-//                chatInput.setStyle("-fx-border-color: orange");
-//                chatWarning.setVisible(true);
-//            } else {
-//                // Reset border style and hide warning
-//                chatInput.setStyle("-fx-border-color: white");
-//                chatWarning.setVisible(false);
-//            }
-//        });
          FxUtils.limitInputLength(CHAT_MAX_CHARACTERS, chatInput, chatWarning);
+    }
+
+    /**
+     * Check if notifications should be rendered
+     */
+    private void notificationCheck() {
+        if (!chatOpen && current_msg_count < chatMessagesContainer.getChildren().size()) {
+            unreadValue.setVisible(true);
+            unreadContainer.setVisible(true);
+            String unreadMsgCount = "9+";
+            if (chatMessagesContainer.getChildren().size() - current_msg_count < 10) {
+                unreadMsgCount = String.valueOf(chatMessagesContainer.getChildren().size() - current_msg_count);
+                unreadValue.setStyle("-fx-font-size: 16px");
+            } else {
+                unreadValue.setStyle("-fx-font-size: 12px");
+            }
+            unreadValue.setText(unreadMsgCount);
+        }
+        else {
+            unreadValue.setVisible(false);
+            unreadContainer.setVisible(false);
+        }
     }
 
     /**

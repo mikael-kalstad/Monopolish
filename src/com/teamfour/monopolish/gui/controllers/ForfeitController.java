@@ -178,10 +178,13 @@ public class ForfeitController {
         else {
             // Hide forfeit container and set variable
             Handler.getForfeitContainer().setVisible(false);
-            Handler.getPlayerDAO().resetForfeitStatus(GAME_ID);
+            //Handler.getPlayerDAO().resetForfeitStatus(GAME_ID);
+
+            Handler.getGameDAO().setForfeit(GAME_ID, false);
 
             System.out.println("Forfeit variable in forfeitcontroller: " + GameController.forfeit);
             GameController.forfeit = false;
+            System.out.println("Forfeit variable in forfeitcontroller after: " + GameController.forfeit);
         }
     }
 

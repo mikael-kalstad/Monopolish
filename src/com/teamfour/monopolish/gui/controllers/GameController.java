@@ -48,7 +48,7 @@ public class GameController {
     // Timer for checking database updates and forfeit
     private static Timer databaseTimer = new Timer();
     public static Timer forfeitTimer;
-    public static boolean forfeitTimerRunning;
+    public static Timer forfeitCheckTimer;
 
     // GameLogic for handling more intricate game operations
     private Game game;
@@ -113,6 +113,8 @@ public class GameController {
      */
     @FXML
     public void initialize() {
+        System.out.println("GAME CONTROLLER INITIALIZE, should only run once");
+
         // Reference that is used in other controllers
         Handler.setForfeitContainer(forfeitContainer);
         Handler.setTradeContainer(tradeContainer);
@@ -129,7 +131,7 @@ public class GameController {
         // Setup chat
         addElementToContainer(ViewConstants.CHAT.getValue(), chatContainer);
 
-        // Start
+        // Check for forfeit regularly
         startForfeitTimer();
 
         // Update the board
@@ -189,7 +191,6 @@ public class GameController {
      */
     public void endGameForPlayer() {
         // Remove player from lobby
-//        Handler.getAccountDAO().setInactive(USERNAME);
         Handler.getLobbyDAO().removePlayer(USERNAME, Handler.getLobbyDAO().getLobbyId(USERNAME));
         game.getEntities().removePlayer(USERNAME);
 
@@ -213,9 +214,6 @@ public class GameController {
         forfeitTimer.cancel();
         forfeitTimer.purge();
         forfeit = true;
-        forfeitTimerRunning = false;
-
-        System.out.println("Forfeit variable: " + forfeit);
 
         // Load forfeit GUI
         addElementToContainer(ViewConstants.FORFEIT.getValue(), forfeitContainer);
@@ -226,31 +224,27 @@ public class GameController {
         // Hide properties dialog and show forfeit dialog
         propertiesContainer.setVisible(false);
         forfeitContainer.setVisible(true);
-
-        /*while (forfeit) {
-            // Check if forfeit timer should run
-            if (!forfeit && !forfeitTimerRunning) {
-                startForfeitTimer();
-                backgroundOverlay.setVisible(true);
-            }
-        }*/
     }
 
     public void startForfeitTimer() {
-        forfeitTimerRunning = true;
-
         // Setup forfeit task
         TimerTask forfeitTask = new TimerTask() {
             @Override
             public void run() {
-                // Get votes from database
-                int[] votes = Handler.getPlayerDAO().getForfeitStatus(Handler.getCurrentGameId());
+//                // Get votes from database
+//                int[] votes = Handler.getPlayerDAO().getForfeitStatus(Handler.getCurrentGameId());
+//
+//                // Show forfeit dialog if forfeit is initiated
+//                if (votes[0] != 0 || votes[1] != 0 && !forfeit) {
+//                    Platform.runLater(() -> {
+//                        forfeit();
+//                    });
+//                }
 
-                // Show forfeit dialog if forfeit is initiated
-                if (votes[0] != 0 || votes[1] != 0 && !forfeit) {
-                    Platform.runLater(() -> {
-                        forfeit();
-                    });
+                if (!forfeit && Handler.getGameDAO().getForfeit(Handler.getCurrentGameId())) {
+                    Platform.runLater(() -> forfeit());
+                } else {
+                    backgroundOverlay.setVisible(false);
                 }
             }
         };
