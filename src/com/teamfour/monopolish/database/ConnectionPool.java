@@ -91,6 +91,7 @@ public class ConnectionPool {
         if (connectionPool.isEmpty()) {
             if (usedConnections.size() < MAX_POOL_SIZE) {
                 connectionPool.add(createConnection(url, username, password));
+                System.out.println("Adding connection. New size: " + connectionPool.size());
             } else {
                 throw new RuntimeException("Maximum pool size reached, no available connections!");
             }
@@ -103,8 +104,11 @@ public class ConnectionPool {
     public boolean releaseConnection(Connection connection) {
         if (connection == null)
             return false;
-        connectionPool.add(connection);
-        usedConnections.remove(usedConnections.size() - 1);
+        if (!connectionPool.add(connection))
+            System.out.println("Re-adding connection failed!");
+        if (!usedConnections.remove(connection))
+            System.out.println("Removing used connection failed!");
+
         return true;
     }
 

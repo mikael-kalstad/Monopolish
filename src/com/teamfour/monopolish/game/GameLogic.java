@@ -98,8 +98,10 @@ public class GameLogic {
             game.setThrowCounter(0);
         }
 
+        // Set free parking if on free parking
         if (game.getBoard().getTileType(yourPlayer.getPosition()) == Board.FREE_PARKING) {
             yourPlayer.setFreeParking(true);
+            System.out.println("Setting free parking true");
         }
 
         // If the player lands on a goToJail tile, go straight to jail
@@ -184,6 +186,7 @@ public class GameLogic {
         Player yourPlayer = entities.getYou();
 
         // Check if your player has a free parking token, if so return immediately
+        System.out.println("Free parking: " + yourPlayer.hasFreeParking());
         if (yourPlayer.hasFreeParking()) {
             MessagePopupController.show("You have a 'Free Parking' token! You don't have to pay rent here", "parking.png");
             yourPlayer.setFreeParking(false);
@@ -221,7 +224,6 @@ public class GameLogic {
                 " in rent to " + currentProperty.getOwner()
                 , "dollarNegative.png"
                 , "Real estate");
-
         updateToDatabase();
     }
 

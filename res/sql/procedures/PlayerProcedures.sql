@@ -65,7 +65,8 @@ create procedure player_update(
   in moneyChange int,
   in in_jail bit,
   in bankrupt_in bit,
-  in active_in int
+  in active_in int,
+  in freeparking BIT,
 )
 begin
   declare u_id int;
@@ -79,7 +80,8 @@ begin
                     money = moneyChange,
                     injail = in_jail,
                     bankrupt = bankrupt_in,
-                    active = active_in
+                    active = active_in,
+                    free_parking = freeparking
     where player_id = u_id;
   commit;
 
@@ -141,7 +143,7 @@ create procedure player_getByGameId(
   in game_id int
 )
 begin
-  select a.username, p.money, p.currentpos, p.injail, p.bankrupt, p.active
+  select a.username, p.money, p.currentpos, p.injail, p.bankrupt, p.active, p.free_parking
   from player p
   join account a on p.user_id = a.user_id
   where game_id = p.game_id AND p.active=1

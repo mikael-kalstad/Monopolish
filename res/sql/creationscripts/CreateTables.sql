@@ -68,7 +68,8 @@ CREATE TABLE player
   bankrupt BIT NOT NULL DEFAULT 0,
   active int not null default 1, -- active in game = 1, quit = 2, game is finished = 0
   score INT DEFAULT 0,
-  forfeit INT DEFAULT 0
+  forfeit INT DEFAULT 0,
+  free_parking BIT NOT NULL DEFAULT 0
 ); # represents a player and its stats
 
 -- active = 1 : aktiv,
