@@ -2,11 +2,13 @@ package com.teamfour.monopolish.game.chanceCards;
 
 import com.teamfour.monopolish.gui.controllers.Handler;
 
+import java.util.ArrayList;
+
 /**
  * Class for chance cards with transfers between players
  */
 public class ChanceCardPlayers extends ChanceCard {
-    private String[] usernames;
+    private ArrayList<String> usernames = new ArrayList<>();
 
     ChanceCardPlayers(String msg, String logoPath, int amount) {
         super(msg, logoPath, amount);
@@ -17,13 +19,10 @@ public class ChanceCardPlayers extends ChanceCard {
      * @param usernames Target players
      */
     public void setPlayers(String[] usernames) {
-        // Deep copy
-        this.usernames = new String[usernames.length-1];
-
         // Add to array if user is not current user
-        for (int i = 0; i < usernames.length; i++) {
-            if (!usernames[i].equals(super.getUSERNAME()))
-                this.usernames[i] = usernames[i];
+        for (String u : usernames) {
+            if (!u.equals(super.getUSERNAME()))
+                this.usernames.add(u);
         }
     }
 
