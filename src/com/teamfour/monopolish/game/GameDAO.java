@@ -269,6 +269,7 @@ public class GameDAO extends DataAccessObject {
             cStmt.setInt(1, gameId);
             if (cStmt.execute()) {
                 rs = cStmt.getResultSet();
+                 while (rs.next())
                     forfeit = rs.getBoolean("forfeit");
             }
             cStmt.executeUpdate();
