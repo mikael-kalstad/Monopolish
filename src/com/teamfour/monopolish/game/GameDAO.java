@@ -288,7 +288,7 @@ public class GameDAO extends DataAccessObject {
         CallableStatement cStmt = null;
         try {
             getConnection();
-            cStmt = connection.prepareCall("{call set_forfeit(?)}");
+            cStmt = connection.prepareCall("{call set_forfeit(?,?)}");
             cStmt.setInt(1, gameId);
             cStmt.setBoolean(2, forfeit);
             cStmt.execute();
