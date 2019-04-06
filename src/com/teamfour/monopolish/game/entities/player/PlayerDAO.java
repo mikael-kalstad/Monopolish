@@ -382,7 +382,7 @@ public class PlayerDAO extends DataAccessObject {
 
         boolean checked = false;
         try {
-            cStmt = connection.prepareCall("{call get_check_forfeit(?)}");
+            cStmt = connection.prepareCall("{call get_forfeit_check(?)}");
             cStmt.setInt(1, gameId);
             cStmt.registerOutParameter(2, Types.BIT);
 
@@ -403,7 +403,7 @@ public class PlayerDAO extends DataAccessObject {
         CallableStatement cStmt = null;
         try {
             getConnection();
-            cStmt = connection.prepareCall("{call set_check_forfeit(?,?,?)}");
+            cStmt = connection.prepareCall("{call set_forfeit_check(?,?,?)}");
             cStmt.setInt(1, gameId);
             cStmt.setString(2, username);
             cStmt.setBoolean(3, check);
