@@ -272,7 +272,6 @@ public class GameDAO extends DataAccessObject {
                  while (rs.next())
                     forfeit = rs.getBoolean("forfeit");
             }
-            cStmt.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
