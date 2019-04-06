@@ -48,7 +48,6 @@ public class GameController {
     // Timer for checking database updates and forfeit
     private static Timer databaseTimer = new Timer();
     public static Timer forfeitTimer;
-    public static Timer forfeitCheckTimer;
 
     // GameLogic for handling more intricate game operations
     private Game game;
@@ -215,6 +214,8 @@ public class GameController {
         forfeitTimer.purge();
         forfeit = true;
 
+        Handler.getGameDAO().setForfeit(Handler.getCurrentGameId(), true);
+
         // Load forfeit GUI
         addElementToContainer(ViewConstants.FORFEIT.getValue(), forfeitContainer);
 
@@ -227,6 +228,8 @@ public class GameController {
     }
 
     public void startForfeitTimer() {
+        System.out.println("Forfeit timer INITIALIZE, should only run once");
+
         // Setup forfeit task
         TimerTask forfeitTask = new TimerTask() {
             @Override
