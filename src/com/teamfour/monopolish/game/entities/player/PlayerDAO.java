@@ -223,6 +223,7 @@ public class PlayerDAO extends DataAccessObject {
         }
     }
 
+    // Who has removed procedure for this DAO???
     public void resetForfeitStatus(int gameId) {
         Connection connection = getConnection();
         CallableStatement cStmt = null;
@@ -384,7 +385,7 @@ public class PlayerDAO extends DataAccessObject {
         boolean checked = false;
         try {
             getConnection();
-            cStmt = connection.prepareCall("{call get_check_forfeit(?)}");
+            cStmt = connection.prepareCall("{call get_forfeit_check(?)}");
             cStmt.setInt(1, gameId);
             if (cStmt.execute()) {
                 rs = cStmt.getResultSet();

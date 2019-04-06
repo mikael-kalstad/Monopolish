@@ -147,10 +147,12 @@ public class LoginController {
                     connectionCreated = true;
                 }
 
+                // --- UNCOMMENT BEFORE PRODUCTION ---
+
                 //Check if user is already logged in
-                if (Handler.getAccountDAO().getActive(usernameInput.getText())) {
-                    alreadyLoggedIn = true;
-                }
+//                if (Handler.getAccountDAO().getActive(usernameInput.getText())) {
+//                    alreadyLoggedIn = true;
+//                }
 
                 // User is not already logged in or does not exists
                 else {
