@@ -106,15 +106,14 @@ create procedure player_endgame(
 begin
   declare p_id int;-- player_id
   select player_id into p_id from account join player on account.user_id = player.user_id where user_name = username and gameid = game_id;
+
   update player set active = 0 where p_id = player_id and active = 1;
 
   update player set score = (select (money + sum)
-    from (select money, ifnull(sum(price),0) sum from player left join gameproperty on player.user_id = gameproperty.user_id and player.game_id = gameproperty.game_id
+    from (select money, ifnull(sum(price*(rent_level+1)),0) sum from player left join gameproperty on player.user_id = gameproperty.user_id and player.game_id = gameproperty.game_id
             left join property on property.property_id = gameproperty.property_id
           where player.player_id = p_id and gameid = player.game_id group by player_id) as inner_query)
         where player.player_id = p_id and active = 0;
-  commit;
-
 end $$
 
 
