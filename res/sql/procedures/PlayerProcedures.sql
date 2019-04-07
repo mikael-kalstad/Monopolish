@@ -221,7 +221,7 @@ CREATE PROCEDURE player_get_forfeit(IN game_id INT)
   END;
 
 
-CREATE PROCEDURE get_forfeit_check(IN gameid INT)
+CREATE PROCEDURE get_forfeit_check(IN gameid INT, OUT check_bit BIT)
 BEGIN
   declare players int;
   declare checked int;

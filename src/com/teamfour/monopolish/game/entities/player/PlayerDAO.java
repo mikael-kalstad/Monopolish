@@ -384,7 +384,7 @@ public class PlayerDAO extends DataAccessObject {
         ResultSet rs = null;
         boolean checked = false;
         try {
-            cStmt = connection.prepareCall("{call get_check_forfeit(?)}");
+            cStmt = connection.prepareCall("{call get_forfeit_check(?)}");
             cStmt.setInt(1, gameId);
             if (cStmt.execute()) {
                 rs = cStmt.getResultSet();

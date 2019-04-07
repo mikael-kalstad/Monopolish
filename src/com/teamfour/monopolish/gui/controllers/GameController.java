@@ -230,26 +230,24 @@ public class GameController {
         TimerTask forfeitTask = new TimerTask() {
             @Override
             public void run() {
-                System.out.println("FORFEIT variable in timer: " + forfeit);
                 boolean gameForfeit = Handler.getGameDAO().getForfeit(GAME_ID);
 
                 if (!forfeit && gameForfeit) {
                     Platform.runLater(() -> forfeit());
                 } else if (!gameForfeit) {
                     backgroundOverlay.setVisible(false);
-                    System.out.println("REMOVING BACKGROUND OVERLAY!");
                 }
 
                 // Check if forfeit checks should be reset
-//                if (Handler.getPlayerDAO().getForfeitCheck(GAME_ID)) {
-//
-//                    // Reset all player forfeit votes
-//                    for (String u : Handler.getCurrentGame().getPlayers()) {
-//                        Handler.getPlayerDAO().setForfeitStatus(u, GAME_ID, 0);
-//                        Handler.getPlayerDAO().setForfeitCheck(GAME_ID, u, false);
-//                        forfeit = false;
-//                    }
-//                }
+                /*if (Handler.getPlayerDAO().getForfeitCheck(GAME_ID)) {
+
+                    // Reset all player forfeit votes
+                    for (String u : Handler.getCurrentGame().getPlayers()) {
+                        Handler.getPlayerDAO().setForfeitStatus(u, GAME_ID, 0);
+                        Handler.getPlayerDAO().setForfeitCheck(GAME_ID, u, false);
+                        forfeit = false;
+                    }
+                }*/
             }
         };
 
@@ -485,7 +483,7 @@ public class GameController {
         buyPropertyBtn.setDisable(true);
         payBailBtn.setDisable(true);
 
-        // Finish turn in gamelogic and wait for your next turn
+        // Finish turn in gameLogic and wait for your next turn
         GameLogic.endTurn();
         updateBoard();
         waitForTurn();
@@ -515,12 +513,11 @@ public class GameController {
             payBailBtn.setVisible(false);
         }
 
-        // Store your player's position
+        // Get your position
         int yourPosition = game.getEntities().getYou().getPosition();
 
         // PROPERTY TILE HANDLING
         if (game.getBoard().getTileType(yourPosition) == Board.PROPERTY) {
-            cardContainer.getChildren().clear();
 
             // Draw property card with
             Pane card = GameControllerDrawFx.createPropertyCard(game.getEntities().getPropertyAtPosition(yourPosition));
@@ -565,25 +562,45 @@ public class GameController {
 
         // If on free parking, get a free-parking token
         if (game.getBoard().getTileType(yourPosition) == Board.FREE_PARKING) {
+            // Show special card
+            Pane card = GameControllerDrawFx.createSpecialCard("Free parking", "file:res/gui/SpecialCard/freeParking.png", "The next owned property you land on will be rent free", "#555");
+            cardContainer.getChildren().add(card);
+
+            // Show free parking token and update players object
             game.getEntities().getYou().setFreeParking(true);
             freeParkingCard.setVisible(true);
         }
 
         // If on a jail tile, show the jail information card
-        if (game.getBoard().getTileType(yourPosition) == Board.JAIL) {
-            boolean inJail = game.getEntities().getYou().isInJail();
-            Pane card = GameControllerDrawFx.createJailCard(inJail);
-            cardContainer.getChildren().addAll(card);
+        else if (game.getBoard().getTileType(yourPosition) == Board.JAIL) {
+            // check if player is in jail or just visiting
+            String info = "Relax, just visiting";
+            if (game.getEntities().getYou().isInJail()) info = "To get out of jail throw equal dices, or pay $1000 in bail";
+
+            // Show special card
+            Pane card = GameControllerDrawFx.createSpecialCard("Jail", "file:res/gui/SpecialCard/prisonDoor.png", info, "#444");
+            cardContainer.getChildren().add(card);
         }
 
         // Player is on a chance card tile
-        if (game.getBoard().getTileType(yourPosition) == Board.CHANCE) {
+        else if (game.getBoard().getTileType(yourPosition) == Board.CHANCE) {
             // Get a random chance card and display it
             ChanceCard chanceCard = ChanceCardData.getRandomChanceCard();
             ChanceCardController.display(chanceCard, cardContainer);
         }
 
+        else if (game.getBoard().getTileType(yourPosition) == Board.START) {
+            // Show special card
+            Pane card = GameControllerDrawFx.createSpecialCard("Start", "file:res/gui/SpecialCard/start.png", "You will get $4000 if you land or go past start", "#e2885a");
+            cardContainer.getChildren().add(card);
+        }
+
         if (game.getBoard().getTileType(yourPosition) == Board.COMMUNITY_TAX) {
+            // Show special card
+            Pane card = GameControllerDrawFx.createSpecialCard("Income tax", "file:res/gui/SpecialCard/tax.png", "$4000",  "#cc6c6c");
+            cardContainer.getChildren().add(card);
+
+            // Change buttons
             payIncomeTaxBtn.setVisible(true);
             payIncomeTaxBtn.setDisable(false);
             endturnBtn.setDisable(true);
@@ -657,7 +674,7 @@ public class GameController {
      * @param container for the propertyIcon
      * @param username  target user
      */
-    private void setPropertyOnClick(Pane container, String username) {
+    public void setPropertyOnClick(Pane container, String username) {
         container.setOnMouseClicked(e -> {
             showProperties(username);
         });

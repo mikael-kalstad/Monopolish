@@ -279,7 +279,7 @@
                   </AnchorPane>
                   <AnchorPane style="-fx-background-color: #DCEDC8;">
                      <children>
-                        <Label layoutX="3.0" layoutY="44.0" prefHeight="37.0" prefWidth="113.0" rotate="135.0" text="FREE PARKING" textAlignment="CENTER">
+                        <Label layoutX="5.0" layoutY="40.0" prefHeight="37.0" prefWidth="113.0" rotate="-38.1" text="FREE PARKING" textAlignment="CENTER">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -288,7 +288,7 @@
                   </AnchorPane>
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="9">
                      <children>
-                        <Label layoutX="-2.0" layoutY="44.0" prefHeight="37.0" prefWidth="113.0" rotate="-135.0" text="GO TO JAIL" textAlignment="RIGHT">
+                        <Label layoutX="5.0" layoutY="44.0" prefHeight="37.0" prefWidth="113.0" rotate="41.6" text="GO TO JAIL" textAlignment="RIGHT">
                            <font>
                               <Font size="20.0" />
                            </font>
@@ -306,11 +306,16 @@
                   </AnchorPane>
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="9" GridPane.rowIndex="9">
                      <children>
-                        <Label layoutX="38.0" layoutY="35.0" rotate="-45.0" text="GO">
+                        <Label layoutX="25.0" layoutY="25.0" rotate="-45.0" text="GO">
                            <font>
                               <Font name="System Bold" size="34.0" />
                            </font>
                         </Label>
+                        <Text layoutX="60.0" layoutY="80.0" rotate="-45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4000">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Text>
                      </children>
                   </AnchorPane>
                   <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.rowIndex="1">

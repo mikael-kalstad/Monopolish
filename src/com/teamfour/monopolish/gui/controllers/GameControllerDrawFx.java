@@ -3,12 +3,15 @@ package com.teamfour.monopolish.gui.controllers;
 import com.teamfour.monopolish.game.property.Boat;
 import com.teamfour.monopolish.game.property.Property;
 import com.teamfour.monopolish.game.property.Street;
+import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
@@ -17,6 +20,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -348,31 +352,39 @@ public class GameControllerDrawFx {
         element.setFill(Paint.valueOf("#787878"));
     }
 
-    static Pane createJailCard(boolean inJail) {
-        Pane card = new AnchorPane();
-        card.setId("jailCard");
-        Pane header = new AnchorPane();
-        String headerText;
-        if (inJail) {
-            headerText = "You are in jail";
-        } else {
-            headerText = "You are visiting jail";
+    /**
+     * Method for creating a card of type special.
+     * @param title Will display under the logo
+     * @param logoPath Path to the logo
+     * @param info Optional, will display under the title
+     * @param backgroundColor Of the card
+     * @return The special card as a Pane
+     */
+    static Pane createSpecialCard(String title, String logoPath, String info, String backgroundColor) {
+        // Get general card from .fxml file
+        Pane card = new Pane();
+        try {
+            card = FXMLLoader.load(GameControllerDrawFx.class.getResource(ViewConstants.FILE_PATH.getValue() + ViewConstants.SPECIAL_CARD.getValue()));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        Label headerLabel = new Label(headerText);
+        // Set background color of the card
+        card.setStyle("-fx-background-color: " + backgroundColor + ";");
 
-        card.getChildren().addAll(header);
+        // Set title
+        Text titleElement = (Text) card.getChildren().get(0);
+        titleElement.setText(title);
 
-        card.setPrefSize(190, 240);
-        header.setPrefSize(190, 50);
+        // Set logo
+        ImageView logoElement = (ImageView) card.getChildren().get(1);
+        logoElement.setImage(new Image(logoPath));
 
-        AnchorPane.setTopAnchor(header, 0.0);
+        // Set price if defined
+        Text infoText = (Text) card.getChildren().get(2);
 
-        card.setStyle("-fx-background-color: #ffffff;");
-        header.setStyle("-fx-background-color: #ffffff;");
-        headerLabel.setStyle("-fx-font-size: 18px");
-
-        header.getChildren().add(headerLabel);
+        if (info != null && !info.equals("")) infoText.setText(info);
+        else infoText.setVisible(false);
 
         return card;
     }
@@ -454,10 +466,6 @@ public class GameControllerDrawFx {
         prices.getChildren().addAll(pricesTextList);
 
         return card;
-    }
-
-    static void drawChanceCard(String msg) {
-
     }
 
     /**

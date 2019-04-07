@@ -26,7 +26,7 @@
       </Text>
       <Pane fx:id="backside" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="240.0" prefWidth="190.0" style="-fx-background-color: ededed;" visible="false">
          <children>
-            <Text fx:id="msg" fill="#6f6f6f" layoutX="16.0" layoutY="79.0" lineSpacing="3.0" strokeType="OUTSIDE" strokeWidth="0.0" text="One of the most wonderful things in life is to wake up and enjoy a cuddle with somebody; unless you are in prison. Go to prison." wrappingWidth="158.1475830078125">
+            <Text fx:id="msg" fill="#6f6f6f" layoutX="16.0" layoutY="113.0" lineSpacing="3.0" strokeType="OUTSIDE" strokeWidth="0.0" text="One of the most wonderful things in life is to wake up and enjoy a cuddle with somebody; unless you are in prison. Go to prison." textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="158.1475830078125">
                <font>
                   <Font size="11.0" />
                </font>

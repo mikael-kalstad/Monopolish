@@ -27,7 +27,8 @@ public enum ViewConstants {
     TRADING("trading.fxml"),
     SHOW_TRADE("showtrade.fxml"),
     MESSAGE_POPUP("messagePopup.fxml"),
-    CHANCE_CARD("chanceCard.fxml");
+    CHANCE_CARD("chanceCard.fxml"),
+    SPECIAL_CARD("specialCard.fxml");
 
     private String value;
 
