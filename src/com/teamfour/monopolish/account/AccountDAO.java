@@ -128,7 +128,7 @@ public class AccountDAO extends DataAccessObject {
         return account;
     }
 
-    public void setActive(String username) /*throws SQLException */{
+    public void setInactive(String username) /*throws SQLException */{
         Connection connection = getConnection();
         CallableStatement cStmt = null;
         try {

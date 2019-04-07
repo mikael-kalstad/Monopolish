@@ -130,7 +130,7 @@ public class LobbyController {
             }
 
             // Logout user
-            Handler.getAccountDAO().setActive(USERNAME);
+            Handler.getAccountDAO().setInactive(USERNAME);
         });
     }
 

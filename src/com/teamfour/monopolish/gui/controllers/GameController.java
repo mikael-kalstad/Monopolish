@@ -154,7 +154,7 @@ public class GameController {
                 stopTimers();
 
                 // Logout user
-                Handler.getAccountDAO().setActive(USERNAME);
+                Handler.getAccountDAO().setInactive(USERNAME);
 
                 // Close the window
                 Handler.getSceneManager().getWindow().close();
@@ -188,8 +188,7 @@ public class GameController {
      */
     public void endGameForPlayer() {
         // Remove player from lobby
-        Handler.getLobbyDAO().removePlayer(USERNAME, Handler.getLobbyDAO().getLobbyId(USERNAME));
-        game.getEntities().removePlayer(USERNAME);
+        GameLogic.onPlayerLeave();
 
         stopTimers();
     }

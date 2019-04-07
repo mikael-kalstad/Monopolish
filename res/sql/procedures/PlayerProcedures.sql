@@ -221,17 +221,15 @@ CREATE PROCEDURE player_get_forfeit(IN game_id INT)
   END;
 
 
-CREATE PROCEDURE get_forfeit_check(IN gameid INT, OUT check_bit BIT)
+CREATE PROCEDURE get_forfeit_check(IN gameid INT, out check_bit bit)
 BEGIN
   declare players int;
   declare checked int;
-  declare check_bit bit;
 
   select count(user_id) into players from game join player on game.game_id = player.game_id where gameid = game.game_id;
   select count(player_id) into checked from player where gameid = player.game_id and forfeit_check = 1;
-  select if(players>checked, 0, 1) into check_bit from player where gameid = game_id;
+  select if(players>checked, 0, 1) into check_bit;
 
-  select check_bit;
 END;
 
 
