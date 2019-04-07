@@ -178,7 +178,9 @@ public class ForfeitController {
         else {
             // Hide forfeit container and set variable
             Handler.getForfeitContainer().setVisible(false);
-            Handler.getGameDAO().setForfeit(GAME_ID, false);
+            //Handler.getGameDAO().setForfeit(GAME_ID, false);
+
+            Handler.getPlayerDAO().setForfeitCheck(GAME_ID, USERNAME, true);
 
             //GameController.forfeit = false;
         }
