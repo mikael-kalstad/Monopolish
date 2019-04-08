@@ -635,7 +635,7 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <Button fx:id="rolldiceBtn" disable="true" layoutX="68.0" layoutY="453.0" mnemonicParsing="false" onAction="#rollDice" prefHeight="50.0" prefWidth="160.0" style="-fx-background-color: #03A9F4;" text="Roll dice" textFill="#fafafa">
+            <Button fx:id="rolldiceBtn" disable="true" layoutX="109.0" layoutY="453.0" mnemonicParsing="false" onAction="#rollDice" prefHeight="50.0" prefWidth="160.0" style="-fx-background-color: #03A9F4;" text="Roll dice" textFill="#fafafa">
                <font>
                   <Font size="18.0" />
                </font>
@@ -645,7 +645,7 @@
             </Button>
             <Pane fx:id="opponentsContainer" layoutX="47.0" layoutY="631.0" prefHeight="405.0" prefWidth="536.0" />
             <Line endX="406.0" endY="1.52587890625E-5" layoutX="169.0" layoutY="242.0" startX="-100.0" stroke="WHITE" />
-            <Button fx:id="endturnBtn" disable="true" layoutX="435.0" layoutY="453.0" mnemonicParsing="false" onAction="#endTurn" prefHeight="50.0" prefWidth="141.0" style="-fx-background-color: orange;" text="End turn" textFill="#fafafa">
+            <Button fx:id="endturnBtn" disable="true" layoutX="372.0" layoutY="453.0" mnemonicParsing="false" onAction="#endTurn" prefHeight="50.0" prefWidth="160.0" style="-fx-background-color: orange;" text="End turn" textFill="#fafafa">
                <font>
                   <Font size="18.0" />
                </font>
@@ -687,13 +687,13 @@
       </Pane>
       <AnchorPane layoutX="419.0" layoutY="171.0" prefHeight="719.0" prefWidth="720.0" style="-fx-background-color: #DCEDC8;">
          <children>
-            <Label layoutX="174.0" layoutY="313.0" text="Monopolish" textFill="#ef5350">
+            <Label layoutX="173.0" layoutY="372.0" text="Monopolish" textFill="#ef5350">
                <font>
                   <Font name="Tahoma" size="75.0" />
                </font>
             </Label>
             <AnchorPane fx:id="cardContainer" layoutX="266.0" layoutY="23.0" prefHeight="240.0" prefWidth="190.0" />
-            <AnchorPane fx:id="diceContainer" layoutX="210.0" layoutY="408.0" prefHeight="200.0" prefWidth="301.0">
+            <AnchorPane fx:id="diceContainer" layoutX="210.0" layoutY="453.0" prefHeight="200.0" prefWidth="301.0">
                <children>
                   <ImageView fx:id="dice1_img" fitHeight="50.0" fitWidth="52.0" layoutX="76.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -736,11 +736,25 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Label fx:id="propertyOwned" layoutX="300.0" layoutY="286.0" text="propertyowned" textFill="#5d5b5b" visible="false">
+            <Label fx:id="propertyOwned" layoutX="287.0" layoutY="263.0" prefHeight="25.0" prefWidth="166.0" text="propertyowned" textFill="#5d5b5b" visible="false">
                <font>
-                  <Font size="18.0" />
+                  <Font size="16.0" />
                </font>
             </Label>
+            <Button fx:id="propertyBtn" layoutX="294.0" layoutY="302.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="129.0" style="-fx-background-color: ef5350;" text="Pay rent" textFill="#fafafa" visible="false">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Text fx:id="propertyMsg" fill="#858585" layoutX="195.0" layoutY="370.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You must pay rent before ending turn" textAlignment="CENTER" visible="false" wrappingWidth="350.2958973867478" />
+            <Text fx:id="propertyOwnerMsg" fill="#4d4d4d" layoutX="150.0" layoutY="284.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PropertyOwner" textAlignment="CENTER" visible="false" wrappingWidth="418.29592651022176">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
          </children>
       </AnchorPane>
       <Pane fx:id="freeParkingCard" layoutX="40.0" layoutY="237.0" prefHeight="77.0" prefWidth="235.0" style="-fx-background-color: ededed; -fx-border-radius: 10;" visible="false">

@@ -87,7 +87,7 @@ public class GameController {
     @FXML private Text tradeMsg;
 
     // Container for trade
-    @FXML private Pane tradeContainer;
+    @FXML public static Pane tradeContainer;
 
     // Message popup
     @FXML private Pane messagePopupContainer;
@@ -106,6 +106,23 @@ public class GameController {
 
     // Free parking card container
     @FXML private Pane freeParkingCard;
+
+    // Refactor properties
+    @FXML private Button propertyBtn;
+    @FXML private Text propertyOwnerMsg;
+    @FXML private Text propertyMsg;
+
+    // Button msg constants
+    private final String BTN_BAIL_MSG = "Pay bail";
+    private final String BTN_BUY_MSG = "Buy property";
+    private final String BTN_RENT_MSG = "Pay rent";
+    private final String BTN_TAX_MSG = "Pay tax";
+
+    // Button color constants
+    private final String BTN_BAIL_COLOR = "green";
+    private final String BTN_BUY_COLOR = "green";
+    private final String BTN_RENT_COLOR = "orange";
+    private final String BTN_TAX_COLOR = "red";
 
     /**
      * Launches when the scene is loaded.
@@ -490,8 +507,10 @@ public class GameController {
         // Disable buttons
         endturnBtn.setDisable(true);
         rolldiceBtn.setDisable(true);
-        buyPropertyBtn.setDisable(true);
-        payBailBtn.setDisable(true);
+//        buyPropertyBtn.setDisable(true);
+//        payBailBtn.setDisable(true);
+
+        propertyBtn.setDisable(true);
 
         // Finish turn in gameLogic and wait for your next turn
         GameLogic.endTurn();
@@ -512,113 +531,205 @@ public class GameController {
         // If the player didn't throw two equal dices, disable the dice button. If not, the player can throw dice again
         if (diceValues[0] != diceValues[1]) {
             rolldiceBtn.setDisable(true);
-            payBailBtn.setDisable(true);
+            //payBailBtn.setDisable(true);
             endturnBtn.setDisable(false);
         }
 
         // If player is in jail, show button to pay bail
-        if (game.getEntities().getYou().isInJail()) {
-            payBailBtn.setVisible(true);
-        } else {
-            payBailBtn.setVisible(false);
-        }
+//        if (game.getEntities().getYou().isInJail()) {
+//            payBailBtn.setVisible(true);
+//        } else {
+//            payBailBtn.setVisible(false);
+//        }
 
         // Get your position
         int yourPosition = game.getEntities().getYou().getPosition();
 
         // PROPERTY TILE HANDLING
-        if (game.getBoard().getTileType(yourPosition) == Board.PROPERTY) {
+//        if (game.getBoard().getTileType(yourPosition) == Board.PROPERTY) {
+//
+//            // Draw property card with
+//            Pane card = GameControllerDrawFx.createPropertyCard(game.getEntities().getPropertyAtPosition(yourPosition));
+//            cardContainer.getChildren().add(card);
+//
+//            // Get owner of property and set the button or label accordingly
+//            String propertyOwner = game.getEntities().getOwnerAtProperty(yourPosition);
+//            if (propertyOwner == null || propertyOwner.equals("")) {
+//                // If property is available, show button
+//                buyPropertyBtn.setDisable(false);
+//                buyPropertyBtn.setVisible(true);
+//                payRentBtn.setDisable(true);
+//                payRentBtn.setVisible(false);
+//                propertyOwned.setVisible(false);
+//            } else {
+//                // If this is your property, just display a label informing so
+//                if (propertyOwner.equals(USERNAME)) {
+//                    buyPropertyBtn.setDisable(true);
+//                    buyPropertyBtn.setVisible(false);
+//                    payRentBtn.setDisable(true);
+//                    payRentBtn.setVisible(false);
+//                    propertyOwned.setVisible(true);
+//                    propertyOwned.setText("Owned by you");
+//                } else {
+//                    // If this is someone else's property, activate the pay rent button
+//                    propertyOwned.setVisible(false);
+//                    payRentBtn.setDisable(false);
+//                    payRentBtn.setVisible(true);
+//                    endturnBtn.setDisable(true);
+//                    rolldiceBtn.setDisable(true);
+//                }
+//            }
+//            // KNM Helge Ingstad
+//            if (yourPosition == 4) Handler.playSound("res/sounds/drei.mp3");
+//
+//        } else {
+//            // If no property here, make sure to clear the property
+//            propertyOwned.setVisible(false);
+//            buyPropertyBtn.setVisible(false);
+//            payRentBtn.setVisible(false);
+//        }
+//
+//        // If on free parking, get a free-parking token
+//        if (game.getBoard().getTileType(yourPosition) == Board.FREE_PARKING) {
+//            // Show special card
+//            Pane card = GameControllerDrawFx.createSpecialCard("Free parking", "file:res/gui/SpecialCard/freeParking.png", "The next owned property you land on will be rent free", "#555");
+//            cardContainer.getChildren().add(card);
+//
+//            // Show free parking token and update players object
+//            game.getEntities().getYou().setFreeParking(true);
+//            freeParkingCard.setVisible(true);
+//        }
+//
+//        // If on a jail tile, show the jail information card
+//        else if (game.getBoard().getTileType(yourPosition) == Board.JAIL) {
+//            // check if player is in jail or just visiting
+//            String info = "Relax, just visiting";
+//            if (game.getEntities().getYou().isInJail()) info = "To get out of jail throw equal dices, or pay $1000 in bail";
+//
+//            // Show special card
+//            Pane card = GameControllerDrawFx.createSpecialCard("Jail", "file:res/gui/SpecialCard/prisonDoor.png", info, "#444");
+//            cardContainer.getChildren().add(card);
+//        }
+//
+//        // Player is on a chance card tile
+//        else if (game.getBoard().getTileType(yourPosition) == Board.CHANCE) {
+//            // Get a random chance card and display it
+//            ChanceCard chanceCard = ChanceCardData.getRandomChanceCard();
+//            ChanceCardController.display(chanceCard, cardContainer);
+//        }
+//
+//        else if (game.getBoard().getTileType(yourPosition) == Board.START) {
+//            // Show special card
+//            Pane card = GameControllerDrawFx.createSpecialCard("Start", "file:res/gui/SpecialCard/start.png", "You will get $4000 if you land or go past start", "#e2885a");
+//            cardContainer.getChildren().add(card);
+//        }
+//
+//        if (game.getBoard().getTileType(yourPosition) == Board.COMMUNITY_TAX) {
+//            // Show special card
+//            Pane card = GameControllerDrawFx.createSpecialCard("Income tax", "file:res/gui/SpecialCard/tax.png", "$4000",  "#cc6c6c");
+//            cardContainer.getChildren().add(card);
+//
+//            // Change buttons
+//            payIncomeTaxBtn.setVisible(true);
+//            payIncomeTaxBtn.setDisable(false);
+//            endturnBtn.setDisable(true);
+//            rolldiceBtn.setDisable(true);
+//        } else {
+//            payIncomeTaxBtn.setVisible(false);
+//            payIncomeTaxBtn.setDisable(true);
+//        }
 
-            // Draw property card with
-            Pane card = GameControllerDrawFx.createPropertyCard(game.getEntities().getPropertyAtPosition(yourPosition));
-            cardContainer.getChildren().add(card);
 
-            // Get owner of property and set the button or label accordingly
-            String propertyOwner = game.getEntities().getOwnerAtProperty(yourPosition);
-            if (propertyOwner == null || propertyOwner.equals("")) {
-                // If property is available, show button
-                buyPropertyBtn.setDisable(false);
-                buyPropertyBtn.setVisible(true);
-                payRentBtn.setDisable(true);
-                payRentBtn.setVisible(false);
-                propertyOwned.setVisible(false);
-            } else {
-                // If this is your property, just display a label informing so
-                if (propertyOwner.equals(USERNAME)) {
-                    buyPropertyBtn.setDisable(true);
-                    buyPropertyBtn.setVisible(false);
-                    payRentBtn.setDisable(true);
-                    payRentBtn.setVisible(false);
-                    propertyOwned.setVisible(true);
-                    propertyOwned.setText("Owned by you");
-                } else {
-                    // If this is someone else's property, activate the pay rent button
-                    propertyOwned.setVisible(false);
-                    payRentBtn.setDisable(false);
-                    payRentBtn.setVisible(true);
-                    endturnBtn.setDisable(true);
-                    rolldiceBtn.setDisable(true);
+
+        int tileType = Handler.getCurrentGame().getBoard().getTileType(yourPosition);
+        Pane card = null;
+
+        // No buttons or msg under property card is shown by default
+        propertyBtn.setVisible(false);
+        propertyOwnerMsg.setVisible(false);
+        propertyMsg.setVisible(false);
+
+        // Check tile type and change controls and GUI accordingly, each tile has its own card that will be displayed
+        switch (tileType) {
+            case Board.PROPERTY:
+                // Get property card
+                card = GameControllerDrawFx.createPropertyCard(game.getEntities().getPropertyAtPosition(yourPosition));
+
+                // Check if property has an owner
+                String propertyOwner = game.getEntities().getOwnerAtProperty(yourPosition);
+
+                // No owner, buying is optional
+                if (propertyOwner == null || propertyOwner.equals("")) {
+                    FxUtils.showAndChangeBtn(propertyBtn, BTN_BUY_MSG, BTN_BUY_COLOR);
+                    propertyBtn.setOnMouseClicked(e -> buyProperty());
                 }
-            }
-            // KNM Helge Ingstad
-            if (yourPosition == 4) Handler.playSound("res/sounds/drei.mp3");
 
-        } else {
-            // If no property here, make sure to clear the property
-            propertyOwned.setVisible(false);
-            buyPropertyBtn.setVisible(false);
-            payRentBtn.setVisible(false);
+                // Owned by user, no action
+                else if (propertyOwner.equals(USERNAME)) FxUtils.showAndChangeText(propertyOwnerMsg, "Property owned by you");
+
+                // Owned by other player, rent required
+                else {
+                    FxUtils.showAndChangeText(propertyOwnerMsg, "Property owned by " + propertyOwner);
+                    FxUtils.showAndChangeText(propertyMsg, "You must pay rent before continuing");
+                    FxUtils.showAndChangeBtn(propertyBtn, BTN_RENT_MSG, BTN_RENT_COLOR);
+                    disableControlBtns();
+
+                    propertyBtn.setOnMouseClicked(e -> rentTransaction());
+                }
+                break;
+
+            case Board.START:
+                card = GameControllerDrawFx.createSpecialCard("Start", "file:res/gui/SpecialCard/start.png", "You will get $4000 if you land or go past start", "#e2885a");
+                break;
+
+            case Board.COMMUNITY_TAX:
+                card = GameControllerDrawFx.createSpecialCard("Income tax", "file:res/gui/SpecialCard/tax.png", "$4000",  "#cc6c6c");
+                disableControlBtns();
+
+                FxUtils.showAndChangeBtn(propertyBtn, BTN_TAX_MSG, BTN_TAX_COLOR);
+                FxUtils.showAndChangeText(propertyMsg, "Tax must be payed before continuing");
+                propertyBtn.setOnMouseClicked(e -> payTax());
+                break;
+
+            case Board.FREE_PARKING:
+                card = GameControllerDrawFx.createSpecialCard("Free parking", "file:res/gui/SpecialCard/freeParking.png", "The next owned property you land on will be rent free", "#555");
+
+                // Show free parking token and update players object
+                game.getEntities().getYou().setFreeParking(true);
+                freeParkingCard.setVisible(true);
+                break;
+
+            case Board.JAIL:
+                // check if player is in jail or just visiting
+                String info = "Relax, just visiting";
+                if (game.getEntities().getYou().isInJail()) {
+                    FxUtils.showAndChangeBtn(propertyBtn, BTN_BAIL_MSG, BTN_BAIL_COLOR);
+                    info = "To get out of jail throw equal dices, or pay $1000 in bail";
+                }
+
+                card = GameControllerDrawFx.createSpecialCard("Jail", "file:res/gui/SpecialCard/prisonDoor.png", info, "#444");
+
+                // Pay bail is only available on your turn
+                if (game.getPlayers()[game.getCurrentTurn()].equals(USERNAME))
+                    propertyBtn.setOnMouseClicked(e -> payBail());
+                else
+                    propertyBtn.setVisible(true);
+                break;
+
+            case Board.CHANCE:
+                ChanceCard chanceCard = ChanceCardData.getRandomChanceCard();
+                ChanceCardController.display(chanceCard, cardContainer);
+                break;
         }
 
-        // If on free parking, get a free-parking token
-        if (game.getBoard().getTileType(yourPosition) == Board.FREE_PARKING) {
-            // Show special card
-            Pane card = GameControllerDrawFx.createSpecialCard("Free parking", "file:res/gui/SpecialCard/freeParking.png", "The next owned property you land on will be rent free", "#555");
+        // Show card in container if defined
+        if (card != null)
             cardContainer.getChildren().add(card);
+    }
 
-            // Show free parking token and update players object
-            game.getEntities().getYou().setFreeParking(true);
-            freeParkingCard.setVisible(true);
-        }
-
-        // If on a jail tile, show the jail information card
-        else if (game.getBoard().getTileType(yourPosition) == Board.JAIL) {
-            // check if player is in jail or just visiting
-            String info = "Relax, just visiting";
-            if (game.getEntities().getYou().isInJail()) info = "To get out of jail throw equal dices, or pay $1000 in bail";
-
-            // Show special card
-            Pane card = GameControllerDrawFx.createSpecialCard("Jail", "file:res/gui/SpecialCard/prisonDoor.png", info, "#444");
-            cardContainer.getChildren().add(card);
-        }
-
-        // Player is on a chance card tile
-        else if (game.getBoard().getTileType(yourPosition) == Board.CHANCE) {
-            // Get a random chance card and display it
-            ChanceCard chanceCard = ChanceCardData.getRandomChanceCard();
-            ChanceCardController.display(chanceCard, cardContainer);
-        }
-
-        else if (game.getBoard().getTileType(yourPosition) == Board.START) {
-            // Show special card
-            Pane card = GameControllerDrawFx.createSpecialCard("Start", "file:res/gui/SpecialCard/start.png", "You will get $4000 if you land or go past start", "#e2885a");
-            cardContainer.getChildren().add(card);
-        }
-
-        if (game.getBoard().getTileType(yourPosition) == Board.COMMUNITY_TAX) {
-            // Show special card
-            Pane card = GameControllerDrawFx.createSpecialCard("Income tax", "file:res/gui/SpecialCard/tax.png", "$4000",  "#cc6c6c");
-            cardContainer.getChildren().add(card);
-
-            // Change buttons
-            payIncomeTaxBtn.setVisible(true);
-            payIncomeTaxBtn.setDisable(false);
-            endturnBtn.setDisable(true);
-            rolldiceBtn.setDisable(true);
-        } else {
-            payIncomeTaxBtn.setVisible(false);
-            payIncomeTaxBtn.setDisable(true);
-        }
+    private void disableControlBtns() {
+        rolldiceBtn.setDisable(true);
+        endturnBtn.setDisable(true);
     }
 
     /**
@@ -778,7 +889,8 @@ public class GameController {
         updateBoard();
 
         freeParkingCard.setVisible(false);
-        payRentBtn.setDisable(true);
+        //payRentBtn.setDisable(true);
+        propertyBtn.setDisable(true);
         int[] currentDice = game.getDice().getLastThrow();
         if (currentDice[0] == currentDice[1] && !game.getEntities().getYou().isInJail()) {
             rolldiceBtn.setDisable(false);
@@ -803,9 +915,11 @@ public class GameController {
                 updateBoard();
 
                 // Update property information label
-                buyPropertyBtn.setVisible(false);
-                propertyOwned.setVisible(true);
-                propertyOwned.setText("Owned by you");
+                //buyPropertyBtn.setVisible(false);
+//                propertyOwned.setVisible(true);
+//                propertyOwned.setText("Owned by you");
+                FxUtils.showAndChangeText(propertyOwnerMsg, "Property owned by you");
+                propertyBtn.setDisable(true);
             } else {
                 Alert messageBox = new Alert(Alert.AlertType.INFORMATION,
                         "You do not have enough funds to purchase this property.");
@@ -823,8 +937,9 @@ public class GameController {
      */
     public void payBail() {
         if (GameLogic.payBail()) {
-            payBailBtn.setVisible(false);
-            payBailBtn.setDisable(true);
+//            payBailBtn.setVisible(false);
+//            payBailBtn.setDisable(true);
+            propertyBtn.setDisable(true);
         } else {
             Alert messageBox = new Alert(Alert.AlertType.INFORMATION,
                     "You do not have enough funds to pay bail.");
@@ -838,7 +953,8 @@ public class GameController {
     public void payTax() {
         GameLogic.payTax();
         updateBoard();
-        payIncomeTaxBtn.setDisable(true);
+        //payIncomeTaxBtn.setDisable(true);
+        propertyBtn.setDisable(true);
         int[] currentDice = game.getDice().getLastThrow();
         if (currentDice[0] == currentDice[1] && !game.getEntities().getYou().isInJail()) {
             rolldiceBtn.setDisable(false);

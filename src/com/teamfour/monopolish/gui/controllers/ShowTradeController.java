@@ -58,17 +58,18 @@ public class ShowTradeController {
             entityManager.doTrade(entityManager.getYou(), entityManager.getPlayer(Handler.getTradeUsername()), offeredMoney, offeredproperties);
 
             entityManager.removeTrade(entityManager.getYou().getUsername());
-            //clear stuff
-            //send to eventlog "X accepted Y's trade"
+
+            // Close dialog
+            GameController.tradeContainer.setVisible(false);
         });
 
         refuseTradeBtn.setOnAction(e -> {
             // delete trades
             System.out.println("Trade refused!");
             entityManager.removeTrade(entityManager.getYou().getUsername());
-            //close window
-            //clear stuff
-            //send to eventlog "X refused Y's trade"
+
+            // Close dialog
+            GameController.tradeContainer.setVisible(false);
         });
     }
 

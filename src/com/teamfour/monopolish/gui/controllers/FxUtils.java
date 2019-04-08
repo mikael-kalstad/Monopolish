@@ -2,6 +2,7 @@ package com.teamfour.monopolish.gui.controllers;
 
 import javafx.animation.ScaleTransition;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
@@ -84,5 +85,27 @@ public class FxUtils {
             st.setToY(1);
             st.play();
         });
+    }
+
+    /**
+     * Helper method for showing and changing a button element
+     * @param msg
+     * @param color
+     */
+    public static void showAndChangeBtn(Button btn, String msg, String color) {
+        btn.setVisible(true);
+        btn.setDisable(false);
+        btn.setText(msg);
+        btn.setStyle("-fx-background-color: " + color + ";");
+    }
+
+    /**
+     * Helper method for showing anc changing a text element
+     * @param elem
+     * @param msg
+     */
+    public static void showAndChangeText(Text elem, String msg) {
+        elem.setVisible(true);
+        elem.setText(msg);
     }
 }
