@@ -959,5 +959,33 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
+      <Pane fx:id="buyHouseContainer" layoutX="948.0" layoutY="131.0" prefHeight="530.0" prefWidth="400.0" visible="false" />
+      <Pane fx:id="winnerContainer" layoutX="559.0" layoutY="400.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="277.0" prefWidth="593.0" style="-fx-background-color: #444; -fx-background-radius: 15;" visible="false">
+         <children>
+            <ImageView fitHeight="116.0" fitWidth="122.0" layoutX="32.0" layoutY="49.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="file:res/gui/Dashboard/trophy.png" />
+               </image>
+            </ImageView>
+            <Text fill="WHITE" layoutX="167.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Congratulations">
+               <font>
+                  <Font name="System Bold" size="34.0" />
+               </font>
+            </Text>
+            <Text fx:id="winnerMsg" fill="WHITE" layoutX="167.0" layoutY="146.0" strokeType="OUTSIDE" strokeWidth="0.0" text="giskeeribyendam is won the game">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Text>
+            <Button fx:id="winnerBtn" layoutX="230.0" layoutY="206.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="134.0" style="-fx-background-color: #FF9800;" text="Dashboard" textFill="#fafafa">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

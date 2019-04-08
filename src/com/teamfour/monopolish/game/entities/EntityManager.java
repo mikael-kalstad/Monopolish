@@ -94,21 +94,6 @@ public class EntityManager {
         return bank.getPropertyAtPosition(position);
     }
 
-//      * Transfers money from the bank to the specified username
-//     * @param username Username of player
-//     * @param amount Amount to be transferred
-//     * @return True if successful
-//     */
-//    public boolean transferMoneyFromBank(String username, int amount) {
-//        Player player = getPlayer(username);
-//        if (bank.getMoney() < amount) {
-//            return false;
-//        }
-//
-//        return bank.transferMoney(player, amount);
-//    }/**
-
-
     public void transferMoneyFromBank(String username, int amount) {
         Player player = getPlayer(username);
         if (amount > 0 && bank.getMoney() < amount)

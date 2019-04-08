@@ -124,7 +124,7 @@ begin
       on account.user_id = player.user_id
         where user_name = username and gameid = game_id;
 
-  update player set active = 0 where p_id = player_id and active = 1;
+  update player set active = 2 where p_id = player_id and active = 1;
 
   -- calculates and sets score
   update player set score = (select (money + sum)
@@ -132,7 +132,7 @@ begin
       left join property on property.property_id = gameproperty.property_id
         where player.player_id = p_id and gameid = player.game_id
           group by player_id) as inner_query)
-            where player.player_id = p_id and active = 0;
+            where player.player_id = p_id;
 end $$
 
 

@@ -78,7 +78,7 @@ public class GameController {
     public static boolean forfeit = false;
 
     // Properties dialog
-    @FXML private Pane propertiesContainer;
+    @FXML private Pane propertiesContainer, buyHouseContainer;
     @FXML private FlowPane propertiesContentContainer;
     @FXML private Text propertiesUsername;
     @FXML private Button tradeBtn;
@@ -104,6 +104,11 @@ public class GameController {
     // Free parking card container
     @FXML private Pane freeParkingCard;
 
+    // Winner elements
+    @FXML private Pane winnerContainer;
+    @FXML private Text winnerMsg;
+    @FXML private Button winnerBtn;
+
     /**
      * Launches when the scene is loaded.
      */
@@ -113,6 +118,7 @@ public class GameController {
         // Reference that is used in other controllers
         Handler.setForfeitContainer(forfeitContainer);
         Handler.setTradeContainer(tradeContainer);
+        Handler.setBuyHouseContainer(buyHouseContainer);
 
         // Set gamelogic object in handler
         game = new Game(GAME_ID);
@@ -184,17 +190,6 @@ public class GameController {
         }
     }
 
-    /**
-     * This method will be run before leaving or quitting the game.
-     * It will sort out all DB queries and stop all timers required.
-     */
-    private void endGameForPlayer() {
-        // Remove player from lobby
-        GameLogic.onPlayerLeave();
-
-        stopTimers();
-    }
-
     static void stopTimers() {
         databaseTimer.cancel();
         databaseTimer.purge();
@@ -224,17 +219,26 @@ public class GameController {
         forfeitContainer.setVisible(true);
     }
 
+    /**
+     * Start a timer that will check for different request. <br/>
+     * <b>What the timer checks</b>
+     * <ul>
+     *     <li>1. Forfeit request in database</li>
+     *     <li>2. Trade request in database</li>
+     *     <li>3. Winner of the game if game is finished</li>
+     * </ul>
+     */
     private void startRequestTimer() {
         // Setup forfeit task
         TimerTask requestTask = new TimerTask() {
             @Override
             public void run() {
-                // Check for forfeit
+                // 1. Check for forfeit
                 boolean gameForfeit = Handler.getGameDAO().getForfeit(GAME_ID);
 
                 if (!forfeit && gameForfeit) {
                     Platform.runLater(() -> forfeit());
-                } else if (forfeit && !gameForfeit) {
+                } else if (!gameForfeit) {
                     backgroundOverlay.setVisible(false);
                 }
 
@@ -249,15 +253,42 @@ public class GameController {
                     }
                 }
 
-                // Check for trade request
+                // 2. Check for trade request
                 if (Handler.getPlayerDAO().isTrade(USERNAME)) {
                     addElementToContainer(ViewConstants.SHOW_TRADE.getValue(), tradeContainer);
+                }
+
+                // 3. Check if there is any winner
+                String winner = game.getEntities().findWinner();
+                if (winner != null) {
+                    stopTimers();
+                    Platform.runLater(() -> announceWinner(winner));
                 }
             }
         };
 
         // Check for forfeit every second
         requestTimer.scheduleAtFixedRate(requestTask, 0L, 1000L);
+    }
+
+    public void announceWinner(String winner) {
+//        Alert winnerBox = new Alert(Alert.AlertType.INFORMATION,
+//                winner + " has won! You must now quit.", ButtonType.OK);
+//        winnerBox.showAndWait();
+
+        // Set fixed background overlay
+        backgroundOverlay.setVisible(true);
+        backgroundOverlay.setOnMouseClicked(e -> {});
+
+        // Show winner container and set msg
+        winnerMsg.setText(winner + "has won the game");
+        winnerContainer.setVisible(true);
+
+        // leave the game and change to dashboard on click
+        winnerBtn.setOnMouseClicked(e -> {
+            GameLogic.onPlayerLeave();
+            Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
+        });
     }
 
     /**
@@ -348,15 +379,14 @@ public class GameController {
             Pane card = GameControllerDrawFx.createPropertyCard(p);
             propertiesContentContainer.getChildren().add(card);
 
-            //if(game.getEntities().getPlayer(username).hasFullSet(Handler.getCurrentGameId(), p.getCategorycolor())){
-            card.setOnMouseClicked(e -> {
-                ((Street)p).addHouse();
-                // Open dialog here
+            card.setOnMouseClicked(event -> {
+                buyHouseContainer.getChildren().clear();
+                buyHouseContainer.setVisible(true);
+                Handler.setBuyHouseProperty(p);
+                addElementToContainer(ViewConstants.BUY_HOUSE.getValue(), buyHouseContainer);
             });
 
             FxUtils.setScaleOnHover(card, 0.1);
-
-            //}
         }
 
         // Check if trade btn and msg should be shown
@@ -628,6 +658,7 @@ public class GameController {
             GameControllerDrawFx.createPlayerPieces(gamegrid, positions, colors);
 
             for(String player : turns){
+
                 for(Property property : game.getEntities().getPlayer(player).getProperties()){
                     if(property instanceof Street) {
                         GameControllerDrawFx.drawHouse(housegrid, (Street) property);

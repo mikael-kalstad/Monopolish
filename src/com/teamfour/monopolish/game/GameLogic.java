@@ -18,7 +18,7 @@ import java.sql.SQLException;
  * 'GameController.java'
  *
  * @author      eirikhem
- * @version     1.2
+ * @version     1.3
  */
 
 public class GameLogic {
@@ -69,10 +69,10 @@ public class GameLogic {
      * @param street Street to buy house to
      * @return True if enough money and successful
      */
-    public boolean buyHouse(Street street) {
+    public static boolean buyHouse(Street street) {
         int housePrice = Integer.parseInt(street.getAllRent()[7]);
         Player yourPlayer = game.getEntities().getYou();
-        if (game.getEntities().getBank().getAvailableHotels() == 0)
+        if (game.getEntities().getBank().getAvailableHouses() == 0)
             return false;
 
         if (yourPlayer.getMoney() < housePrice)
@@ -81,6 +81,21 @@ public class GameLogic {
         game.getEntities().transferMoneyFromBank(yourPlayer.getUsername(), -housePrice);
         game.getEntities().getBank().getHouses(1);
         street.addHouse();
+        return true;
+    }
+
+    public static boolean buyHotel(Street street) {
+        int hotelPrice = Integer.parseInt(street.getAllRent()[7]);
+        Player yourPlayer = game.getEntities().getYou();
+        if (game.getEntities().getBank().getAvailableHouses() == 0)
+            return false;
+
+        if (yourPlayer.getMoney() < hotelPrice)
+            return false;
+
+        game.getEntities().transferMoneyFromBank(yourPlayer.getUsername(), -hotelPrice);
+        game.getEntities().getBank().getHotels(1);
+        street.addHotel();
         return true;
     }
 
@@ -259,6 +274,7 @@ public class GameLogic {
      */
     public static void updateToDatabase() {
         try {
+            checkBankruptcy();
             // Updates all entities
             game.getEntities().updateToDatabase();
 
@@ -277,18 +293,16 @@ public class GameLogic {
         // Get the current player
         String currentPlayer = game.getPlayers()[game.getCurrentTurn()];
         updateFromDatabase();
+        checkBankruptcy();
         // Get the new current player from database
         String newCurrentPlayer = game.getPlayers()[game.getCurrentTurn()];
         if (!currentPlayer.equals(newCurrentPlayer)) {
             // If new turn, and turn number is 0, we know that it's a new round
             if (game.getCurrentTurn() == 0) game.incrementRound();
-            checkBankruptcy();
             return true;
         } else {
             return false;
         }
-
-        // TODO: Bankruptcy check, game end blabla
     }
 
     /**
@@ -337,8 +351,8 @@ public class GameLogic {
             // Update entities
             game.getEntities().updateFromDatabase();
 
-            // Load player list again
-            //game.setPlayers(game.getEntities().getUsernames());
+            // Load player list again, in case anyone has left
+            game.setPlayers(game.getEntities().getUsernames());
 
             // Update turn number
             String currentPlayer = Handler.getGameDAO().getCurrentPlayer(game.getGameId());
@@ -354,14 +368,15 @@ public class GameLogic {
     }
 
     public static void onPlayerLeave() {
-        String yourUsername = game.getEntities().getYou().getUsername();
+        Player yourPlayer = game.getEntities().getYou();
+        String yourUsername = yourPlayer.getUsername();
         // If it's your turn, end your own turn
         if (game.getPlayers()[game.getCurrentTurn()].equals(yourUsername)) {
             endTurn();
         }
 
         Handler.getLobbyDAO().removePlayer(yourUsername, Handler.getLobbyDAO().getLobbyId(yourUsername));
-        game.getEntities().removePlayer(yourUsername);
+        Handler.getPlayerDAO().endGame(game.getGameId(), yourUsername);
         updateToDatabase();
     }
 }
