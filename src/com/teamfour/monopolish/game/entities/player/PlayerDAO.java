@@ -111,34 +111,12 @@ public class PlayerDAO extends DataAccessObject {
         return players;
     }
 
-    /**
-     * ends the game and registers each player's score in the database
-     *
-     * @param game_id the id of the current game
-     */
-    public void endGame(int game_id) {
-        Connection connection = getConnection();
-        CallableStatement cStmt = null;
-        try {
-            cStmt = connection.prepareCall("{call player_endgame(?)}");
-
-            for (int i = 0; i < 10; i++) {
-                cStmt.setInt(1, game_id);
-                cStmt.executeUpdate();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            close(cStmt);
-            releaseConnection(connection);
-        }
-    }
-
 
     /**
      * ends the game and registers each player's score in the database
      *
      * @param game_id the id of the current game
+     * @param username the username of the player
      */
     public void endGame(int game_id, String username) {
         Connection connection = getConnection();
@@ -162,7 +140,7 @@ public class PlayerDAO extends DataAccessObject {
     /**
      * Makes a String[][] with top 10 highscores
      *
-     * @return list 2d String array with playes and scores
+     * @return list 2d String array with players(username) and scores
      */
 
     public String[][] getHighscoreList() {
@@ -198,7 +176,7 @@ public class PlayerDAO extends DataAccessObject {
     /**
      * Set forfeit status on player in game
      *
-     * @param username      usernmae
+     * @param username      username
      * @param gameId        gameId
      * @param forfeitStatus 0 = default, 1 = quit, 2 = continue
      */
@@ -221,24 +199,9 @@ public class PlayerDAO extends DataAccessObject {
         }
     }
 
-    // Who has removed procedure for this DAO???
-    public void resetForfeitStatus(int gameId) {
-        Connection connection = getConnection();
-        CallableStatement cStmt = null;
-        try {
-            cStmt = connection.prepareCall("{call player_reset_forfeit(?)}");
-            cStmt.setInt(1, gameId);
-
-            cStmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            close(cStmt);
-            releaseConnection(connection);
-        }
-    }
 
     /**
+     * Gets the current forfeit status
      * @param gameId
      * @return // 0 = default, 1 = quit, 2 = continue
      */
@@ -293,7 +256,13 @@ public class PlayerDAO extends DataAccessObject {
         }
     }
 
-
+    /**
+     * Gets the elements of the Trade
+     *
+     * @param username username of the player
+     * @param gameId the current game's ID
+     * @return String ArrayList of Strings, containing seller, buyer, price and properties in the trade.
+     */
     public ArrayList<String[]> getTrade(String username, int gameId) {
         Connection connection = getConnection();
         CallableStatement cStmt = null;
@@ -327,6 +296,13 @@ public class PlayerDAO extends DataAccessObject {
         }
         return props;
     }
+
+    /**
+     * sets the trade as accepted
+     *
+     * @param seller username of the player that proposed the trade
+     * @param buyer username of the player that accepted the trade
+     */
     public void acceptTrade(String seller, String buyer) {
         Connection connection = getConnection();
         CallableStatement cStmt = null;
@@ -342,7 +318,11 @@ public class PlayerDAO extends DataAccessObject {
             releaseConnection(connection);
         }
     }
-
+    /**
+     * checks if the trade is accepted
+     *
+     * @param username username of the current player
+     */
     public boolean isTrade(String username) {  // check if trade on user
         Connection connection = getConnection();
         CallableStatement cStmt = null;
@@ -384,33 +364,7 @@ public class PlayerDAO extends DataAccessObject {
         }
     }
 
-    public int getPlayerId(String username, int gameId) {
-        Connection connection = getConnection();
-        CallableStatement cStmt = null;
-        ResultSet rs = null;
-        int playerId = 0;
-        try {
-            cStmt = connection.prepareCall("{call player_get_playerid(?,?)}");  // userId, gameId
 
-            cStmt.setString(1, username);
-            cStmt.setInt(2, gameId);
-
-            if (cStmt.execute()) {
-                rs = cStmt.getResultSet();
-                while (rs.next()) {
-                    playerId = rs.getInt(1);
-                }
-            }
-
-        } catch (SQLException sql) {
-            sql.printStackTrace();
-        } finally {
-            close(rs);
-            close(cStmt);
-            releaseConnection(connection);
-        }
-        return playerId;
-    }
 
     public boolean getForfeitCheck(int gameId){
         Connection connection = getConnection();

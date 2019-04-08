@@ -1,16 +1,26 @@
 /**
     AccountProcedures contains procedures to add, update and verify users in the account table
  */
+/**
+    Drops
+*/
 
+DROP PROCEDURE IF EXISTS account_insert_user;
+DROP PROCEDURE IF EXISTS account_validate_user;
+DROP PROCEDURE IF EXISTS account_reset_password;
+DROP PROCEDURE IF EXISTS account_reset_password;
+DROP PROCEDURE IF EXISTS account_getUserid;
+DROP PROCEDURE IF EXISTS account_set_inactive;
+DROP PROCEDURE IF EXISTS account_get_active;
+DROP PROCEDURE IF EXISTS account_games_played;
+DROP PROCEDURE IF EXISTS account_highscore;
 /**
   Procedure to add new users
  */
 
-DROP PROCEDURE account_insert_user;
-
 -- (username, email, password, salt, regdate)
 -- Error/exit codes:
--- 0 = no errors, 1 = username allredy taken, 2 = email already taken
+-- 0 = no errors, 1 = username already taken, 2 = email already taken
 CREATE PROCEDURE account_insert_user(
     IN uname VARCHAR(30),
     IN mail VARCHAR(50),
@@ -27,15 +37,11 @@ CREATE PROCEDURE account_insert_user(
     INSERT INTO account VALUES(DEFAULT, uname, mail, hashed_pwd, salt_pw, reg_date, DEFAULT);
   END;
 
-
--- TEST:
-CALL account_insert_user('ny', 'ny', 'ny', DATE('2019-02-02 20:00:00'), @error_code);
-
 /**
   Procedure to check password on login
  */
 
-DROP PROCEDURE account_validate_user;
+
 -- return: username, email, regdate, highscore
 CREATE PROCEDURE account_validate_user(IN uname VARCHAR(30), IN password VARCHAR(30))
   BEGIN
@@ -60,15 +66,10 @@ CREATE PROCEDURE account_validate_user(IN uname VARCHAR(30), IN password VARCHAR
     */
   END;
 
--- TEST:
-CALL account_validate_user('ny', 'ny');
-
-
-CALL account_insert_user('testbruker', 'testbruker', 'testbruker', DATE('2019-02-02 20:00:00'), @error_code);
 /**
   Procedure to reset password
  */
-DROP PROCEDURE account_reset_password;
+
 
 CREATE PROCEDURE account_reset_password(
   IN uname VARCHAR(30),
@@ -114,7 +115,7 @@ CREATE PROCEDURE account_set_inactive(IN u_name VARCHAR(30))
     UPDATE `account` SET `active` = 0 WHERE `username` = u_name;
   END;
 
-DROP PROCEDURE account_get_active;
+
 
 CREATE PROCEDURE account_get_active(IN u_name VARCHAR(30))
   BEGIN
@@ -122,7 +123,7 @@ CREATE PROCEDURE account_get_active(IN u_name VARCHAR(30))
   end;
 
 
-DROP PROCEDURE IF EXISTS account_games_played;
+
 
 CREATE PROCEDURE account_games_played(IN u_name VARCHAR(30))
 BEGIN
@@ -130,10 +131,12 @@ BEGIN
   FROM game join player on game.game_id = player.game_id join account on player.user_id = account.user_id where username = u_name;
 END;
 
-DROP PROCEDURE IF EXISTS account_highscore;
+
 
 CREATE PROCEDURE account_highscore(IN u_name VARCHAR(30))
 BEGIN
   SELECT max(score) highscore
   FROM player join account on player.user_id = account.user_id where username = u_name;
 END;
+
+

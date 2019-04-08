@@ -1,6 +1,7 @@
 DROP PROCEDURE IF EXISTS chat_add;
 DROP PROCEDURE IF EXISTS chat_get;
 drop view if exists message_view;
+
 CREATE PROCEDURE chat_add(IN user_name varchar(30), in message_in varchar(40))
 BEGIN
   declare playerid int;
