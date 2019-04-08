@@ -578,7 +578,6 @@ public class GameControllerDrawFx {
 
         //if the street has a hotel
         if (hascontainer && numberOfHouses == 5) {
-            System.out.println("trieddddd hotel1");
             for (Node box : housegrid.getChildren()) {
                 if (box.getId()!= null && box.getId().equals(propertyname)) {
                     ImageView hotel = new ImageView("file:res/gui/Game/house.png");
