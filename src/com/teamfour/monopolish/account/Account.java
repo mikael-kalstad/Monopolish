@@ -10,12 +10,21 @@ import java.time.LocalDate;
  */
 
 public class Account {
+    // Attributes
     private String username;
     private String email;
     private LocalDate regDate;
     private int highscore;
     private boolean active;
 
+    /**
+     * Constructor
+     * @param username Display name
+     * @param email Email
+     * @param regDate Date of registration
+     * @param highscore Personal high score
+     * @param active Active
+     */
     public Account(String username, String email, LocalDate regDate, int highscore, boolean active) {
         this.username = username;
         this.email = email;
@@ -23,6 +32,8 @@ public class Account {
         this.highscore = highscore;
         this.active = active;
     }
+
+    // SETTERS & GETTERS
 
     public String getUsername() {
         return username;
