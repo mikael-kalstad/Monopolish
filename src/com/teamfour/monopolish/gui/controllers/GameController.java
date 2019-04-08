@@ -443,7 +443,6 @@ public class GameController {
                     if (GameLogic.waitForTurn() || firstTurn) {
                         if (game.getPlayers()[game.getCurrentTurn()].equals(USERNAME)) {
                             firstTurn = false;
-                            // TODO: Your turn, break out
                             yourTurn();
                         }
                     }
@@ -687,6 +686,12 @@ public class GameController {
      * A couple things needs to be updated at the start of each turn
      */
     public void yourTurn() {
+        // If you're bankrupt, end your turn right away since you're not really allowed to play
+        if (game.getEntities().getYou().isBankrupt()) {
+            endTurn();
+            return;
+        }
+
         // Play a sound to indicate that it is your turn
         if (playSounds) Handler.playSound("res/sounds/pling.mp3");
 
