@@ -190,6 +190,9 @@ public class GameController {
         }
     }
 
+    /**
+     * Stop all timers in class
+     */
     static void stopTimers() {
         databaseTimer.cancel();
         databaseTimer.purge();
@@ -271,17 +274,18 @@ public class GameController {
         requestTimer.scheduleAtFixedRate(requestTask, 0L, 1000L);
     }
 
+    /**
+     * Will open a winner dialog displaying the name of the winner,
+     * and includes a button that will go back to the dashboard.
+     * @param winner Name of the player that won the game
+     */
     public void announceWinner(String winner) {
-//        Alert winnerBox = new Alert(Alert.AlertType.INFORMATION,
-//                winner + " has won! You must now quit.", ButtonType.OK);
-//        winnerBox.showAndWait();
-
         // Set fixed background overlay
         backgroundOverlay.setVisible(true);
         backgroundOverlay.setOnMouseClicked(e -> {});
 
         // Show winner container and set msg
-        winnerMsg.setText(winner + "has won the game");
+        winnerMsg.setText(winner + " has won the game");
         winnerContainer.setVisible(true);
 
         // leave the game and change to dashboard on click
@@ -379,12 +383,14 @@ public class GameController {
             Pane card = GameControllerDrawFx.createPropertyCard(p);
             propertiesContentContainer.getChildren().add(card);
 
-            card.setOnMouseClicked(event -> {
-                buyHouseContainer.getChildren().clear();
-                buyHouseContainer.setVisible(true);
-                Handler.setBuyHouseProperty(p);
-                addElementToContainer(ViewConstants.BUY_HOUSE.getValue(), buyHouseContainer);
-            });
+            if (username.equals(USERNAME)) {
+                card.setOnMouseClicked(event -> {
+                    buyHouseContainer.getChildren().clear();
+                    buyHouseContainer.setVisible(true);
+                    Handler.setBuyHouseProperty(p);
+                    addElementToContainer(ViewConstants.BUY_HOUSE.getValue(), buyHouseContainer);
+                });
+            }
 
             FxUtils.setScaleOnHover(card, 0.1);
         }

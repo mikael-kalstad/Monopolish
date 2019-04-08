@@ -35,7 +35,7 @@ public class buyHouseController {
                 if (container != null) container.setVisible(false);
             });
 
-            if(game.getEntities().getPlayer(PROPERTY.getOwner()).hasFullSet(Handler.getCurrentGameId(), PROPERTY.getCategorycolor())){
+//            if(game.getEntities().getPlayer(PROPERTY.getOwner()).hasFullSet(Handler.getCurrentGameId(), PROPERTY.getCategorycolor())){
 
                 if (((Street) PROPERTY).getHotels() != 1) {
                     buyHouseBtn.setDisable(false);
@@ -68,7 +68,7 @@ public class buyHouseController {
                     }
 
                 });
-            }
+//            }
         }
     }
 }

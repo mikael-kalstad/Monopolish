@@ -4,7 +4,6 @@ import com.teamfour.monopolish.game.property.Boat;
 import com.teamfour.monopolish.game.property.Property;
 import com.teamfour.monopolish.game.property.Street;
 import com.teamfour.monopolish.gui.views.ViewConstants;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
@@ -419,7 +418,12 @@ public class GameControllerDrawFx {
         AnchorPane.setRightAnchor(prices, 5.0);
         AnchorPane.setBottomAnchor(prices, 5.0);
 
-        card.setStyle("-fx-background-color: #ffffff; -fx-cursor: hand;");
+        String cursor = "default";
+
+        if (property.getOwner().equals(Handler.getAccount().getUsername()))
+            cursor = "hand";
+
+        card.setStyle("-fx-background-color: #ffffff; -fx-cursor: " + cursor + ";");
         header.setStyle("-fx-background-color: " + property.getCategorycolor() + ";");
         propertynamelabel.setStyle("-fx-font-size: 18px");
         propertypriceflow.setStyle("-fx-font-size: 13px");
@@ -517,51 +521,19 @@ public class GameControllerDrawFx {
             //Checks which of the 4 sides of the board the street is on to correctly align the container in the GridPane grid:
             //Bottom
             if (pos > 0 && pos < 9) {
-                HBox box = new HBox();
-                box.setId(propertyname);
-                box.setSpacing(2);
-                box.setPrefWidth(65);
-                GridPane.setConstraints(box, posXY[0], posXY[1]);
-                box.setAlignment(Pos.TOP_CENTER);
-                box.getChildren().addAll(houses);
-                housegrid.getChildren().add(box);
-                return true;
+                return createHouseContainerV(housegrid, propertyname, posXY, houses, Pos.TOP_CENTER);
             }
             //Left side
             if (pos > 9 && pos < 18) {
-                VBox box = new VBox();
-                box.setId(propertyname);
-                box.setSpacing(2);
-                box.setPrefHeight(65);
-                GridPane.setConstraints(box, posXY[0], posXY[1]);
-                box.setAlignment(Pos.CENTER_RIGHT);
-                box.getChildren().addAll(houses);
-                housegrid.getChildren().add(box);
-                return true;
+                return createHouseContainerH(housegrid, propertyname, posXY, houses, Pos.CENTER_RIGHT);
             }
             //Top
             if (pos > 18 && pos < 27) {
-                HBox box = new HBox();
-                box.setId(propertyname);
-                box.setSpacing(2);
-                box.setPrefWidth(65);
-                GridPane.setConstraints(box, posXY[0], posXY[1]);
-                box.setAlignment(Pos.BOTTOM_CENTER);
-                box.getChildren().addAll(houses);
-                housegrid.getChildren().add(box);
-                return true;
+                return createHouseContainerV(housegrid, propertyname, posXY, houses, Pos.BOTTOM_CENTER);
             }
             //Right side
             if (pos > 27 && pos < 36) {
-                VBox box = new VBox();
-                box.setId(propertyname);
-                box.setSpacing(2);
-                box.setPrefHeight(65);
-                GridPane.setConstraints(box, posXY[0], posXY[1]);
-                box.setAlignment(Pos.CENTER_LEFT);
-                box.getChildren().addAll(houses);
-                housegrid.getChildren().add(box);
-                return true;
+                return createHouseContainerH(housegrid, propertyname, posXY, houses, Pos.CENTER_LEFT);
             }
         }
 
@@ -591,6 +563,30 @@ public class GameControllerDrawFx {
             }
         }
         return false;
+    }
+
+    private static boolean createHouseContainerH(GridPane housegrid, String propertyname, int[] posXY, ArrayList<ImageView> houses, Pos centerRight) {
+        VBox box = new VBox();
+        box.setId(propertyname);
+        box.setSpacing(2);
+        box.setPrefHeight(65);
+        GridPane.setConstraints(box, posXY[0], posXY[1]);
+        box.getChildren().addAll(houses);
+        box.setAlignment(centerRight);
+        housegrid.getChildren().add(box);
+        return true;
+    }
+
+    private static boolean createHouseContainerV(GridPane housegrid, String propertyname, int[] posXY, ArrayList<ImageView> houses, Pos topCenter) {
+        HBox box = new HBox();
+        box.setId(propertyname);
+        box.setSpacing(2);
+        box.setPrefWidth(65);
+        GridPane.setConstraints(box, posXY[0], posXY[1]);
+        box.setAlignment(topCenter);
+        box.getChildren().addAll(houses);
+        housegrid.getChildren().add(box);
+        return true;
     }
 
     private static void rotateHouse(ImageView house, int pos) {
