@@ -419,7 +419,7 @@ public class GameControllerDrawFx {
         AnchorPane.setRightAnchor(prices, 5.0);
         AnchorPane.setBottomAnchor(prices, 5.0);
 
-        card.setStyle("-fx-background-color: #ffffff;");
+        card.setStyle("-fx-background-color: #ffffff; -fx-cursor: hand;");
         header.setStyle("-fx-background-color: " + property.getCategorycolor() + ";");
         propertynamelabel.setStyle("-fx-font-size: 18px");
         propertypriceflow.setStyle("-fx-font-size: 13px");

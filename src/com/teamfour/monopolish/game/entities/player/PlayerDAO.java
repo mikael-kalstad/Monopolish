@@ -275,13 +275,8 @@ public class PlayerDAO extends DataAccessObject {
         Connection connection = getConnection();
         CallableStatement cStmt = null;
         try {
-            //int sellerId = getPlayerId(seller, gameId);
-            //int buyerId = getPlayerId(buyer, gameId);
-            // seller_id, buyer_id, price, prperty_id
             cStmt = connection.prepareCall("{call trading_add_trade(?, ?, ?, ?)}");
 
-            //cStmt.setInt(1, sellerId);
-            //cStmt.setInt(2, buyerId);
             cStmt.setString(1,seller);
             cStmt.setString(2, buyer);
             cStmt.setInt(3, price);
@@ -307,7 +302,7 @@ public class PlayerDAO extends DataAccessObject {
 
         try {
             // seller_id, buyer_id, price, prperty_id
-            cStmt = connection.prepareCall("{call trading_get_trade(?)}");  // player_id, game_id, forfeit_status
+            cStmt = connection.prepareCall("{call trading_get_trade2(?)}");  // player_id, game_id, forfeit_status
 
             cStmt.setString(1, username);
 
@@ -340,6 +335,47 @@ public class PlayerDAO extends DataAccessObject {
 
             cStmt.setString(1, seller);
             cStmt.setString(2, buyer);
+        } catch(SQLException sql){
+            sql.printStackTrace();
+        } finally{
+            close(cStmt);
+            releaseConnection(connection);
+        }
+    }
+
+    public boolean isTrade(String username) {  // check if trade on user
+        Connection connection = getConnection();
+        CallableStatement cStmt = null;
+        ResultSet rs = null;
+        boolean trade = false;
+        try {
+            // seller_id, buyer_id, price, prperty_id
+            cStmt = connection.prepareCall("{call trading_is_trade(?)}");  // player_id, game_id, forfeit_status
+            cStmt.setString(1, username);
+
+            if (cStmt.execute()) {
+                rs = cStmt.getResultSet();
+                while (rs.next()) {
+                    trade = rs.getBoolean(1);
+                }
+            }
+        } catch(SQLException sql){
+            sql.printStackTrace();
+        } finally{
+            close(rs);
+            close(cStmt);
+            releaseConnection(connection);
+        }
+        return trade;
+    }
+
+    public void removeTrade(String username) {
+        Connection connection = getConnection();
+        CallableStatement cStmt = null;
+        try {
+            cStmt = connection.prepareCall("{call trading_remove_trade(?)}");  // player_id
+
+            cStmt.setString(1, username);
         } catch(SQLException sql){
             sql.printStackTrace();
         } finally{
@@ -405,8 +441,8 @@ public class PlayerDAO extends DataAccessObject {
         Connection connection = getConnection();
         CallableStatement cStmt = null;
         try {
-            getConnection();
-            cStmt = connection.prepareCall("{call set_check_forfeit(?,?,?)}");
+            //getConnection();
+            cStmt = connection.prepareCall("{call set_forfeit_check(?,?,?)}");
             cStmt.setInt(1, gameId);
             cStmt.setString(2, username);
             cStmt.setBoolean(3, check);
@@ -416,10 +452,8 @@ public class PlayerDAO extends DataAccessObject {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-
             close(cStmt);
             releaseConnection(connection);
         }
     }
-
 }

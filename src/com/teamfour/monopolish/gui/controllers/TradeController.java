@@ -129,6 +129,11 @@ public class TradeController {
         opponentsproperties.getChildren().addAll(opponentsCards);
 
         proposeTradeBtn.setOnAction(event -> {
+            try {
+                Handler.getCurrentGame().getEntities().updateFromDatabase();
+            } catch (SQLException sql) {
+                sql.printStackTrace();
+            }
             ArrayList<String> offeredPropertiesNameList = new ArrayList<>();
             ArrayList<String> requestedPropertiesNameList = new ArrayList<>();
 
@@ -155,26 +160,30 @@ public class TradeController {
 
             offeredProperties.addAll(Handler.getCurrentGame().getEntities().getYou().getProperties());
             requestedProperties.addAll(Handler.getCurrentGame().getEntities().getPlayer(TRADE_USERNAME).getProperties());
+            offeredProperties.trimToSize();
+            requestedProperties.trimToSize();
 
 
             int index = 0;
             for (Property p : offeredProperties){
-                System.out.println("offered props");
+                System.out.println("offered props: "+p.toString());
                 if (offeredProperties.get(index).getName().equalsIgnoreCase(offeredPropertiesNameList.get(index))) {
                     offeredPropertiesNew.add(offeredProperties.get(index));
                     System.out.println("Adding prop at: "+index);
                     index++;
                 }
             }
+            offeredPropertiesNew.trimToSize();
             int index2 = 0;
             for (Property p : requestedProperties) {
-                System.out.println("requested props");
+                System.out.println("requested props: "+p.toString());
                 if (requestedProperties.get(index2).getName().equalsIgnoreCase(requestedPropertiesNameList.get(index2))) {
                     requestedPropertiesNew.add(offeredProperties.get(index2));
                     System.out.println("Adding prop at: " + index2);
                     index2++;
                 }
             }
+            requestedPropertiesNew.trimToSize();
 
             // add offered properties:
             System.out.println("sending trade to entitymanager............");
@@ -192,8 +201,9 @@ public class TradeController {
             //propId.addAll(Handler.getGameLogic().getEntityManager().getTrade(Handler.getGameLogic().getYourPlayer()));
 
             propId.addAll(Handler.getCurrentGame().getEntities().getTrade(Handler.getCurrentGame().getEntities().getYou()));
+            propId.trimToSize();
 
-            ArrayList<Property> property = new ArrayList<>();
+            //ArrayList<Property> property = new ArrayList<>();
             //Property p = new Property();
 /*
             int index3 = 0;
@@ -234,9 +244,13 @@ public class TradeController {
                     Handler.getCurrentGame().getEntities().getPlayer(Handler.getTradeUsername()), offeredmoney, offeredPropertiesNew);
             System.out.println("Trade done.......");
             try {
+                Handler.getCurrentGame().getEntities().updateToDatabase();
                 Handler.getCurrentGame().getEntities().updateFromDatabase();
             } catch (SQLException sql) {
                 sql.printStackTrace();
+            }
+            if (Handler.getCurrentGame().getEntities().isTrade(Handler.getCurrentGame().getEntities().getYou().getUsername())) {
+                System.out.println("Found trades for you!");
             }
 
         });

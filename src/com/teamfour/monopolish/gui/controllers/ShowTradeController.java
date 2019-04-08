@@ -40,18 +40,23 @@ public class ShowTradeController {
         requestedMoneyLabel.setText(Integer.toString(requestedMoney));
 
         acceptTradeBtn.setOnAction(e -> {
-            System.out.println("accepting trade......");
+            System.out.println("Trade accepted......");
             //do the transaction
             Handler.getCurrentGame().getEntities().acceptTrade(Handler.getCurrentGame().getEntities().getPlayer(playername),
                     Handler.getCurrentGame().getEntities().getPlayer(Handler.getTradeUsername()));
 
             Handler.getCurrentGame().getEntities().doTrade(Handler.getCurrentGame().getEntities().getYou(),
                     Handler.getCurrentGame().getEntities().getPlayer(Handler.getTradeUsername()), offeredMoney, offeredproperties);
+
+            Handler.getCurrentGame().getEntities().removeTrade(Handler.getCurrentGame().getEntities().getYou().getUsername());
             //clear stuff
             //send to eventlog "X accepted Y's trade"
         });
 
         refuseTradeBtn.setOnAction(e -> {
+            // delete trades
+            System.out.println("Trade refused!");
+            Handler.getCurrentGame().getEntities().removeTrade(Handler.getCurrentGame().getEntities().getYou().getUsername());
             //close window
             //clear stuff
             //send to eventlog "X refused Y's trade"

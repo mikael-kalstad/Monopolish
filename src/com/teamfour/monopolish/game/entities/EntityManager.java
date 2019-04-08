@@ -375,6 +375,11 @@ public class EntityManager {
         }
     }
 
+    /**
+     * Gets all trades to or from user
+     * @param user
+     * @return
+     */
     public ArrayList<String[]> getTrade(Player user) {
         System.out.println("getTrade username: "+user.getUsername());
         ArrayList<String[]> props = new ArrayList<>();
@@ -382,36 +387,58 @@ public class EntityManager {
         //check if user is buyer or seller
 
         props.addAll(playerDAO.getTrade(user.getUsername(), gameId));
+        props.trimToSize();
+
+        if (props.isEmpty()) {
+            System.out.println("props is empty");
+
+        } else {
+            for (int i = 0; i < props.size(); i++) {
+                String seller = props.get(i)[0];
+                String  buyer = props.get(i)[1];
+                String price = props.get(i)[2];
+                String propId = props.get(i)[3];
 
 
-        for (int i = 0; i < props.size(); i++) {
-            String seller = props.get(i)[0];
-            String  buyer = props.get(i)[1];
-            String price = props.get(i)[2];
-            String propId = props.get(i)[3];
-
-
-            if (Handler.getCurrentGame().getEntities().getPlayer(seller).getUsername().equalsIgnoreCase(user.getUsername())) {
-                System.out.println("seller..");
-            } else if (Handler.getCurrentGame().getEntities().getPlayer(buyer).getUsername().equalsIgnoreCase(user.getUsername())) {
-                System.out.println("buyer");
+                if (Handler.getCurrentGame().getEntities().getPlayer(seller).getUsername().equalsIgnoreCase(user.getUsername())) {
+                    System.out.println("seller..");
+                } else if (Handler.getCurrentGame().getEntities().getPlayer(buyer).getUsername().equalsIgnoreCase(user.getUsername())) {
+                    System.out.println("buyer");
+                }
             }
         }
+
         return props;
     }
+
+    /**
+     * Accepts trade in DB
+     * @param seller
+     * @param buyer
+     */
 
     public void acceptTrade(Player seller, Player buyer) {
         System.out.println("accept trade seller user: "+seller.getUsername());
         playerDAO.acceptTrade(seller.getUsername(), buyer.getUsername());
     }
 
+    /**
+     * Does the trade
+     * @param seller
+     * @param buyer
+     * @param price
+     * @param property ArrayList of properties to be transfered form seller to buyer
+     */
     public void doTrade(Player seller, Player buyer, int price, ArrayList<Property> property) {
         System.out.println("trading between : "+seller.getUsername()+" and: "+buyer.getUsername());
+        transferMoneyFromTo(seller.getUsername(), buyer.getUsername(), price);
 
         for (Property p : property) {
-            purchaseProperty(buyer, p);
-            transferMoneyFromTo(seller.getUsername(), buyer.getUsername(), price);
+            p.setOwner(buyer.getUsername());
+            buyer.getProperties().add(p);
+            seller.getProperties().remove(p);
         }
+
         try {
             updateToDatabase();
             System.out.println("Update to db..............");
@@ -419,7 +446,15 @@ public class EntityManager {
             sql.printStackTrace();
         }
 
-
     }
+
+    /**
+     * Checks for trades
+     * @param username
+     * @return True if there are any trades for the specified username
+     */
+    public boolean isTrade(String username) { return playerDAO.isTrade(username); }
+
+    public void removeTrade(String username) { playerDAO.removeTrade(username); }
 
 }

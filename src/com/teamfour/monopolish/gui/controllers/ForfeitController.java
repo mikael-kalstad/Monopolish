@@ -176,11 +176,15 @@ public class ForfeitController {
     private void checkVotes() {
         if (votesForQuit > votesForContinue) endGame();
         else {
-            // Hide forfeit container and set variable
+            // Hide forfeit container
             Handler.getForfeitContainer().setVisible(false);
-            Handler.getGameDAO().setForfeit(GAME_ID, false);
 
-            //GameController.forfeit = false;
+            // Check if forfeit should be reset
+            if (Handler.getGameDAO().getForfeit(GAME_ID))
+                Handler.getGameDAO().setForfeit(GAME_ID, false);
+
+            // Set forfeit check
+            Handler.getPlayerDAO().setForfeitCheck(GAME_ID, USERNAME, true);
         }
     }
 
