@@ -1,3 +1,11 @@
+/**
+  GameProcedures contains procedures to create, update, remove and sort properties
+ */
+
+
+/**
+  Drops
+ */
 drop procedure if exists property_create;
 drop procedure if exists property_update;
 drop procedure if exists player_property;
@@ -5,32 +13,28 @@ drop procedure if exists available_property;
 drop procedure if exists position_property;
 drop procedure if exists property_clean;
 DROP PROCEDURE IF EXISTS property_get_all;
+DROP PROCEDURE IF EXISTS property_get_color_set;
 DROP PROCEDURE IF EXISTS property_get_by_owner;
 
-delimiter $$
-create procedure property_create(
-    in g_id int,
-    in prop_id int,
-    in user_name varchar(30)
-  )
-  begin
-    declare u_id int;
-
-    -- Get username from user_id
-    select user_id  into u_id from account where user_name = username;
-
-    insert into gameproperty(game_id, property_id, user_id) values (g_id, prop_id, u_id);
-
-    select gameproperty.*, property.position, property.price, property.categorycolor, p.property_type
-      from gameproperty join property p
-        on gameproperty.property_id = p.property_id
-          where prop_id = property_id and g_id = game_id;
-  commit;
-
-end $$
-delimiter ;
 
 
+
+/**
+Procedure to retrieve the Properties of a game
+  in g_id: game_id
+
+  out(columnIndex/columnLabel):
+  1/property_id
+  2/name -- property name
+  3/price -- initial price
+  4/position -- the position of the property
+  5/categorycolor -- the category color of the property
+  6/username -- owner's username
+  7/property_type -- street/boat/transport company
+  8/rent_level -- the number of houses
+
+issued by: PropertyDAO.getAllProperties()
+ */
 DELIMITER $$
 CREATE PROCEDURE property_get_all(
   IN g_id INT
@@ -49,9 +53,25 @@ BEGIN
   left join account a on p2.user_id = a.user_id
   WHERE gp.game_id=g_id;
 END $$
+-- --------------------------------------------------
 
-DROP PROCEDURE property_get_color_set;
+/**
+Procedure to retrieve all properties of a given color
+  in g_id: game_id
+  in color_hex: hex code for the color
 
+  out(columnIndex/columnLabel):
+  1/property_id
+  2/name -- property name
+  3/price -- initial price
+  4/position -- the position of the property
+  5/categorycolor -- the category color of the property
+  6/username -- owner's username
+  7/property_type -- street/boat/transport company
+  8/rent_level -- the number of houses
+
+issued by: PropertyDAO.getColorSet()
+ */
 DELIMITER $$
 CREATE PROCEDURE property_get_color_set(
   IN g_id INT,
@@ -67,6 +87,18 @@ CREATE PROCEDURE property_get_color_set(
   END $$
 DELIMITER ;
 
+
+/**
+Procedure to update a gameProperty
+
+  in prop_id: property_id
+  in g_id: game_id
+  in pawn: pawn state
+  in u_name: username
+  in r_level: rent level
+
+issued by: PropertyDAO.updateProperty()
+ */
 delimiter $$
 create procedure property_update(
     in prop_id int,
@@ -92,6 +124,24 @@ end $$
 delimiter ;
 
 
+
+/**
+Procedure to retrieve all properties belonging to a given player
+  in g_id: game_id
+  in username: username of the owner
+
+  out(columnIndex/columnLabel):
+  1/property_id
+  2/name -- property name
+  3/price -- initial price
+  4/position -- the position of the property
+  5/categorycolor -- the category color of the property
+  6/username -- owner's username
+  7/property_type -- street/boat/transport company
+  8/rent_level -- the number of houses
+
+issued by: PropertyDAO.getPropertiesByOwner()
+ */
 DELIMITER $$
 CREATE PROCEDURE property_get_by_owner(
   IN g_id INT,
@@ -121,6 +171,15 @@ BEGIN
 END $$
 DELIMITER ;
 
+
+
+/**
+Procedure to retrieve all properties of a given color
+
+  in g_id: game_id
+
+issued by: ?!
+ */
 delimiter $$
 create procedure property_clean(
   in g_id int
@@ -132,6 +191,33 @@ commit;
 end $$
 delimiter ;
 
+
+
+/*
+delimiter $$
+create procedure property_create(
+    in g_id int,
+    in prop_id int,
+    in user_name varchar(30)
+  )
+  begin
+    declare u_id int;
+
+    -- Get username from user_id
+    select user_id  into u_id from account where user_name = username;
+
+    insert into gameproperty(game_id, property_id, user_id) values (g_id, prop_id, u_id);
+
+    select gameproperty.*, property.position, property.price, property.categorycolor, p.property_type
+      from gameproperty join property p
+        on gameproperty.property_id = p.property_id
+          where prop_id = property_id and g_id = game_id;
+  commit;
+
+end $$
+delimiter ;
+
+*/
 
 /*
 delimiter $$

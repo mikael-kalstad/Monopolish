@@ -14,8 +14,17 @@ DROP PROCEDURE IF EXISTS account_set_inactive;
 DROP PROCEDURE IF EXISTS account_get_active;
 DROP PROCEDURE IF EXISTS account_games_played;
 DROP PROCEDURE IF EXISTS account_highscore;
+
+-- -----------------------------------------------
 /**
   Procedure to add new users
+
+    in uname:  username of the player
+    in mail:  game_id of the current game
+    in password: the new user's password
+    in reg_date: the datetime when the user registered
+
+  issued by: AccountDAO.insertAccount()
  */
 
 -- (username, email, password, salt, regdate)
@@ -37,10 +46,21 @@ CREATE PROCEDURE account_insert_user(
     INSERT INTO account VALUES(DEFAULT, uname, mail, hashed_pwd, salt_pw, reg_date, DEFAULT);
   END;
 
+-- ----------------------------------------------------------------------------
+
 /**
   Procedure to check password on login
- */
 
+    in uname:  username of the player
+    in password: the new user's password
+
+    out(columnIndex/columnLabel):
+    1/username
+    2/email
+    3/regdate -- registration-date
+    4/money
+  issued by: AccountDAO.getAccountByCredentials()
+ */
 
 -- return: username, email, regdate, highscore
 CREATE PROCEDURE account_validate_user(IN uname VARCHAR(30), IN password VARCHAR(30))
@@ -56,19 +76,17 @@ CREATE PROCEDURE account_validate_user(IN uname VARCHAR(30), IN password VARCHAR
 
     SELECT username, email, regdate, money
     FROM account
-    LEFT JOIN player p on account.user_id = p.user_id
+    LEFT JOIN player p ON account.user_id = p.user_id
     WHERE hashed_password = hashed_pwd;
-    /*
-    SELECT username, email, regdate, money
-    FROM account
-    LEFT JOIN player p on account.user_id = p.user_id
-    WHERE username = 'giske';
-    */
+
   END;
+
+-- -------------------------------------------------------
+
 
 /**
   Procedure to reset password
- */
+
 
 
 CREATE PROCEDURE account_reset_password(
@@ -96,6 +114,18 @@ CREATE PROCEDURE account_reset_password(
     SELECT username, email, regdate FROM account WHERE new_pwd_hashed = account.hashed_password;
   END;
 
+ */
+
+/**
+  Gets the user_id of the player
+
+    in u_name:  username of the player
+
+    out(columnIndex/columnLabel):
+    1/user_id
+
+  issued by: ?!
+ */
 
 delimiter $$
 create procedure account_getUserid(
@@ -107,36 +137,76 @@ begin
 end $$
 delimiter ;
 
+-- --------------------------------------
+
 /*
   Sets user to inactive
+
+   in u_name:  username of the player
+
+  issued by: AccountDAO.setInactive()
  */
 CREATE PROCEDURE account_set_inactive(IN u_name VARCHAR(30))
   BEGIN
     UPDATE `account` SET `active` = 0 WHERE `username` = u_name;
   END;
 
+-- ----------------------------------------
+-- ?!
+/*
+  Gets the user's active state
 
+   in u_name:  username of the player
 
+   out(columnIndex/columnLabel):
+   1/active
+
+  issued by: AccountDAO.getActive()
+ */
 CREATE PROCEDURE account_get_active(IN u_name VARCHAR(30))
   BEGIN
-    SELECT active from account WHERE username = u_name;
-  end;
+    SELECT active FROM account WHERE username = u_name;
+  END;
+
+-- -----------------------------------------------------
 
 
+/*
+  Gets the amount of games the user has played
 
+   in u_name:  username of the player
+
+   out(columnIndex/columnLabel):
+   1/games -- number of played games
+
+  issued by: AccountDAO.getGamesPlayed()
+ */
 
 CREATE PROCEDURE account_games_played(IN u_name VARCHAR(30))
 BEGIN
   SELECT count(game.game_id) games
-  FROM game join player on game.game_id = player.game_id join account on player.user_id = account.user_id where username = u_name;
+    FROM game JOIN player ON game.game_id = player.game_id
+      JOIN account ON player.user_id = account.user_id
+        WHERE username = u_name;
 END;
 
+-- ---------------------------------------------------------------------
 
+/*
+  Gets the user's Highscore
+
+   in u_name:  username of the player
+
+   out(columnIndex/columnLabel):
+   1/highscore
+
+  issued by: AccountDAO.getHighscore()
+ */
 
 CREATE PROCEDURE account_highscore(IN u_name VARCHAR(30))
 BEGIN
   SELECT max(score) highscore
-  FROM player join account on player.user_id = account.user_id where username = u_name;
+  FROM player JOIN account ON player.user_id = account.user_id WHERE username = u_name;
 END;
 
 

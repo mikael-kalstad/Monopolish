@@ -4,7 +4,6 @@
 
 */
 
-
 /*
 
   Drops
@@ -55,7 +54,7 @@ begin
   commit;
 end $$
 delimiter ;
-
+-- ---------------------------------------------------------------------
 
 
 /*
@@ -113,7 +112,6 @@ and are many and automatically generated)
 
 issued by: PlayerDAO.endgame()
 */
-
 delimiter $$
 create procedure player_endgame(
   in gameid int,
@@ -128,6 +126,7 @@ begin
 
   update player set active = 2 where p_id = player_id and active = 1;
 
+  -- calculates and sets score
   update player set score = (select (money + sum)
     from (select money, ifnull(sum(price*(rent_level+1)),0) sum from player left join gameproperty on player.user_id = gameproperty.user_id and player.game_id = gameproperty.game_id
       left join property on property.property_id = gameproperty.property_id
@@ -180,7 +179,6 @@ gives top ten scores with associated username
 
 issued by: PlayerDAO.getHighscoreList()
  */
-
 CREATE PROCEDURE player_get_highscore()
 BEGIN
 
@@ -253,7 +251,6 @@ Procedure that counts checks if all players have voted.
 
 issued by: PlayerDAO.getForfeitCheck()
  */
-
 CREATE PROCEDURE get_forfeit_check(IN gameid INT)
 BEGIN
   select if(players>checked, 0, 1) check_bit from
@@ -275,7 +272,6 @@ Procedure that sets forfeit_check in DB to check_in
 
 issued by: PlayerDAO.setForfeitCheck()
  */
-
 CREATE PROCEDURE set_forfeit_check(IN gameid INT, in user_name varchar(30), in check_in bit)
 BEGIN
   declare p_id int;

@@ -1,10 +1,29 @@
 /**
-Procedure to generate a new game
+  GameProcedures contains procedures to create games, change player turns, close games,
  */
 
--- DELIMITER $$
-DROP PROCEDURE game_insert;
+/**
+  Drops
+ */
+DROP PROCEDURE IF EXISTS game_insert;
+DROP PROCEDURE IF EXISTS game_get_current_player;
+DROP PROCEDURE IF EXISTS game_exists;
+DROP PROCEDURE IF EXISTS game_set_current_player;
+DROP PROCEDURE IF EXISTS game_close;
+DROP PROCEDURE IF EXISTS game_get_winner;
+DROP PROCEDURE IF EXISTS get_forfeit;
+DROP PROCEDURE IF EXISTS set_forfeit;
 
+
+
+/**
+Procedure to generate a new game
+  in lobby: lobbyId
+  in user_name: username
+  out gameid: gameId of the new game
+
+issued by: GameDAO.insertGame()
+ */
 CREATE PROCEDURE game_insert(IN lobby int, IN user_name VARCHAR(30), OUT gameid INT)
   proc_label:BEGIN
     DECLARE session INT DEFAULT 0;
@@ -41,15 +60,18 @@ CREATE PROCEDURE game_insert(IN lobby int, IN user_name VARCHAR(30), OUT gameid 
       SELECT gameid, l.user_id FROM lobby l WHERE l.room_id=lobby;
     end if;
   END;
--- END$$
 
+-- -------------------------------------------------------------
 /**
 Procedure to retrieve the current player
+
+  in gameid: game_id
+
+  out(columnIndex)
+  1: username of the current player
+
+issued by: GameDAO.getCurrentPlayer()
  */
-
--- DELIMITER $$
-DROP PROCEDURE game_get_current_player;
-
 CREATE PROCEDURE game_get_current_player(IN gameid int)
   BEGIN
     SELECT IFNULL(a.username, "") FROM game g
@@ -57,28 +79,34 @@ CREATE PROCEDURE game_get_current_player(IN gameid int)
     JOIN account a on p.user_id = a.user_id
     WHERE g.game_id=gameid;
   END;
--- END$$
 
+-- ----------------------------------------------------------------
 
 /**
-Procedure to retrieve the current player
+Procedure to check if the game already exists
+
+  in gameid: game_id
+
+  out(columnIndex)
+  1: gameId of the game, or 0
+
+issued by: ?!
  */
-
--- DELIMITER $$
-DROP PROCEDURE game_exists;
-
 CREATE PROCEDURE game_exists(IN gameid int)
   BEGIN
     SELECT IFNULL(game_id, 0) FROM game WHERE game_id=gameid;
   END;
--- END$$
+
+-- --------------------------------------------------------
 
 /**
-Procedure to retrieve the current player
- */
+Procedure set the new current player
 
--- DELIMITER $$
-DROP PROCEDURE game_set_current_player;
+  in gameid: gameId of the game
+  in current_username: the new current player's username
+
+issued by: GameDAO.setCurrentPlayer()
+ */
 
 CREATE PROCEDURE game_set_current_player(IN gameid INT, IN current_username VARCHAR(30))
   BEGIN
@@ -86,7 +114,7 @@ CREATE PROCEDURE game_set_current_player(IN gameid INT, IN current_username VARC
 
     SET current_player_id = (SELECT p.player_id
     FROM player p
-    JOIN account a on p.user_id = a.user_id
+    JOIN account a ON p.user_id = a.user_id
     WHERE a.username LIKE current_username LIMIT 1);
 
     IF (current_player_id IS NOT NULL) THEN
@@ -97,15 +125,16 @@ CREATE PROCEDURE game_set_current_player(IN gameid INT, IN current_username VARC
 
     END IF;
   END;
--- END$$
+
+-- -----------------------------------------------------
 
 /**
-Procedure to retrieve the current player
+Procedure to close a game
+
+  in gameid: gameId of the game
+
+issued by: GameDAO.finishGame()
  */
-
--- DELIMITER $$
-DROP PROCEDURE if exists game_close;
-
 CREATE PROCEDURE game_close(IN gameid INT)
   BEGIN
     DELETE FROM chatmessage
@@ -119,33 +148,33 @@ CREATE PROCEDURE game_close(IN gameid INT)
 
     DELETE FROM gameproperty WHERE game_id=gameid;
   END;
--- END$$
+
+-- ----------------------------------------------------
+
 
 /**
-Procedure to retrieve the current player
+Procedure to retrieve the current forfeit state of a game
+  in gameid: game_id
+
+  out(columnIndex/columnLabel):
+  1/forfeit: forfeit stat
+issued by: GameDAO.getForfeit()
  */
-
--- DELIMITER $$
-DROP PROCEDURE if exists game_get_winner;
-
-CREATE PROCEDURE game_get_winner(IN gameid INT, OUT winner_id INT)
-  BEGIN
-    declare winner_id int;
-    select user_id into winner_id from player where game_id = gameid order by score desc LIMIT 1;
-  END;
--- END$$
-
-
-DROP PROCEDURE IF EXISTS get_forfeit;
-
 CREATE PROCEDURE get_forfeit(in gameid int)
   BEGIN
     select forfeit from game where gameid = game.game_id;
   END;
 
 
-DROP PROCEDURE IF EXISTS set_forfeit;
 
+/**
+Procedure set the forfeit stat of a game
+
+  in gameid: game_id
+  in forfeit_in: the new current forfeit stat
+
+issued by: GameDAO.setForfeit()
+ */
 CREATE PROCEDURE set_forfeit(in gameid int, in forfeit_in BIT)
 BEGIN
   update game set forfeit = forfeit_in where gameid = game_id;

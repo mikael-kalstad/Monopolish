@@ -17,6 +17,8 @@ public class PropertyDAO extends DataAccessObject {
     /**
      * creates gameproperties in the database and Property objects for the game.
      * @param game_id the id of the current game
+     * @return ArrayList with all the Properties
+     * @throws SQLException
      */
     public ArrayList<Property> getAllProperties(int game_id) throws SQLException {
         Connection connection = getConnection();
@@ -51,6 +53,8 @@ public class PropertyDAO extends DataAccessObject {
      * gets gameproperties from the database and generates Property objects related to the parameter username.
      * @param gameId the game_id the id of the current game
      * @param username the username of the player whose properties are returned
+     * @return ArrayList of properties owned by the player
+     * @throws SQLException
      */
     public ArrayList<Property> getPropertiesByOwner(int gameId, String username) throws SQLException {
         Connection connection = getConnection();
@@ -86,6 +90,7 @@ public class PropertyDAO extends DataAccessObject {
      * updates the property in the database
      * @param prop the property that is updated
      * @param game_id the id of the current game
+     * @throws SQLException
      */
     public void updateProperty(Property prop, int game_id) throws SQLException {
         Connection connection = getConnection();
@@ -115,7 +120,7 @@ public class PropertyDAO extends DataAccessObject {
     /**
      * deletes all gameProperties for the given game_id
      * @param game_id the id of the current game
-     *
+     * @throws SQLException
      */
     public void endGame(int game_id) throws SQLException {
         Connection connection = getConnection();
@@ -135,6 +140,14 @@ public class PropertyDAO extends DataAccessObject {
         }
     }
 
+
+    /**
+     * deletes all gameProperties for the given game_id
+     * @param gameId the id of the current game
+     * @param colorHex the hexCode of the color
+     * @return ArrayList of Properties of the given color
+     * @throws SQLException
+     */
     public ArrayList<Property> getColorSet(int gameId, String colorHex) throws SQLException {
         Connection connection = getConnection();
         CallableStatement cStmt = null;
@@ -169,7 +182,7 @@ public class PropertyDAO extends DataAccessObject {
 
     /**
      * Takes an MySQL ResultSet and inserts the data into a Property object.
-     * USE WITH CAUTION!! The inserted resultset must be have 7 columns of data
+     * USE WITH CAUTION!! The inserted resultset must have 8 columns of data
      * @param rs ResultSet to extract from
      * @return Resulting property
      * @throws SQLException

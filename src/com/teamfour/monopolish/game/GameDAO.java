@@ -129,35 +129,6 @@ public class GameDAO extends DataAccessObject {
         return (count > 0);
     }
 
-    /**
-     * Returns winner id from a specified game
-     * @param gameId Session id
-     * @return User id of the winner
-     * @throws SQLException
-     */
-    public int getWinner(int gameId) throws SQLException {
-        Connection connection = getConnection();
-        CallableStatement cStmt = null;
-        int winnerId = -1;
-        try {
-            cStmt = connection.prepareCall("{call game_get_winner(?, ?)}");
-
-            cStmt.setInt(1, gameId);
-            cStmt.registerOutParameter(2, Types.INTEGER);
-
-            winnerId = -1;
-            if (cStmt.execute())
-                winnerId = cStmt.getInt(2);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new SQLException();
-        } finally {
-            close(cStmt);
-            releaseConnection(connection);
-        }
-
-        return winnerId;
-    }
 
     /**
      * Gets everything from the game chat
@@ -215,6 +186,50 @@ public class GameDAO extends DataAccessObject {
         }
     }
 
+
+    public boolean getForfeit(int gameId){
+        Connection connection = getConnection();
+        CallableStatement cStmt = null;
+        ResultSet rs = null;
+        boolean forfeit = false;
+        try {
+            cStmt = connection.prepareCall("{call get_forfeit(?)}");
+            cStmt.setInt(1, gameId);
+            if (cStmt.execute()) {
+                rs = cStmt.getResultSet();
+                 while (rs.next())
+                    forfeit = rs.getBoolean("forfeit");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(rs);
+            close(cStmt);
+            releaseConnection(connection);
+        }
+        return forfeit;
+    }
+
+
+    public void setForfeit(int gameId, boolean forfeit){
+        Connection connection = getConnection();
+        CallableStatement cStmt = null;
+        try {
+            cStmt = connection.prepareCall("{call set_forfeit(?,?)}");
+            cStmt.setInt(1, gameId);
+            cStmt.setBoolean(2, forfeit);
+            cStmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(cStmt);
+            releaseConnection(connection);
+        }
+    }
+
+
+
     public void addEvent(int gameId, String message){
         Connection connection = getConnection();
         CallableStatement cStmt = null;
@@ -255,46 +270,6 @@ public class GameDAO extends DataAccessObject {
             releaseConnection(connection);
         }
         return event_text;
-    }
-
-    public boolean getForfeit(int gameId){
-        Connection connection = getConnection();
-        CallableStatement cStmt = null;
-        ResultSet rs = null;
-        boolean forfeit = false;
-        try {
-            cStmt = connection.prepareCall("{call get_forfeit(?)}");
-            cStmt.setInt(1, gameId);
-            if (cStmt.execute()) {
-                rs = cStmt.getResultSet();
-                 while (rs.next())
-                    forfeit = rs.getBoolean("forfeit");
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            close(rs);
-            close(cStmt);
-            releaseConnection(connection);
-        }
-        return forfeit;
-    }
-
-    public void setForfeit(int gameId, boolean forfeit){
-        Connection connection = getConnection();
-        CallableStatement cStmt = null;
-        try {
-            cStmt = connection.prepareCall("{call set_forfeit(?,?)}");
-            cStmt.setInt(1, gameId);
-            cStmt.setBoolean(2, forfeit);
-            cStmt.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            close(cStmt);
-            releaseConnection(connection);
-        }
     }
 
 }
