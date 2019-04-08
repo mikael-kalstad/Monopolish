@@ -457,4 +457,7 @@ public class EntityManager {
 
     public void removeTrade(String username) { playerDAO.removeTrade(username); }
 
+    public Bank getBank() {
+        return bank;
+    }
 }

@@ -234,7 +234,7 @@ public class GameController {
 
                 if (!forfeit && gameForfeit) {
                     Platform.runLater(() -> forfeit());
-                } else if (!gameForfeit) {
+                } else if (forfeit && !gameForfeit) {
                     backgroundOverlay.setVisible(false);
                 }
 
@@ -349,33 +349,13 @@ public class GameController {
             propertiesContentContainer.getChildren().add(card);
 
             //if(game.getEntities().getPlayer(username).hasFullSet(Handler.getCurrentGameId(), p.getCategorycolor())){
-            card.setOnMouseClicked(event -> {
+            card.setOnMouseClicked(e -> {
                 ((Street)p).addHouse();
                 // Open dialog here
             });
 
-            final double SCALE = 1.1;
-            card.setOnMouseEntered(e -> {
-                ScaleTransition st = new ScaleTransition(Duration.millis(300), card);
-                st.setFromX(card.getScaleX());
-                st.setFromY(card.getScaleY());
-//                st.setByX(1.5);
-//                st.setByY(1.5);
-                st.setToX(card.getScaleX()*1.1);
-                st.setToY(card.getScaleY()*1.1);
-                st.setAutoReverse(true);
-                st.play();
-            });
+            FxUtils.setScaleOnHover(card, 0.1);
 
-            card.setOnMouseExited(e -> {
-                System.out.println("leaving");
-                ScaleTransition st = new ScaleTransition(Duration.millis(300), card);
-                st.setFromX(card.getScaleX());
-                st.setFromY(card.getScaleY());
-                st.setToX(1);
-                st.setToY(1);
-                st.playFromStart();
-            });
             //}
         }
 

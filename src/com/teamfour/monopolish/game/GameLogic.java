@@ -65,6 +65,26 @@ public class GameLogic {
     }
 
     /**
+     * Attempts to buy a house for the specified street
+     * @param street Street to buy house to
+     * @return True if enough money and successful
+     */
+    public boolean buyHouse(Street street) {
+        int housePrice = Integer.parseInt(street.getAllRent()[7]);
+        Player yourPlayer = game.getEntities().getYou();
+        if (game.getEntities().getBank().getAvailableHotels() == 0)
+            return false;
+
+        if (yourPlayer.getMoney() < housePrice)
+            return false;
+
+        game.getEntities().transferMoneyFromBank(yourPlayer.getUsername(), -housePrice);
+        game.getEntities().getBank().getHouses(1);
+        street.addHouse();
+        return true;
+    }
+
+    /**
      * Rolls the player dice and moves the player accordingly. Position, counters and
      * jail stuff is handled here as well
      */

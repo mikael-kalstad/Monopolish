@@ -1,9 +1,12 @@
 package com.teamfour.monopolish.gui.controllers;
 
+import javafx.animation.ScaleTransition;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 /**
  * Class with different util methods used in controllers.
@@ -59,5 +62,27 @@ public class FxUtils {
      */
     public static void setTextColor(Text element, String color) {
         element.setFill(Paint.valueOf(color));
+    }
+
+    public static void setScaleOnHover(Pane elem, double scale) {
+        elem.setOnMouseEntered(e -> {
+            ScaleTransition st = new ScaleTransition(Duration.millis(200), elem);
+            st.setFromX(elem.getScaleX());
+            st.setFromY(elem.getScaleY());
+            st.setByX(elem.getScaleX()*scale);
+            st.setByY(elem.getScaleY()*scale);
+            st.setAutoReverse(true);
+            st.play();
+        });
+
+        elem.setOnMouseExited(e -> {
+            System.out.println("leaving");
+            ScaleTransition st = new ScaleTransition(Duration.millis(200), elem);
+            st.setFromX(elem.getScaleX());
+            st.setFromY(elem.getScaleY());
+            st.setToX(1);
+            st.setToY(1);
+            st.play();
+        });
     }
 }

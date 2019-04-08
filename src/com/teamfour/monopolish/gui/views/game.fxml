@@ -855,9 +855,9 @@
                </cursor>
             </ImageView>
             <Line endX="473.0" endY="1.52587890625E-5" layoutX="552.0" layoutY="138.0" startX="-100.0" />
-            <ScrollPane layoutX="72.0" layoutY="163.0" prefHeight="643.0" prefWidth="1333.0" style="-fx-hbar-policy: NEVER; -fx-background-color: ededed;">
+            <ScrollPane layoutX="72.0" layoutY="186.0" prefHeight="639.0" prefWidth="1333.0" style="-fx-hbar-policy: NEVER; -fx-background-color: ededed;">
                <content>
-                  <FlowPane fx:id="propertiesContentContainer" prefHeight="640.0" prefWidth="1331.0" style="-fx-padding: 20; -fx-vgap: 40; -fx-hgap: 60; -fx-background-color: ededed;" />
+                  <FlowPane fx:id="propertiesContentContainer" prefHeight="636.0" prefWidth="1331.0" style="-fx-padding: 20; -fx-vgap: 40; -fx-hgap: 60; -fx-background-color: ededed;" />
                </content>
             </ScrollPane>
             <Text fx:id="propertiesUsername" fill="#6f6f6f" layoutX="1148.0" layoutY="102.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" wrappingWidth="307.33334478177136">
@@ -881,6 +881,11 @@
             <Text fx:id="tradeMsg" fill="#6f6d6d" layoutX="53.0" layoutY="133.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Send a request to trade properties and money with player">
                <font>
                   <Font size="11.0" />
+               </font>
+            </Text>
+            <Text fx:id="tradeMsg1" fill="#6f6d6d" layoutX="555.0" layoutY="169.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Click on a property to buy houses or pawn the property">
+               <font>
+                  <Font size="15.0" />
                </font>
             </Text>
          </children>
