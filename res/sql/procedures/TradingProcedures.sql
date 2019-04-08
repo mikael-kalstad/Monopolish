@@ -1,11 +1,27 @@
 /**
+  TradingProcedures contain procedures to initiate, get and accept trades
+ */
+
+
+/**
+ Drops
+*/
+DROP PROCEDURE IF EXISTS trading_add_trade;
+DROP PROCEDURE IF EXISTS trading_get_trade;
+DROP PROCEDURE IF EXISTS trading_get_trade2;
+DROP PROCEDURE IF EXISTS trading_accept_trade;
+DROP PROCEDURE IF EXISTS trading_is_trade;
+DROP PROCEDURE IF EXISTS trading_remove_trade;
+
+drop view if exists seller;
+drop view if exists buyer;
+drop view if exists trading_view;
+
+/**
   Procedure to propose a trade
 
-  issued in
+  issued by PlayerDAO.
  */
-DROP PROCEDURE IF EXISTS trading_add_trade;
-
-
 CREATE PROCEDURE trading_add_trade(
   -- IN s_id INT,
   IN seller VARCHAR(30),
@@ -29,7 +45,7 @@ CALL trading_add_trade(15, 14, 69, 2);
 
 CALL trading_add_trade('giske', 'yourmum', 6969, 3);
 */
-DROP PROCEDURE IF EXISTS trading_get_trade;
+
 
 
 CREATE PROCEDURE trading_get_trade(
@@ -52,7 +68,7 @@ CREATE PROCEDURE trading_get_trade(
 CALL trading_get_trade('giske');
 
 -- ---------------
-DROP PROCEDURE IF EXISTS trading_get_trade2;
+
 
 
 CREATE PROCEDURE trading_get_trade2(
@@ -72,7 +88,7 @@ CALL trading_get_trade2('giske');
 
 
 
-DROP PROCEDURE IF EXISTS trading_accept_trade;
+
 
 CREATE PROCEDURE trading_accept_trade(
   IN seller VARCHAR(30),
@@ -104,7 +120,7 @@ CREATE PROCEDURE trading_is_trade(IN uname VARCHAR(30))
     SELECT status;
   end;
 
-DROP PROCEDURE trading_is_trade;
+
 
 CALL trading_is_trade('yourmum');
 
@@ -119,9 +135,7 @@ CREATE PROCEDURE trading_remove_trade(IN uname VARCHAR(30))
 
 
 
-drop view if exists seller;
-drop view if exists buyer;
-drop view if exists trading_view;
+
 
 
 create view seller as

@@ -1,3 +1,15 @@
+/*
+
+ PlayerProcedures contains procedures that manage Players.
+
+*/
+
+
+/*
+
+  Drops
+
+*/
 drop procedure if exists player_create;
 drop procedure if exists player_remove;
 drop procedure if exists player_update;
@@ -109,15 +121,19 @@ create procedure player_endgame(
 )
 begin
   declare p_id int;-- player_id
-  select player_id into p_id from account join player on account.user_id = player.user_id where user_name = username and gameid = game_id;
+  select player_id into p_id
+    from account join player
+      on account.user_id = player.user_id
+        where user_name = username and gameid = game_id;
 
   update player set active = 0 where p_id = player_id and active = 1;
 
   update player set score = (select (money + sum)
     from (select money, ifnull(sum(price*(rent_level+1)),0) sum from player left join gameproperty on player.user_id = gameproperty.user_id and player.game_id = gameproperty.game_id
-            left join property on property.property_id = gameproperty.property_id
-          where player.player_id = p_id and gameid = player.game_id group by player_id) as inner_query)
-        where player.player_id = p_id and active = 0;
+      left join property on property.property_id = gameproperty.property_id
+        where player.player_id = p_id and gameid = player.game_id
+          group by player_id) as inner_query)
+            where player.player_id = p_id and active = 0;
 end $$
 
 
@@ -130,7 +146,7 @@ returns the game's players, in ascending order.
   out(columnIndex/columnLabel):
     1/username
     2/money
-    3/"currentpos"
+    3/currentpos
     4/injail
     5/bankrupt
     6/active
@@ -194,7 +210,8 @@ CREATE PROCEDURE player_set_forfeit(
   IN forfeit_value INT
 )
   BEGIN
-    UPDATE player p, account a SET forfeit = forfeit_value WHERE in_game_id = p.game_id AND in_username = a.username AND p.user_id = a.user_id;
+    UPDATE player p, account a SET forfeit = forfeit_value
+      WHERE in_game_id = p.game_id AND in_username = a.username AND p.user_id = a.user_id;
   END;
 
 /**
@@ -213,57 +230,60 @@ CREATE PROCEDURE player_get_forfeit(IN game_id INT)
     DECLARE quit INT;
     DECLARE not_quit INT;
 
-    SELECT COUNT(DISTINCT p.player_id) FROM player p, account a WHERE game_id = p.game_id AND p.forfeit = 1 INTO quit;
-    SELECT COUNT(DISTINCT p.player_id) FROM player p, account a WHERE game_id = p.game_id AND p.forfeit = 2 INTO not_quit;
+    SELECT COUNT(DISTINCT p.player_id)
+      FROM player p, account a
+        WHERE game_id = p.game_id AND p.forfeit = 1 INTO quit;
+
+    SELECT COUNT(DISTINCT p.player_id)
+      FROM player p, account a
+        WHERE game_id = p.game_id AND p.forfeit = 2 INTO not_quit;
 
     SELECT quit, not_quit;
 
   END;
 
 
+/**
+Procedure that counts checks if all players have voted.
+
+  in gameid: game_id of the current game
+
+  out(columnIndex/columnLabel):
+    1/check_bit -- true if all players have voted
+
+issued by: PlayerDAO.getForfeitCheck()
+ */
+
 CREATE PROCEDURE get_forfeit_check(IN gameid INT)
 BEGIN
-  select if(players>checked, 0, 1) from (select count(user_id) players from game join player on game.game_id = player.game_id where gameid = game.game_id) sub1 join
-    (select count(player_id) checked from player where gameid = player.game_id and forfeit_check = 1) sub2;
+  select if(players>checked, 0, 1) check_bit from
+    (select count(user_id) players from
+        game join player on game.game_id = player.game_id
+            where gameid = game.game_id) sub1 join
+    (select count(player_id) checked from
+        player
+            where gameid = player.game_id and forfeit_check = 1) sub2;
 END;
 
+
+/**
+Procedure that sets forfeit_check in DB to check_in
+
+  in gameid: game_id of the current game
+  in user_name: the username of the player
+  in check_bit: the new value of forfeit_check
+
+issued by: PlayerDAO.setForfeitCheck()
+ */
 
 CREATE PROCEDURE set_forfeit_check(IN gameid INT, in user_name varchar(30), in check_in bit)
 BEGIN
   declare p_id int;
-  select player_id into p_id from player join account on player.user_id = account.user_id where user_name = username and player.game_id = gameid;
+  select player_id into p_id from
+    player join account
+      on player.user_id = account.user_id
+        where user_name = username
+          and player.game_id = gameid;
 
   update player set forfeit_check = check_in where player_id = p_id;
 END;
-
-/*
-
-
-CREATE PROCEDURE player_get_playerid(IN uname VARCHAR(30), IN g_id INT)
-  BEGIN
-    SELECT p.player_id FROM player p, account a WHERE g_id = p.game_id AND a.username = uname;
-  end;
-
-
-
-delimiter $$
-create procedure player_create(
-    in g_id int,
-    in u_name varchar(30)
-  )
-  begin
-    declare u_id int;
-
-    select user_id into u_id from account where u_name = username;
-
-    insert into player(game_id, user_id) values (g_id, u_id);
-  commit;
-
-end $$
-delimiter ;
-*/
--- TEST CALLS
-
-CAlL player_get_highscore();
-CALL player_set_forfeit('giske', 19, 2);
-CALL player_get_forfeit(3);
