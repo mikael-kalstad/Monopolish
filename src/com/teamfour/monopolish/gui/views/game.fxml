@@ -964,7 +964,7 @@
          <children>
             <ImageView fitHeight="116.0" fitWidth="122.0" layoutX="32.0" layoutY="49.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../../res/gui/Dashboard/trophy.png" />
+                  <Image url="file:res/gui/Dashboard/trophy.png" />
                </image>
             </ImageView>
             <Text fill="WHITE" layoutX="167.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Congratulations">
