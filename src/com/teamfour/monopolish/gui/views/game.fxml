@@ -959,5 +959,6 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
+      <Pane fx:id="buyHouseContainer" layoutX="948.0" layoutY="131.0" prefHeight="530.0" prefWidth="400.0" visible="false" />
    </children>
 </AnchorPane>

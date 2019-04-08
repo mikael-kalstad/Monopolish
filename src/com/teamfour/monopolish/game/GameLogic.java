@@ -69,10 +69,10 @@ public class GameLogic {
      * @param street Street to buy house to
      * @return True if enough money and successful
      */
-    public boolean buyHouse(Street street) {
+    public static boolean buyHouse(Street street) {
         int housePrice = Integer.parseInt(street.getAllRent()[7]);
         Player yourPlayer = game.getEntities().getYou();
-        if (game.getEntities().getBank().getAvailableHotels() == 0)
+        if (game.getEntities().getBank().getAvailableHouses() == 0)
             return false;
 
         if (yourPlayer.getMoney() < housePrice)
@@ -81,6 +81,21 @@ public class GameLogic {
         game.getEntities().transferMoneyFromBank(yourPlayer.getUsername(), -housePrice);
         game.getEntities().getBank().getHouses(1);
         street.addHouse();
+        return true;
+    }
+
+    public static boolean buyHotel(Street street) {
+        int hotelPrice = Integer.parseInt(street.getAllRent()[7]);
+        Player yourPlayer = game.getEntities().getYou();
+        if (game.getEntities().getBank().getAvailableHouses() == 0)
+            return false;
+
+        if (yourPlayer.getMoney() < hotelPrice)
+            return false;
+
+        game.getEntities().transferMoneyFromBank(yourPlayer.getUsername(), -hotelPrice);
+        game.getEntities().getBank().getHotels(1);
+        street.addHotel();
         return true;
     }
 

@@ -5,6 +5,7 @@ import com.teamfour.monopolish.account.AccountDAO;
 import com.teamfour.monopolish.game.Game;
 import com.teamfour.monopolish.game.GameDAO;
 import com.teamfour.monopolish.game.entities.player.PlayerDAO;
+import com.teamfour.monopolish.game.property.Property;
 import com.teamfour.monopolish.game.property.PropertyDAO;
 import com.teamfour.monopolish.gui.views.SceneManager;
 import com.teamfour.monopolish.lobby.LobbyDAO;
@@ -35,7 +36,9 @@ public class Handler {
     // Variables used in game
     private static ArrayList<String[]> colorList = new ArrayList<>();
     private static String tradeUsername;
+    private static Property buyHouseProperty;
     private static @FXML Pane tradeContainer;
+    private static @FXML Pane buyHouseContainer;
     private static @FXML Pane forfeitContainer;
 //    private static boolean forfeit = false;
     private static int currentGameId;
@@ -107,8 +110,12 @@ public class Handler {
     // Setter and getter for Game variables
     public static String getTradeUsername() { return tradeUsername; }
     public static void setTradeUsername(String tradeUsername) { Handler.tradeUsername = tradeUsername; }
+    public static Property getBuyHouseProperty() { return buyHouseProperty; }
+    public static void setBuyHouseProperty(Property buyHouseProperty) { Handler.buyHouseProperty = buyHouseProperty; }
     public static Pane getTradeContainer() { return tradeContainer; }
     public static void setTradeContainer(Pane tradeContainer) { Handler.tradeContainer = tradeContainer; }
+    public static Pane getBuyHouseContainer() { return buyHouseContainer; }
+    public static void setBuyHouseContainer(Pane buyHouseContainer) { Handler.buyHouseContainer = buyHouseContainer; }
     public static Pane getForfeitContainer() { return forfeitContainer; }
     public static void setForfeitContainer(Pane forfeitContainer) { Handler.forfeitContainer = forfeitContainer; }
     public static int getCurrentGameId() { return currentGameId; }

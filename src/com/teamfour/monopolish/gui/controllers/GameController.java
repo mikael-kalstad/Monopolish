@@ -78,7 +78,7 @@ public class GameController {
     public static boolean forfeit = false;
 
     // Properties dialog
-    @FXML private Pane propertiesContainer;
+    @FXML private Pane propertiesContainer, buyHouseContainer;
     @FXML private FlowPane propertiesContentContainer;
     @FXML private Text propertiesUsername;
     @FXML private Button tradeBtn;
@@ -113,6 +113,7 @@ public class GameController {
         // Reference that is used in other controllers
         Handler.setForfeitContainer(forfeitContainer);
         Handler.setTradeContainer(tradeContainer);
+        Handler.setBuyHouseContainer(buyHouseContainer);
 
         // Set gamelogic object in handler
         game = new Game(GAME_ID);
@@ -234,7 +235,7 @@ public class GameController {
 
                 if (!forfeit && gameForfeit) {
                     Platform.runLater(() -> forfeit());
-                } else if (forfeit && !gameForfeit) {
+                } else if (!gameForfeit) {
                     backgroundOverlay.setVisible(false);
                 }
 
@@ -348,15 +349,14 @@ public class GameController {
             Pane card = GameControllerDrawFx.createPropertyCard(p);
             propertiesContentContainer.getChildren().add(card);
 
-            //if(game.getEntities().getPlayer(username).hasFullSet(Handler.getCurrentGameId(), p.getCategorycolor())){
-            card.setOnMouseClicked(e -> {
-                ((Street)p).addHouse();
-                // Open dialog here
+            card.setOnMouseClicked(event -> {
+                buyHouseContainer.getChildren().clear();
+                buyHouseContainer.setVisible(true);
+                Handler.setBuyHouseProperty(p);
+                addElementToContainer(ViewConstants.BUY_HOUSE.getValue(), buyHouseContainer);
             });
 
             FxUtils.setScaleOnHover(card, 0.1);
-
-            //}
         }
 
         // Check if trade btn and msg should be shown
@@ -628,6 +628,7 @@ public class GameController {
             GameControllerDrawFx.createPlayerPieces(gamegrid, positions, colors);
 
             for(String player : turns){
+
                 for(Property property : game.getEntities().getPlayer(player).getProperties()){
                     if(property instanceof Street) {
                         GameControllerDrawFx.drawHouse(housegrid, (Street) property);
