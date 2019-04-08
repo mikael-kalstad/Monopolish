@@ -364,8 +364,6 @@ public class PlayerDAO extends DataAccessObject {
         }
     }
 
-
-
     public boolean getForfeitCheck(int gameId){
         Connection connection = getConnection();
         CallableStatement cStmt = null;

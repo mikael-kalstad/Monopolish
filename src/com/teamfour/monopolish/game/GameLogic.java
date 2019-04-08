@@ -18,7 +18,7 @@ import java.sql.SQLException;
  * 'GameController.java'
  *
  * @author      eirikhem
- * @version     1.2
+ * @version     1.3
  */
 
 public class GameLogic {
@@ -259,6 +259,7 @@ public class GameLogic {
      */
     public static void updateToDatabase() {
         try {
+            checkBankruptcy();
             // Updates all entities
             game.getEntities().updateToDatabase();
 
@@ -277,18 +278,16 @@ public class GameLogic {
         // Get the current player
         String currentPlayer = game.getPlayers()[game.getCurrentTurn()];
         updateFromDatabase();
+        checkBankruptcy();
         // Get the new current player from database
         String newCurrentPlayer = game.getPlayers()[game.getCurrentTurn()];
         if (!currentPlayer.equals(newCurrentPlayer)) {
             // If new turn, and turn number is 0, we know that it's a new round
             if (game.getCurrentTurn() == 0) game.incrementRound();
-            checkBankruptcy();
             return true;
         } else {
             return false;
         }
-
-        // TODO: Bankruptcy check, game end blabla
     }
 
     /**
@@ -337,8 +336,8 @@ public class GameLogic {
             // Update entities
             game.getEntities().updateFromDatabase();
 
-            // Load player list again
-            //game.setPlayers(game.getEntities().getUsernames());
+            // Load player list again, in case anyone has left
+            game.setPlayers(game.getEntities().getUsernames());
 
             // Update turn number
             String currentPlayer = Handler.getGameDAO().getCurrentPlayer(game.getGameId());
@@ -354,14 +353,16 @@ public class GameLogic {
     }
 
     public static void onPlayerLeave() {
-        String yourUsername = game.getEntities().getYou().getUsername();
+        Player yourPlayer = game.getEntities().getYou();
+        String yourUsername = yourPlayer.getUsername();
         // If it's your turn, end your own turn
         if (game.getPlayers()[game.getCurrentTurn()].equals(yourUsername)) {
             endTurn();
         }
 
         Handler.getLobbyDAO().removePlayer(yourUsername, Handler.getLobbyDAO().getLobbyId(yourUsername));
-        game.getEntities().removePlayer(yourUsername);
+        game.getEntities().getYou().setActive(2);
+        Handler.getPlayerDAO().endGame(game.getGameId(), yourUsername);
         updateToDatabase();
     }
 }

@@ -50,6 +50,7 @@ public class Dice extends StackPane {
         for (int i = 0; i < numOfDices; i++) {
             //result[i] = randomNum(1, numOfEyes);
             lastThrow[i] = (int)(Math.random() * ((numOfEyes - 1) + 1)) + 1;
+            lastThrow[i] = 1;
         }
 
         return lastThrow;

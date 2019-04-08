@@ -9,7 +9,7 @@ package com.teamfour.monopolish.game;
 
 public class GameConstants {
     // Game money and prices
-    public static final int START_MONEY = 30000;
+    public static final int START_MONEY = 2000;
     public static final int BAIL_COST = 1000;
     public static final int ROUND_MONEY = 4000;
     public static final int MAX_GAME_MONEY = 500000;

@@ -201,17 +201,6 @@ public class GameController {
         }
     }
 
-    /**
-     * This method will be run before leaving or quitting the game.
-     * It will sort out all DB queries and stop all timers required.
-     */
-    private void endGameForPlayer() {
-        // Remove player from lobby
-        GameLogic.onPlayerLeave();
-
-        stopTimers();
-    }
-
     static void stopTimers() {
         databaseTimer.cancel();
         databaseTimer.purge();
@@ -246,6 +235,13 @@ public class GameController {
         TimerTask requestTask = new TimerTask() {
             @Override
             public void run() {
+                // Check if there is any winner
+                String winner = game.getEntities().findWinner();
+                if (winner != null) {
+                    stopTimers();
+                    Platform.runLater(() -> announceWinner(winner));
+                }
+
                 // Check for forfeit
                 boolean gameForfeit = Handler.getGameDAO().getForfeit(GAME_ID);
 
@@ -275,6 +271,16 @@ public class GameController {
 
         // Check for forfeit every second
         requestTimer.scheduleAtFixedRate(requestTask, 0L, 1000L);
+    }
+
+    public void announceWinner(String winner) {
+        Alert winnerBox = new Alert(Alert.AlertType.INFORMATION,
+                winner + " has won! You must now quit.", ButtonType.OK);
+        winnerBox.showAndWait();
+        GameLogic.onPlayerLeave();
+
+        // Change view to dashboard
+        Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
     }
 
     /**
@@ -638,8 +644,6 @@ public class GameController {
 //            payIncomeTaxBtn.setVisible(false);
 //            payIncomeTaxBtn.setDisable(true);
 //        }
-
-
 
         int tileType = Handler.getCurrentGame().getBoard().getTileType(yourPosition);
         Pane card = null;
