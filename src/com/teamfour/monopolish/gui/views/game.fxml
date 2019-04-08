@@ -630,7 +630,7 @@
                   <Font name="System Bold" size="28.0" />
                </font>
             </Label>
-            <Label fx:id="statusValue" layoutX="206.0" layoutY="360.0" text="Waiting for lisa to throw dice" textFill="#e3e2e2">
+            <Label fx:id="statusValue" layoutX="203.0" layoutY="340.0" prefHeight="71.0" prefWidth="367.0" text="Waiting for giskeeribyendam to finish" textFill="#e3e2e2" wrapText="true">
                <font>
                   <Font size="20.0" />
                </font>
@@ -712,35 +712,6 @@
                   </Text>
                </children>
             </AnchorPane>
-            <Button fx:id="buyPropertyBtn" layoutX="281.0" layoutY="275.0" mnemonicParsing="false" onMouseClicked="#buyProperty" prefHeight="50.0" prefWidth="160.0" style="-fx-background-color: #03A9F4;" text="Buy property" textFill="#fafafa" visible="false">
-               <font>
-                  <Font size="18.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <Button fx:id="payRentBtn" layoutX="281.0" layoutY="275.0" mnemonicParsing="false" onMouseClicked="#rentTransaction" prefHeight="50.0" prefWidth="160.0" style="-fx-background-color: #ef5350;" text="Pay rent" textFill="#fafafa" visible="false">
-               <font>
-                  <Font size="18.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <Button fx:id="payIncomeTaxBtn" layoutX="281.0" layoutY="275.0" mnemonicParsing="false" onMouseClicked="#payTax" prefHeight="50.0" prefWidth="160.0" style="-fx-background-color: #ef5350;" text="Pay tax" textFill="#fafafa" visible="false">
-               <font>
-                  <Font size="18.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <Label fx:id="propertyOwned" layoutX="287.0" layoutY="263.0" prefHeight="25.0" prefWidth="166.0" text="propertyowned" textFill="#5d5b5b" visible="false">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
             <Button fx:id="propertyBtn" layoutX="294.0" layoutY="302.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="129.0" style="-fx-background-color: ef5350;" text="Pay rent" textFill="#fafafa" visible="false">
                <font>
                   <Font size="16.0" />
@@ -988,5 +959,6 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
+      <Pane fx:id="buyHouseContainer" layoutX="948.0" layoutY="131.0" prefHeight="530.0" prefWidth="400.0" visible="false" />
    </children>
 </AnchorPane>

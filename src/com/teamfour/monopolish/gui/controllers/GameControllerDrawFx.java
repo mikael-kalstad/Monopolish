@@ -566,7 +566,7 @@ public class GameControllerDrawFx {
         }
 
         //for the rest of the houses we find the already made container
-        if (hascontainer) {
+        if (hascontainer && numberOfHouses < 5) {
             for (Node box : housegrid.getChildren()) {
                 if (box.getId()!= null && box.getId().equals(propertyname)) {
                     ((Pane) box).getChildren().clear();
@@ -577,7 +577,7 @@ public class GameControllerDrawFx {
         }
 
         //if the street has a hotel
-        if (numberOfHouses == 5) {
+        if (hascontainer && numberOfHouses == 5) {
             for (Node box : housegrid.getChildren()) {
                 if (box.getId()!= null && box.getId().equals(propertyname)) {
                     ImageView hotel = new ImageView("file:res/gui/Game/house.png");

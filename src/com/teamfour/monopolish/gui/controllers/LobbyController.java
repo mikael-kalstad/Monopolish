@@ -5,6 +5,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -38,6 +39,7 @@ public class LobbyController {
     private boolean game_starting = false;
 
     // GUI FXML elements
+    @FXML private ScrollPane scrollContainer;
     @FXML private FlowPane lobbiesContainer;
     @FXML private Text noLobbyText;
     @FXML private Pane newLobbyDialog;
@@ -151,6 +153,9 @@ public class LobbyController {
      *  </ul>
      */
     public void refresh() {
+        // Save previous scroll position
+        double scrollPosition = scrollContainer.getVvalue();
+
         // Check if any lobbies in database are empty
         Handler.getLobbyDAO().removeEmptyLobbies();
 
@@ -196,13 +201,16 @@ public class LobbyController {
             }
 
             // Update "local" player elements
-           updatePlayerElements(container, username, ready);
+            updatePlayerElements(container, username, ready);
         }
 
         // Go through all lobbies and update "global" lobby elements
         for (Pane lobby: lobbyList) {
             updateLobbyElements(lobby);
         }
+
+        // Scroll down to previous position
+        scrollContainer.setVvalue(scrollPosition);
     }
 
     /**

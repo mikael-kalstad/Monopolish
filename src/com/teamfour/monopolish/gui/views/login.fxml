@@ -68,7 +68,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Text layoutX="195.0" layoutY="252.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to monopoly" wrappingWidth="940.3314819335938">
+      <Text layoutX="195.0" layoutY="252.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to monopolish" wrappingWidth="940.3314819335938">
          <font>
             <Font name="System Bold" size="75.0" />
          </font>
@@ -78,7 +78,7 @@
             <Font name="System Bold" size="32.0" />
          </font>
       </Text>
-      <Text layoutX="195.0" layoutY="444.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Play monopoly with your friends! Nothing can stop you from winning!" wrappingWidth="655.3333435058594">
+      <Text layoutX="195.0" layoutY="444.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Play monopolish with your friends! Nothing can stop you from winning!" wrappingWidth="655.3333435058594">
          <font>
             <Font size="30.0" />
          </font>

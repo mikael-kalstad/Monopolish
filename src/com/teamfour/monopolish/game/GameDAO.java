@@ -281,7 +281,6 @@ public class GameDAO extends DataAccessObject {
         return forfeit;
     }
 
-
     public void setForfeit(int gameId, boolean forfeit){
         Connection connection = getConnection();
         CallableStatement cStmt = null;

@@ -21,7 +21,7 @@
          </font>
       </Text>
       <Line endX="304.0000305175781" layoutX="896.0" layoutY="152.0" startX="-179.0" />
-      <ScrollPane layoutX="220.0" layoutY="265.0" prefHeight="606.0" prefWidth="1479.0" style="-fx-hbar-policy: NEVER; -fx-background-color: white;">
+      <ScrollPane fx:id="scrollContainer" layoutX="220.0" layoutY="265.0" prefHeight="606.0" prefWidth="1479.0" style="-fx-hbar-policy: NEVER; -fx-background-color: white;">
          <content>
             <FlowPane fx:id="lobbiesContainer" prefHeight="604.0" prefWidth="1477.0" style="-fx-padding: 20; -fx-vgap: 40; -fx-hgap: 60; -fx-background-color: white;">
                <children>
