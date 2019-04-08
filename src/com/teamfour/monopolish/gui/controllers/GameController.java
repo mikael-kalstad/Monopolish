@@ -104,6 +104,11 @@ public class GameController {
     // Free parking card container
     @FXML private Pane freeParkingCard;
 
+    // Winner elements
+    @FXML private Pane winnerContainer;
+    @FXML private Text winnerMsg;
+    @FXML private Button winnerBtn;
+
     /**
      * Launches when the scene is loaded.
      */
@@ -214,19 +219,21 @@ public class GameController {
         forfeitContainer.setVisible(true);
     }
 
+    /**
+     * Start a timer that will check for different request. <br/>
+     * <b>What the timer checks</b>
+     * <ul>
+     *     <li>1. Forfeit request in database</li>
+     *     <li>2. Trade request in database</li>
+     *     <li>3. Winner of the game if game is finished</li>
+     * </ul>
+     */
     private void startRequestTimer() {
         // Setup forfeit task
         TimerTask requestTask = new TimerTask() {
             @Override
             public void run() {
-                // Check if there is any winner
-                String winner = game.getEntities().findWinner();
-                if (winner != null) {
-                    stopTimers();
-                    Platform.runLater(() -> announceWinner(winner));
-                }
-
-                // Check for forfeit
+                // 1. Check for forfeit
                 boolean gameForfeit = Handler.getGameDAO().getForfeit(GAME_ID);
 
                 if (!forfeit && gameForfeit) {
@@ -246,9 +253,16 @@ public class GameController {
                     }
                 }
 
-                // Check for trade request
+                // 2. Check for trade request
                 if (Handler.getPlayerDAO().isTrade(USERNAME)) {
                     addElementToContainer(ViewConstants.SHOW_TRADE.getValue(), tradeContainer);
+                }
+
+                // 3. Check if there is any winner
+                String winner = game.getEntities().findWinner();
+                if (winner != null) {
+                    stopTimers();
+                    Platform.runLater(() -> announceWinner(winner));
                 }
             }
         };
@@ -258,13 +272,23 @@ public class GameController {
     }
 
     public void announceWinner(String winner) {
-        Alert winnerBox = new Alert(Alert.AlertType.INFORMATION,
-                winner + " has won! You must now quit.", ButtonType.OK);
-        winnerBox.showAndWait();
-        GameLogic.onPlayerLeave();
+//        Alert winnerBox = new Alert(Alert.AlertType.INFORMATION,
+//                winner + " has won! You must now quit.", ButtonType.OK);
+//        winnerBox.showAndWait();
 
-        // Change view to dashboard
-        Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
+        // Set fixed background overlay
+        backgroundOverlay.setVisible(true);
+        backgroundOverlay.setOnMouseClicked(e -> {});
+
+        // Show winner container and set msg
+        winnerMsg.setText(winner + "has won the game");
+        winnerContainer.setVisible(true);
+
+        // leave the game and change to dashboard on click
+        winnerBtn.setOnMouseClicked(e -> {
+            GameLogic.onPlayerLeave();
+            Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
+        });
     }
 
     /**
