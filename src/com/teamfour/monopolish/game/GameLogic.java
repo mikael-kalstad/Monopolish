@@ -169,7 +169,7 @@ public class GameLogic {
         boolean result = game.getEntities().purchaseProperty(yourPlayer, propertyToPurchase);
 
         if (result) {
-            MessagePopupController.show("Purchase successful, you are now the owner of " + propertyToPurchase.getName(), null, "Real estate");
+            MessagePopupController.show("Purchase successful, you are now the owner of " + propertyToPurchase.getName(), "house.png", "Real estate");
             updateToDatabase();
         }
 

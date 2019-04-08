@@ -11,6 +11,7 @@ import com.teamfour.monopolish.game.property.Street;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.animation.ParallelTransition;
 import javafx.animation.RotateTransition;
+import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -44,7 +45,7 @@ import java.util.TimerTask;
 public class GameController {
     // Timer for checking database updates and forfeit
     private static Timer databaseTimer = new Timer();
-    public static Timer forfeitTimer = new Timer();
+    private static Timer requestTimer = new Timer();
 
     // GameLogic for handling more intricate game operations
     private Game game;
@@ -129,7 +130,7 @@ public class GameController {
         addElementToContainer(ViewConstants.CHAT.getValue(), chatContainer);
 
         // Check for forfeit regularly
-        startForfeitTimer();
+        startRequestTimer();
 
         // Update the board
         updateBoard();
@@ -186,20 +187,20 @@ public class GameController {
      * This method will be run before leaving or quitting the game.
      * It will sort out all DB queries and stop all timers required.
      */
-    public void endGameForPlayer() {
+    private void endGameForPlayer() {
         // Remove player from lobby
         GameLogic.onPlayerLeave();
 
         stopTimers();
     }
 
-    public static void stopTimers() {
+    static void stopTimers() {
         databaseTimer.cancel();
         databaseTimer.purge();
         ChatController.getChatTimer().cancel();
         ChatController.getChatTimer().purge();
-        forfeitTimer.cancel();
-        forfeitTimer.purge();
+        requestTimer.cancel();
+        requestTimer.purge();
     }
 
     /**
@@ -222,13 +223,12 @@ public class GameController {
         forfeitContainer.setVisible(true);
     }
 
-    public void startForfeitTimer() {
-        System.out.println("Forfeit timer INITIALIZE, should only run once");
-
+    private void startRequestTimer() {
         // Setup forfeit task
-        TimerTask forfeitTask = new TimerTask() {
+        TimerTask requestTask = new TimerTask() {
             @Override
             public void run() {
+                // Check for forfeit
                 boolean gameForfeit = Handler.getGameDAO().getForfeit(GAME_ID);
 
                 if (!forfeit && gameForfeit) {
@@ -247,11 +247,16 @@ public class GameController {
                         forfeit = false;
                     }
                 }
+
+                // Check for trade request
+                if (Handler.getPlayerDAO().isTrade(USERNAME)) {
+                    addElementToContainer(ViewConstants.SHOW_TRADE.getValue(), tradeContainer);
+                }
             }
         };
 
         // Check for forfeit every second
-        forfeitTimer.scheduleAtFixedRate(forfeitTask, 0L, 1000L);
+        requestTimer.scheduleAtFixedRate(requestTask, 0L, 1000L);
     }
 
     /**
@@ -341,9 +346,34 @@ public class GameController {
         for (Property p : game.getEntities().getPlayer(username).getProperties()) {
             Pane card = GameControllerDrawFx.createPropertyCard(p);
             propertiesContentContainer.getChildren().add(card);
+
             //if(game.getEntities().getPlayer(username).hasFullSet(Handler.getCurrentGameId(), p.getCategorycolor())){
             card.setOnMouseClicked(event -> {
                 ((Street)p).addHouse();
+                // Open dialog here
+            });
+
+            final double SCALE = 1.1;
+            card.setOnMouseEntered(e -> {
+                ScaleTransition st = new ScaleTransition(Duration.millis(300), card);
+                st.setFromX(card.getScaleX());
+                st.setFromY(card.getScaleY());
+//                st.setByX(1.5);
+//                st.setByY(1.5);
+                st.setToX(card.getScaleX()*1.1);
+                st.setToY(card.getScaleY()*1.1);
+                st.setAutoReverse(true);
+                st.play();
+            });
+
+            card.setOnMouseExited(e -> {
+                System.out.println("leaving");
+                ScaleTransition st = new ScaleTransition(Duration.millis(300), card);
+                st.setFromX(card.getScaleX());
+                st.setFromY(card.getScaleY());
+                st.setToX(1);
+                st.setToY(1);
+                st.playFromStart();
             });
             //}
         }

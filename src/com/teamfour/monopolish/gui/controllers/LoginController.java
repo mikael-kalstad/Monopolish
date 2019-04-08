@@ -146,6 +146,7 @@ public class LoginController {
                     ConnectionPool.create();
                     connectionCreated = true;
                 }
+                Handler.getPlayerDAO().setForfeitCheck(295, "mikael", true);
 
                 // --- UNCOMMENT BEFORE PRODUCTION ---
 

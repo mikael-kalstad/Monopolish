@@ -438,11 +438,10 @@ public class PlayerDAO extends DataAccessObject {
     }
 
     public void setForfeitCheck(int gameId, String username, boolean check){
-        System.out.println("foreit check!");
         Connection connection = getConnection();
         CallableStatement cStmt = null;
         try {
-            getConnection();
+            //getConnection();
             cStmt = connection.prepareCall("{call set_forfeit_check(?,?,?)}");
             cStmt.setInt(1, gameId);
             cStmt.setString(2, username);
