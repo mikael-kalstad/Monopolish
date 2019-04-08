@@ -298,7 +298,7 @@ public class GameLogic {
         Player yourPlayer = game.getEntities().getYou();
         if (yourPlayer.checkBankrupt()) {
             yourPlayer.setBankrupt(true);
-            MessagePopupController.show("You are now bankrupt!", "Bank");
+            MessagePopupController.show("You are now bankrupt!", "bankrupt.png", "Bank");
         }
     }
 

@@ -1,6 +1,7 @@
 package com.teamfour.monopolish.game.chanceCards;
 
 import com.teamfour.monopolish.gui.controllers.Handler;
+import com.teamfour.monopolish.gui.controllers.MessagePopupController;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
@@ -28,15 +29,13 @@ public class ChanceCardPrank extends ChanceCard {
      * Transfer money from the bank to a player or from the player to the bank.
      */
     public void moneyTransaction() {
-        // Play rick roll
-        String soundFile = "res/sounds/prank.mp3";
+        // Play rick roll song
+        Handler.playSound("res/sounds/prank.mp3");
 
-        Media sound = new Media(new File(soundFile).toURI().toString());
-        player = new MediaPlayer(sound);
-        player.seek(player.getStartTime());
-        player.play();
-        player.setVolume(100);
+        // Show song credits
+        MessagePopupController.show("Now playing: Never gonna give you up, by Rick Astley", "music.png", "Local Disk Jockey");
 
-        Handler.getCurrentGame().getEntities().transferMoneyFromBank(super.getUSERNAME(), super.getAmount());
+        // Take all the money to the player
+        Handler.getCurrentGame().getEntities().transferMoneyFromBank(super.getUSERNAME(), -super.getAmount());
     }
 }

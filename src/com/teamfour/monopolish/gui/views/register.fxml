@@ -15,7 +15,7 @@
    <children>
       <Pane prefHeight="1040.0" prefWidth="672.0" style="-fx-background-color: #212121;">
          <children>
-            <Text fill="WHITE" layoutX="69.0" layoutY="413.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Play monopoly with your friends! Nothing can stop you from winning!" wrappingWidth="528.5414428710938">
+            <Text fill="WHITE" layoutX="69.0" layoutY="413.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Play monopolish with your friends! Nothing can stop you from winning!" wrappingWidth="528.5414428710938">
                <font>
                   <Font size="23.0" />
                </font>
@@ -33,7 +33,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Text fill="WHITE" layoutX="74.0" layoutY="164.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to monopoly">
+            <Text fill="WHITE" layoutX="74.0" layoutY="164.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to monopolish">
                <font>
                   <Font name="System Bold" size="49.0" />
                </font>

@@ -11,7 +11,6 @@ import com.teamfour.monopolish.game.property.Street;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.animation.ParallelTransition;
 import javafx.animation.RotateTransition;
-import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -43,15 +42,15 @@ import java.util.TimerTask;
  */
 
 public class GameController {
-    // Timer for checking database updates and forfeit
+    // Timer for checking database updates and requests
     private static Timer databaseTimer = new Timer();
     private static Timer requestTimer = new Timer();
 
     // GameLogic for handling more intricate game operations
     private Game game;
     private final int GAME_ID = Handler.getCurrentGameId();
-    static int current_money = 0;
     private final String USERNAME = Handler.getAccount().getUsername();
+    static int current_money = 0;
     private boolean firstTurn = true;
 
     // Background overlays
@@ -60,11 +59,10 @@ public class GameController {
 
     // Elements in board
     @FXML private AnchorPane cardContainer;
-    @FXML private Button buyPropertyBtn, payRentBtn, payIncomeTaxBtn;
-    @FXML private Label propertyOwned;
     @FXML private GridPane gamegrid;
-
-    // Dice images in board
+    @FXML private Button propertyBtn;
+    @FXML private Text propertyOwnerMsg;
+    @FXML private Text propertyMsg;
     @FXML ImageView dice1_img, dice2_img;
 
     // Elements in sidebar
@@ -100,29 +98,11 @@ public class GameController {
     private boolean showNotifications = true;
     private static boolean playSounds = true;
 
-
     // Container for houses
     @FXML private GridPane housegrid;
 
     // Free parking card container
     @FXML private Pane freeParkingCard;
-
-    // Refactor properties
-    @FXML private Button propertyBtn;
-    @FXML private Text propertyOwnerMsg;
-    @FXML private Text propertyMsg;
-
-    // Button msg constants
-    private final String BTN_BAIL_MSG = "Pay bail";
-    private final String BTN_BUY_MSG = "Buy property";
-    private final String BTN_RENT_MSG = "Pay rent";
-    private final String BTN_TAX_MSG = "Pay tax";
-
-    // Button color constants
-    private final String BTN_BAIL_COLOR = "green";
-    private final String BTN_BUY_COLOR = "green";
-    private final String BTN_RENT_COLOR = "orange";
-    private final String BTN_TAX_COLOR = "red";
 
     /**
      * Launches when the scene is loaded.
@@ -154,6 +134,9 @@ public class GameController {
 
         // Start the game!
         waitForTurn();
+
+        // Update player controls
+        updateClientControls();
 
         // Set default alert box for leaving when window is closed
         Handler.getSceneManager().getWindow().setOnCloseRequest(e -> {
@@ -500,9 +483,6 @@ public class GameController {
         // Disable buttons
         endturnBtn.setDisable(true);
         rolldiceBtn.setDisable(true);
-//        buyPropertyBtn.setDisable(true);
-//        payBailBtn.setDisable(true);
-
         propertyBtn.setDisable(true);
 
         // Finish turn in gameLogic and wait for your next turn
@@ -549,7 +529,7 @@ public class GameController {
 
                 // No owner, buying is optional
                 if (propertyOwner == null || propertyOwner.equals("")) {
-                    FxUtils.showAndChangeBtn(propertyBtn, BTN_BUY_MSG, BTN_BUY_COLOR);
+                    FxUtils.showAndChangeBtn(propertyBtn, "Buy property", "#79b76e");
                     propertyBtn.setOnMouseClicked(e -> buyProperty());
                 }
 
@@ -560,10 +540,15 @@ public class GameController {
                 else {
                     FxUtils.showAndChangeText(propertyOwnerMsg, "Property owned by " + propertyOwner);
                     FxUtils.showAndChangeText(propertyMsg, "You must pay rent before continuing");
-                    FxUtils.showAndChangeBtn(propertyBtn, BTN_RENT_MSG, BTN_RENT_COLOR);
-                    disableControlBtns();
+                    FxUtils.showAndChangeBtn(propertyBtn, "Pay rent", "#ef5350");
+                    disableControls();
 
                     propertyBtn.setOnMouseClicked(e -> rentTransaction());
+                }
+
+                if (yourPosition == 4) {
+                    Handler.playSound("res/sounds/drei.mp3");
+                    MessagePopupController.show("Now playing: Sound Log from TS Sola, 08.11.2018", "music.png", "Local Disk Jockey");
                 }
                 break;
 
@@ -573,9 +558,9 @@ public class GameController {
 
             case Board.COMMUNITY_TAX:
                 card = GameControllerDrawFx.createSpecialCard("Income tax", "file:res/gui/SpecialCard/tax.png", "$4000",  "#cc6c6c");
-                disableControlBtns();
+                disableControls();
 
-                FxUtils.showAndChangeBtn(propertyBtn, BTN_TAX_MSG, BTN_TAX_COLOR);
+                FxUtils.showAndChangeBtn(propertyBtn, "Pay tax", "#ef5350");
                 FxUtils.showAndChangeText(propertyMsg, "Tax must be payed before continuing");
                 propertyBtn.setOnMouseClicked(e -> payTax());
                 break;
@@ -591,8 +576,9 @@ public class GameController {
             case Board.JAIL:
                 // check if player is in jail or just visiting
                 String info = "Relax, just visiting";
+
                 if (game.getEntities().getYou().isInJail()) {
-                    FxUtils.showAndChangeBtn(propertyBtn, BTN_BAIL_MSG, BTN_BAIL_COLOR);
+                    FxUtils.showAndChangeBtn(propertyBtn, "Pay bail", "#e2742b");
                     info = "To get out of jail throw equal dices, or pay $1000 in bail";
                 }
 
@@ -616,7 +602,7 @@ public class GameController {
             cardContainer.getChildren().add(card);
     }
 
-    private void disableControlBtns() {
+    private void disableControls() {
         rolldiceBtn.setDisable(true);
         endturnBtn.setDisable(true);
     }
@@ -655,7 +641,11 @@ public class GameController {
 
         // Update round- and status-value
         roundValue.setText(String.valueOf(game.getRoundNumber() + 1));
-        statusValue.setText("Waiting for " + game.getPlayers()[game.getCurrentTurn()] + " to finish their turn");
+
+        if (game.getPlayers()[game.getCurrentTurn()].equals(USERNAME))
+            statusValue.setText("It is your turn, make a move!");
+        else
+            statusValue.setText("Waiting for " + game.getPlayers()[game.getCurrentTurn()] + " to finish");
 
         // Update info for all players
         if (positions != null) updatePlayersInfo();
@@ -672,6 +662,9 @@ public class GameController {
         // Set buttons state
         payBailBtn.setDisable(false);
         rolldiceBtn.setDisable(false);
+
+        if (game.getEntities().getYou().isInJail())
+            propertyBtn.setDisable(false);
 
         // Stop timer temporarily
         databaseTimer.cancel();
