@@ -112,7 +112,7 @@ create table chatmessage(
   time_in datetime not null,
   message varchar(40),
   primary key (message_id)
-); # represents a chatmessage in a from a player
+); # represents chatmessages from a players
 
 create table eventlog(
   event_id integer not null auto_increment,
@@ -120,7 +120,7 @@ create table eventlog(
   time_in datetime not null,
   event_text varchar(40),
   primary key (event_id)
-); # creates messages that can be distributed to all players, to keep them updated
+); # creates messages that can be distributed to all players, to keep them updated.
 
 CREATE TABLE trading(
   trade_id INT NOT NULL AUTO_INCREMENT,

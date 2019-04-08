@@ -20,7 +20,12 @@ drop view if exists trading_view;
 /**
   Procedure to propose a trade
 
-  issued by PlayerDAO.
+    in seller:  username of the seller
+    in buyer:  username of the buyer
+    in in_price: price to be paid in the trade
+    in property_id: propertyId of the property in the trade
+
+  issued by PlayerDAO.addTrade()
  */
 CREATE PROCEDURE trading_add_trade(
   -- IN s_id INT,
@@ -38,13 +43,6 @@ CREATE PROCEDURE trading_add_trade(
     -- INSERT INTO trading VALUES(DEFAULT, s_id, b_id, in_price, property_id, DEFAULT);
     INSERT INTO trading VALUES(DEFAULT, seller_id, buyer_id, in_price, property_id, DEFAULT);
   END;
-
-
-/*
-CALL trading_add_trade(15, 14, 69, 2);
-
-CALL trading_add_trade('giske', 'yourmum', 6969, 3);
-*/
 
 
 

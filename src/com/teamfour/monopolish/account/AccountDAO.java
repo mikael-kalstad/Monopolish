@@ -128,6 +128,10 @@ public class AccountDAO extends DataAccessObject {
         return account;
     }
 
+    /**
+     * Sets the account active stat as false
+     * @param username Username of the account
+     */
     public void setInactive(String username) /*throws SQLException */{
         Connection connection = getConnection();
         CallableStatement cStmt = null;
@@ -146,6 +150,10 @@ public class AccountDAO extends DataAccessObject {
         }
     }
 
+    /**
+     * Gets the account active stat
+     * @param username Username of the account
+     */
     public boolean getActive(String username) {
         Connection connection = getConnection();
         CallableStatement cStmt = null;
@@ -174,6 +182,12 @@ public class AccountDAO extends DataAccessObject {
         return active;
     }
 
+
+    /**
+     * Gets the number of games the user has played
+     * @param username Username of the account
+     * @return number of games played
+     */
     public int getGamesPlayed(String username) /*throws SQLException */{
         Connection connection = getConnection();
         CallableStatement cStmt = null;
@@ -202,6 +216,11 @@ public class AccountDAO extends DataAccessObject {
         return games;
     }
 
+    /**
+     * Gets the highscore of the user
+     * @param username Username of the account
+     * @return the highscore of the user
+     */
     public int getHighscore(String username) /*throws SQLException */{
         Connection connection = getConnection();
         CallableStatement cStmt = null;
