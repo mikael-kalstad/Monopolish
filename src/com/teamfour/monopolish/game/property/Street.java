@@ -1,13 +1,17 @@
 package com.teamfour.monopolish.game.property;
 
+/**
+ * This class represents a property of type street. A street's rent level is adjusted by how many houses and hotels are on it
+ */
+
 public class Street extends Property {
     private final int MAX_HOUSES = 4;
     private final int MAX_HOTELS = 1;
 
     // Attributes
-    private int[] rent = new int[9];
-    private int houses;
-    private int hotels;
+    private int[] rent = new int[9];        // Table of all rent levels, along with house and hotel prices
+    private int houses;         // Current amount of houses
+    private int hotels;         // Current amount of hotels
 
     /**
      * Constructor
@@ -64,7 +68,7 @@ public class Street extends Property {
      */
     private void calculateRent() {
         for (int i = 0; i < rent.length - 2; i++) {
-            rent[i] = (int)(price * 0.1 * (i + 1));
+            rent[i] = (int)(price * 0.3 * (i + 1));
         }
     }
 
