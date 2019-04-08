@@ -376,7 +376,6 @@ public class GameLogic {
         }
 
         Handler.getLobbyDAO().removePlayer(yourUsername, Handler.getLobbyDAO().getLobbyId(yourUsername));
-        game.getEntities().getYou().setActive(2);
         Handler.getPlayerDAO().endGame(game.getGameId(), yourUsername);
         updateToDatabase();
     }
