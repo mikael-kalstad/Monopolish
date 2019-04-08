@@ -4,8 +4,8 @@ drop procedure if exists player_property;
 drop procedure if exists available_property;
 drop procedure if exists position_property;
 drop procedure if exists property_clean;
-DROP PROCEDURE property_get_all;
-DROP PROCEDURE property_get_by_owner;
+DROP PROCEDURE IF EXISTS property_get_all;
+DROP PROCEDURE IF EXISTS property_get_by_owner;
 
 delimiter $$
 create procedure property_create(
