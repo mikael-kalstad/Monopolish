@@ -91,6 +91,31 @@ CALL trading_accept_trade('giske', 'yourmum');
 
 CALL trading_accept_trade('yourmum', 'giske');
 
+CREATE PROCEDURE trading_is_trade(IN uname VARCHAR(30))
+  BEGIN
+    DECLARE s_id INT;
+    DECLARE teller INT;
+    DECLARE status BIT;
+    SELECT p.player_id FROM player p, account a WHERE uname = a.username AND p.user_id = a.user_id AND p.active = 1 INTO s_id;
+    SELECT COUNT(*) FROM trading t WHERE s_id = t.seller_id OR s_id = t.buyer_id INTO teller;
+    IF (teller > 0) THEN
+      SET status = 1;
+    END IF;
+    SELECT status;
+  end;
+
+DROP PROCEDURE trading_is_trade;
+
+CALL trading_is_trade('yourmum');
+
+
+CREATE PROCEDURE trading_remove_trade(IN uname VARCHAR(30))
+  BEGIN
+    DECLARE s_id INT;
+    SELECT p.player_id FROM player p, account a WHERE uname = a.username AND p.user_id = a.user_id AND p.active = 1 INTO s_id;
+    DELETE FROM trading t WHERE t.buyer_id = uname OR t.seller_id = uname;
+  end;
+
 
 
 
