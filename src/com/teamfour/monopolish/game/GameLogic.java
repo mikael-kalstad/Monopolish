@@ -100,7 +100,6 @@ public class GameLogic {
         // Set free parking if on free parking
         if (game.getBoard().getTileType(yourPlayer.getPosition()) == Board.FREE_PARKING) {
             yourPlayer.setFreeParking(true);
-            System.out.println("Setting free parking true");
         }
 
         // If the player lands on a goToJail tile, go straight to jail
@@ -109,7 +108,7 @@ public class GameLogic {
         }
 
         // If the player passed start, give them money
-        if (yourPlayer.getPosition() < previousPosition) {
+        if (yourPlayer.getPosition() < previousPosition && !yourPlayer.isInJail()) {
             game.getEntities().transferMoneyFromBank(yourPlayer.getUsername(), GameConstants.ROUND_MONEY);
         }
 
@@ -343,5 +342,6 @@ public class GameLogic {
 
         Handler.getLobbyDAO().removePlayer(yourUsername, Handler.getLobbyDAO().getLobbyId(yourUsername));
         game.getEntities().removePlayer(yourUsername);
+        updateToDatabase();
     }
 }

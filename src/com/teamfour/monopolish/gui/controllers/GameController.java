@@ -150,7 +150,7 @@ public class GameController {
 
             // Check if yes button is pressed
             if (alertDialog.getResult().getButtonData().isDefaultButton()) {
-                endGameForPlayer();
+                GameLogic.onPlayerLeave();
                 stopTimers();
 
                 // Logout user
@@ -175,22 +175,12 @@ public class GameController {
         alertDialog.showAndWait();
 
         if (alertDialog.getResult().getButtonData().isDefaultButton()) {
-            endGameForPlayer();
+            GameLogic.onPlayerLeave();
+            stopTimers();
 
             // Change view to dashboard
             Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
         }
-    }
-
-    /**
-     * This method will be run before leaving or quitting the game.
-     * It will sort out all DB queries and stop all timers required.
-     */
-    public void endGameForPlayer() {
-        // Remove player from lobby
-        GameLogic.onPlayerLeave();
-
-        stopTimers();
     }
 
     public static void stopTimers() {
