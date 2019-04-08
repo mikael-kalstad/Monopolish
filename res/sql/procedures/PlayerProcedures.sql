@@ -231,7 +231,7 @@ END;
 CREATE PROCEDURE set_forfeit_check(IN gameid INT, in user_name varchar(30), in check_in bit)
 BEGIN
   declare p_id int;
-  select player_id into p_id from player join account on player.user_id = account.user_id where user_name = user_name and player.game_id = gameid;
+  select player_id into p_id from player join account on player.user_id = account.user_id where user_name = username and player.game_id = gameid;
 
   update player set forfeit_check = check_in where player_id = p_id;
 END;

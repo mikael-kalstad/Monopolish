@@ -354,7 +354,7 @@ public class PlayerDAO extends DataAccessObject {
         ResultSet rs = null;
         int playerId = 0;
         try {
-            cStmt = connection.prepareCall("{call player_get_playerid(?, ?)}");  // userId, gameId
+            cStmt = connection.prepareCall("{call player_get_playerid(?,?)}");  // userId, gameId
 
             cStmt.setString(1, username);
             cStmt.setInt(2, gameId);
@@ -410,6 +410,8 @@ public class PlayerDAO extends DataAccessObject {
             cStmt.setInt(1, gameId);
             cStmt.setString(2, username);
             cStmt.setBoolean(3, check);
+
+            cStmt.execute();
 
         } catch (SQLException e) {
             e.printStackTrace();
