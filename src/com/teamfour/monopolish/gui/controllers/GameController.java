@@ -629,6 +629,9 @@ public class GameController {
         // Show card in container if defined
         if (card != null)
             cardContainer.getChildren().add(card);
+
+        if (game.getEntities().getYou().isBankrupt())
+            endTurn();
     }
 
     private void disableControls() {
