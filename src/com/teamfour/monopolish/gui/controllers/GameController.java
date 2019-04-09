@@ -266,6 +266,7 @@ public class GameController {
                 // 2. Check for trade request
                 if (Handler.getPlayerDAO().isTrade(USERNAME)) {
                     addElementToContainer(ViewConstants.SHOW_TRADE.getValue(), tradeContainer);
+                    //Platform.runLater(() -> addElementToContainer(ViewConstants.SHOW_TRADE.getValue(), tradeContainer));
                 }
 
                 // 3. Check if there is any winner

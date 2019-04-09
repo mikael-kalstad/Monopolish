@@ -352,11 +352,25 @@ public class EntityManager {
         return positions;
     }
 
-    public void tradeFromTo(Player seller, Player buyer, int price, ArrayList<Property> property) {
+    /**
+     * Add trades to DB
+     * @param seller
+     * @param buyer
+     * @param sellerPrice
+     * @param buyerPrice
+     * @param offeredProps
+     * @param requestedProps
+     */
+    public void tradeFromTo(Player seller, Player buyer, int sellerPrice, int buyerPrice,
+                            ArrayList<Property> offeredProps, ArrayList<Property> requestedProps) {
 
-        for (Property p : property) {
+        for (Property p : offeredProps) {
             System.out.println("adding trades for seller: "+seller.getUsername());
-            playerDAO.addTrade(seller.getUsername(), buyer.getUsername(), price, p.getId(), gameId);
+            playerDAO.addTrade(seller.getUsername(), buyer.getUsername(), sellerPrice, buyerPrice, p.getId());
+        }
+        for (Property p : requestedProps) {
+            System.out.println("adding trades for seller: "+seller.getUsername());
+            playerDAO.addTrade(buyer.getUsername(), seller.getUsername(), buyerPrice, sellerPrice, p.getId());
         }
     }
 
@@ -371,7 +385,7 @@ public class EntityManager {
 
         //check if user is buyer or seller
 
-        props.addAll(playerDAO.getTrade(user.getUsername(), gameId));
+        props.addAll(playerDAO.getTrade(user.getUsername()));
         props.trimToSize();
 
         if (props.isEmpty()) {
@@ -381,13 +395,13 @@ public class EntityManager {
             for (int i = 0; i < props.size(); i++) {
                 String seller = props.get(i)[0];
                 String  buyer = props.get(i)[1];
-                String price = props.get(i)[2];
-                String propId = props.get(i)[3];
+                String sellerPrice = props.get(i)[2];
+                String buyerPrice = props.get(i)[3];
+                String propId = props.get(i)[4];
 
-
-                if (Handler.getCurrentGame().getEntities().getPlayer(seller).getUsername().equalsIgnoreCase(user.getUsername())) {
+                if (getPlayer(seller).getUsername().equalsIgnoreCase(user.getUsername())) {
                     System.out.println("seller..");
-                } else if (Handler.getCurrentGame().getEntities().getPlayer(buyer).getUsername().equalsIgnoreCase(user.getUsername())) {
+                } else if (getPlayer(buyer).getUsername().equalsIgnoreCase(user.getUsername())) {
                     System.out.println("buyer");
                 }
             }

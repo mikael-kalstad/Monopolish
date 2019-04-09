@@ -1,38 +1,22 @@
 /**
-  TradingProcedures contain procedures to initiate, get and accept trades
- */
-
-
-/**
- Drops
-*/
-DROP PROCEDURE IF EXISTS trading_add_trade;
-DROP PROCEDURE IF EXISTS trading_get_trade;
-DROP PROCEDURE IF EXISTS trading_get_trade2;
-DROP PROCEDURE IF EXISTS trading_accept_trade;
-DROP PROCEDURE IF EXISTS trading_is_trade;
-DROP PROCEDURE IF EXISTS trading_remove_trade;
-
-drop view if exists seller;
-drop view if exists buyer;
-drop view if exists trading_view;
-
-/**
   Procedure to propose a trade
 
-    in seller:  username of the seller
-    in buyer:  username of the buyer
-    in in_price: price to be paid in the trade
-    in property_id: propertyId of the property in the trade
+ */
+DROP PROCEDURE IF EXISTS trading_add_trade;
+DROP PROCEDURE IF EXISTS trading_is_trade;
+DROP PROCEDURE IF EXISTS trading_accept_trade;
+DROP PROCEDURE IF EXISTS trading_get_trade;
 
-  issued by PlayerDAO.addTrade()
+/**
+  Procedure to add new trade
  */
 CREATE PROCEDURE trading_add_trade(
   -- IN s_id INT,
   IN seller VARCHAR(30),
   -- IN b_id INT,
   IN buyer VARCHAR(30),
-  IN in_price INT,
+  IN s_price INT,
+  IN b_price INT,
   IN property_id INT
 )
   BEGIN -- seller_id, buyer_id, price, property_id
@@ -41,9 +25,15 @@ CREATE PROCEDURE trading_add_trade(
     SELECT p.player_id FROM player p, account a WHERE seller = a.username AND p.user_id = a.user_id AND p.active = 1 INTO seller_id;
     SELECT p.player_id FROM player p, account a WHERE buyer = a.username AND p.user_id = a.user_id AND p.active = 1 INTO buyer_id;
     -- INSERT INTO trading VALUES(DEFAULT, s_id, b_id, in_price, property_id, DEFAULT);
-    INSERT INTO trading VALUES(DEFAULT, seller_id, buyer_id, in_price, property_id, DEFAULT);
+    INSERT INTO trading VALUES(DEFAULT, seller_id, buyer_id, s_price, b_price, DEFAULT);
+    INSERT INTO tradeProperty VALUES (DEFAULT, property_id);
   END;
 
+DROP PROCEDURE trading_add_trade;
+
+
+
+DROP PROCEDURE IF EXISTS trading_get_trade;
 
 
 CREATE PROCEDURE trading_get_trade(
@@ -63,10 +53,10 @@ CREATE PROCEDURE trading_get_trade(
   END;
 
 
-CALL trading_get_trade('giske');
+
 
 -- ---------------
-
+DROP PROCEDURE IF EXISTS trading_get_trade2;
 
 
 CREATE PROCEDURE trading_get_trade2(
@@ -81,12 +71,34 @@ CREATE PROCEDURE trading_get_trade2(
     WHERE t.buyername = buyer;
   end;
 
-CALL trading_get_trade2('giske');
 
 
+CREATE PROCEDURE trading_get_trade3(IN buyer VARCHAR(30))
+  BEGIN
+    DECLARE b_id INT;
+    SELECT p.player_id FROM player p, account a WHERE buyer = a.username AND p.user_id = a.user_id AND p.active = 1 INTO b_id;
+
+    SELECT t.seller_id, t.buyer_id, t.seller_price, t.buyer_price, tp.prop_id
+    FROM tradeProperty tp, trading t
+    WHERE b_id = t.buyer_id;
+
+    SELECT a.username, tp.prop_id,
+    FROM trading t, tradeProperty tp JOIN player p ON t.buyer_id = p.player_id JOIN account a ON p.user_id = a.user_id
+    WHERE b_id IN (t.buyer_id, t.seller_id);-- buyer = a.username AND p.user_id = a.user_id AND p.active = 1;
+  end;
+
+CREATE PROCEDURE trading_get_trade4(IN buyer VARCHAR(30))
+  BEGIN
+    DECLARE b_id INT;
+    SELECT p.player_id FROM player p, account a WHERE buyer = a.username AND p.user_id = a.user_id AND p.active = 1 INTO b_id;
+    SELECT tv.sellername, tv.buyername, tv.seller_price, tv.buyer_price, tv.prop_id
+    FROM trading_view tv WHERE b_id IN (tv.buyer_id, tv.seller_id);
+  end;
+
+CALL trading_get_trade4('giske');
 
 
-
+DROP PROCEDURE IF EXISTS trading_accept_trade;
 
 CREATE PROCEDURE trading_accept_trade(
   IN seller VARCHAR(30),
@@ -101,9 +113,7 @@ CREATE PROCEDURE trading_accept_trade(
     UPDATE trading t SET t.accepted = 1 WHERE s_id = t.seller_id AND b_id = t.buyer_id;
   end;
 
-CALL trading_accept_trade('giske', 'yourmum');
 
-CALL trading_accept_trade('yourmum', 'giske');
 
 CREATE PROCEDURE trading_is_trade(IN uname VARCHAR(30))
   BEGIN
@@ -118,22 +128,30 @@ CREATE PROCEDURE trading_is_trade(IN uname VARCHAR(30))
     SELECT status;
   end;
 
+DROP PROCEDURE trading_is_trade;
 
 
-CALL trading_is_trade('yourmum');
-
+CALL trading_is_trade('eirik');
 
 CREATE PROCEDURE trading_remove_trade(IN uname VARCHAR(30))
   BEGIN
     DECLARE s_id INT;
     SELECT p.player_id FROM player p, account a WHERE uname = a.username AND p.user_id = a.user_id AND p.active = 1 INTO s_id;
-    DELETE FROM trading t WHERE t.buyer_id = uname OR t.seller_id = uname;
+
+    DELETE FROM tradeProperty WHERE tradeProperty.trade_id = (SELECT trade_id FROM trading WHERE s_id = trading.seller_id);
+    DELETE FROM trading WHERE trading.buyer_id = s_id OR trading.seller_id = s_id;
   end;
 
+DROP PROCEDURE trading_remove_trade;
+
+CREATE PROCEDURE trading_get_trade_status(IN uname VARCHAR(30)) -- returns trade status. 0 = default, 1= accepted, 2= refused;
+  SELECT t.accepted FROM trading t WHERE uname =
 
 
 
-
+drop view if exists seller;
+drop view if exists buyer;
+drop view if exists trading_view;
 
 
 create view seller as
@@ -145,4 +163,8 @@ create view buyer as
     join account a on p.user_id = a.user_id;
 
 create view trading_view as
-  select distinct buyer.*, seller.*, price, prop_id from buyer join seller join trading on trading.seller_id = seller.seller_id and trading.buyer_id = buyer.buyer_id;
+  select distinct buyer.*, seller.*, seller_price, buyer_price, prop_id
+  from buyer join seller join trading JOIN tradeProperty tp
+           on trading.seller_id = seller.seller_id and trading.buyer_id = buyer.buyer_id and tp.trade_id = trading.trade_id;
+
+DROP VIEW trading_view;
