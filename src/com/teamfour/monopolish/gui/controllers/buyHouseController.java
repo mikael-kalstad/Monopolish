@@ -13,62 +13,96 @@ import static com.teamfour.monopolish.game.GameLogic.game;
 
 public class buyHouseController {
 
+    private final Property PROPERTY = Handler.getBuyHouseProperty();
+
     @FXML private Label buyHouseLabel, numOfHousesLabel, numOfHotelsLabel, errorLabel;
     @FXML private FlowPane buyHouseCardContainer;
-    @FXML private Button buyHouseBtn, buyHouseCloseBtn;
-
-    private final Property PROPERTY = Handler.getBuyHouseProperty();
+    @FXML private Button buyHouseBtn, buyHouseCloseBtn, pawnBtn;
 
     public void initialize() {
 
-        if (PROPERTY instanceof Street){
+        //check for street
+        if (PROPERTY instanceof Street) {
 
+            //Making a card to sjow property info and adding it to container
             Pane card = GameControllerDrawFx.createPropertyCard(PROPERTY);
             buyHouseCardContainer.getChildren().add(card);
 
+            //Setting labels
             buyHouseLabel.setText(PROPERTY.getName());
             numOfHousesLabel.setText("Number of houses: " + ((Street) PROPERTY).getHouses());
             numOfHotelsLabel.setText("Number of hotels: " + ((Street) PROPERTY).getHotels());
 
+            //set closebutton to hide window
             buyHouseCloseBtn.setOnAction(event -> {
                 Pane container = Handler.getBuyHouseContainer();
                 if (container != null) container.setVisible(false);
             });
 
-//            if(game.getEntities().getPlayer(PROPERTY.getOwner()).hasFullSet(Handler.getCurrentGameId(), PROPERTY.getCategorycolor())){
+            //change some text accordingly to status:
+            if (PROPERTY.isPawned())
+                pawnBtn.setText("Unpawn");
 
-                if (((Street) PROPERTY).getHotels() != 1) {
+            //Set the button for pawning properties
+            pawnBtn.setOnAction(event -> {
+                if (!(PROPERTY.isPawned())){
+                    if (GameLogic.pawnProperty(PROPERTY))
+                        pawnBtn.setText("Unpawn");
+                }
+
+                if (PROPERTY.isPawned()){
+                    if(GameLogic.unpawnProperty(PROPERTY))
+                        pawnBtn.setText("Pawn");
+                } else {
+                    errorLabel.setText("Not enough money to unpawn");
+                }
+            });
+
+            //you need all streets in a colorcategory to be able to buy houses, and it can't be pawned
+            if (game.getEntities().getPlayer(PROPERTY.getOwner()).hasFullSet(Handler.getCurrentGameId(), PROPERTY.getCategorycolor()) && !(PROPERTY.isPawned())) {
+
+                //Unless there is a hotel on the property, in which case we can't buy any more houses, the 'buy' button is enabled
+                if (((Street) PROPERTY).getHotels() != 1)
                     buyHouseBtn.setDisable(false);
-                }
 
-                if (((Street) PROPERTY).getHouses() == 4) {
+                //if there are 4 houses the 'buy' button text is set to 'buy hotel'
+                if (((Street) PROPERTY).getHouses() == 4)
                     buyHouseBtn.setText("Buy hotel");
-                }
 
+                //setting the 'buy' button
                 buyHouseBtn.setOnAction(event -> {
 
-                    if(((Street) PROPERTY).getHouses() < 4) {
+                    //if there are 0-3 houses
+                    if (((Street) PROPERTY).getHouses() < 4) {
 
+                        //if the transaction goes through and a house is added, number of houses is updated. Otherwise it shows the error label.
                         if (GameLogic.buyHouse((Street) PROPERTY)) {
                             numOfHousesLabel.setText("Number of houses: " + ((Street) PROPERTY).getHouses());
+
+                            //again if there are four houses after the 'buyHouse' method, the 'buy' button is set to 'hotel'
                             if (((Street) PROPERTY).getHouses() == 4) {
                                 buyHouseBtn.setText("Buy hotel");
                             }
+
                         } else {
                             errorLabel.setVisible(true);
                         }
 
-                    } else if(((Street) PROPERTY).getHouses() == 4) {
-                        if(GameLogic.buyHotel((Street)PROPERTY)) {
+                        //if there are 4 houses we want to add a hotel
+                    } else if (((Street) PROPERTY).getHouses() == 4) {
+
+                        //if the transaction goes through, we cant buy anything more and the button is disabled
+                        if (GameLogic.buyHotel((Street) PROPERTY)) {
                             numOfHotelsLabel.setText("Number of hotels:  " + ((Street) PROPERTY).getHotels());
                             buyHouseBtn.setDisable(true);
                         }
+
                     } else {
                         errorLabel.setVisible(true);
                     }
 
                 });
-//            }
+            }
         }
     }
 }
