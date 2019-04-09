@@ -367,6 +367,7 @@ public class GameLogic {
 
         property.setPawned(false);
         game.getEntities().transferMoneyFromBank(yourPlayer.getUsername(), -price);
+        updateToDatabase();
         return true;
     }
 
