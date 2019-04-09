@@ -1,6 +1,5 @@
 package com.teamfour.monopolish.gui.controllers;
 
-import com.teamfour.monopolish.game.Game;
 import com.teamfour.monopolish.game.GameLogic;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.application.Platform;
@@ -66,7 +65,6 @@ public class ForfeitController {
         setOnHover(voteContinue);
 
         // Start refreshing method
-        System.out.println("Initialize is RUN!!!");
         refresh();
     }
 
@@ -182,14 +180,7 @@ public class ForfeitController {
      * End the game and switch to Dashboard
      */
     private void endGame() {
-        // TESTING PURPOSES
-        String res = "Game will continue";
-        if (votesForQuit > votesForContinue) res = "Game will quit";
-        System.out.println("FORFEIT RESULT: " + res);
-
         GameController.stopTimers();
-
-        // End the game
         GameLogic.endGame();
 
         // Switch to dashboard!

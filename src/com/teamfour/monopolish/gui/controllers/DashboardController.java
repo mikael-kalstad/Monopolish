@@ -55,8 +55,13 @@ public class DashboardController {
             Handler.getAccountDAO().setInactive(Handler.getAccount().getUsername());
 
             // Close connection
-            try { ConnectionPool.getMainConnectionPool().shutdown(); }
-            catch (SQLException ex) { ex.printStackTrace(); }
+            if (ConnectionPool.getMainConnectionPool() != null) {
+                try {
+                    ConnectionPool.getMainConnectionPool().shutdown();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
         });
     }
 

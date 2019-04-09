@@ -164,8 +164,13 @@ public class GameController {
                 Handler.getAccountDAO().setInactive(USERNAME);
 
                 // Close connection
-                try { ConnectionPool.getMainConnectionPool().shutdown(); }
-                catch (SQLException ex) { ex.printStackTrace(); }
+                if (ConnectionPool.getMainConnectionPool() != null) {
+                    try {
+                        ConnectionPool.getMainConnectionPool().shutdown();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
 
                 // Close the window
                 Handler.getSceneManager().getWindow().close();
@@ -245,7 +250,6 @@ public class GameController {
                 // 1. Check for forfeit
                 boolean gameForfeit = Handler.getGameDAO().getForfeit(GAME_ID);
 
-                System.out.println("forfeit: " + forfeit);
                 if (!forfeit && gameForfeit) {
                     Platform.runLater(() -> forfeit());
                 } else if (forfeit && !gameForfeit) {
@@ -253,7 +257,7 @@ public class GameController {
                 }
 
                 // Check if forfeit checks should be reset
-                if (!forfeit && Handler.getPlayerDAO().getForfeitCheck(GAME_ID)) {
+                if (Handler.getPlayerDAO().getForfeitCheck(GAME_ID)) {
                     // Reset all player forfeit votes and checks
                     for (String u : Handler.getCurrentGame().getPlayers()) {
                         Handler.getPlayerDAO().setForfeitStatus(u, GAME_ID, 0);

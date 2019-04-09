@@ -46,8 +46,13 @@ public class SceneManager {
         // Reset close request for each scene to default
         window.setOnCloseRequest(event -> {
             // Close connection
-            try { ConnectionPool.getMainConnectionPool().shutdown(); }
-            catch (SQLException e) { e.printStackTrace(); }
+            if (ConnectionPool.getMainConnectionPool() != null) {
+                try {
+                    ConnectionPool.getMainConnectionPool().shutdown();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
 
             window.close();
         });

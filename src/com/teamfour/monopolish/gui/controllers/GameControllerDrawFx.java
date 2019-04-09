@@ -469,6 +469,14 @@ public class GameControllerDrawFx {
         }
         prices.getChildren().addAll(pricesTextList);
 
+        // Display pawned overlay on card if it is pawned
+        StackPane card2 = new StackPane();
+        if (property.isPawned()) {
+            ImageView overlay = new ImageView(new Image("file:res/gui/Game/pawned.png"));
+            card2.getChildren().addAll(card, overlay);
+            return card2;
+        }
+
         return card;
     }
 
