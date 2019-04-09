@@ -313,7 +313,7 @@ public class GameController {
     /**
      * If the player is in a situation where he can give up
      */
-    private void giveUp() {
+    public void giveUp() {
 
     }
 
