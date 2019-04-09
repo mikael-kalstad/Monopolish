@@ -46,7 +46,8 @@ BEGIN
   INSERT INTO gameproperty (game_id, property_id)
   SELECT g_id, property_id FROM property;
 
-  select gp.property_id, p.name, p.price, p.position, p.categorycolor, IFNULL(a.username, ''), p.property_type, gp.rent_level
+  select gp.property_id, p.name, p.price, p.position, p.categorycolor, IFNULL(a.username, ''), p.property_type,
+         gp.rent_level, gp.pawned
   from gameproperty gp
   join property p on gp.property_id = p.property_id
   left join player p2 on gp.user_id = p2.user_id
@@ -69,6 +70,7 @@ Procedure to retrieve all properties of a given color
   6/username -- owner's username
   7/property_type -- street/boat/transport company
   8/rent_level -- the number of houses
+  9/pawned -- Is property pawned?
 
 issued by: PropertyDAO.getColorSet()
  */
@@ -78,7 +80,8 @@ CREATE PROCEDURE property_get_color_set(
   IN color_hex VARCHAR(10)
 )
   BEGIN
-    select gp.property_id, p.name, p.price, p.position, p.categorycolor, IFNULL(a.username, ''), p.property_type, gp.rent_level
+    select gp.property_id, p.name, p.price, p.position, p.categorycolor, IFNULL(a.username, ''), p.property_type, gp.rent_level,
+           gp.pawned
     from gameproperty gp
            join property p on gp.property_id = p.property_id
            left join player p2 on gp.user_id = p2.user_id
@@ -105,7 +108,8 @@ create procedure property_update(
     in g_id int,
     in pawn bit,
     in u_name varchar (30),
-    in r_level INT
+    in r_level INT,
+    IN pawn BIT
   )
   begin
     declare u_id int;
@@ -139,6 +143,7 @@ Procedure to retrieve all properties belonging to a given player
   6/username -- owner's username
   7/property_type -- street/boat/transport company
   8/rent_level -- the number of houses
+  9/pawned -- Is property pawned?
 
 issued by: PropertyDAO.getPropertiesByOwner()
  */
@@ -154,14 +159,16 @@ BEGIN
                   WHERE a.username LIKE username);
 
   IF (username IS NULL OR username LIKE '') THEN
-    select gp.property_id, p.name, p.price, p.position, p.categorycolor, IFNULL(a.username, ''), p.property_type, gp.rent_level
+    select gp.property_id, p.name, p.price, p.position, p.categorycolor, IFNULL(a.username, ''), p.property_type, gp.rent_level,
+           gp.pawned
       from gameproperty gp
       join property p on gp.property_id = p.property_id
       left join player p2 on gp.user_id = p2.user_id
       left join account a on p2.user_id = a.user_id
       WHERE gp.game_id=g_id AND a.username IS NULL group by p.property_id;
   ELSE
-    select gp.property_id, p.name, p.price, p.position, p.categorycolor, IFNULL(a.username, ''), p.property_type, gp.rent_level
+    select gp.property_id, p.name, p.price, p.position, p.categorycolor, IFNULL(a.username, ''), p.property_type, gp.rent_level,
+           gp.pawned
     from gameproperty gp
       join property p on gp.property_id = p.property_id
       left join player p2 on gp.user_id = p2.user_id

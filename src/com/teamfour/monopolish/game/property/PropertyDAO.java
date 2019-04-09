@@ -192,6 +192,7 @@ public class PropertyDAO extends DataAccessObject {
         String owner = rs.getString(6);
         int propertyType = rs.getInt(7);
         int houses = rs.getInt(8);
+        boolean pawned = rs.getBoolean(9);
         int hotels = 0;
         if (houses > 4) {
             houses = 4;
@@ -201,11 +202,11 @@ public class PropertyDAO extends DataAccessObject {
         // Check which type of property this is and cast accordingly
         Property property;
         if (propertyType == Property.STREET)
-            property = new Street(propertyId, name, price, position, categoryColor, owner, houses, hotels);
+            property = new Street(propertyId, name, price, position, categoryColor, owner, houses, hotels, pawned);
         else if (propertyType == Property.BOAT)
-            property = new Boat(propertyId, name, price, position, categoryColor, owner);
+            property = new Boat(propertyId, name, price, position, categoryColor, owner, pawned);
         else
-            property = new Train(propertyId, name, price, position, categoryColor, owner);
+            property = new Train(propertyId, name, price, position, categoryColor, owner, pawned);
 
         return property;
     }
