@@ -223,7 +223,7 @@ public class GameLogic {
      * Makes the player pay rent to the owner of the current property. If the player doesn't have enough money,
      * pay the last of their funds
      */
-    public static void payRent() {
+    public static boolean payRent() {
         EntityManager entities = game.getEntities();
         Player yourPlayer = entities.getYou();
 
@@ -260,6 +260,9 @@ public class GameLogic {
             }
 
             // Run transaction
+            if (yourPlayer.getMoney() < price)
+                return false;
+
             entities.transferMoneyFromTo(yourPlayer.getUsername(), currentProperty.getOwner(), price);
 
             MessagePopupController.show(
@@ -272,6 +275,8 @@ public class GameLogic {
 
         // Finally, update to database
         updateToDatabase();
+
+        return true;
     }
 
     /**
