@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -103,7 +104,7 @@ public class ConnectionPool {
             }
         }
         Connection connection = connectionPool.remove(connectionPool.size() - 1);
-        usedConnections.add(connection);
+        if (connection != null) usedConnections.add(connection);
         return connection;
     }
 
@@ -127,9 +128,18 @@ public class ConnectionPool {
      * @throws SQLException
      */
     public void shutdown() throws SQLException {
+        /*
         usedConnections.forEach(this::releaseConnection);
         for(Connection c : connectionPool) {
             c.close();
+        }*/
+
+        for (Iterator<Connection> iterator = usedConnections.iterator(); iterator.hasNext();) {
+            Connection c = iterator.next();
+            if (c != null) c.close();
+        }
+        for(Connection c : connectionPool) {
+            if (c != null) c.close();
         }
 
         connectionPool.clear();

@@ -28,12 +28,8 @@ public class GameDAOTest {
 
     @Test
     public void testGetCurrentPlayer() {
-        try {
             assertEquals(-1, instance.getCurrentPlayer(4));
             assertEquals(15, instance.getCurrentPlayer(5));
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
     }
 
     @Test

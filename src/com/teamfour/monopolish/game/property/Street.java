@@ -24,8 +24,8 @@ public class Street extends Property {
      * @param owner         the current owner of the property
      */
     public Street(int p_id, String name, int price, int position, String categorycolor, String owner, int houses,
-                  int hotels) {
-        super(p_id, name, price, position, categorycolor, owner);
+                  int hotels, boolean pawned) {
+        super(p_id, name, price, position, categorycolor, owner, pawned);
         this.houses = houses;
         this.hotels = hotels;
         calculateRent();

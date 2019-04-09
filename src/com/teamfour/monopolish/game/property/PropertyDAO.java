@@ -20,7 +20,7 @@ public class PropertyDAO extends DataAccessObject {
      * @return ArrayList with all the Properties
      * @throws SQLException
      */
-    public ArrayList<Property> getAllProperties(int game_id) throws SQLException {
+    public ArrayList<Property> getAllProperties(int game_id) {
         Connection connection = getConnection();
         CallableStatement cStmt = null;
         ResultSet rs = null;
@@ -39,7 +39,6 @@ public class PropertyDAO extends DataAccessObject {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new SQLException();
         } finally {
             close(rs);
             close(cStmt);
@@ -56,7 +55,7 @@ public class PropertyDAO extends DataAccessObject {
      * @return ArrayList of properties owned by the player
      * @throws SQLException
      */
-    public ArrayList<Property> getPropertiesByOwner(int gameId, String username) throws SQLException {
+    public ArrayList<Property> getPropertiesByOwner(int gameId, String username) {
         Connection connection = getConnection();
         CallableStatement cStmt = null;
         ResultSet rs = null;
@@ -76,7 +75,6 @@ public class PropertyDAO extends DataAccessObject {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new SQLException();
         } finally {
             close(rs);
             close(cStmt);
@@ -92,7 +90,7 @@ public class PropertyDAO extends DataAccessObject {
      * @param game_id the id of the current game
      * @throws SQLException
      */
-    public void updateProperty(Property prop, int game_id) throws SQLException {
+    public void updateProperty(Property prop, int game_id) {
         Connection connection = getConnection();
         CallableStatement cStmt = null;
         try {
@@ -110,7 +108,6 @@ public class PropertyDAO extends DataAccessObject {
                 cStmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new SQLException();
         } finally {
             close(cStmt);
             releaseConnection(connection);
@@ -122,7 +119,7 @@ public class PropertyDAO extends DataAccessObject {
      * @param game_id the id of the current game
      * @throws SQLException
      */
-    public void endGame(int game_id) throws SQLException {
+    public void endGame(int game_id) {
         Connection connection = getConnection();
         CallableStatement cStmt = null;
         try {
@@ -133,7 +130,6 @@ public class PropertyDAO extends DataAccessObject {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new SQLException();
         } finally {
             close(cStmt);
             releaseConnection(connection);
@@ -148,7 +144,7 @@ public class PropertyDAO extends DataAccessObject {
      * @return ArrayList of Properties of the given color
      * @throws SQLException
      */
-    public ArrayList<Property> getColorSet(int gameId, String colorHex) throws SQLException {
+    public ArrayList<Property> getColorSet(int gameId, String colorHex) {
         Connection connection = getConnection();
         CallableStatement cStmt = null;
         ResultSet rs = null;
@@ -168,7 +164,6 @@ public class PropertyDAO extends DataAccessObject {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new SQLException();
         } finally {
             close(rs);
             close(cStmt);
@@ -197,6 +192,7 @@ public class PropertyDAO extends DataAccessObject {
         String owner = rs.getString(6);
         int propertyType = rs.getInt(7);
         int houses = rs.getInt(8);
+        boolean pawned = rs.getBoolean(9);
         int hotels = 0;
         if (houses > 4) {
             houses = 4;
@@ -206,11 +202,11 @@ public class PropertyDAO extends DataAccessObject {
         // Check which type of property this is and cast accordingly
         Property property;
         if (propertyType == Property.STREET)
-            property = new Street(propertyId, name, price, position, categoryColor, owner, houses, hotels);
+            property = new Street(propertyId, name, price, position, categoryColor, owner, houses, hotels, pawned);
         else if (propertyType == Property.BOAT)
-            property = new Boat(propertyId, name, price, position, categoryColor, owner);
+            property = new Boat(propertyId, name, price, position, categoryColor, owner, pawned);
         else
-            property = new Train(propertyId, name, price, position, categoryColor, owner);
+            property = new Train(propertyId, name, price, position, categoryColor, owner, pawned);
 
         return property;
     }

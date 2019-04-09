@@ -168,12 +168,7 @@ public abstract class Entity {
     public boolean hasFullSet(int gameId, String colorHex) {
         // Get the size of the full set of this color
         int fullSetSize = 0;
-        try {
-            fullSetSize = Property.getFullColorSet(gameId, colorHex).size();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
+        fullSetSize = Property.getFullColorSet(gameId, colorHex).size();
         // If your set size matches, you have a full set!
         int yourSetSize = 0;
         for (Property p : properties) {

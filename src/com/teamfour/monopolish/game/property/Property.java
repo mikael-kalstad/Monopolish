@@ -36,16 +36,17 @@ public abstract class Property {
      * @param categorycolor the categorycolor of the property
      * @param owner         the current owner of the property
      */
-    public Property(int p_id, String name, int price, int position, String categorycolor, String owner) {
+    public Property(int p_id, String name, int price, int position, String categorycolor, String owner, boolean pawned) {
         this.ID = p_id;
         this.NAME = name;
         this.price = price;
         this.position = position;
         this.CATEGORYCOLOR = categorycolor;
         this.owner = owner;
+        this.pawned = pawned;
     }
 
-    public static ArrayList<Property> getFullColorSet(int gameId, String colorHex) throws SQLException {
+    public static ArrayList<Property> getFullColorSet(int gameId, String colorHex) {
         return Handler.getPropertyDAO().getColorSet(gameId, colorHex);
     }
 

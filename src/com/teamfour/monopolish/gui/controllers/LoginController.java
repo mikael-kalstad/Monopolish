@@ -1,5 +1,6 @@
 package com.teamfour.monopolish.gui.controllers;
 
+import com.mysql.cj.jdbc.exceptions.CommunicationsException;
 import com.teamfour.monopolish.account.Account;
 import com.teamfour.monopolish.database.ConnectionPool;
 import com.teamfour.monopolish.gui.views.ViewConstants;
@@ -7,6 +8,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
+
+import java.sql.SQLException;
 
 /**
  * Controller class for login view
@@ -146,7 +149,6 @@ public class LoginController {
                     ConnectionPool.create();
                     connectionCreated = true;
                 }
-                Handler.getPlayerDAO().setForfeitCheck(295, "mikael", true);
 
                 // --- UNCOMMENT BEFORE PRODUCTION ---
 
@@ -169,8 +171,11 @@ public class LoginController {
                     }
 //                }
             }
-            catch (Exception e) {
+            catch (CommunicationsException e) {
                 dbError = true;
+            }
+            catch (SQLException e) {
+                e.printStackTrace();
             }
         }
 

@@ -11,8 +11,8 @@ public class Train extends Property {
      * @param categorycolor the category color of the property
      * @param owner         the current owner of the property
      */
-    public Train(int p_id, String name, int price, int position, String categorycolor, String owner) {
-        super(p_id, name, price, position, categorycolor, owner);
+    public Train(int p_id, String name, int price, int position, String categorycolor, String owner, boolean pawned) {
+        super(p_id, name, price, position, categorycolor, owner, pawned);
     }
 
     public int getRent(int trainsOwned, int diceFactor) {

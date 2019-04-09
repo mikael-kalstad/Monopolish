@@ -49,7 +49,7 @@ public class GameDAO extends DataAccessObject {
      * @return Id of the current player
      * @throws SQLException
      */
-    public String getCurrentPlayer(int gameId) throws SQLException {
+    public String getCurrentPlayer(int gameId) {
         Connection connection = getConnection();
         CallableStatement cStmt = null;
         ResultSet rs = null;
@@ -66,7 +66,6 @@ public class GameDAO extends DataAccessObject {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new SQLException();
         } finally {
             close(rs);
             close(cStmt);
@@ -83,7 +82,7 @@ public class GameDAO extends DataAccessObject {
      * @return True if successful
      * @throws SQLException
      */
-    public boolean setCurrentPlayer(int gameId, String currentPlayer) throws SQLException {
+    public boolean setCurrentPlayer(int gameId, String currentPlayer) {
         Connection connection = getConnection();
         CallableStatement cStmt = null;
         int count = 0;
@@ -96,7 +95,6 @@ public class GameDAO extends DataAccessObject {
             count = cStmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new SQLException();
         } finally {
             close(cStmt);
             releaseConnection(connection);
@@ -164,6 +162,7 @@ public class GameDAO extends DataAccessObject {
         }
         return chatList;
     }
+
     /**
      * adds a chat-message to the chat
      * @param username The session id
@@ -185,7 +184,6 @@ public class GameDAO extends DataAccessObject {
             releaseConnection(connection);
         }
     }
-
 
     public boolean getForfeit(int gameId){
         Connection connection = getConnection();
@@ -227,49 +225,4 @@ public class GameDAO extends DataAccessObject {
             releaseConnection(connection);
         }
     }
-
-
-
-    public void addEvent(int gameId, String message){
-        Connection connection = getConnection();
-        CallableStatement cStmt = null;
-        try {
-            cStmt = connection.prepareCall("{call event_add(?,?)}");
-            cStmt.setInt(1, gameId);
-            cStmt.setString(2, message);
-
-            cStmt.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            close(cStmt);
-            releaseConnection(connection);
-        }
-    }
-
-    public String getEvent(int gameId) {
-        Connection connection = getConnection();
-        CallableStatement cStmt = null;
-        ResultSet rs = null;
-        String event_text ="";
-        try {
-            cStmt = connection.prepareCall("{call event_get(?)}");
-            cStmt.setInt(1, gameId);
-
-            if (cStmt.execute()) {
-                rs = cStmt.getResultSet();
-                while (rs.next())
-                    event_text = rs.getString("event_text");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            close(rs);
-            close(cStmt);
-            releaseConnection(connection);
-        }
-        return event_text;
-    }
-
 }

@@ -30,20 +30,14 @@ public class AccountDAOTest {
     public void testInsertAccount() {
         Account user = new Account("eirikhem", "eirik@eirik.eirik", LocalDate.now(), 0, false);
         String password = "Hahahaha";
-        try {
             int result = instance.insertAccount(user, password);
             int expected = 0;
             assertEquals(result, expected);
-        }
-        catch (SQLException e) { e.printStackTrace(); }
     }
 
     @Test
     public void testLogin() {
-        try {
             assertNotNull(instance.getAccountByCredentials("eirikhem", "Hahahaha"));
             assertNull(instance.getAccountByCredentials("eirikhem", "hahahaha"));
-        }
-        catch (SQLException e) { e.printStackTrace(); }
     }
 }
