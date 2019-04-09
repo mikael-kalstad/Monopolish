@@ -251,12 +251,12 @@ public class GameLogic {
             } else if (currentPropertyType == Property.BOAT) {
                 // If it's a boat, rent is based on the number of boats the owner has
                 int numberOfBoats = entities.getPlayer(owner).getBoatsOwned();
-                price = ((Boat) currentProperty).getRent(numberOfBoats);
+                price = ((Boat) currentProperty).getRent(numberOfBoats - 1);
             } else {
                 // If it's a train, rent is based on your dice throw
                 int numberOfTrains = entities.getPlayer(owner).getTrainsOwned();
                 int[] lastThrow = game.getDice().getLastThrow();
-                price = ((Train) currentProperty).getRent(numberOfTrains, lastThrow[0] + lastThrow[1]);
+                price = ((Train) currentProperty).getRent(numberOfTrains - 1, lastThrow[0] + lastThrow[1]);
             }
 
             // Run transaction
@@ -423,6 +423,9 @@ public class GameLogic {
         Player yourPlayer = game.getEntities().getYou();
         String yourUsername = yourPlayer.getUsername();
         // If it's your turn, end your own turn
+        if (game.getCurrentTurn() + 1 > game.getPlayers().length) {
+            game.setCurrentTurn(game.getPlayers().length - 1);
+        }
         if (game.getPlayers()[game.getCurrentTurn()].equals(yourUsername)) {
             endTurn();
         }
