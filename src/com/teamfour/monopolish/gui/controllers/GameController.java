@@ -267,6 +267,7 @@ public class GameController {
                 // 2. Check for trade request
                 if (Handler.getPlayerDAO().isTrade(USERNAME)) {
                     addElementToContainer(ViewConstants.SHOW_TRADE.getValue(), tradeContainer);
+                    //Platform.runLater(() -> addElementToContainer(ViewConstants.SHOW_TRADE.getValue(), tradeContainer));
                 }
 
                 // 3. Check if there is any winner
@@ -884,10 +885,14 @@ public class GameController {
      * Attempts to pay the player with the current owned property with the proper rent
      */
     private void rentTransaction() {
-        GameLogic.payRent();
-        updateBoard();
-        checkDiceThrow();
-        freeParkingCard.setVisible(false);
+        if(!GameLogic.payRent()) {
+            Alert messageBox = new Alert(Alert.AlertType.INFORMATION,
+                    "You do not have enough funds to pay rent.");
+        } else {
+            updateBoard();
+            checkDiceThrow();
+            freeParkingCard.setVisible(false);
+        }
     }
 
     private void checkDiceThrow() {

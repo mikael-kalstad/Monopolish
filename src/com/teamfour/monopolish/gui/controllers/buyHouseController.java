@@ -13,50 +13,60 @@ import static com.teamfour.monopolish.game.GameLogic.game;
 
 public class buyHouseController {
 
+
     private final Property PROPERTY = Handler.getBuyHouseProperty();
 
-    @FXML private Label buyHouseLabel, numOfHousesLabel, numOfHotelsLabel, errorLabel;
-    @FXML private FlowPane buyHouseCardContainer;
-    @FXML private Button buyHouseBtn, buyHouseCloseBtn, pawnBtn;
+    @FXML
+    private Label buyHouseLabel, numOfHousesLabel, numOfHotelsLabel, errorLabel;
+    @FXML
+    private FlowPane buyHouseCardContainer;
+    @FXML
+    private Button buyHouseBtn, buyHouseCloseBtn, pawnBtn;
 
     public void initialize() {
+
+        //Making a card to show property info and adding it to container
+        Pane card = GameControllerDrawFx.createPropertyCard(PROPERTY);
+        buyHouseCardContainer.getChildren().add(card);
+
+        buyHouseLabel.setText(PROPERTY.getName());
+
+        //set closebutton to hide window
+        buyHouseCloseBtn.setOnAction(event -> {
+            Pane container = Handler.getBuyHouseContainer();
+            if (container != null) container.setVisible(false);
+        });
+
+        //change some text accordingly to status:
+        if (PROPERTY.isPawned())
+            pawnBtn.setText("Unpawn");
+
+        //Set the button for pawning properties
+        pawnBtn.setOnAction(event -> {
+
+            if (!(PROPERTY.isPawned())) {
+                System.out.println("is not pawned");
+                if (GameLogic.pawnProperty(PROPERTY)) {
+                    System.out.println("Pawned property");
+                    pawnBtn.setText("Unpawn");
+                }
+
+            } else {
+                if (GameLogic.unpawnProperty(PROPERTY)) {
+                    System.out.println("Unpawned property");
+                    pawnBtn.setText("Pawn");
+                } else {
+                    errorLabel.setText("Not enough money to unpawn");
+                }
+            }
+        });
 
         //check for street
         if (PROPERTY instanceof Street) {
 
-            //Making a card to sjow property info and adding it to container
-            Pane card = GameControllerDrawFx.createPropertyCard(PROPERTY);
-            buyHouseCardContainer.getChildren().add(card);
-
             //Setting labels
-            buyHouseLabel.setText(PROPERTY.getName());
             numOfHousesLabel.setText("Number of houses: " + ((Street) PROPERTY).getHouses());
             numOfHotelsLabel.setText("Number of hotels: " + ((Street) PROPERTY).getHotels());
-
-            //set closebutton to hide window
-            buyHouseCloseBtn.setOnAction(event -> {
-                Pane container = Handler.getBuyHouseContainer();
-                if (container != null) container.setVisible(false);
-            });
-
-            //change some text accordingly to status:
-            if (PROPERTY.isPawned())
-                pawnBtn.setText("Unpawn");
-
-            //Set the button for pawning properties
-            pawnBtn.setOnAction(event -> {
-                if (!(PROPERTY.isPawned())){
-                    if (GameLogic.pawnProperty(PROPERTY))
-                        pawnBtn.setText("Unpawn");
-                }
-
-                if (PROPERTY.isPawned()){
-                    if(GameLogic.unpawnProperty(PROPERTY))
-                        pawnBtn.setText("Pawn");
-                } else {
-                    errorLabel.setText("Not enough money to unpawn");
-                }
-            });
 
             //you need all streets in a colorcategory to be able to buy houses, and it can't be pawned
             if (game.getEntities().getPlayer(PROPERTY.getOwner()).hasFullSet(Handler.getCurrentGameId(), PROPERTY.getCategorycolor()) && !(PROPERTY.isPawned())) {
@@ -80,9 +90,8 @@ public class buyHouseController {
                             numOfHousesLabel.setText("Number of houses: " + ((Street) PROPERTY).getHouses());
 
                             //again if there are four houses after the 'buyHouse' method, the 'buy' button is set to 'hotel'
-                            if (((Street) PROPERTY).getHouses() == 4) {
+                            if (((Street) PROPERTY).getHouses() == 4)
                                 buyHouseBtn.setText("Buy hotel");
-                            }
 
                         } else {
                             errorLabel.setVisible(true);
@@ -100,7 +109,6 @@ public class buyHouseController {
                     } else {
                         errorLabel.setVisible(true);
                     }
-
                 });
             }
         }
