@@ -311,6 +311,13 @@ public class GameController {
     }
 
     /**
+     * If the player is in a situation where he can give up
+     */
+    private void giveUp() {
+
+    }
+
+    /**
      * Load element from .fxml file and add to container
      *
      * @param filename  Target .fxml file
