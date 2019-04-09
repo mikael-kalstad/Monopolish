@@ -875,6 +875,11 @@
             </Text>
          </children>
       </Pane>
+      <Pane fx:id="propertiesDialogOverlay" layoutX="10.0" layoutY="10.0" prefHeight="1055.0" prefWidth="1920.0" style="-fx-background-color: rgba(160,160,160,0.4);" visible="false">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Pane>
       <Pane fx:id="tradeContainer" layoutX="210.0" layoutY="53.0" prefHeight="950.0" prefWidth="1500.0" visible="false" />
       <Pane fx:id="helpOverlay" onMouseClicked="#toggleHelpOverlay" prefHeight="1055.0" prefWidth="1925.0" style="-fx-background-color: rgba(160,160,160,0.7);" visible="false">
          <children>
@@ -959,7 +964,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </ImageView>
-      <Pane fx:id="buyHouseContainer" layoutX="948.0" layoutY="131.0" prefHeight="530.0" prefWidth="400.0" visible="false" />
+      <Pane fx:id="buyHouseContainer" layoutX="763.0" layoutY="220.0" prefHeight="530.0" prefWidth="400.0" visible="false" />
       <Pane fx:id="winnerContainer" layoutX="559.0" layoutY="400.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="277.0" prefWidth="593.0" style="-fx-background-color: #444; -fx-background-radius: 15;" visible="false">
          <children>
             <ImageView fitHeight="116.0" fitWidth="122.0" layoutX="32.0" layoutY="49.0" pickOnBounds="true" preserveRatio="true">

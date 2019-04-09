@@ -1,5 +1,6 @@
 package com.teamfour.monopolish.gui.views;
 
+import com.teamfour.monopolish.database.ConnectionPool;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -10,6 +11,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * This class will handle scene changes to a specific stage.
@@ -42,7 +44,13 @@ public class SceneManager {
      */
     public void setScene(String filename) {
         // Reset close request for each scene to default
-        window.setOnCloseRequest(event -> window.close());
+        window.setOnCloseRequest(event -> {
+            // Close connection
+            try { ConnectionPool.getMainConnectionPool().shutdown(); }
+            catch (SQLException e) { e.printStackTrace(); }
+
+            window.close();
+        });
 
         try {
             Parent fxml = FXMLLoader.load(getClass().getResource(ViewConstants.FILE_PATH.getValue() + filename));

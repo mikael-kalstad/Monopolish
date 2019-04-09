@@ -1,5 +1,6 @@
 package com.teamfour.monopolish.gui.controllers;
 
+import com.teamfour.monopolish.database.ConnectionPool;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -7,6 +8,8 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+
+import java.sql.SQLException;
 
 /**
  * Controller class for dashboard view
@@ -50,6 +53,10 @@ public class DashboardController {
         // Logout user on window close
         Handler.getSceneManager().getWindow().setOnCloseRequest(e -> {
             Handler.getAccountDAO().setInactive(Handler.getAccount().getUsername());
+
+            // Close connection
+            try { ConnectionPool.getMainConnectionPool().shutdown(); }
+            catch (SQLException ex) { ex.printStackTrace(); }
         });
     }
 

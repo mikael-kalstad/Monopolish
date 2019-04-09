@@ -255,10 +255,10 @@ issued by: PlayerDAO.getForfeitCheck()
  */
 CREATE PROCEDURE get_forfeit_check(IN gameid INT)
 BEGIN
-  select if(players>checked, 0, 1) check_bit from
+  select if(players > checked, 0, 1) check_bit from
     (select count(user_id) players from
         game join player on game.game_id = player.game_id
-            where gameid = game.game_id) sub1 join
+            where gameid = game.game_id AND player.forfeit <> 0) sub1 join
     (select count(player_id) checked from
         player
             where gameid = player.game_id and forfeit_check = 1) sub2;

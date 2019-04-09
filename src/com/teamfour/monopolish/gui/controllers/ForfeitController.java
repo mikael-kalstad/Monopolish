@@ -61,16 +61,6 @@ public class ForfeitController {
             FxUtils.setTextColor(yourVoteText, "green");
         });
 
-//        // Get votes in forfeit
-//        int[] votes = Handler.getPlayerDAO().getForfeitStatus(GAME_ID);
-//
-//        // If you are the first to forfeit, set automatically to quit.
-//        if (votes[0] + votes[1] == 0) {
-//            Handler.getPlayerDAO().setForfeitStatus(USERNAME, GAME_ID, 1);
-//            yourVoteText.setText(VOTE_QUIT_MSG);
-//            FxUtils.setTextColor(yourVoteText, "red");
-//        }
-
         // Change color on hover to show selection
         setOnHover(voteQuit);
         setOnHover(voteContinue);

@@ -60,7 +60,7 @@ public class ShowTradeController {
             entityManager.removeTrade(entityManager.getYou().getUsername());
 
             // Close dialog
-            GameController.tradeContainer.setVisible(false);
+            Handler.getTradeContainer().setVisible(false);
         });
 
         refuseTradeBtn.setOnAction(e -> {
@@ -69,7 +69,7 @@ public class ShowTradeController {
             entityManager.removeTrade(entityManager.getYou().getUsername());
 
             // Close dialog
-            GameController.tradeContainer.setVisible(false);
+            Handler.getTradeContainer().setVisible(false);
         });
     }
 

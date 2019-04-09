@@ -1,5 +1,6 @@
 package com.teamfour.monopolish.gui.controllers;
 
+import com.teamfour.monopolish.database.ConnectionPool;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -14,6 +15,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -125,6 +127,10 @@ public class LobbyController {
                     // Stop refreshTimer thread
                     refreshTimer.cancel();
                     refreshTimer.purge();
+
+                    // Close connection
+                    try { ConnectionPool.getMainConnectionPool().shutdown(); }
+                    catch (SQLException ex) { ex.printStackTrace(); }
 
                     // Close the window
                     Handler.getSceneManager().getWindow().close();

@@ -57,6 +57,7 @@ public class GameController {
     // Background overlays
     @FXML private Pane backgroundOverlay;
     @FXML private Pane helpOverlay;
+    @FXML private Pane propertiesDialogOverlay;
 
     // Elements in board
     @FXML private AnchorPane cardContainer;
@@ -86,7 +87,7 @@ public class GameController {
     @FXML private Text tradeMsg;
 
     // Container for trade
-    @FXML public static Pane tradeContainer;
+    @FXML public Pane tradeContainer;
 
     // Message popup
     @FXML private Pane messagePopupContainer;
@@ -162,6 +163,10 @@ public class GameController {
                 // Logout user
                 Handler.getAccountDAO().setInactive(USERNAME);
 
+                // Close connection
+                try { ConnectionPool.getMainConnectionPool().shutdown(); }
+                catch (SQLException ex) { ex.printStackTrace(); }
+
                 // Close the window
                 Handler.getSceneManager().getWindow().close();
             }
@@ -189,6 +194,9 @@ public class GameController {
         }
     }
 
+    /**
+     * Stop all timers in class
+     */
     static void stopTimers() {
         databaseTimer.cancel();
         databaseTimer.purge();
@@ -204,7 +212,6 @@ public class GameController {
      */
     public void forfeit() {
         forfeit = true;
-
         Handler.getGameDAO().setForfeit(GAME_ID, true);
 
         // Load forfeit GUI
@@ -212,6 +219,9 @@ public class GameController {
 
         // Show background overlay
         backgroundOverlay.setVisible(true);
+
+        // User should not be able to close dialog onclick background
+        backgroundOverlay.setOnMouseClicked(e -> {});
 
         // Hide properties dialog and show forfeit dialog
         propertiesContainer.setVisible(false);
@@ -235,15 +245,15 @@ public class GameController {
                 // 1. Check for forfeit
                 boolean gameForfeit = Handler.getGameDAO().getForfeit(GAME_ID);
 
+                System.out.println("forfeit: " + forfeit);
                 if (!forfeit && gameForfeit) {
                     Platform.runLater(() -> forfeit());
-                } else if (!gameForfeit) {
+                } else if (forfeit && !gameForfeit) {
                     backgroundOverlay.setVisible(false);
                 }
 
                 // Check if forfeit checks should be reset
-                if (Handler.getPlayerDAO().getForfeitCheck(GAME_ID)) {
-
+                if (!forfeit && Handler.getPlayerDAO().getForfeitCheck(GAME_ID)) {
                     // Reset all player forfeit votes and checks
                     for (String u : Handler.getCurrentGame().getPlayers()) {
                         Handler.getPlayerDAO().setForfeitStatus(u, GAME_ID, 0);
@@ -270,17 +280,18 @@ public class GameController {
         requestTimer.scheduleAtFixedRate(requestTask, 0L, 1000L);
     }
 
-    public void announceWinner(String winner) {
-//        Alert winnerBox = new Alert(Alert.AlertType.INFORMATION,
-//                winner + " has won! You must now quit.", ButtonType.OK);
-//        winnerBox.showAndWait();
-
+    /**
+     * Will open a winner dialog displaying the name of the winner,
+     * and includes a button that will go back to the dashboard.
+     * @param winner Name of the player that won the game
+     */
+    private void announceWinner(String winner) {
         // Set fixed background overlay
         backgroundOverlay.setVisible(true);
         backgroundOverlay.setOnMouseClicked(e -> {});
 
         // Show winner container and set msg
-        winnerMsg.setText(winner + "has won the game");
+        winnerMsg.setText(winner + " has won the game");
         winnerContainer.setVisible(true);
 
         // leave the game and change to dashboard on click
@@ -378,12 +389,23 @@ public class GameController {
             Pane card = GameControllerDrawFx.createPropertyCard(p);
             propertiesContentContainer.getChildren().add(card);
 
-            card.setOnMouseClicked(event -> {
-                buyHouseContainer.getChildren().clear();
-                buyHouseContainer.setVisible(true);
-                Handler.setBuyHouseProperty(p);
-                addElementToContainer(ViewConstants.BUY_HOUSE.getValue(), buyHouseContainer);
-            });
+            if (username.equals(USERNAME)) {
+                card.setOnMouseClicked(event -> {
+                    buyHouseContainer.setVisible(true);
+
+                    // Set background overlay
+                    propertiesDialogOverlay.setVisible(true);
+
+                    // Hide onclick
+                    propertiesDialogOverlay.setOnMouseClicked(e -> {
+                        propertiesDialogOverlay.setVisible(false);
+                        buyHouseContainer.setVisible(false);
+                    });
+
+                    Handler.setBuyHouseProperty(p);
+                    addElementToContainer(ViewConstants.BUY_HOUSE.getValue(), buyHouseContainer);
+                });
+            }
 
             FxUtils.setScaleOnHover(card, 0.1);
         }
@@ -400,8 +422,8 @@ public class GameController {
         tradeBtn.setOnMouseClicked(e -> {
             propertiesContainer.setVisible(false);
             backgroundOverlay.setVisible(false);
-            tradeContainer.getChildren().clear();
             tradeContainer.setVisible(true);
+
             Handler.setTradeUsername(username);
             addElementToContainer(ViewConstants.TRADING.getValue(), tradeContainer);
         });
@@ -579,11 +601,6 @@ public class GameController {
                         FxUtils.showAndChangeText(propertyOwnerMsg, "Property pawned by " + propertyOwner);
                     }
                 }
-
-                if (yourPosition == 4) {
-                    Handler.playSound("res/sounds/drei.mp3");
-                    MessagePopupController.show("Now playing: Sound Log from TS Sola, 08.11.2018", "music.png", "Local Disk Jockey");
-                }
                 break;
 
             case Board.START:
@@ -664,10 +681,11 @@ public class GameController {
             // Draw player pieces on the board
             GameControllerDrawFx.createPlayerPieces(gamegrid, positions, colors);
 
-            for(String player : turns){
+            for (String player : turns){
+                if (game.getEntities().getPlayer(player) == null) continue;
 
-                for(Property property : game.getEntities().getPlayer(player).getProperties()){
-                    if(property instanceof Street) {
+                for (Property property : game.getEntities().getPlayer(player).getProperties()){
+                    if (property instanceof Street) {
                         GameControllerDrawFx.drawHouse(housegrid, (Street) property);
                     }
                 }
