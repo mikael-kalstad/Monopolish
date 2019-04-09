@@ -8,6 +8,7 @@ import com.teamfour.monopolish.game.property.Street;
 import com.teamfour.monopolish.game.property.Train;
 import com.teamfour.monopolish.gui.controllers.Handler;
 import com.teamfour.monopolish.gui.controllers.MessagePopupController;
+import javafx.application.Platform;
 
 import java.sql.SQLException;
 
@@ -314,6 +315,40 @@ public class GameLogic {
             yourPlayer.setBankrupt(true);
             MessagePopupController.show("You are now bankrupt!", "bankrupt.png", "Bank");
         }
+    }
+
+    /**
+     * Pawns the specified property, and pays the player half of the property's worth
+     * @param property
+     */
+    public static boolean pawnProperty(Property property) {
+        if (property.isPawned())
+            return false;
+
+        property.setPawned(true);
+        int price = property.getPrice() / 2;
+        game.getEntities().transferMoneyFromBank(game.getEntities().getYou().getUsername(), price);
+        updateToDatabase();
+        return true;
+    }
+
+    /**
+     * Unpawns the property for a price
+     * @param property Property to unpawn
+     * @return If player had enough money to complete the transaction
+     */
+    public static boolean unpawnProperty(Property property) {
+        if (!property.isPawned())
+            return false;
+
+        Player yourPlayer = game.getEntities().getYou();
+        int price = property.getPrice() / 2;
+        if (yourPlayer.getMoney() < price)
+            return false;
+
+        property.setPawned(false);
+        game.getEntities().transferMoneyFromBank(yourPlayer.getUsername(), -price);
+        return true;
     }
 
     /**
