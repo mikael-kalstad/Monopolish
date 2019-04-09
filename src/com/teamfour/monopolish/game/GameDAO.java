@@ -162,6 +162,7 @@ public class GameDAO extends DataAccessObject {
         }
         return chatList;
     }
+
     /**
      * adds a chat-message to the chat
      * @param username The session id
@@ -183,7 +184,6 @@ public class GameDAO extends DataAccessObject {
             releaseConnection(connection);
         }
     }
-
 
     public boolean getForfeit(int gameId){
         Connection connection = getConnection();
@@ -224,49 +224,5 @@ public class GameDAO extends DataAccessObject {
             close(cStmt);
             releaseConnection(connection);
         }
-    }
-
-
-
-    public void addEvent(int gameId, String message){
-        Connection connection = getConnection();
-        CallableStatement cStmt = null;
-        try {
-            cStmt = connection.prepareCall("{call event_add(?,?)}");
-            cStmt.setInt(1, gameId);
-            cStmt.setString(2, message);
-
-            cStmt.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            close(cStmt);
-            releaseConnection(connection);
-        }
-    }
-
-    public String getEvent(int gameId) {
-        Connection connection = getConnection();
-        CallableStatement cStmt = null;
-        ResultSet rs = null;
-        String event_text ="";
-        try {
-            cStmt = connection.prepareCall("{call event_get(?)}");
-            cStmt.setInt(1, gameId);
-
-            if (cStmt.execute()) {
-                rs = cStmt.getResultSet();
-                while (rs.next())
-                    event_text = rs.getString("event_text");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            close(rs);
-            close(cStmt);
-            releaseConnection(connection);
-        }
-        return event_text;
     }
 }
