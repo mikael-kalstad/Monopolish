@@ -1,5 +1,7 @@
 package com.teamfour.monopolish.gui.controllers;
 
+import com.teamfour.monopolish.game.entities.Entity;
+import com.teamfour.monopolish.game.entities.EntityManager;
 import com.teamfour.monopolish.game.property.Property;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -20,6 +22,8 @@ public class TradeController {
 
     // Username of the opponent you want to trade with
     private final String TRADE_USERNAME = Handler.getTradeUsername();
+    private final String YOU = Handler.getCurrentGame().getEntities().getYou().getUsername();
+    private final EntityManager entity = Handler.getCurrentGame().getEntities();
 
     /**
      * Draws a trading screen, letting you choose what to trade
@@ -149,8 +153,6 @@ public class TradeController {
             int offeredmoney = Integer.parseInt(yourtrademoney.getText());
             int requestedmoney = Integer.parseInt(requestedtrademoney.getText());
 
-            //These results have to be sent to/through the database to be shown on the recieving player's screen
-            //Call a method that takes these variables and sends them to the database?
 
             ArrayList<Property> offeredProperties = new ArrayList<>();
             ArrayList<Property> requestedProperties = new ArrayList<>();
@@ -158,28 +160,28 @@ public class TradeController {
             ArrayList<Property> offeredPropertiesNew = new ArrayList<>();
             ArrayList<Property> requestedPropertiesNew = new ArrayList<>();
 
-            offeredProperties.addAll(Handler.getCurrentGame().getEntities().getYou().getProperties());
-            requestedProperties.addAll(Handler.getCurrentGame().getEntities().getPlayer(TRADE_USERNAME).getProperties());
+            offeredProperties.addAll(entity.getYou().getProperties());
+            requestedProperties.addAll(entity.getPlayer(TRADE_USERNAME).getProperties());
+
             offeredProperties.trimToSize();
             requestedProperties.trimToSize();
 
-
             int index = 0;
-            for (Property p : offeredProperties){
-                System.out.println("offered props: "+p.toString());
-                if (offeredProperties.get(index).getName().equalsIgnoreCase(offeredPropertiesNameList.get(index))) {
-                    offeredPropertiesNew.add(offeredProperties.get(index));
-                    System.out.println("Adding prop at: "+index);
+            for (int i = 0; i < offeredPropertiesNameList.size(); i++) {
+                System.out.println("offered props: ");
+                if (offeredProperties.get(i).getName().equalsIgnoreCase(offeredPropertiesNameList.get(i))) {
+                    offeredPropertiesNew.add(offeredProperties.get(i));
+                    System.out.println("Adding prop at: "+i);
                     index++;
                 }
             }
             offeredPropertiesNew.trimToSize();
             int index2 = 0;
-            for (Property p : requestedProperties) {
-                System.out.println("requested props: "+p.toString());
-                if (requestedProperties.get(index2).getName().equalsIgnoreCase(requestedPropertiesNameList.get(index2))) {
-                    requestedPropertiesNew.add(offeredProperties.get(index2));
-                    System.out.println("Adding prop at: " + index2);
+            for (int i = 0; i < requestedPropertiesNameList.size(); i++) {
+                System.out.println("requested props: ");
+                if (requestedProperties.get(i).getName().equalsIgnoreCase(requestedPropertiesNameList.get(i))) {
+                    requestedPropertiesNew.add(requestedProperties.get(i));
+                    System.out.println("Adding prop at: " + i);
                     index2++;
                 }
             }
@@ -187,69 +189,17 @@ public class TradeController {
 
             // add offered properties:
             System.out.println("sending trade to entitymanager............");
-            Handler.getCurrentGame().getEntities().tradeFromTo(Handler.getCurrentGame().getEntities().getYou(),
-                    Handler.getCurrentGame().getEntities().getPlayer(TRADE_USERNAME), offeredmoney, offeredPropertiesNew);
 
-            // add requested properties
-            Handler.getCurrentGame().getEntities().tradeFromTo(Handler.getCurrentGame().getEntities().getPlayer(TRADE_USERNAME),
-                    Handler.getCurrentGame().getEntities().getYou(), requestedmoney, requestedPropertiesNew);
+            entity.tradeFromTo(entity.getYou(), entity.getPlayer(TRADE_USERNAME),
+                    offeredmoney, requestedmoney, offeredPropertiesNew, requestedPropertiesNew);
 
-
-            ArrayList<String[]> propId = new ArrayList<>();
-            System.out.println("getting trade form entitymanager.......");
-
-            //propId.addAll(Handler.getGameLogic().getEntityManager().getTrade(Handler.getGameLogic().getYourPlayer()));
-
-            propId.addAll(Handler.getCurrentGame().getEntities().getTrade(Handler.getCurrentGame().getEntities().getYou()));
-            propId.trimToSize();
-
-            //ArrayList<Property> property = new ArrayList<>();
-            //Property p = new Property();
-/*
-            int index3 = 0;
-            for (int[] i : propId){
-                System.out.println("offered props");
-                if (offeredProperties.get(index3).getName().equalsIgnoreCase(offeredPropertiesNameList.get(index3))) {
-                    offeredPropertiesNew.add(offeredProperties.get(index3));
-                    System.out.println("Adding prop at: "+index3);
-                    index3++;
-                    System.out.println("hei");
-                }
-            }
-            int index4 = 0;
-            for (Property p : requestedProperties) {
-                System.out.println("requested props");
-                if (requestedProperties.get(index4).getName().equalsIgnoreCase(requestedPropertiesNameList.get(index4))) {
-                    requestedPropertiesNew.add(offeredProperties.get(index4));
-                    System.out.println("Adding prop at: " + index4);
-                    index4++;
-                }
-            }
-*//*
-            for (int i = 0; i < propId.size(); i++) {
-                int seller = propId.get(i)[0];
-                int buyer = propId.get(i)[1];
-                int price = propId.get(i)[2];
-                int prop = propId.get(i)[3];
-
-                //Handler.getGameLogic().getEntityManager().
-
-            }*/
-
-            System.out.println("Accepting trade............");
-            Handler.getCurrentGame().getEntities().acceptTrade(Handler.getCurrentGame().getEntities().getYou(),
-                    Handler.getCurrentGame().getEntities().getPlayer(TRADE_USERNAME));
-
-            Handler.getCurrentGame().getEntities().doTrade(Handler.getCurrentGame().getEntities().getYou(),
-                    Handler.getCurrentGame().getEntities().getPlayer(Handler.getTradeUsername()), offeredmoney, offeredPropertiesNew);
-            System.out.println("Trade done.......");
             try {
-                Handler.getCurrentGame().getEntities().updateToDatabase();
-                Handler.getCurrentGame().getEntities().updateFromDatabase();
+                entity.updateToDatabase();
+                entity.updateFromDatabase();
             } catch (SQLException sql) {
                 sql.printStackTrace();
             }
-            if (Handler.getCurrentGame().getEntities().isTrade(Handler.getCurrentGame().getEntities().getYou().getUsername())) {
+            if (entity.isTrade(YOU)) {
                 System.out.println("Found trades for you!");
             }
 

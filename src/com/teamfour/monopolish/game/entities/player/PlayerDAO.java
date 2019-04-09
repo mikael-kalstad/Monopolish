@@ -174,6 +174,7 @@ public class PlayerDAO extends DataAccessObject {
 
     /**
      * Set forfeit status on player in game
+     *
      * @param username      username
      * @param gameId        gameId
      * @param forfeitStatus 0 = default, 1 = quit, 2 = continue
@@ -232,16 +233,26 @@ public class PlayerDAO extends DataAccessObject {
         return list;
     }
 
-    public void addTrade(String seller, String buyer, int price, int propertyId, int gameId) {
+    /**
+     * Adds a trade to DB
+     * @param seller
+     * @param buyer
+     * @param sellerPrice
+     * @param buyerPrice
+     * @param propertyId
+     */
+
+    public void addTrade(String seller, String buyer, int sellerPrice, int buyerPrice, int propertyId) {
         Connection connection = getConnection();
         CallableStatement cStmt = null;
         try {
-            cStmt = connection.prepareCall("{call trading_add_trade(?, ?, ?, ?)}");
+            cStmt = connection.prepareCall("{call trading_add_trade(?, ?, ?, ?, ?)}");
 
             cStmt.setString(1,seller);
             cStmt.setString(2, buyer);
-            cStmt.setInt(3, price);
-            cStmt.setInt(4, propertyId);
+            cStmt.setInt(3, sellerPrice);
+            cStmt.setInt(4, buyerPrice);
+            cStmt.setInt(5, propertyId);
 
             cStmt.executeUpdate();
             System.out.println("adding trade.....");
@@ -256,11 +267,11 @@ public class PlayerDAO extends DataAccessObject {
 
     /**
      * Gets the elements of the Trade
+     *
      * @param username username of the player
-     * @param gameId the current game's ID
-     * @return String ArrayList of Strings, containing sellerIds, buyerIds, price and properties in the trade.
+     * @return String ArrayList of Strings, containing seller, buyer, price and properties in the trade.
      */
-    public ArrayList<String[]> getTrade(String username, int gameId) {
+    public ArrayList<String[]> getTrade(String username) {
         Connection connection = getConnection();
         CallableStatement cStmt = null;
         ResultSet rs = null;
@@ -268,18 +279,19 @@ public class PlayerDAO extends DataAccessObject {
 
         try {
             // seller_id, buyer_id, price, prperty_id
-            cStmt = connection.prepareCall("{call trading_get_trade2(?)}");  // player_id, game_id, forfeit_status
+            cStmt = connection.prepareCall("{call trading_get_trade4(?)}");  // player_id, game_id, forfeit_status
 
             cStmt.setString(1, username);
 
             if (cStmt.execute()) {
                 rs = cStmt.getResultSet();
                 while (rs.next()) {
-                    String[] data = new String[4];
+                    String[] data = new String[5];
                     data[0] = rs.getString(1); // sellerId
                     data[1] = rs.getString(2); // buyerId
-                    data[2] = rs.getString(3); // price
-                    data[3] = rs.getString(4); // propertyId
+                    data[2] = rs.getString(3); // sellerPrice
+                    data[3] = rs.getString(4); // buyerPrice
+                    data[4] = rs.getString(5); // propId
 
                     props.add(data);
                 }
@@ -296,6 +308,7 @@ public class PlayerDAO extends DataAccessObject {
 
     /**
      * sets the trade as accepted
+     *
      * @param seller username of the player that proposed the trade
      * @param buyer username of the player that accepted the trade
      */
@@ -316,8 +329,8 @@ public class PlayerDAO extends DataAccessObject {
     }
     /**
      * checks if the trade is accepted
+     *
      * @param username username of the current player
-     * @return true if there is a trade
      */
     public boolean isTrade(String username) {  // check if trade on user
         Connection connection = getConnection();
@@ -346,9 +359,10 @@ public class PlayerDAO extends DataAccessObject {
     }
 
     /**
-     * removes a trade from the database
-     * @param username username of the current player
+     * Removes trades from DB
+     * @param username
      */
+
     public void removeTrade(String username) {
         Connection connection = getConnection();
         CallableStatement cStmt = null;
@@ -365,11 +379,11 @@ public class PlayerDAO extends DataAccessObject {
     }
 
     /**
-     * gets true if all players have voted
      *
-     * @param gameId id of the current game
-     * @return true if all players have voted
+     * @param gameId
+     * @return
      */
+
 
     public boolean getForfeitCheck(int gameId){
         Connection connection = getConnection();
@@ -395,13 +409,7 @@ public class PlayerDAO extends DataAccessObject {
         }
         return(checked);
     }
-    /**
-     * Sets the vote status(forfeit_check) of a player
-     *
-     * @param gameId id of the current game
-     * @param username username of the current player
-     * @param check the new forfeit_check stat
-     */
+
     public void setForfeitCheck(int gameId, String username, boolean check){
         Connection connection = getConnection();
         CallableStatement cStmt = null;
