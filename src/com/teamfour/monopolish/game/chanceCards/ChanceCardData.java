@@ -15,7 +15,6 @@ public class ChanceCardData {
             new ChanceCardBank("'Microsoft' called to warn you about some awful virus on your computer, you should have know something was up with that accent. Total cost $2500.", "file:res/gui/chanceCard/bug.png", -2500),
             new ChanceCardPosition("One of the most wonderful things in life is to wake up and enjoy a cuddle with somebody; unless you are in prison. To bad you are going to prison.", "file:res/gui/MessagePopup/handcuffs.png", 9),
             new ChanceCardPosition("Go to start!", "file:res/gui/MessagePopup/again.png", 0),
-            new ChanceCardPrank("You just got rick rolled, Rick Astley took all your money.", "file:res/gui/chanceCard/troll.png"),
             new ChanceCardPlayers("You did not like your opponents, so you stole $600 from each and everyone.", "file:res/gui/chanceCard/stealing.png", 600),
             new ChanceCardPlayers("You wrecked the cars to the other players, pay everyone $900 for mechanical repair fees.", "file:res/gui/chanceCard/crash.png", -900)
     };

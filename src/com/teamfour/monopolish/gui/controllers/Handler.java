@@ -40,7 +40,6 @@ public class Handler {
     private static @FXML Pane tradeContainer;
     private static @FXML Pane buyHouseContainer;
     private static @FXML Pane forfeitContainer;
-//    private static boolean forfeit = false;
     private static int currentGameId;
 
     // Setter and getters

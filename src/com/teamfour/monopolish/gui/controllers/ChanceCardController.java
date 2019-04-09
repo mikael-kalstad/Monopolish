@@ -1,9 +1,9 @@
 package com.teamfour.monopolish.gui.controllers;
 
-import com.teamfour.monopolish.game.Game;
-import com.teamfour.monopolish.game.GameLogic;
-import com.teamfour.monopolish.game.chanceCards.*;
-import com.teamfour.monopolish.game.entities.EntityManager;
+import com.teamfour.monopolish.game.chanceCards.ChanceCard;
+import com.teamfour.monopolish.game.chanceCards.ChanceCardBank;
+import com.teamfour.monopolish.game.chanceCards.ChanceCardPlayers;
+import com.teamfour.monopolish.game.chanceCards.ChanceCardPosition;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.animation.ScaleTransition;
 import javafx.animation.SequentialTransition;
@@ -82,14 +82,8 @@ public class ChanceCardController {
         st.setOnFinished(e -> {
             // Check if card has been opened before
             if (unOpened) {
-                // Chance card of type Prank
-                if (cardInfo instanceof ChanceCardPrank) {
-                    cardInfo.setAmount(GameController.current_money);
-                    ((ChanceCardPrank) cardInfo).moneyTransaction();
-                }
-
                 // Chance card of type Players
-                else if(cardInfo instanceof ChanceCardPlayers) {
+                if(cardInfo instanceof ChanceCardPlayers) {
                     ((ChanceCardPlayers) cardInfo).setPlayers(Handler.getCurrentGame().getPlayers());
                     ((ChanceCardPlayers) cardInfo).moneyTransaction();
                 }
@@ -103,9 +97,6 @@ public class ChanceCardController {
                 else if (cardInfo instanceof ChanceCardPosition) {
                     ((ChanceCardPosition) cardInfo).moveToPosition();
                 }
-            } else {
-                // Stop playing sound when turning the card
-                if (cardInfo instanceof ChanceCardPrank) ChanceCardPrank.stopSound();
             }
             unOpened = false;
         });
