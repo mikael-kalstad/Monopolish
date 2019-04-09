@@ -200,7 +200,7 @@ public class GameController {
     /**
      * Stop all timers in class
      */
-    static void stopTimers() {
+    private static void stopTimers() {
         databaseTimer.cancel();
         databaseTimer.purge();
         ChatController.getChatTimer().cancel();
@@ -229,6 +229,13 @@ public class GameController {
         // Hide properties dialog and show forfeit dialog
         propertiesContainer.setVisible(false);
         forfeitContainer.setVisible(true);
+    }
+
+    /**
+     * If the player wants to give up
+     */
+    public void giveUp() {
+        Handler.getCurrentGame().getEntities().getPlayer(USERNAME).setBankrupt(true);
     }
 
     /**
@@ -280,6 +287,11 @@ public class GameController {
                 if (gameFinished) {
                     Platform.runLater(() -> announceWinner(GameLogic.stopGame()));
                 }
+
+                Platform.runLater(() -> {
+                    updatePlayersInfo();
+                    updateClientControls();
+                });
             }
         };
 
@@ -308,13 +320,6 @@ public class GameController {
             GameLogic.onPlayerLeave();
             Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
         });
-    }
-
-    /**
-     * If the player is in a situation where he can give up
-     */
-    public void giveUp() {
-
     }
 
     /**

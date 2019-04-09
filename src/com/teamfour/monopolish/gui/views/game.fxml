@@ -683,14 +683,6 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="giveUpBtn" disable="true" layoutX="252.0" layoutY="453.0" mnemonicParsing="false" onAction="#giveUp" prefHeight="50.0" prefWidth="116.0" style="-fx-background-color: ef5350;" text="Give up" textFill="#fafafa">
-               <font>
-                  <Font size="18.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
          </children>
       </Pane>
       <AnchorPane layoutX="419.0" layoutY="171.0" prefHeight="719.0" prefWidth="720.0" style="-fx-background-color: #DCEDC8;">
@@ -753,7 +745,7 @@
             </ImageView>
          </children>
       </Pane>
-      <Button layoutX="40.0" layoutY="131.0" mnemonicParsing="false" onAction="#leave" prefHeight="40.0" prefWidth="95.0" style="-fx-background-color: ef5350;" text="Quit" textFill="#fafafa">
+      <Button layoutX="31.0" layoutY="131.0" mnemonicParsing="false" onAction="#leave" prefHeight="40.0" prefWidth="75.0" style="-fx-background-color: ef5350;" text="Leave" textFill="#fafafa">
          <font>
             <Font size="16.0" />
          </font>
@@ -761,7 +753,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button layoutX="180.0" layoutY="131.0" mnemonicParsing="false" onAction="#forfeit" prefHeight="40.0" prefWidth="95.0" style="-fx-background-color: #FF9800;" text="Forfeit" textFill="#fafafa">
+      <Button layoutX="210.0" layoutY="131.0" mnemonicParsing="false" onAction="#forfeit" prefHeight="40.0" prefWidth="77.0" style="-fx-background-color: #FF9800;" text="Forfeit" textFill="#fafafa">
          <font>
             <Font size="16.0" />
          </font>
@@ -774,6 +766,14 @@
             <Font name="System Bold" size="32.0" />
          </font>
       </Label>
+      <Button fx:id="giveUpBtn" layoutX="116.0" layoutY="131.0" mnemonicParsing="false" onAction="#giveUp" prefHeight="40.0" prefWidth="83.0" style="-fx-background-color: #666;" text="Give up" textFill="#fafafa">
+         <font>
+            <Font size="16.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
       <Pane fx:id="messagePopupContainer" layoutX="12.0" layoutY="1000.0" prefHeight="46.0" prefWidth="330.0" />
       <Pane fx:id="settingsContent" layoutX="40.0" layoutY="108.0" onMouseEntered="#toggleSettings" onMouseExited="#toggleSettings" prefHeight="113.0" prefWidth="235.0" style="-fx-background-color: ededed; -fx-border-width: 1 0 0 0; -fx-border-color: #999;" visible="false">
          <children>

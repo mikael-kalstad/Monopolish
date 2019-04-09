@@ -88,6 +88,7 @@ public class buyHouseController {
                         //if the transaction goes through and a house is added, number of houses is updated. Otherwise it shows the error label.
                         if (GameLogic.buyHouse((Street) PROPERTY)) {
                             numOfHousesLabel.setText("Number of houses: " + ((Street) PROPERTY).getHouses());
+                            GameLogic.updateToDatabase();
 
                             //again if there are four houses after the 'buyHouse' method, the 'buy' button is set to 'hotel'
                             if (((Street) PROPERTY).getHouses() == 4)
