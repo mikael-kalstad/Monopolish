@@ -35,8 +35,6 @@ public class ChatController {
         // "Close" chat / move it down
         chatContainer.setTranslateY(275);
 
-        System.out.println("CHAT INITIALIZE, should only run once");
-
         // Update chat messages periodically
         TimerTask task = new TimerTask() {
             @Override

@@ -48,7 +48,7 @@ public class GameController {
     private Game game;
     private final int GAME_ID = Handler.getCurrentGameId();
     private final String USERNAME = Handler.getAccount().getUsername();
-    static int current_money = 0;
+    private int current_money = 0;
     private boolean firstTurn = true;
 
     // Background overlays
@@ -65,7 +65,7 @@ public class GameController {
     @FXML ImageView dice1_img, dice2_img;
 
     // Elements in sidebar
-    @FXML private Button rolldiceBtn, endturnBtn, payBailBtn;
+    @FXML private Button rolldiceBtn, endturnBtn, giveUpBtn;
     @FXML private Label roundValue, statusValue;
     @FXML private Label username, userMoney;
     @FXML private Pane userColor, userPropertiesIcon;
@@ -107,6 +107,7 @@ public class GameController {
     @FXML private Pane winnerContainer;
     @FXML private Text winnerMsg;
     @FXML private Button winnerBtn;
+    static boolean gameFinished = false;
 
     /**
      * Launches when the scene is loaded.
@@ -274,6 +275,11 @@ public class GameController {
                     stopTimers();
                     Platform.runLater(() -> announceWinner(winner));
                 }
+
+//                if (gameFinished) {
+//                    String winner = game.getEntities().findWinner();
+//                    Platform.runLater(() -> announceWinner(winner));
+//                }
             }
         };
 
@@ -374,7 +380,7 @@ public class GameController {
      *
      * @param username Target user
      */
-    public void showProperties(String username) {
+    private void showProperties(String username) {
         // Show backgroundOverlay
         backgroundOverlay.setVisible(true);
 
@@ -472,7 +478,7 @@ public class GameController {
                     updateBoard();
                 });
             }
-        }, 0l, 1000l);
+        }, 0L, 1000L);
     }
 
     /**
@@ -665,7 +671,7 @@ public class GameController {
     /**
      * Updates all the scene's graphics to reflect the changes in the database
      */
-    public void updateBoard() {
+    private void updateBoard() {
         String[] turns = game.getPlayers();
         String[] colors = new String[turns.length];
         int[] positions = null;
@@ -712,7 +718,7 @@ public class GameController {
      * This method runs at the start of each new turn, regardless if it's your turn or not
      * A couple things needs to be updated at the start of each turn
      */
-    public void yourTurn() {
+    private void yourTurn() {
         // If you're bankrupt, end your turn right away since you're not really allowed to play
         if (game.getEntities().getYou().isBankrupt()) {
             endTurn();
@@ -723,7 +729,6 @@ public class GameController {
         if (playSounds) Handler.playSound("res/sounds/pling.mp3");
 
         // Set buttons state
-        payBailBtn.setDisable(false);
         rolldiceBtn.setDisable(false);
 
         if (game.getEntities().getYou().isInJail())
@@ -740,10 +745,8 @@ public class GameController {
      * @param container for the propertyIcon
      * @param username  target user
      */
-    public void setPropertyOnClick(Pane container, String username) {
-        container.setOnMouseClicked(e -> {
-            showProperties(username);
-        });
+    private void setPropertyOnClick(Pane container, String username) {
+        container.setOnMouseClicked(e -> showProperties(username));
     }
 
     /**
@@ -829,13 +832,13 @@ public class GameController {
     /**
      * Lets the player choose to purchase a property
      */
-    public void buyProperty() {
+    private void buyProperty() {
         Alert buyprompt = new Alert(Alert.AlertType.CONFIRMATION, "Do you wish to purchase this property?",
                 ButtonType.YES, ButtonType.NO);
         buyprompt.showAndWait();
 
         if (buyprompt.getResult() == ButtonType.YES) {
-            // Perform the transaction of property through gamelogic
+            // Perform the transaction of property through gameLogic
             if (GameLogic.purchaseProperty()) {
                 // Update board
                 updateBoard();
@@ -871,7 +874,7 @@ public class GameController {
     /**
      * Pay income tax
      */
-    public void payTax() {
+    private void payTax() {
         GameLogic.payTax();
         updateBoard();
         checkDiceThrow();
@@ -880,7 +883,7 @@ public class GameController {
     /**
      * Attempts to pay the player with the current owned property with the proper rent
      */
-    public void rentTransaction() {
+    private void rentTransaction() {
         GameLogic.payRent();
         updateBoard();
         checkDiceThrow();

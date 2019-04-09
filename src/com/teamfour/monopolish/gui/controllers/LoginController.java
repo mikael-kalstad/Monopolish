@@ -22,17 +22,6 @@ public class LoginController {
     @FXML private TextField passwordInput;
     @FXML private Text msg;
 
-    // Color constants
-    private final String COLOR_NORMAL = "white";
-    private final String COLOR_REQUIRED = "orange";
-    private final String COLOR_WARNING = "red";
-
-    // Msg constants
-    private final String MSG_REQUIRED = "*Field is required";
-    private final String MSG_WARNING = "*Username/email or password is wrong";
-    private final String MSG_DATABASE_ERROR = "*Database error, try again";
-    private final String MSG_USER_LOGGED_IN_ERROR = "*User already logged in";
-
     // Check if connection pool is already created
     private boolean connectionCreated = false;
 
@@ -47,7 +36,7 @@ public class LoginController {
                 "-fx-border-color: " + color + ";" +
                 "-fx-border-width: 0 0 2 0;" +
                 "-fx-background-color: transparent;" +
-                "-fx-text-inner-color: " + COLOR_NORMAL + ";");
+                "-fx-text-inner-color: white;");
     }
 
     /**
@@ -78,6 +67,15 @@ public class LoginController {
      * @param warning If true show warning msg
      */
     private void checkInput(TextField input, Text textElement, boolean warning, boolean dbError, boolean alreadyLoggedIn) {
+        final String COLOR_WARNING = "red";
+        final String COLOR_REQUIRED = "orange";
+
+        // Msg constants
+        final String MSG_REQUIRED = "*Field is required";
+        final String MSG_WARNING = "*Username/email or password is wrong";
+        final String MSG_DATABASE_ERROR = "*Database error, try again";
+        final String MSG_USER_LOGGED_IN_ERROR = "*User already logged in";
+
         // Required styling
         if (input.getText().trim().isEmpty()) {
             setBorderStyle(input, COLOR_REQUIRED);
@@ -87,7 +85,7 @@ public class LoginController {
         }
         // Do not show warning if some input is empty
         else if (inputsEmpty()) {
-            setBorderStyle(input, COLOR_NORMAL);
+            setBorderStyle(input, "white");
         }
         // Database error
         else if (dbError) {
@@ -112,7 +110,7 @@ public class LoginController {
         }
         // Normal styling
         else {
-            setBorderStyle(input, COLOR_NORMAL);
+            setBorderStyle(input, "white");
             if (inputsEmpty()) textElement.setVisible(false);
         }
     }
@@ -150,15 +148,13 @@ public class LoginController {
                     connectionCreated = true;
                 }
 
-                // --- UNCOMMENT BEFORE PRODUCTION ---
-
                 //Check if user is already logged in
-//                if (Handler.getAccountDAO().getActive(usernameInput.getText())) {
-//                    alreadyLoggedIn = true;
-//                }
+                if (Handler.getAccountDAO().getActive(usernameInput.getText())) {
+                    alreadyLoggedIn = true;
+                }
 
                 // User is not already logged in or does not exists
-//                else {
+                else {
                     // Get response from database with inputs
                     res = Handler.getAccountDAO().getAccountByCredentials(usernameInput.getText(), passwordInput.getText());
 
@@ -169,7 +165,7 @@ public class LoginController {
                         canLogin = true;
                         dbError = false;
                     }
-//                }
+                }
             }
             catch (CommunicationsException e) {
                 dbError = true;
