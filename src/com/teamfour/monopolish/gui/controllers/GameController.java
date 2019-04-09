@@ -85,7 +85,7 @@ public class GameController {
     @FXML private Text tradeMsg;
 
     // Container for trade
-    @FXML public static Pane tradeContainer;
+    @FXML public Pane tradeContainer;
 
     // Message popup
     @FXML private Pane messagePopupContainer;
@@ -407,8 +407,8 @@ public class GameController {
         tradeBtn.setOnMouseClicked(e -> {
             propertiesContainer.setVisible(false);
             backgroundOverlay.setVisible(false);
-            tradeContainer.getChildren().clear();
             tradeContainer.setVisible(true);
+
             Handler.setTradeUsername(username);
             addElementToContainer(ViewConstants.TRADING.getValue(), tradeContainer);
         });
@@ -580,11 +580,6 @@ public class GameController {
 
                     propertyBtn.setOnMouseClicked(e -> rentTransaction());
                 }
-
-                if (yourPosition == 4) {
-                    Handler.playSound("res/sounds/drei.mp3");
-                    MessagePopupController.show("Now playing: Sound Log from TS Sola, 08.11.2018", "music.png", "Local Disk Jockey");
-                }
                 break;
 
             case Board.START:
@@ -665,10 +660,11 @@ public class GameController {
             // Draw player pieces on the board
             GameControllerDrawFx.createPlayerPieces(gamegrid, positions, colors);
 
-            for(String player : turns){
+            for (String player : turns){
+                if (game.getEntities().getPlayer(player) == null) continue;
 
-                for(Property property : game.getEntities().getPlayer(player).getProperties()){
-                    if(property instanceof Street) {
+                for (Property property : game.getEntities().getPlayer(player).getProperties()){
+                    if (property instanceof Street) {
                         GameControllerDrawFx.drawHouse(housegrid, (Street) property);
                     }
                 }
