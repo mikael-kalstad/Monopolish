@@ -1,14 +1,11 @@
 package com.teamfour.monopolish.gui.controllers;
 
 import com.teamfour.monopolish.database.ConnectionPool;
-import com.teamfour.monopolish.game.Board;
-import com.teamfour.monopolish.game.Game;
-import com.teamfour.monopolish.game.GameLogic;
+import com.teamfour.monopolish.game.*;
 import com.teamfour.monopolish.game.chanceCards.ChanceCard;
 import com.teamfour.monopolish.game.chanceCards.ChanceCardData;
 import com.teamfour.monopolish.game.entities.player.Player;
-import com.teamfour.monopolish.game.property.Property;
-import com.teamfour.monopolish.game.property.Street;
+import com.teamfour.monopolish.game.property.*;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.animation.ParallelTransition;
 import javafx.animation.RotateTransition;

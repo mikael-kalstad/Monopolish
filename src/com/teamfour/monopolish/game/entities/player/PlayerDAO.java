@@ -42,7 +42,7 @@ public class PlayerDAO extends DataAccessObject {
      * @param player  the Player object that gets updated
      * @param game_id the id of the current game
      */
-    public boolean updatePlayer(Player player, int game_id) throws SQLException {
+    public boolean updatePlayer(Player player, int game_id) {
         Connection connection = getConnection();
         CallableStatement cStmt = null;
         int count = 0;
@@ -61,7 +61,6 @@ public class PlayerDAO extends DataAccessObject {
             count = cStmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new SQLException();
         } finally {
             close(cStmt);
             releaseConnection(connection);

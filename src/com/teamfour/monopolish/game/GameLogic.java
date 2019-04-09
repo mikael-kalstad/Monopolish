@@ -2,13 +2,9 @@ package com.teamfour.monopolish.game;
 
 import com.teamfour.monopolish.game.entities.EntityManager;
 import com.teamfour.monopolish.game.entities.player.Player;
-import com.teamfour.monopolish.game.property.Boat;
-import com.teamfour.monopolish.game.property.Property;
-import com.teamfour.monopolish.game.property.Street;
-import com.teamfour.monopolish.game.property.Train;
+import com.teamfour.monopolish.game.property.*;
 import com.teamfour.monopolish.gui.controllers.Handler;
 import com.teamfour.monopolish.gui.controllers.MessagePopupController;
-import javafx.application.Platform;
 
 import java.sql.SQLException;
 

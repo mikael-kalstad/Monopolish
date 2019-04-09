@@ -1,5 +1,6 @@
 package com.teamfour.monopolish.account;
 
+import com.mysql.cj.jdbc.exceptions.CommunicationsException;
 import com.mysql.cj.protocol.Resultset;
 import com.teamfour.monopolish.database.ConnectionPool;
 import com.teamfour.monopolish.database.DataAccessObject;
@@ -21,7 +22,7 @@ public class AccountDAO extends DataAccessObject {
      * @return True if the operation was successful, false if this user already exists
      * @throws SQLException
      */
-    public int insertAccount(Account account, String password) throws SQLException {
+    public int insertAccount(Account account, String password) {
         Connection connection = getConnection();
         CallableStatement cStmt = null;
         int status = 0;
@@ -44,7 +45,6 @@ public class AccountDAO extends DataAccessObject {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new SQLException();
         } finally {
             close(cStmt);
             releaseConnection(connection);
@@ -59,7 +59,7 @@ public class AccountDAO extends DataAccessObject {
      * @param password Password of the account
      * @return Null if credentials are wrong
      */
-    public Account getAccountByCredentials(String username, String password) throws SQLException {
+    public Account getAccountByCredentials(String username, String password) {
         Connection connection = getConnection();
         CallableStatement cStmt = null;
         ResultSet rs = null;
@@ -81,7 +81,6 @@ public class AccountDAO extends DataAccessObject {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new SQLException();
         } finally {
             close(rs);
             close(cStmt);
@@ -95,7 +94,7 @@ public class AccountDAO extends DataAccessObject {
      * Sets the account active stat as false
      * @param username Username of the account
      */
-    public void setInactive(String username) /*throws SQLException */{
+    public void setInactive(String username) {
         Connection connection = getConnection();
         CallableStatement cStmt = null;
         try {
@@ -150,7 +149,7 @@ public class AccountDAO extends DataAccessObject {
      * @param username Username of the account
      * @return number of games played
      */
-    public int getGamesPlayed(String username) /*throws SQLException */{
+    public int getGamesPlayed(String username) {
         Connection connection = getConnection();
         CallableStatement cStmt = null;
         ResultSet rs = null;
@@ -169,7 +168,6 @@ public class AccountDAO extends DataAccessObject {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            //throw new SQLException();
         } finally {
             close(rs);
             close(cStmt);
@@ -183,7 +181,7 @@ public class AccountDAO extends DataAccessObject {
      * @param username Username of the account
      * @return the highscore of the user
      */
-    public int getHighscore(String username) /*throws SQLException */{
+    public int getHighscore(String username) {
         Connection connection = getConnection();
         CallableStatement cStmt = null;
         ResultSet rs = null;
@@ -200,7 +198,6 @@ public class AccountDAO extends DataAccessObject {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            //throw new SQLException();
         } finally {
             close(rs);
             close(cStmt);

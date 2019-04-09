@@ -31,6 +31,10 @@ public abstract class DataAccessObject {
         connection = null;
     }
 
+    /**
+     * Properly closes a database resource
+     * @param object Resource to close
+     */
     protected void close(Object object) {
         if (object == null) return;
         try {
