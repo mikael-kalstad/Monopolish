@@ -56,7 +56,6 @@ public class ConnectionPool {
         for (int i = 0; i < INITIAL_POOL_SIZE; i++) {
             Connection connection = createConnection(url, username, password);
             pool.add(createConnection(url, username, password));
-            System.out.println(System.identityHashCode(connection));
         }
         mainConnectionPool = new ConnectionPool(url, username, password, pool);
     }
@@ -128,12 +127,6 @@ public class ConnectionPool {
      * @throws SQLException
      */
     public void shutdown() throws SQLException {
-        /*
-        usedConnections.forEach(this::releaseConnection);
-        for(Connection c : connectionPool) {
-            c.close();
-        }*/
-
         for (Iterator<Connection> iterator = usedConnections.iterator(); iterator.hasNext();) {
             Connection c = iterator.next();
             if (c != null) c.close();

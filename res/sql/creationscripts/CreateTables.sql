@@ -18,9 +18,6 @@ DROP TABLE IF EXISTS property;
 DROP TABLE IF EXISTS gameproperty;
 DROP TABLE IF EXISTS chatmessage;
 DROP TABLE IF EXISTS trading;
-DROP TABLE IF EXISTS eventlog;
-
-
 -- Enable again
 SET FOREIGN_KEY_CHECKS=1;
 /*
@@ -43,7 +40,7 @@ CREATE TABLE account
 CREATE TABLE lobbyname
 (
   lobby_id INT NOT NULL,
-  lobbyname VARCHAR(30) NOT NULL,
+  lobbyname VARCHAR(30) NOT NULL
   CONSTRAINT pk_lobbname PRIMARY KEY(lobby_id)
 ); # represents the lobby
 
@@ -113,14 +110,6 @@ create table chatmessage(
   message varchar(40),
   primary key (message_id)
 ); # represents chatmessages from a players
-
-create table eventlog(
-  event_id integer not null auto_increment,
-  game_id integer not null,
-  time_in datetime not null,
-  event_text varchar(40),
-  primary key (event_id)
-); # creates messages that can be distributed to all players, to keep them updated.
 
 CREATE TABLE trading(
   trade_id INT NOT NULL AUTO_INCREMENT,
