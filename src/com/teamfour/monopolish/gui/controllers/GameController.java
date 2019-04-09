@@ -1,5 +1,6 @@
 package com.teamfour.monopolish.gui.controllers;
 
+import com.teamfour.monopolish.database.ConnectionPool;
 import com.teamfour.monopolish.game.Board;
 import com.teamfour.monopolish.game.Game;
 import com.teamfour.monopolish.game.GameLogic;
@@ -163,6 +164,10 @@ public class GameController {
 
                 // Logout user
                 Handler.getAccountDAO().setInactive(USERNAME);
+
+                // Close connection
+                try { ConnectionPool.getMainConnectionPool().shutdown(); }
+                catch (SQLException ex) { ex.printStackTrace(); }
 
                 // Close the window
                 Handler.getSceneManager().getWindow().close();
