@@ -17,7 +17,7 @@ public class buyHouseController {
 
     @FXML private Label buyHouseLabel, numOfHousesLabel, numOfHotelsLabel, errorLabel;
     @FXML private FlowPane buyHouseCardContainer;
-    @FXML private Button buyHouseBtn, buyHouseCloseBtn;
+    @FXML private Button buyHouseBtn, buyHouseCloseBtn, pawnBtn;
 
     public void initialize() {
 
@@ -39,18 +39,35 @@ public class buyHouseController {
                 if (container != null) container.setVisible(false);
             });
 
-            //you need all streets in a colorcategory to be able to buy houses:
-            if (game.getEntities().getPlayer(PROPERTY.getOwner()).hasFullSet(Handler.getCurrentGameId(), PROPERTY.getCategorycolor())) {
+            //change some text accordingly to status:
+            if (PROPERTY.isPawned())
+                pawnBtn.setText("Unpawn");
+
+            //Set the button for pawning properties
+            pawnBtn.setOnAction(event -> {
+                if (!(PROPERTY.isPawned())){
+                    if (GameLogic.pawnProperty(PROPERTY))
+                        pawnBtn.setText("Unpawn");
+                }
+
+                if (PROPERTY.isPawned()){
+                    if(GameLogic.unpawnProperty(PROPERTY))
+                        pawnBtn.setText("Pawn");
+                } else {
+                    errorLabel.setText("Not enough money to unpawn");
+                }
+            });
+
+            //you need all streets in a colorcategory to be able to buy houses, and it can't be pawned
+            if (game.getEntities().getPlayer(PROPERTY.getOwner()).hasFullSet(Handler.getCurrentGameId(), PROPERTY.getCategorycolor()) && !(PROPERTY.isPawned())) {
 
                 //Unless there is a hotel on the property, in which case we can't buy any more houses, the 'buy' button is enabled
-                if (((Street) PROPERTY).getHotels() != 1) {
+                if (((Street) PROPERTY).getHotels() != 1)
                     buyHouseBtn.setDisable(false);
-                }
 
                 //if there are 4 houses the 'buy' button text is set to 'buy hotel'
-                if (((Street) PROPERTY).getHouses() == 4) {
+                if (((Street) PROPERTY).getHouses() == 4)
                     buyHouseBtn.setText("Buy hotel");
-                }
 
                 //setting the 'buy' button
                 buyHouseBtn.setOnAction(event -> {
