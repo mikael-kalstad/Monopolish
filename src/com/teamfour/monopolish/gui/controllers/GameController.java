@@ -56,6 +56,7 @@ public class GameController {
     // Background overlays
     @FXML private Pane backgroundOverlay;
     @FXML private Pane helpOverlay;
+    @FXML private Pane propertiesDialogOverlay;
 
     // Elements in board
     @FXML private AnchorPane cardContainer;
@@ -208,7 +209,6 @@ public class GameController {
      */
     public void forfeit() {
         forfeit = true;
-
         Handler.getGameDAO().setForfeit(GAME_ID, true);
 
         // Load forfeit GUI
@@ -216,6 +216,9 @@ public class GameController {
 
         // Show background overlay
         backgroundOverlay.setVisible(true);
+
+        // User should not be able to close dialog onclick background
+        backgroundOverlay.setOnMouseClicked(e -> {});
 
         // Hide properties dialog and show forfeit dialog
         propertiesContainer.setVisible(false);
@@ -239,15 +242,15 @@ public class GameController {
                 // 1. Check for forfeit
                 boolean gameForfeit = Handler.getGameDAO().getForfeit(GAME_ID);
 
+                System.out.println("forfeit: " + forfeit);
                 if (!forfeit && gameForfeit) {
                     Platform.runLater(() -> forfeit());
-                } else if (!gameForfeit) {
+                } else if (forfeit && !gameForfeit) {
                     backgroundOverlay.setVisible(false);
                 }
 
                 // Check if forfeit checks should be reset
-                if (Handler.getPlayerDAO().getForfeitCheck(GAME_ID)) {
-
+                if (!forfeit && Handler.getPlayerDAO().getForfeitCheck(GAME_ID)) {
                     // Reset all player forfeit votes and checks
                     for (String u : Handler.getCurrentGame().getPlayers()) {
                         Handler.getPlayerDAO().setForfeitStatus(u, GAME_ID, 0);
@@ -279,7 +282,7 @@ public class GameController {
      * and includes a button that will go back to the dashboard.
      * @param winner Name of the player that won the game
      */
-    public void announceWinner(String winner) {
+    private void announceWinner(String winner) {
         // Set fixed background overlay
         backgroundOverlay.setVisible(true);
         backgroundOverlay.setOnMouseClicked(e -> {});
@@ -385,8 +388,17 @@ public class GameController {
 
             if (username.equals(USERNAME)) {
                 card.setOnMouseClicked(event -> {
-                    buyHouseContainer.getChildren().clear();
                     buyHouseContainer.setVisible(true);
+
+                    // Set background overlay
+                    propertiesDialogOverlay.setVisible(true);
+
+                    // Hide onclick
+                    propertiesDialogOverlay.setOnMouseClicked(e -> {
+                        propertiesDialogOverlay.setVisible(false);
+                        buyHouseContainer.setVisible(false);
+                    });
+
                     Handler.setBuyHouseProperty(p);
                     addElementToContainer(ViewConstants.BUY_HOUSE.getValue(), buyHouseContainer);
                 });
