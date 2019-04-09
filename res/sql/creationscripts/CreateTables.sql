@@ -18,7 +18,8 @@ DROP TABLE IF EXISTS property;
 DROP TABLE IF EXISTS gameproperty;
 DROP TABLE IF EXISTS chatmessage;
 DROP TABLE IF EXISTS trading;
-DROP TABLE IF EXISTS eventlog;
+-- DROP TABLE IF EXISTS eventlog;
+DROP TABLE IF EXISTS tradeProperty;
 
 
 -- Enable again
@@ -113,7 +114,7 @@ create table chatmessage(
   message varchar(40),
   primary key (message_id)
 ); # represents chatmessages from a players
-
+/**
 create table eventlog(
   event_id integer not null auto_increment,
   game_id integer not null,
@@ -121,16 +122,22 @@ create table eventlog(
   event_text varchar(40),
   primary key (event_id)
 ); # creates messages that can be distributed to all players, to keep them updated.
-
+*/
 CREATE TABLE trading(
   trade_id INT NOT NULL AUTO_INCREMENT,
   seller_id INT NOT NULL, -- sellers player_id
   buyer_id INT NOT NULL, -- buyers player_id
-  price INT DEFAULT 0,
-  prop_id INT NOT NULL,
-  accepted BIT NOT NULL DEFAULT 0,
+  seller_price INT DEFAULT 0,
+  buyer_price INT DEFAULT 0,
+  accepted INT NOT NULL DEFAULT 0,
   PRIMARY KEY (trade_id)
 ); # represents trade deals
+
+CREATE TABLE tradeProperty(
+  trade_id INT NOT NULL AUTO_INCREMENT,
+  prop_id INT NOT NULL,
+  PRIMARY KEY (trade_id, prop_id)
+);
 
 /*
 ADD FOREIGN KEYS
@@ -140,8 +147,11 @@ ALTER TABLE trading
   ADD FOREIGN KEY (seller_id) REFERENCES player(player_id);
 ALTER TABLE trading
   ADD FOREIGN KEY (buyer_id) REFERENCES player(player_id);
-ALTER TABLE trading
+
+ALTER TABLE tradeProperty
   ADD FOREIGN KEY (prop_id) REFERENCES property(property_id);
+ALTER TABLE tradeProperty
+    ADD FOREIGN KEY (trade_id) REFERENCES trading(trade_id);
 -- ADD FOREIGN KEY (prop_id) REFERENCES gameproperty(property_id);
 
 ALTER TABLE lobby
@@ -164,5 +174,5 @@ ALTER TABLE gameproperty
 ALTER TABLE chatmessage
   ADD FOREIGN KEY (player_id) REFERENCES player(player_id) ;
 
-ALTER TABLE eventlog
-  ADD FOREIGN KEY (game_id) REFERENCES game(game_id);
+-- ALTER TABLE eventlog
+  -- ADD FOREIGN KEY (game_id) REFERENCES game(game_id);
