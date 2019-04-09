@@ -43,9 +43,6 @@ public class GameLogic {
             // Get a list of players and their turn order
             String[] players = entities.getUsernames();
             game.setPlayers(players);
-            for (int i = 0; i < players.length; i++) {
-                System.out.println((i + 1) + ": " + players[i]);
-            }
 
             // Write current player and money amounts to database
             Handler.getGameDAO().setCurrentPlayer(gameId, players[0]);
@@ -228,7 +225,6 @@ public class GameLogic {
         Player yourPlayer = entities.getYou();
 
         // Check if your player has a free parking token, if so return immediately
-        System.out.println("Free parking: " + yourPlayer.hasFreeParking());
         if (yourPlayer.hasFreeParking()) {
             MessagePopupController.show("You have a 'Free Parking' token! You don't have to pay rent here", "parking.png");
             yourPlayer.setFreeParking(false);
@@ -383,18 +379,21 @@ public class GameLogic {
      * Will be run when the game is finished or the players choose to forfeit.
      * It will update and clean up the database to make sure scores are saved,
      * and that the game and lobby is deleted to avoid issues when players play again later.
+     * @return Winner username
      */
-    public static void endGame() {
+    public static String stopGame() {
         // End game in database
         String[] players = game.getPlayers();
         for(int i = 0; i<players.length; i++){
-            Handler.getPlayerDAO().endGame(Handler.getCurrentGameId(), players[i]);
+            Handler.getPlayerDAO().endGame(game.getGameId(), players[i]);
         }
-        Handler.getGameDAO().finishGame(Handler.getCurrentGameId());
+        Handler.getGameDAO().finishGame(game.getGameId());
 
         // Delete lobby
         int lobbyId = Handler.getLobbyDAO().getLobbyId(Handler.getAccount().getUsername());
         Handler.getLobbyDAO().deleteLobby(lobbyId);
+
+        return Handler.getGameDAO().getWinner(game.getGameId());
     }
 
     /**

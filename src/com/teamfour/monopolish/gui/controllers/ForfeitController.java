@@ -181,7 +181,7 @@ public class ForfeitController {
      */
     private void endGame() {
         GameController.stopTimers();
-        GameLogic.endGame();
+        GameLogic.stopGame();
 
         // Switch to dashboard!
         Platform.runLater(() -> Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue()));
