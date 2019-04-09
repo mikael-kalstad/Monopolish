@@ -1,6 +1,7 @@
 package com.teamfour.monopolish.game;
 
 import com.teamfour.monopolish.database.DataAccessObject;
+import com.teamfour.monopolish.game.property.Street;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -209,7 +210,6 @@ public class GameDAO extends DataAccessObject {
         return forfeit;
     }
 
-
     public void setForfeit(int gameId, boolean forfeit){
         Connection connection = getConnection();
         CallableStatement cStmt = null;
@@ -224,5 +224,28 @@ public class GameDAO extends DataAccessObject {
             close(cStmt);
             releaseConnection(connection);
         }
+    }
+
+    public String getWinner(int gameId){
+        Connection connection = getConnection();
+        CallableStatement cStmt = null;
+        ResultSet rs = null;
+        String winner = null;
+        try {
+            cStmt = connection.prepareCall("{call get_winner(?, ?)}");
+            cStmt.setInt(1, gameId);
+            cStmt.registerOutParameter(2, Types.VARCHAR);
+            if (cStmt.execute()) {
+                winner = cStmt.getString(2);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(rs);
+            close(cStmt);
+            releaseConnection(connection);
+        }
+        return winner;
     }
 }

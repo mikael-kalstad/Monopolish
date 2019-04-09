@@ -179,3 +179,18 @@ CREATE PROCEDURE set_forfeit(in gameid int, in forfeit_in BIT)
 BEGIN
   update game set forfeit = forfeit_in where gameid = game_id;
 END;
+
+/**
+Procedure to get the winner of a game
+
+  in gameid: game_id
+  out winner: The winner username
+
+issued by: GameDAO.getWinner()
+ */
+CREATE PROCEDURE game_get_winner(IN gameid INT, OUT winner VARCHAR(30))
+  BEGIN
+    SET winner = (SELECT a.username FROM player p
+                  JOIN account a on p.user_id = a.user_id
+                  WHERE p.game_id=gameid ORDER BY score DESC LIMIT 1);
+  END;
