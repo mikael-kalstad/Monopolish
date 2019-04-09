@@ -277,10 +277,9 @@ public class GameController {
                     Platform.runLater(() -> announceWinner(winner));
                 }
 
-//                if (gameFinished) {
-//                    String winner = game.getEntities().findWinner();
-//                    Platform.runLater(() -> announceWinner(winner));
-//                }
+                if (gameFinished) {
+                    Platform.runLater(() -> announceWinner(GameLogic.stopGame()));
+                }
             }
         };
 
@@ -294,6 +293,8 @@ public class GameController {
      * @param winner Name of the player that won the game
      */
     private void announceWinner(String winner) {
+        stopTimers();
+
         // Set fixed background overlay
         backgroundOverlay.setVisible(true);
         backgroundOverlay.setOnMouseClicked(e -> {});

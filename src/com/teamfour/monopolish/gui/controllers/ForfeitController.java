@@ -162,7 +162,7 @@ public class ForfeitController {
      * Check which option has the most votes and handle action based on the votes.
      */
     private void checkVotes() {
-        if (votesForQuit > votesForContinue) endGame();
+        if (votesForQuit > votesForContinue) GameController.gameFinished = true;
         else {
             // Hide forfeit container
             Handler.getForfeitContainer().setVisible(false);
@@ -179,11 +179,11 @@ public class ForfeitController {
     /**
      * End the game and switch to Dashboard
      */
-    private void endGame() {
-        GameController.stopTimers();
-        GameLogic.stopGame();
-
-        // Switch to dashboard!
-        Platform.runLater(() -> Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue()));
-    }
+//    private void endGame() {
+//        GameController.stopTimers();
+//        GameLogic.stopGame();
+//
+//        // Switch to dashboard!
+//        Platform.runLater(() -> Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue()));
+//    }
 }
