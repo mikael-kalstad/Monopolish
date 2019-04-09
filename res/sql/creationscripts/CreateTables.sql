@@ -18,6 +18,8 @@ DROP TABLE IF EXISTS property;
 DROP TABLE IF EXISTS gameproperty;
 DROP TABLE IF EXISTS chatmessage;
 DROP TABLE IF EXISTS trading;
+DROP TABLE IF EXISTS tradeProperty;
+
 -- Enable again
 SET FOREIGN_KEY_CHECKS=1;
 /*
@@ -40,7 +42,8 @@ CREATE TABLE account
 CREATE TABLE lobbyname
 (
   lobby_id INT NOT NULL,
-  lobbyname VARCHAR(30) NOT NULL
+  lobbyname VARCHAR(30) NOT NULL,
+  session_code INT,
   CONSTRAINT pk_lobbname PRIMARY KEY(lobby_id)
 ); # represents the lobby
 
@@ -90,6 +93,7 @@ create table game(
   endtime datetime,
   currentplayer integer,
   forfeit bit default 0,
+  session_code INT,
   primary key(game_id)
 ); # represents the current status of the game
 
@@ -115,11 +119,17 @@ CREATE TABLE trading(
   trade_id INT NOT NULL AUTO_INCREMENT,
   seller_id INT NOT NULL, -- sellers player_id
   buyer_id INT NOT NULL, -- buyers player_id
-  price INT DEFAULT 0,
-  prop_id INT NOT NULL,
-  accepted BIT NOT NULL DEFAULT 0,
+  seller_price INT DEFAULT 0,
+  buyer_price INT DEFAULT 0,
+  accepted INT NOT NULL DEFAULT 0,
   PRIMARY KEY (trade_id)
 ); # represents trade deals
+
+CREATE TABLE tradeProperty(
+  trade_id INT NOT NULL AUTO_INCREMENT,
+  prop_id INT NOT NULL,
+  PRIMARY KEY (trade_id, prop_id)
+);
 
 /*
 ADD FOREIGN KEYS
@@ -129,8 +139,11 @@ ALTER TABLE trading
   ADD FOREIGN KEY (seller_id) REFERENCES player(player_id);
 ALTER TABLE trading
   ADD FOREIGN KEY (buyer_id) REFERENCES player(player_id);
-ALTER TABLE trading
+
+ALTER TABLE tradeProperty
   ADD FOREIGN KEY (prop_id) REFERENCES property(property_id);
+ALTER TABLE tradeProperty
+    ADD FOREIGN KEY (trade_id) REFERENCES trading(trade_id);
 -- ADD FOREIGN KEY (prop_id) REFERENCES gameproperty(property_id);
 
 ALTER TABLE lobby
@@ -153,5 +166,5 @@ ALTER TABLE gameproperty
 ALTER TABLE chatmessage
   ADD FOREIGN KEY (player_id) REFERENCES player(player_id) ;
 
-ALTER TABLE eventlog
-  ADD FOREIGN KEY (game_id) REFERENCES game(game_id);
+-- ALTER TABLE eventlog
+  -- ADD FOREIGN KEY (game_id) REFERENCES game(game_id);
