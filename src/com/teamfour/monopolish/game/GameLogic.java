@@ -37,31 +37,26 @@ public class GameLogic {
 
             // Initialize board and get players from database
             game.setBoard(new Board());
-            System.out.println("Loading players...");
             EntityManager entities = new EntityManager(gameId);
             entities.updateFromDatabase();
             game.setEntities(entities);
 
             // Transfer money from bank to players
-            System.out.println("Distributing money...");
             entities.distributeStartMoney(GameConstants.START_MONEY);
 
             // Get a list of players and their turn order
-            System.out.println("Getting turn order...");
             String[] players = entities.getUsernames();
             game.setPlayers(players);
             for (int i = 0; i < players.length; i++) {
                 System.out.println((i + 1) + ": " + players[i]);
             }
 
-            // 5. Write current player and money amounts to database
-            System.out.println("Writing back to database...");
+            // Write current player and money amounts to database
             Handler.getGameDAO().setCurrentPlayer(gameId, players[0]);
             updateToDatabase();
 
-            System.out.println("Setup completed");
         } catch (SQLException e) {
-
+            e.printStackTrace();
         }
     }
 
@@ -71,29 +66,42 @@ public class GameLogic {
      * @return True if enough money and successful
      */
     public static boolean buyHouse(Street street) {
+        // Get the house price
         int housePrice = Integer.parseInt(street.getAllRent()[7]);
         Player yourPlayer = game.getEntities().getYou();
+        // If no more available houses in bank, return
         if (game.getEntities().getBank().getAvailableHouses() == 0)
             return false;
 
+        // If the player can't afford house, return
         if (yourPlayer.getMoney() < housePrice)
             return false;
 
+        // Make transaction
         game.getEntities().transferMoneyFromBank(yourPlayer.getUsername(), -housePrice);
         game.getEntities().getBank().getHouses(1);
         street.addHouse();
         return true;
     }
 
+    /**
+     * Attempts to buy a hotel for the specified street
+     * @param street Street to buy hotel to
+     * @return True if enough money and successful
+     */
     public static boolean buyHotel(Street street) {
+        // Get hotel price
         int hotelPrice = Integer.parseInt(street.getAllRent()[7]);
         Player yourPlayer = game.getEntities().getYou();
-        if (game.getEntities().getBank().getAvailableHouses() == 0)
+        // If no more available hotels, return
+        if (game.getEntities().getBank().getAvailableHotels() == 0)
             return false;
 
+        // If player can't afford, return
         if (yourPlayer.getMoney() < hotelPrice)
             return false;
 
+        // Make transaction
         game.getEntities().transferMoneyFromBank(yourPlayer.getUsername(), -hotelPrice);
         game.getEntities().getBank().getHotels(1);
         street.addHotel();
@@ -128,6 +136,7 @@ public class GameLogic {
             }
             MessagePopupController.show("The dices are equal, throw again!", "again.png", "Game");
         } else {
+            // If normal dice and not in jail, move
             if (!isInJail)
                 yourPlayer.move(steps);
             game.setThrowCounter(0);
@@ -157,7 +166,9 @@ public class GameLogic {
      */
     public static void goToJail() {
         Player yourPlayer = game.getEntities().getYou();
+        // Set your jail status to true
         yourPlayer.setInJail(true);
+        // Move to actual jail position
         yourPlayer.moveTo(game.getBoard().getJailPosition());
 
         MessagePopupController.show("Criminal scumbag! You are going to jail. Your mother is not proud...", "handcuffs.png", "Jail");
@@ -185,6 +196,7 @@ public class GameLogic {
      */
     public static boolean payBail() {
         Player yourPlayer = game.getEntities().getYou();
+        // If you can afford it, get out of jail
         if (yourPlayer.getMoney() >= GameConstants.BAIL_COST) {
             game.getEntities().transferMoneyFromBank(yourPlayer.getUsername(), -GameConstants.BAIL_COST);
             getOutOfJail();
@@ -234,14 +246,18 @@ public class GameLogic {
             // Get type of property
             int currentPropertyType = currentProperty.getType();
             int price;
+            // Rent calculation varies for what type of property
             if (currentPropertyType == Property.STREET) {
+                // If street, we calculate rent based on how many houses and hotels, along with if it's a full set
                 boolean ownerHasFullSet = entities.getPlayer(owner).hasFullSet(game.getGameId(),
                         currentProperty.getCategorycolor());
                 price = ((Street) currentProperty).getCurrentRent(ownerHasFullSet);
             } else if (currentPropertyType == Property.BOAT) {
+                // If it's a boat, rent is based on the number of boats the owner has
                 int numberOfBoats = entities.getPlayer(owner).getBoatsOwned();
                 price = ((Boat) currentProperty).getRent(numberOfBoats);
             } else {
+                // If it's a train, rent is based on your dice throw
                 int numberOfTrains = entities.getPlayer(owner).getTrainsOwned();
                 int[] lastThrow = game.getDice().getLastThrow();
                 price = ((Train) currentProperty).getRent(numberOfTrains, lastThrow[0] + lastThrow[1]);
@@ -275,6 +291,7 @@ public class GameLogic {
      */
     public static void updateToDatabase() {
         try {
+            // Always check bankruptcy before updating to database, so we can catch this as soon as possible
             checkBankruptcy();
             // Updates all entities
             game.getEntities().updateToDatabase();
@@ -326,6 +343,7 @@ public class GameLogic {
             return false;
 
         property.setPawned(true);
+        // When pawning a property, you get half the asking price of the property
         int price = property.getPrice() / 2;
         game.getEntities().transferMoneyFromBank(game.getEntities().getYou().getUsername(), price);
         updateToDatabase();
@@ -402,6 +420,9 @@ public class GameLogic {
         }
     }
 
+    /**
+     * Called whenever you leave the game
+     */
     public static void onPlayerLeave() {
         Player yourPlayer = game.getEntities().getYou();
         String yourUsername = yourPlayer.getUsername();
@@ -410,6 +431,7 @@ public class GameLogic {
             endTurn();
         }
 
+        // Remove the player from the lobby and set their status to left
         Handler.getLobbyDAO().removePlayer(yourUsername, Handler.getLobbyDAO().getLobbyId(yourUsername));
         Handler.getPlayerDAO().endGame(game.getGameId(), yourUsername);
         updateToDatabase();

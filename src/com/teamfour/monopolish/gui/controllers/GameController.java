@@ -1,5 +1,6 @@
 package com.teamfour.monopolish.gui.controllers;
 
+import com.teamfour.monopolish.database.ConnectionPool;
 import com.teamfour.monopolish.game.Board;
 import com.teamfour.monopolish.game.Game;
 import com.teamfour.monopolish.game.GameLogic;
@@ -113,8 +114,6 @@ public class GameController {
      * Launches when the scene is loaded.
      */
     @FXML public void initialize() {
-        System.out.println("GAME CONTROLLER INITIALIZE, should only run once");
-
         // Reference that is used in other controllers
         Handler.setForfeitContainer(forfeitContainer);
         Handler.setTradeContainer(tradeContainer);
@@ -551,7 +550,8 @@ public class GameController {
         switch (tileType) {
             case Board.PROPERTY:
                 // Get property card
-                card = GameControllerDrawFx.createPropertyCard(game.getEntities().getPropertyAtPosition(yourPosition));
+                Property currentProperty = game.getEntities().getPropertyAtPosition(yourPosition);
+                card = GameControllerDrawFx.createPropertyCard(currentProperty);
 
                 // Check if property has an owner
                 String propertyOwner = game.getEntities().getOwnerAtProperty(yourPosition);
@@ -565,14 +565,19 @@ public class GameController {
                 // Owned by user, no action
                 else if (propertyOwner.equals(USERNAME)) FxUtils.showAndChangeText(propertyOwnerMsg, "Property owned by you");
 
-                // Owned by other player, rent required
+                // Owned by other player, rent required if not pawned
                 else {
-                    FxUtils.showAndChangeText(propertyOwnerMsg, "Property owned by " + propertyOwner);
-                    FxUtils.showAndChangeText(propertyMsg, "You must pay rent before continuing");
-                    FxUtils.showAndChangeBtn(propertyBtn, "Pay rent", "#ef5350");
-                    disableControls();
+                    if (!currentProperty.isPawned()) {
+                        FxUtils.showAndChangeText(propertyOwnerMsg, "Property owned by " + propertyOwner);
+                        FxUtils.showAndChangeText(propertyMsg, "You must pay rent before continuing");
+                        FxUtils.showAndChangeBtn(propertyBtn, "Pay rent", "#ef5350");
+                        disableControls();
 
-                    propertyBtn.setOnMouseClicked(e -> rentTransaction());
+                        propertyBtn.setOnMouseClicked(e -> rentTransaction());
+                    } else {
+                        // If property is pawned, you don't have to pay
+                        FxUtils.showAndChangeText(propertyOwnerMsg, "Property pawned by " + propertyOwner);
+                    }
                 }
 
                 if (yourPosition == 4) {

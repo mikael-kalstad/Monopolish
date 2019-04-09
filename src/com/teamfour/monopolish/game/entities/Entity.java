@@ -28,11 +28,20 @@ public abstract class Entity {
         money = 0;
     }
 
+    /**
+     * Constructor for existing entity
+     * @param money
+     */
     public Entity(int money) {
         properties = new ArrayList<>();
         this.money = money;
     }
 
+    /**
+     * Gets a property object that you might own on a specified position
+     * @param position Position integer
+     * @return Property object
+     */
     public Property getPropertyAtPosition(int position) {
         for (Property p : properties) {
             if (p.getPosition() == position)
@@ -86,12 +95,20 @@ public abstract class Entity {
         return true;
     }
 
+    /**
+     * Writes all properties on this entity to the database
+     * @param gameId GameId to write to
+     * @throws SQLException
+     */
     public void updatePropertiesToDatabase(int gameId) throws SQLException {
         for (Property prop : properties) {
             Handler.getPropertyDAO().updateProperty(prop, gameId);
         }
     }
 
+    /**
+     * Gets all of this entity's properties from the database
+     */
     public void updatePropertiesFromDatabase(int gameId) throws SQLException {
         properties.clear();
         properties = Handler.getPropertyDAO().getPropertiesByOwner(gameId, null);
@@ -114,6 +131,10 @@ public abstract class Entity {
 
     public int getMoney() { return money; }
 
+    /**
+     * Gets how many boats this entity owns
+     * @return Number of boats
+     */
     public int getBoatsOwned() {
         int result = 0;
         for (Property p : properties) {
@@ -124,6 +145,10 @@ public abstract class Entity {
         return result;
     }
 
+    /**
+     * Gets the number of trains this property owns
+     * @return
+     */
     public int getTrainsOwned() {
         int result = 0;
         for (Property p : properties) {
@@ -134,7 +159,14 @@ public abstract class Entity {
         return result;
     }
 
+    /**
+     * CHecks if the entity has a full colorset of the specified color
+     * @param gameId Id of the game
+     * @param colorHex Color code
+     * @return True if has full set
+     */
     public boolean hasFullSet(int gameId, String colorHex) {
+        // Get the size of the full set of this color
         int fullSetSize = 0;
         try {
             fullSetSize = Property.getFullColorSet(gameId, colorHex).size();
@@ -142,6 +174,7 @@ public abstract class Entity {
             e.printStackTrace();
         }
 
+        // If your set size matches, you have a full set!
         int yourSetSize = 0;
         for (Property p : properties) {
             if (p.getCategorycolor().equals(colorHex))

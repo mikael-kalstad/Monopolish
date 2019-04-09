@@ -17,14 +17,15 @@ import java.util.List;
  */
 
 public class ConnectionPool {
+    // Attributes
     private String url;
     private String username;
     private String password;
     private List<Connection> connectionPool;
     private List<Connection> usedConnections = new ArrayList<>();
+
     private static int INITIAL_POOL_SIZE = 4;
     private static int MAX_POOL_SIZE = 20;
-
     private static ConnectionPool mainConnectionPool;
 
     /**
@@ -106,6 +107,11 @@ public class ConnectionPool {
         return connection;
     }
 
+    /**
+     * Releases connection from the pool
+     * @param connection COnnection to be released
+     * @return True if successful
+     */
     public boolean releaseConnection(Connection connection) {
         if (connection == null)
             return false;
@@ -133,18 +139,6 @@ public class ConnectionPool {
 
     public int getSize() {
         return connectionPool.size() + usedConnections.size();
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public String getUser() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public static ConnectionPool getMainConnectionPool() { return mainConnectionPool; }

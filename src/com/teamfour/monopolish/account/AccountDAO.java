@@ -33,52 +33,15 @@ public class AccountDAO extends DataAccessObject {
             cStmt.setString(2, account.getEmail());
             cStmt.setString(3, password);
             cStmt.setDate(4, Date.valueOf(account.getRegDate()));
-            //cStmt.registerOutParameter(5, Types.INTEGER);
 
             if (cStmt.execute())
-                //status = cStmt.getInt(5);
                 status = 0;
         } catch (SQLIntegrityConstraintViolationException sql) {
             if (sql.getMessage().contains(account.getUsername())) {
-                System.out.println("Brukernavn ikke unikt");
                 status = 1;
             } else if (sql.getMessage().contains(account.getEmail())) {
-                System.out.println("Email ikke unik");
                 status = 2;
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new SQLException();
-        } finally {
-            close(cStmt);
-            releaseConnection(connection);
-        }
-
-        return status;
-    }
-
-    /**
-     * Attempts to reset the password
-     * @param username
-     * @param currentPassword
-     * @param newPassword
-     * @return 1 if successful, 0 if no user, -1 if wrong password
-     */
-    public int resetPassword(String username, String currentPassword, String newPassword) throws SQLException {
-        Connection connection = getConnection();
-        CallableStatement cStmt = null;
-        int status = 0;
-        try {
-            cStmt = connection.prepareCall("{call account_reset_password(?, ?, ?, ?)}");
-
-            cStmt.setString(1, username);
-            cStmt.setString(2, currentPassword);
-            cStmt.setString(3, newPassword);
-            cStmt.registerOutParameter(4, Types.BIT);
-
-            cStmt.executeUpdate();
-
-            status = cStmt.getInt(4);
         } catch (SQLException e) {
             e.printStackTrace();
             throw new SQLException();
@@ -181,7 +144,6 @@ public class AccountDAO extends DataAccessObject {
         }
         return active;
     }
-
 
     /**
      * Gets the number of games the user has played
