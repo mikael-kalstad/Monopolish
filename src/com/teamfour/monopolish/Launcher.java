@@ -13,8 +13,8 @@ import javafx.stage.Stage;
 public class Launcher extends Application {
     // Constants for Application
     private final String APPLICATION_TITLE = "Monopoly";
-    private final String APPLICATION_LOGO = "res/gui/Dices/dice4.png";
-    private final double ASPECT_RATIO = 64.0/35.0;
+    private final String APPLICATION_LOGO = "res/gui/Dices/dice5.png";
+    private final double ASPECT_RATIO = 16.0/9.0;
     private final String INITIAL_VIEW = ViewConstants.LOGIN.getValue();
 
     /**
