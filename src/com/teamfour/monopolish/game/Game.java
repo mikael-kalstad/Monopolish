@@ -2,6 +2,8 @@ package com.teamfour.monopolish.game;
 
 import com.teamfour.monopolish.game.entities.EntityManager;
 import com.teamfour.monopolish.gui.controllers.Handler;
+import com.teamfour.monopolish.game.gamecomponents.Board;
+import com.teamfour.monopolish.game.gamecomponents.Dice;
 
 /**
  * This class represents the current game session instance.

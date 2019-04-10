@@ -1,10 +1,11 @@
 package com.teamfour.monopolish.gui.controllers;
 
-import com.teamfour.monopolish.database.ConnectionPool;
-import com.teamfour.monopolish.game.*;
-import com.teamfour.monopolish.game.chanceCards.ChanceCard;
-import com.teamfour.monopolish.game.chanceCards.ChanceCardData;
-import com.teamfour.monopolish.game.entities.player.Player;
+import com.teamfour.monopolish.database.DataSource;
+import com.teamfour.monopolish.game.Game;
+import com.teamfour.monopolish.game.GameLogic;
+import com.teamfour.monopolish.game.chancecards.*;
+import com.teamfour.monopolish.game.entities.Player;
+import com.teamfour.monopolish.game.gamecomponents.Board;
 import com.teamfour.monopolish.game.property.*;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.animation.ParallelTransition;
@@ -107,7 +108,7 @@ public class GameController {
     @FXML private Pane winnerContainer;
     @FXML private Text winnerMsg;
     @FXML private Button winnerBtn;
-    static boolean gameFinished = false;
+    static public boolean gameFinished = false;
 
     /**
      * Launches when the scene is loaded.
@@ -162,12 +163,8 @@ public class GameController {
                 Handler.getAccountDAO().setInactive(USERNAME);
 
                 // Close connection
-                if (ConnectionPool.getMainConnectionPool() != null) {
-                    try {
-                        ConnectionPool.getMainConnectionPool().shutdown();
-                    } catch (SQLException ex) {
-                        ex.printStackTrace();
-                    }
+                if (DataSource.getInstance() != null) {
+                    DataSource.getInstance().shutdown();
                 }
 
                 // Close the window

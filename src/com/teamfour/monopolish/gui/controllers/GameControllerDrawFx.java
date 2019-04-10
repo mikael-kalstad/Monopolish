@@ -393,7 +393,7 @@ public class GameControllerDrawFx {
      *
      * @param property A property object
      */
-    static Pane createPropertyCard(Property property) {
+    static public Pane createPropertyCard(Property property) {
         Pane card = new AnchorPane();
         card.setId(property.getName());
         Pane header = new AnchorPane();

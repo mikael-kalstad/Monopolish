@@ -1,9 +1,9 @@
 package com.teamfour.monopolish.gui.controllers;
 
-import com.teamfour.monopolish.game.chanceCards.ChanceCard;
-import com.teamfour.monopolish.game.chanceCards.ChanceCardBank;
-import com.teamfour.monopolish.game.chanceCards.ChanceCardPlayers;
-import com.teamfour.monopolish.game.chanceCards.ChanceCardPosition;
+import com.teamfour.monopolish.game.chancecards.ChanceCard;
+import com.teamfour.monopolish.game.chancecards.ChanceCardBank;
+import com.teamfour.monopolish.game.chancecards.ChanceCardPlayers;
+import com.teamfour.monopolish.game.chancecards.ChanceCardPosition;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.animation.ScaleTransition;
 import javafx.animation.SequentialTransition;

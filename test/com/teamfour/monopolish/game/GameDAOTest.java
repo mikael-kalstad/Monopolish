@@ -1,11 +1,9 @@
 package com.teamfour.monopolish.game;
 
-import com.teamfour.monopolish.database.ConnectionPool;
+import com.teamfour.monopolish.database.DataSource;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-
-import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -18,11 +16,7 @@ public class GameDAOTest {
     @BeforeAll
     public static void setInstance() {
         instance = new GameDAO();
-        try {
-            ConnectionPool.create();
-        } catch (SQLException e) {
-
-        }
+        DataSource.initialize();
 
     }
 

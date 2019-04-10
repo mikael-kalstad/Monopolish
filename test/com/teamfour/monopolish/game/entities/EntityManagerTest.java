@@ -2,11 +2,7 @@ package com.teamfour.monopolish.game.entities;
 
 import com.teamfour.monopolish.account.Account;
 import com.teamfour.monopolish.account.AccountDAO;
-import com.teamfour.monopolish.database.ConnectionPool;
 import com.teamfour.monopolish.game.GameDAO;
-import com.teamfour.monopolish.game.entities.player.Player;
-import com.teamfour.monopolish.game.property.Property;
-import com.teamfour.monopolish.game.property.Street;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -28,14 +24,10 @@ public class EntityManagerTest {
         Account louie = new Account("louie", "louie@duck.no", LocalDate.now(), 0, true);
         AccountDAO accountDAO = new AccountDAO();
 
-        try {
-            ConnectionPool.create();
-            accountDAO.insertAccount(huey, "brorNr1");
-            accountDAO.insertAccount(dewey, "brorNr2");
-            accountDAO.insertAccount(louie, "brorNr3");
-        }catch (SQLException sql){
-            sql.printStackTrace();
-        }
+
+        accountDAO.insertAccount(huey, "brorNr1");
+        accountDAO.insertAccount(dewey, "brorNr2");
+        accountDAO.insertAccount(louie, "brorNr3");
         GameDAO game = new GameDAO();
         game.insertGame(1,"huey");
         game.insertGame(1,"dewey");

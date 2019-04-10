@@ -4,7 +4,7 @@ import com.teamfour.monopolish.account.Account;
 import com.teamfour.monopolish.account.AccountDAO;
 import com.teamfour.monopolish.game.Game;
 import com.teamfour.monopolish.game.GameDAO;
-import com.teamfour.monopolish.game.entities.player.PlayerDAO;
+import com.teamfour.monopolish.game.entities.PlayerDAO;
 import com.teamfour.monopolish.game.property.Property;
 import com.teamfour.monopolish.game.property.PropertyDAO;
 import com.teamfour.monopolish.gui.views.SceneManager;

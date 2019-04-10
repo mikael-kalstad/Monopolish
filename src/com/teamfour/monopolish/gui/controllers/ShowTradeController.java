@@ -1,8 +1,7 @@
 package com.teamfour.monopolish.gui.controllers;
 
-import com.teamfour.monopolish.game.Game;
 import com.teamfour.monopolish.game.entities.EntityManager;
-import com.teamfour.monopolish.game.entities.player.PlayerDAO;
+import com.teamfour.monopolish.game.entities.PlayerDAO;
 import com.teamfour.monopolish.game.property.Property;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -10,7 +9,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class ShowTradeController {

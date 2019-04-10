@@ -18,18 +18,26 @@ public abstract class DataAccessObject {
      * Gets a connection from the main connection pool
      */
     protected Connection getConnection() {
-        Connection connection = null;
-        connection = ConnectionPool.getMainConnectionPool().getConnection();
-        return connection;
+        return DataSource.getInstance().getConnection();
     }
 
     /**
      * Releases the current connection and closes the using statement
      */
     protected void releaseConnection(Connection connection) {
+        if (connection == null)
+            return;
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        /*
         ConnectionPool.getMainConnectionPool().releaseConnection(connection);
         connection = null;
+        */
     }
+
 
     /**
      * Properly closes a database resource
