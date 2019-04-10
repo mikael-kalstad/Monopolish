@@ -4,7 +4,7 @@ package com.teamfour.monopolish.game.gamecomponents;
  * This class represents a dice that can be used in a game
  *
  * @author Mikael Kalstad
- * @version 1.1
+ * @version 1.2
  */
 
 public class Dice {

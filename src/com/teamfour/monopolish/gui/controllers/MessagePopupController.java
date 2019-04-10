@@ -53,7 +53,7 @@ public class MessagePopupController {
         }
         catch (IOException e) { e.printStackTrace(); }
 
-        if (messagePopup == null) return;
+        if (messagePopup == null || container == null) return;
 
         // Find and set text element
         Text textElement = (Text) messagePopup.getChildren().get(0);
