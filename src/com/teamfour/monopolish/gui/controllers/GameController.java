@@ -25,6 +25,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+import javax.swing.text.View;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -66,7 +67,7 @@ public class GameController {
     @FXML ImageView dice1_img, dice2_img;
 
     // Elements in sidebar
-    @FXML private Button rolldiceBtn, endturnBtn, giveUpBtn;
+    @FXML private Button rolldiceBtn, endturnBtn;
     @FXML private Label roundValue, statusValue;
     @FXML private Label username, userMoney;
     @FXML private Pane userColor, userPropertiesIcon;
@@ -90,10 +91,11 @@ public class GameController {
     // Message popup
     @FXML private Pane messagePopupContainer;
 
-    // Settings
-    @FXML private Pane settingsContent;
+    // Menu and settings
+    @FXML private Pane menuContent, settingsContent;
     @FXML private ImageView notificationToggle;
     @FXML private ImageView soundToggle;
+    private boolean showMenu = false;
     private boolean showSettings = false;
     private boolean showNotifications = true;
     private static boolean playSounds = true;
@@ -284,11 +286,6 @@ public class GameController {
                 if (gameFinished) {
                     Platform.runLater(() -> announceWinner(GameLogic.stopGame()));
                 }
-
-                /*Platform.runLater(() -> {
-                    updatePlayersInfo();
-                    updateClientControls();
-                });*/
             }
         };
 
@@ -325,13 +322,26 @@ public class GameController {
      * @param filename  Target .fxml file
      * @param container Target container
      */
-    private void addElementToContainer(String filename, Pane container) {
+    private static void addElementToContainer(String filename, Pane container) {
         try {
-            Node element = FXMLLoader.load(getClass().getResource(ViewConstants.FILE_PATH.getValue() + filename));
+            Node element = FXMLLoader.load(GameController.class.getResource(ViewConstants.FILE_PATH.getValue() + filename));
             container.getChildren().clear(); // Reset container
             container.getChildren().add(element);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Toggle showing menu box (show/hide)
+     */
+    public void toggleMenu() {
+        if (showMenu) {
+            showMenu = false;
+            menuContent.setVisible(false);
+        } else {
+            showMenu = true;
+            menuContent.setVisible(true);
         }
     }
 
@@ -414,10 +424,15 @@ public class GameController {
                     // Set background overlay
                     propertiesDialogOverlay.setVisible(true);
 
+                    buyHouseContainer.setOnMouseClicked(e -> {
+                        showProperties(username); // Re-render
+                    });
+
                     // Hide onclick
                     propertiesDialogOverlay.setOnMouseClicked(e -> {
                         propertiesDialogOverlay.setVisible(false);
                         buyHouseContainer.setVisible(false);
+                        showProperties(username); // Re-render
                     });
 
                     Handler.setBuyHouseProperty(p);
@@ -460,6 +475,15 @@ public class GameController {
     public void closePropertiesDialog() {
         propertiesContainer.setVisible(false);
         backgroundOverlay.setVisible(false);
+        updatePlayersInfo();
+
+    }
+
+    /**
+     * Re render the buyHouseDialog element inside its container. Can be called from a different controller.
+     */
+    static void refreshBuyHouseDialog() {
+        addElementToContainer(ViewConstants.BUY_HOUSE.getValue(), Handler.getBuyHouseContainer());
     }
 
     /**
@@ -607,18 +631,16 @@ public class GameController {
                 else if (propertyOwner.equals(USERNAME)) FxUtils.showAndChangeText(propertyOwnerMsg, "Property owned by you");
 
                 // Owned by other player, rent required if not pawned
-                else {
-                    if (!currentProperty.isPawned()) {
-                        FxUtils.showAndChangeText(propertyOwnerMsg, "Property owned by " + propertyOwner);
-                        FxUtils.showAndChangeText(propertyMsg, "You must pay rent before continuing");
-                        FxUtils.showAndChangeBtn(propertyBtn, "Pay rent", "#ef5350");
-                        disableControls();
+                else if (!currentProperty.isPawned()) {
+                    FxUtils.showAndChangeText(propertyOwnerMsg, "Property owned by " + propertyOwner);
+                    FxUtils.showAndChangeText(propertyMsg, "You must pay rent before continuing");
+                    FxUtils.showAndChangeBtn(propertyBtn, "Pay rent", "#ef5350");
+                    disableControls();
 
-                        propertyBtn.setOnMouseClicked(e -> rentTransaction());
-                    } else {
-                        // If property is pawned, you don't have to pay
-                        FxUtils.showAndChangeText(propertyOwnerMsg, "Property pawned by " + propertyOwner);
-                    }
+                    propertyBtn.setOnMouseClicked(e -> rentTransaction());
+                } else {
+                    // If property is pawned, you don't have to pay
+                    FxUtils.showAndChangeText(propertyOwnerMsg, "Property pawned by " + propertyOwner);
                 }
                 break;
 
