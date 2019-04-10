@@ -6,9 +6,11 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="530.0" prefWidth="400.0" style="-fx-background-radius: 50; -fx-background-color: #BDBDBD;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.monopolish.gui.controllers.buyHouseController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="530.0" prefWidth="400.0" style="-fx-background-radius: 30; -fx-background-color: #BDBDBD;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.monopolish.gui.controllers.buyHouseController">
    <children>
       <AnchorPane layoutX="76.0" layoutY="130.0" prefHeight="270.0" prefWidth="250.0" style="-fx-background-color: #EEEEEE;">
          <children>
@@ -44,7 +46,7 @@
       </Label>
       <Label layoutX="33.0" layoutY="499.0" text="You need all properties in a colorset to be able to buy a house" />
       <Label fx:id="errorLabel" layoutX="50.0" layoutY="457.0" text="insufficient funds or not enough houses/hotels available" textFill="RED" visible="false" />
-      <Button fx:id="buyHouseCloseBtn" layoutX="346.0" layoutY="17.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="7.0" style="-fx-background-color: Red;" text="X" textFill="#fafafa">
+      <Button fx:id="pawnBtn" layoutX="76.0" layoutY="407.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="110.0" style="-fx-background-color: orange;" text="Pawn" textFill="#fafafa">
          <font>
             <Font size="18.0" />
          </font>
@@ -52,7 +54,16 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button fx:id="pawnBtn" layoutX="76.0" layoutY="407.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="110.0" style="-fx-background-color: orange;" text="Pawn" textFill="#fafafa">
+      <Pane fx:id="overlay" layoutY="1.0" prefHeight="530.0" prefWidth="400.0" style="-fx-background-radius: 30; -fx-background-color: rgba(255,255,255, 0.4);" visible="false">
+         <children>
+            <Text fill="#ff3333" layoutX="61.0" layoutY="258.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wait until its your round">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+      <Button fx:id="buyHouseCloseBtn" layoutX="346.0" layoutY="17.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="7.0" style="-fx-background-color: Red;" text="X" textFill="#fafafa">
          <font>
             <Font size="18.0" />
          </font>

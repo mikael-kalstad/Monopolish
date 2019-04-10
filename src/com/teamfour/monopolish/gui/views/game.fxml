@@ -745,37 +745,13 @@
             </ImageView>
          </children>
       </Pane>
-      <Button layoutX="31.0" layoutY="131.0" mnemonicParsing="false" onAction="#leave" prefHeight="40.0" prefWidth="75.0" style="-fx-background-color: ef5350;" text="Leave" textFill="#fafafa">
-         <font>
-            <Font size="16.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Button>
-      <Button layoutX="210.0" layoutY="131.0" mnemonicParsing="false" onAction="#forfeit" prefHeight="40.0" prefWidth="77.0" style="-fx-background-color: #FF9800;" text="Forfeit" textFill="#fafafa">
-         <font>
-            <Font size="16.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Button>
       <Label layoutX="1754.0" layoutY="-50.0" text="Total" textFill="#fafafa">
          <font>
             <Font name="System Bold" size="32.0" />
          </font>
       </Label>
-      <Button fx:id="giveUpBtn" layoutX="116.0" layoutY="131.0" mnemonicParsing="false" onAction="#giveUp" prefHeight="40.0" prefWidth="83.0" style="-fx-background-color: #666;" text="Give up" textFill="#fafafa">
-         <font>
-            <Font size="16.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Button>
       <Pane fx:id="messagePopupContainer" layoutX="12.0" layoutY="1000.0" prefHeight="46.0" prefWidth="330.0" />
-      <Pane fx:id="settingsContent" layoutX="40.0" layoutY="108.0" onMouseEntered="#toggleSettings" onMouseExited="#toggleSettings" prefHeight="113.0" prefWidth="235.0" style="-fx-background-color: ededed; -fx-border-width: 1 0 0 0; -fx-border-color: #999;" visible="false">
+      <Pane fx:id="settingsContent" layoutX="40.0" layoutY="177.0" onMouseEntered="#toggleSettings" onMouseExited="#toggleSettings" prefHeight="113.0" prefWidth="235.0" style="-fx-background-color: ededed; -fx-border-width: 1 0 0 0; -fx-border-color: #999;" visible="false">
          <children>
             <Text fill="#616161" layoutX="108.0" layoutY="86.0" onMouseClicked="#toggleSounds" strokeType="OUTSIDE" strokeWidth="0.0" text="Sounds">
                <font>
@@ -811,7 +787,7 @@
             </ImageView>
          </children>
       </Pane>
-      <Pane layoutX="40.0" layoutY="50.0" onMouseEntered="#toggleSettings" onMouseExited="#toggleSettings" prefHeight="58.0" prefWidth="235.0" style="-fx-background-color: ededed;">
+      <Pane layoutX="40.0" layoutY="119.0" onMouseEntered="#toggleSettings" onMouseExited="#toggleSettings" prefHeight="58.0" prefWidth="235.0" style="-fx-background-color: ededed;">
          <children>
             <Text fill="#403f3f" layoutX="79.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Settings">
                <font>
@@ -830,7 +806,59 @@
             </Text>
          </children>
       </Pane>
-      <Pane fx:id="chatContainer" layoutX="21.0" layoutY="700.0" prefHeight="315.0" prefWidth="235.0" />
+      <Pane layoutX="40.0" layoutY="43.0" onMouseEntered="#toggleMenu" onMouseExited="#toggleMenu" prefHeight="58.0" prefWidth="235.0" style="-fx-background-color: ededed;">
+         <children>
+            <Text fill="#403f3f" layoutX="79.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Menu">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Text>
+            <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="23.0" layoutY="12.0" preserveRatio="true">
+               <image>
+                  <Image url="file:res/gui/Game/menu.png" />
+               </image>
+            </ImageView>
+            <Text fill="#6f6e6e" layoutX="79.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hover to open">
+               <font>
+                  <Font size="9.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+      <Pane fx:id="menuContent" layoutX="40.0" layoutY="101.0" onMouseEntered="#toggleMenu" onMouseExited="#toggleMenu" prefHeight="309.0" prefWidth="235.0" style="-fx-background-color: ededed; -fx-border-width: 1 0 0 0; -fx-border-color: #999;" visible="false">
+         <children>
+            <Button fx:id="giveUpBtn" layoutX="64.0" layoutY="121.0" mnemonicParsing="false" onAction="#giveUp" prefHeight="40.0" prefWidth="95.0" style="-fx-background-color: #666;" text="Give up" textFill="#fafafa">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button layoutX="65.0" layoutY="21.0" mnemonicParsing="false" onAction="#leave" prefHeight="40.0" prefWidth="95.0" style="-fx-background-color: ef5350;" text="Leave" textFill="#fafafa">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button layoutX="64.0" layoutY="221.0" mnemonicParsing="false" onAction="#forfeit" prefHeight="40.0" prefWidth="95.0" style="-fx-background-color: #FF9800;" text="Forfeit" textFill="#fafafa">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Text fill="#6a6a6a" layoutX="20.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Leave the game, you cannot rejoin" />
+            <Text fill="#6a6a6a" layoutX="26.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Go bankrupt and spectate game" />
+            <Text fill="#6a6a6a" layoutX="32.0" layoutY="291.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start a vote to finish the game" />
+            <Line endX="100.0" layoutX="112.0" layoutY="102.0" startX="-100.0" stroke="#616161" />
+            <Line endX="100.0" layoutX="117.0" layoutY="202.0" startX="-100.0" stroke="#616161" />
+         </children>
+      </Pane>
+      <Pane fx:id="chatContainer" layoutX="21.0" layoutY="680.0" prefHeight="315.0" prefWidth="235.0" />
       <Pane fx:id="backgroundOverlay" prefHeight="1055.0" prefWidth="1920.0" style="-fx-background-color: rgba(160,160,160,0.4);" visible="false" />
       <Pane fx:id="propertiesContainer" layoutX="257.0" layoutY="105.0" prefHeight="855.0" prefWidth="1477.0" style="-fx-background-color: ededed; -fx-background-radius: 20;" visible="false">
          <children>
