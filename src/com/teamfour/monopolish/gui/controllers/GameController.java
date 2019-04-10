@@ -461,7 +461,8 @@ public class GameController {
             tradeContainer.setVisible(true);
 
             Handler.setTradeUsername(username);
-            addElementToContainer(ViewConstants.TRADING.getValue(), tradeContainer);
+            //addElementToContainer(ViewConstants.TRADING.getValue(), tradeContainer);
+            addElementToContainer(ViewConstants.SEND.getValue(), tradeContainer);
         });
 
         // Close dialog if background is clicked
