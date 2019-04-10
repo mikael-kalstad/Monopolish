@@ -56,5 +56,6 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="c3p0-0.9.5.2" level="project" />
+    <orderEntry type="library" name="mchange-commons-java-0.2.11" level="project" />
   </component>
 </module>

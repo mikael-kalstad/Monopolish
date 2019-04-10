@@ -1,17 +1,15 @@
 package com.teamfour.monopolish.game.gamecomponents;
 
-import javafx.scene.layout.StackPane;
-
 import java.util.Random;
 
 /**
  * This class represents a dice that can be used in a game
  *
  * @author Mikael Kalstad
- * @version 1.1
+ * @version 1.2
  */
 
-public class Dice extends StackPane {
+public class Dice {
     private Random random = new Random();
     private int numOfDices;
     private int numOfEyes;
