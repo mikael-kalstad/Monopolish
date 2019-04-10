@@ -29,7 +29,8 @@ public enum ViewConstants {
     MESSAGE_POPUP("messagePopup.fxml"),
     CHANCE_CARD("chanceCard.fxml"),
     SPECIAL_CARD("specialCard.fxml"),
-    BUY_HOUSE("buyHouse.fxml");
+    BUY_HOUSE("buyHouse.fxml"),
+    SEND("send.fxml");
 
     private String value;
 

@@ -288,10 +288,10 @@ public class GameController {
                     Platform.runLater(() -> announceWinner(GameLogic.stopGame()));
                 }
 
-                Platform.runLater(() -> {
+                /*Platform.runLater(() -> {
                     updatePlayersInfo();
                     updateClientControls();
-                });
+                });*/
             }
         };
 
@@ -446,7 +446,8 @@ public class GameController {
             tradeContainer.setVisible(true);
 
             Handler.setTradeUsername(username);
-            addElementToContainer(ViewConstants.TRADING.getValue(), tradeContainer);
+            //addElementToContainer(ViewConstants.TRADING.getValue(), tradeContainer);
+            addElementToContainer(ViewConstants.SEND.getValue(), tradeContainer);
         });
 
         // Close dialog if background is clicked

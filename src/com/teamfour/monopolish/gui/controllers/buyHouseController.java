@@ -13,7 +13,6 @@ import static com.teamfour.monopolish.game.GameLogic.game;
 
 public class buyHouseController {
 
-
     private final Property PROPERTY = Handler.getBuyHouseProperty();
 
     @FXML
