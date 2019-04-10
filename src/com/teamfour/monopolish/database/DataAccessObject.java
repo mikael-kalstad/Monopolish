@@ -10,7 +10,7 @@ import java.sql.SQLException;
  * (using MySQL routines) to connect to the database and perform various actions. Each table has its own DAO class
  *
  * @author      Eirik Hemstad
- * @version     1.0
+ * @version     1.1
  */
 
 public abstract class DataAccessObject {
@@ -32,10 +32,6 @@ public abstract class DataAccessObject {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        /*
-        ConnectionPool.getMainConnectionPool().releaseConnection(connection);
-        connection = null;
-        */
     }
 
 

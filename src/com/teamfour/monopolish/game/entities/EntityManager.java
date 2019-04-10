@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * This class manages all Entities in the game session. Entities are classified by players and the bank object.
+ * Manages all Entities in the game session. Entities are classified by players and the bank object.
  * This class uses its arraylist of players and the bank object to handle the communication between these objects,
  * as well as acting as an abstraction layer between all the objects and the rest of the application
  *
@@ -48,25 +48,6 @@ public class EntityManager {
     }
 
     /**
-     *
-     * @param pos
-     * @return
-     */
-    public Player getPlayerByPosition(int pos){
-        for(int i = 0; i<players.size(); i++){
-            if(players.get(i).getPosition() == pos){
-                return(players.get(i));
-            }
-        }
-        return(null);
-    }
-
-    public int getPlayerPosition(String username){
-        Player temp = getPlayer(username);
-        return(temp.getPosition());
-    }
-
-    /**
      * Removes a player from this entitymanager
      * @param username
      */
@@ -93,6 +74,11 @@ public class EntityManager {
         return bank.getPropertyAtPosition(position);
     }
 
+    /**
+     * Transfers money from the bank to a specified player
+     * @param username Username of player to receive money
+     * @param amount Amount to be transferred. Set to negative to transfer other way
+     */
     public void transferMoneyFromBank(String username, int amount) {
         Player player = getPlayer(username);
         if (amount > 0 && bank.getMoney() < amount)
@@ -129,59 +115,23 @@ public class EntityManager {
     }
 
     /**
-     * Grabs a hotel from the bank to specified property
-     * @param owner Owner of the property
-     * @param id Id of the property
-     * @return 1 if successful,
-     *         -1 if not enough money,
-     *         -2 if property was not found
-     *         -3 if not enough houses to buy hotel
+     * Distributes money from the bank at the start of the game
+     * @param amount Amount each player should get
      */
-    public boolean transferHotelToProperty(String owner, int id) {
-        Player ownerPlayer = getPlayer(owner);
-        for (Property p : ownerPlayer.getProperties()) {
-            if (p.getId() == id && p instanceof Street) {
-                if (ownerPlayer.getMoney() >= ((Street) p).getHotelPrice()) {
-                     if (((Street)p).addHotel()) {
-                         bank.getHotels(1);
-                         return true;
-                     } else {
-                         return false;
-                     }
-                } else {
-                    return false;
-                }
-            }
-        }
-
-        return false;
-    }
-
-//    /**
-//     * Transfers money from the specified player to the bank
-//     * @param username Player's username
-//     * @param amount Amount to be transferred
-//     * @return True if successful,
-//     *         false if no money
-//     */
-//    public boolean transferMoneyToBank(String username, int amount) {
-//        Player player = getPlayer(username);
-//        if (player.getMoney() < amount) {
-//            return false;
-//        }
-//
-//        return player.transferMoney(bank, amount);
-//    }
-
-    public boolean distributeStartMoney(int amount) {
+    public void distributeStartMoney(int amount) {
         for (Player p : players) {
             p.setMoney(0);
             bank.transferMoney(p, amount);
         }
-
-        return true;
     }
 
+    /**
+     * Transfers money from one player to another
+     * @param from Username of player to transfer from
+     * @param to Username of player to transfer to
+     * @param amount Amount to be transferred
+     * @return True if successful
+     */
     public boolean transferMoneyFromTo(String from, String to, int amount) {
         Player fromPlayer = getPlayer(from);
         Player toPlayer = getPlayer(to);
@@ -196,10 +146,12 @@ public class EntityManager {
         return fromPlayer.transferMoney(toPlayer, amount);
     }
 
-    public String getOwnerAtProperty(int position) {
-        return getPropertyAtPosition(position).getOwner();
-    }
-
+    /**
+     * Let's a player purchase a specified property
+     * @param receiver Entity to receive object
+     * @param property Property to be purchased
+     * @return True if receiver has enough money
+     */
     public boolean purchaseProperty(Entity receiver, Property property) {
         // If not enough money, return false
         if (receiver.getMoney() < property.getPrice()) {
@@ -272,17 +224,6 @@ public class EntityManager {
     }
 
     /**
-     * Cycles through all players and updates their bankruptcy according to their value
-     */
-    public void updateBankruptcy() {
-        for (Player p : players) {
-            if (p.getMoney() <= 0) {
-                p.setBankrupt(true);
-            }
-        }
-    }
-
-    /**
      * Check if there's a winner
      * @return The winner username
      */
@@ -321,7 +262,7 @@ public class EntityManager {
 
     /**
      * Returns a string presentation of all the entities
-     * @return
+     * @return String
      */
     public String toString() {
         String result = "Entities: \n";

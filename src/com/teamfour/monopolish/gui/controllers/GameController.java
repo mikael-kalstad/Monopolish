@@ -627,7 +627,7 @@ public class GameController {
                 card = GameControllerDrawFx.createPropertyCard(currentProperty);
 
                 // Check if property has an owner
-                String propertyOwner = game.getEntities().getOwnerAtProperty(yourPosition);
+                String propertyOwner = currentProperty.getOwner();
 
                 // No owner, buying is optional
                 if (propertyOwner == null || propertyOwner.equals("")) {

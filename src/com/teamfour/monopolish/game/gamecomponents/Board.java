@@ -9,7 +9,7 @@ package com.teamfour.monopolish.game.gamecomponents;
  */
 
 public class Board {
-    // Static variables
+    // Values of different types of tiles
     public static final int START = 0;
     public static final int PROPERTY = 1;
     public static final int GO_TO_JAIL = 2;
@@ -18,7 +18,7 @@ public class Board {
     public static final int CHANCE = 5;
     public static final int COMMUNITY_TAX = 6;
 
-    // Attributes
+    // This array holds the layout of the board, with the values based on the variables above
     private int[] tiles = {0, 1, 6, 1, 1, 1, 5, 1, 1,
                             4, 1, 1, 1, 1, 1, 5, 1, 1,
                             3, 1, 5, 1, 1, 1, 1, 1, 1,

@@ -1,9 +1,5 @@
 package com.teamfour.monopolish.game.gamecomponents;
 
-import javafx.scene.layout.StackPane;
-
-import java.util.Random;
-
 /**
  * This class represents a dice that can be used in a game
  *
@@ -11,35 +7,22 @@ import java.util.Random;
  * @version 1.1
  */
 
-public class Dice extends StackPane {
-    private Random random = new Random();
-    private int numOfDices;
-    private int numOfEyes;
-    private int[] lastThrow;
+public class Dice {
+    private int numOfDice;          // How many dice in this set
+    private int numOfEyes;          // How many eyes on each die
+    private int[] lastThrow;        // Stores the last throw result for future use
 
     /**
      * Constructor
      *
-     * @param numOfDices how many dices
+     * @param numOfDice how many dices
      * @param numOfEyes how many eyes on each dice
      */
-    public Dice(int numOfDices, int numOfEyes) {
-        this.numOfDices = numOfDices;
+    public Dice(int numOfDice, int numOfEyes) {
+        this.numOfDice = numOfDice;
         this.numOfEyes = numOfEyes;
-        lastThrow = new int[numOfDices];
+        lastThrow = new int[numOfDice];
     }
-
-    /**
-     * Helper method that will give a random number within some boundaries
-     *
-     * @param min minimal value
-     * @param max maximum value
-     * @return random number within boundaries
-     */
-    private int randomNum(int min, int max) {
-        return random.nextInt(max-min+1) + min;
-    }
-
 
     /**
      * Throw the dice and get the random results
@@ -47,8 +30,7 @@ public class Dice extends StackPane {
      * @return array with dice values
      */
     public int[] throwDice() {
-        for (int i = 0; i < numOfDices; i++) {
-            //result[i] = randomNum(1, numOfEyes);
+        for (int i = 0; i < numOfDice; i++) {
             lastThrow[i] = (int)(Math.random() * ((numOfEyes - 1) + 1)) + 1;
         }
 
