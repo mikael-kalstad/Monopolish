@@ -9,6 +9,12 @@ import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 
+/**
+ * Controller class for Send view.
+ * @author Bård Hestmark
+ * @version 1.1
+ */
+
 public class SendController {
 
     @FXML private Button sendBtn, moneyokBtn, clearBtn, cancelSendBtn;
