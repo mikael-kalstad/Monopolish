@@ -257,8 +257,11 @@ public class GameLogic {
             }
 
             // Run transaction
-            if (yourPlayer.getMoney() < price)
+            if (yourPlayer.getMoney() < price) {
+                // Need to see if bankrupt to potentially declare them a loser
+                checkBankruptcy();
                 return false;
+            }
 
             entities.transferMoneyFromTo(yourPlayer.getUsername(), currentProperty.getOwner(), price);
 
@@ -279,9 +282,16 @@ public class GameLogic {
     /**
      * Makes the player pay tax to the bank
      */
-    public static void payTax() {
+    public static boolean payTax() {
+        Player yourPlayer = game.getEntities().getYou();
+        if (yourPlayer.getMoney() < GameConstants.INCOME_TAX) {
+            // Check bankruptcy to potentially declare player a loser
+            checkBankruptcy();
+            return false;
+        }
         game.getEntities().transferMoneyFromBank(game.getEntities().getYou().getUsername(), -GameConstants.INCOME_TAX);
         updateToDatabase();
+        return true;
     }
 
     /**

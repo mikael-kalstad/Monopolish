@@ -3,7 +3,8 @@ package com.teamfour.monopolish.gui.controllers;
 import com.teamfour.monopolish.database.DataSource;
 import com.teamfour.monopolish.game.Game;
 import com.teamfour.monopolish.game.GameLogic;
-import com.teamfour.monopolish.game.chancecards.*;
+import com.teamfour.monopolish.game.chancecards.ChanceCard;
+import com.teamfour.monopolish.game.chancecards.ChanceCardData;
 import com.teamfour.monopolish.game.entities.Player;
 import com.teamfour.monopolish.game.gamecomponents.Board;
 import com.teamfour.monopolish.game.property.*;
@@ -271,10 +272,12 @@ public class GameController {
                 }
 
                 // 2. Check for trade request
+                /*
                 if (Handler.getPlayerDAO().isTrade(USERNAME)) {
                     addElementToContainer(ViewConstants.SHOW_TRADE.getValue(), tradeContainer);
                     //Platform.runLater(() -> addElementToContainer(ViewConstants.SHOW_TRADE.getValue(), tradeContainer));
                 }
+                */
 
                 // 3. Check if there is any winner
                 String winner = game.getEntities().findWinner();
@@ -898,6 +901,7 @@ public class GameController {
     public void payBail() {
         if (GameLogic.payBail()) {
             propertyBtn.setDisable(true);
+            updateBoard();
         } else {
             Alert messageBox = new Alert(Alert.AlertType.INFORMATION,
                     "You do not have enough funds to pay bail.");
@@ -909,7 +913,11 @@ public class GameController {
      * Pay income tax
      */
     private void payTax() {
-        GameLogic.payTax();
+        if (!GameLogic.payTax()) {
+            Alert messageBox = new Alert(Alert.AlertType.INFORMATION,
+                    "You do not have enough funds to pay tax.");
+            messageBox.showAndWait();
+        }
         updateBoard();
         checkDiceThrow();
     }
@@ -921,6 +929,7 @@ public class GameController {
         if(!GameLogic.payRent()) {
             Alert messageBox = new Alert(Alert.AlertType.INFORMATION,
                     "You do not have enough funds to pay rent.");
+            messageBox.showAndWait();
         } else {
             updateBoard();
             checkDiceThrow();
