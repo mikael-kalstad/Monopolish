@@ -26,13 +26,18 @@ public class SendController {
         ArrayList<Pane> yourCards = new ArrayList<>();
         ArrayList<Pane> cardsToSend = new ArrayList<>();
 
-
+        //Setting label text
         sendToUsername.setText("Sending to: " + SEND_USERNAME);
 
+        //Generate property cards
         for (Property property : entity.getYou().getProperties()) {
             yourCards.add(GameControllerDrawFx.createPropertyCard(property));
         }
 
+        //adding properties to correct pane on startup
+        yourproperties.getChildren().addAll(yourCards);
+
+        //Set on click for cards so they change pane when clicked
         for (Pane card : yourCards) {
             card.setOnMouseClicked(event -> {
                 try {
@@ -45,6 +50,7 @@ public class SendController {
             });
         }
 
+        //Setting clearBtn so that it clears anything put 'on offer'
         clearBtn.setOnAction(event -> {
             moneytosend.setText(" ");
             propertiestosend.getChildren().clear();
@@ -53,6 +59,7 @@ public class SendController {
             yourproperties.getChildren().addAll(yourCards);
         });
 
+        //Setting moneyOkBtn to check input and set the moneytosend label
         moneyokBtn.setOnAction(event -> {
             String input = money.getText();
             try {
@@ -71,19 +78,19 @@ public class SendController {
             }
         });
 
-        yourproperties.getChildren().addAll(yourCards);
-
+        //setting send button to make lists of properties and send properties and money to the selected player
         sendBtn.setOnAction(event -> {
 
             ArrayList<String> propertiestosendString = new ArrayList<>();
             ArrayList<Property> propertiesToSend = new ArrayList<>();
             int money = Integer.parseInt(moneytosend.getText());
 
-
+            //getting the propertynames from the cardpanes
             for (Pane p : cardsToSend) {
                 propertiestosendString.add(p.getId());
             }
 
+            //finding matching properties from propertynames
             for (String propertyname : propertiestosendString) {
                 for (Property property : entity.getYou().getProperties()) {
                     if (propertyname.equals(property.getName())) {
@@ -92,19 +99,24 @@ public class SendController {
                 }
             }
 
+            //transfering money
             entity.transferMoneyFromTo(YOU, SEND_USERNAME, money);
 
+            //changing owner of properties
             for (Property property : propertiesToSend) {
                 property.setOwner(SEND_USERNAME);
             }
 
+            //show conformation alert
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Transfer successful");
             alert.showAndWait();
 
+            //close/hide window when
             Pane container = Handler.getTradeContainer();
             if (container != null) container.setVisible(false);
         });
 
+        //setting cancel button to close/hide the window
         cancelSendBtn.setOnAction(event -> {
             Pane container = Handler.getTradeContainer();
             if (container != null) container.setVisible(false);
