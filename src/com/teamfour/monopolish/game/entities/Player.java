@@ -24,14 +24,6 @@ public class Player extends Entity {
     // Client-side only attributes
     private boolean freeParking = false;
 
-    /**
-     * Constructor
-     * @param USERNAME
-     */
-    public Player(String USERNAME) {
-        super();
-        this.USERNAME = USERNAME;
-    }
 
     /**
      * Constructor
@@ -78,7 +70,6 @@ public class Player extends Entity {
         for (int i = 0; i < properties.size(); i++) {
             score += properties.get(i).getPrice() / 2;
         }
-
         return score;
     }
 

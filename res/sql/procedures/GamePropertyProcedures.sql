@@ -90,6 +90,8 @@ CREATE PROCEDURE property_get_color_set(
   END $$
 DELIMITER ;
 
+-- ----------------------------------------------------------------
+
 
 /**
 Procedure to update a gameProperty
@@ -127,6 +129,7 @@ create procedure property_update(
 end $$
 delimiter ;
 
+-- -------------------------------------------------------------------
 
 
 /**
@@ -178,6 +181,7 @@ BEGIN
 END $$
 DELIMITER ;
 
+-- -----------------------------------------------------------------------------------
 
 
 /**
