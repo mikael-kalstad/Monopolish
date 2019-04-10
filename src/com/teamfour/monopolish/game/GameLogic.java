@@ -10,10 +10,10 @@ import com.teamfour.monopolish.gui.controllers.MessagePopupController;
 import java.sql.SQLException;
 
 /**
- * This class contains static methods which can be used by the GameController to perform logical actions
- * and sequences in the game. This class was implemented to streamline and create a better overview of all
- * logical operations performed on the instances of 'Game.java', completely excluding such operations from
- * 'GameController.java'
+ * Contains static methods which can be used by the GameController to perform logical actions
+ * and sequences in the game. All actions are performed on the client player. This class was implemented
+ * to streamline and create a better overview of all logical operations performed on the instances of
+ * 'Game.java', completely excluding such operations from GameController.java'.
  *
  * @author      eirikhem
  * @version     1.3
@@ -257,8 +257,11 @@ public class GameLogic {
             }
 
             // Run transaction
-            if (yourPlayer.getMoney() < price)
+            if (yourPlayer.getMoney() < price) {
+                // Need to see if bankrupt to potentially declare them a loser
+                checkBankruptcy();
                 return false;
+            }
 
             entities.transferMoneyFromTo(yourPlayer.getUsername(), currentProperty.getOwner(), price);
 
@@ -279,9 +282,16 @@ public class GameLogic {
     /**
      * Makes the player pay tax to the bank
      */
-    public static void payTax() {
+    public static boolean payTax() {
+        Player yourPlayer = game.getEntities().getYou();
+        if (yourPlayer.getMoney() < GameConstants.INCOME_TAX) {
+            // Check bankruptcy to potentially declare player a loser
+            checkBankruptcy();
+            return false;
+        }
         game.getEntities().transferMoneyFromBank(game.getEntities().getYou().getUsername(), -GameConstants.INCOME_TAX);
         updateToDatabase();
+        return true;
     }
 
     /**

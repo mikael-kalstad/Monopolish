@@ -35,6 +35,7 @@ public class buyHouseController {
         buyHouseCloseBtn.setOnAction(event -> {
             Pane container = Handler.getBuyHouseContainer();
             if (container != null) container.setVisible(false);
+            overlay.setVisible(false);
         });
 
         //change some text accordingly to status:
@@ -64,7 +65,7 @@ public class buyHouseController {
         numOfHotelsLabel.setText("Number of hotels: " + ((Street) PROPERTY).getHotels());
 
         // You need all streets in a colorCategory to be able to buy houses, and it can't be pawned
-//        if (game.getEntities().getPlayer(PROPERTY.getOwner()).hasFullSet(Handler.getCurrentGameId(), PROPERTY.getCategorycolor()) && !(PROPERTY.isPawned())) {
+        if (game.getEntities().getPlayer(PROPERTY.getOwner()).hasFullSet(Handler.getCurrentGameId(), PROPERTY.getCategorycolor()) && !(PROPERTY.isPawned())) {
            setBuyBtn();
 
             // Set onclick for the 'buy' button
@@ -95,7 +96,7 @@ public class buyHouseController {
                     else errorLabel.setVisible(true);
                 }
             });
-//        }
+        }
     }
 
     private void setBuyBtn() {
