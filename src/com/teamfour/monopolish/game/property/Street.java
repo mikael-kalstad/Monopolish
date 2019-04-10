@@ -5,13 +5,14 @@ package com.teamfour.monopolish.game.property;
  */
 
 public class Street extends Property {
+    // Max levels of houses and hotels
     private final int MAX_HOUSES = 4;
     private final int MAX_HOTELS = 1;
 
     // Attributes
     private int[] rent = new int[9];        // Table of all rent levels, along with house and hotel prices
-    private int houses;         // Current amount of houses
-    private int hotels;         // Current amount of hotels
+    private int houses;                     // Current amount of houses
+    private int hotels;                     // Current amount of hotels
 
     /**
      * Constructor
