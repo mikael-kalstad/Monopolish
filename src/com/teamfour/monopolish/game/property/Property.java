@@ -2,7 +2,6 @@ package com.teamfour.monopolish.game.property;
 
 import com.teamfour.monopolish.gui.controllers.Handler;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**

@@ -1,6 +1,5 @@
 package com.teamfour.monopolish.game.entities;
 
-import com.teamfour.monopolish.game.entities.player.Player;
 import com.teamfour.monopolish.game.property.*;
 import com.teamfour.monopolish.gui.controllers.Handler;
 

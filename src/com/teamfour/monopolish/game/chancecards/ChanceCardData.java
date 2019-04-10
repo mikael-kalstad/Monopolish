@@ -1,4 +1,4 @@
-package com.teamfour.monopolish.game.chanceCards;
+package com.teamfour.monopolish.game.chancecards;
 
 import java.util.Random;
 

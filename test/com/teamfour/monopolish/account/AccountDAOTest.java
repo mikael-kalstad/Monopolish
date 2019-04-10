@@ -3,6 +3,7 @@ package com.teamfour.monopolish.account;
 import com.teamfour.monopolish.account.Account;
 import com.teamfour.monopolish.account.AccountDAO;
 import com.teamfour.monopolish.database.ConnectionPool;
+import com.teamfour.monopolish.database.DataSource;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -19,11 +20,7 @@ public class AccountDAOTest {
     @BeforeAll
     public static void setInstance() {
         instance = new AccountDAO();
-        try {
-            ConnectionPool.create();
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
+        DataSource.initialize();
     }
 
     @Test

@@ -1,6 +1,5 @@
 package com.teamfour.monopolish.gui.controllers;
 
-import com.teamfour.monopolish.game.entities.Entity;
 import com.teamfour.monopolish.game.entities.EntityManager;
 import com.teamfour.monopolish.game.property.Property;
 import javafx.fxml.FXML;

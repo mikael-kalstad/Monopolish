@@ -1,7 +1,6 @@
 package com.teamfour.monopolish.game.entities;
 
 import com.teamfour.monopolish.game.GameConstants;
-import com.teamfour.monopolish.game.entities.player.*;
 import com.teamfour.monopolish.game.property.Property;
 import com.teamfour.monopolish.game.property.Street;
 import com.teamfour.monopolish.gui.controllers.Handler;

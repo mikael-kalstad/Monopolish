@@ -1,15 +1,12 @@
 package com.teamfour.monopolish.gui.controllers;
 
-import com.mysql.cj.jdbc.exceptions.CommunicationsException;
 import com.teamfour.monopolish.account.Account;
-import com.teamfour.monopolish.database.ConnectionPool;
+import com.teamfour.monopolish.database.DataSource;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
-
-import java.sql.SQLException;
 
 /**
  * Controller class for login view
@@ -141,10 +138,10 @@ public class LoginController {
 
         // Try to register if inputs are not empty
         if (!inputsEmpty()) {
-            try {
                 // Only create connection if it is not already created
                 if (!connectionCreated) {
-                    ConnectionPool.create();
+                    //ConnectionPool.create();
+                    DataSource.initialize();
                     connectionCreated = true;
                 }
 
@@ -166,13 +163,7 @@ public class LoginController {
                         dbError = false;
                     }
                 }
-            }
-            catch (CommunicationsException e) {
-                dbError = true;
-            }
-            catch (SQLException e) {
-                e.printStackTrace();
-            }
+
         }
 
         // Check inputs

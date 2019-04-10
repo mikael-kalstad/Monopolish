@@ -1,6 +1,6 @@
 package com.teamfour.monopolish.game;
 
-import com.teamfour.monopolish.game.Dice;
+import com.teamfour.monopolish.game.gamecomponents.Dice;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;

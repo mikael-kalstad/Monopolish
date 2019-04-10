@@ -1,7 +1,7 @@
 package com.teamfour.monopolish.gui.controllers;
 
 import com.teamfour.monopolish.account.Account;
-import com.teamfour.monopolish.database.ConnectionPool;
+import com.teamfour.monopolish.database.DataSource;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -10,7 +10,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 
 /**
@@ -189,15 +188,12 @@ public class RegisterController {
             int res = -1; // Response from database
             Account user = new Account(usernameInput.getText().trim(), emailInput.getText().trim(), LocalDate.now(), 0, false);
 
-            try {
-                ConnectionPool.create();
-                res = Handler.getAccountDAO().insertAccount(user, passwordInput.getText().trim());
+            DataSource.initialize();
+            res = Handler.getAccountDAO().insertAccount(user, passwordInput.getText().trim());
 
-                if (res == 3) usernameTaken = emailTaken = true;
-                else if (res == 1) usernameTaken = true;
-                else if (res == 2) emailTaken = true;
-            }
-            catch (SQLException e) { e.printStackTrace(); }
+            if (res == 3) usernameTaken = emailTaken = true;
+            else if (res == 1) usernameTaken = true;
+            else if (res == 2) emailTaken = true;
 
             // Registration is successful
             if (res == 0) {
@@ -221,6 +217,6 @@ public class RegisterController {
      * Will go back to the login view
      */
     public void login() {
-        com.teamfour.monopolish.gui.controllers.Handler.getSceneManager().setScene(ViewConstants.LOGIN.getValue());
+        Handler.getSceneManager().setScene(ViewConstants.LOGIN.getValue());
     }
 }

@@ -1,4 +1,4 @@
-package com.teamfour.monopolish.game;
+package com.teamfour.monopolish.game.gamecomponents;
 
 import javafx.scene.layout.StackPane;
 

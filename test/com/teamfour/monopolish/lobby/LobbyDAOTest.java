@@ -1,6 +1,7 @@
 package com.teamfour.monopolish.lobby;
 
 import com.teamfour.monopolish.database.ConnectionPool;
+import com.teamfour.monopolish.database.DataSource;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -17,11 +18,7 @@ public class LobbyDAOTest {
     @BeforeAll
     public static void setInstance() {
         instance = new LobbyDAO();
-        try {
-            ConnectionPool.create();
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
+        DataSource.initialize();
     }
 
     @Test

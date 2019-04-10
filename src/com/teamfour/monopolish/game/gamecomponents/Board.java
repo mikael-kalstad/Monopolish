@@ -1,4 +1,4 @@
-package com.teamfour.monopolish.game;
+package com.teamfour.monopolish.game.gamecomponents;
 
 /**
  * Represents the tile data in the board. Each tile on the board is represented by

@@ -1,9 +1,7 @@
-package com.teamfour.monopolish.game.entities.player;
+package com.teamfour.monopolish.game.entities;
 
-import com.teamfour.monopolish.database.ConnectionPool;
 import com.teamfour.monopolish.database.DataAccessObject;
 
-import java.lang.reflect.Type;
 import java.sql.*;
 import java.util.ArrayList;
 /**
