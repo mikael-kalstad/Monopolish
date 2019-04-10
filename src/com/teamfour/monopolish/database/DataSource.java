@@ -8,6 +8,13 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * This class creates a pooled datasource which hands out connections to objects requesting access.
+ * Use connection.close() to release the connection
+ *
+ * @author      eirikhem
+ */
+
 public class DataSource {
     // Attributes
     private ComboPooledDataSource pool;
@@ -38,9 +45,12 @@ public class DataSource {
         pool.setMaxPoolSize(5);
     }
 
+    /**
+     * Get a connection from the pool
+     * @return First available connection
+     */
     public Connection getConnection() {
         try {
-            System.out.println(pool.getNumBusyConnections() + " busy connections.");
             return pool.getConnection();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -49,11 +59,13 @@ public class DataSource {
         return null;
     }
 
+    // Initializes the connection pool
     public static void initialize() {
         if (dataSource == null)
             dataSource = new DataSource();
     }
 
+    // Closes the connection pool
     public void shutdown() {
         pool.close();
     }
