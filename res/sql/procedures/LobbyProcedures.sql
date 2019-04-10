@@ -31,14 +31,15 @@ CREATE PROCEDURE join_lobby(IN username VARCHAR(30), IN lobby_id INT, OUT ok BIT
   BEGIN
     declare num_of_players int;
     declare account_id int;
-    SET num_of_players = (SELECT COUNT(*) FROM lobby WHERE lobby_id = room_id);
-    SET account_id = (SELECT a.user_id FROM account a WHERE a.username LIKE username LIMIT 1);
-    SET ok = false;
+      SET num_of_players = (SELECT COUNT(*) FROM lobby WHERE lobby_id = room_id);
+      SET account_id = (SELECT a.user_id FROM account a WHERE a.username LIKE username LIMIT 1);
+      SET ok = false;
 
-    IF (num_of_players < 4) THEN
-      SET ok = true;
-      INSERT INTO lobby (room_id, user_id)
-      VALUES (lobby_id, account_id);
+      IF (num_of_players < 4) THEN
+        SET ok = true;
+        -- Lock tables so that other players can't join in this exact moment
+        INSERT INTO lobby (room_id, user_id)
+        VALUES (lobby_id, account_id);
     END IF;
   END;
 
