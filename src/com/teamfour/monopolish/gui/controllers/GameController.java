@@ -453,13 +453,18 @@ public class GameController {
         }
 
         tradeBtn.setOnMouseClicked(e -> {
-            propertiesContainer.setVisible(false);
-            backgroundOverlay.setVisible(false);
-            tradeContainer.setVisible(true);
+            if (Handler.getCurrentGame().getPlayers()[Handler.getCurrentGame().getCurrentTurn()].equals(USERNAME)) {
+                propertiesContainer.setVisible(false);
+                backgroundOverlay.setVisible(false);
+                tradeContainer.setVisible(true);
 
-            Handler.setTradeUsername(username);
-            //addElementToContainer(ViewConstants.TRADING.getValue(), tradeContainer);
-            addElementToContainer(ViewConstants.SEND.getValue(), tradeContainer);
+                Handler.setTradeUsername(username);
+                //addElementToContainer(ViewConstants.TRADING.getValue(), tradeContainer);
+                addElementToContainer(ViewConstants.SEND.getValue(), tradeContainer);
+            } else {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "You can only send stuff when \nit's your turn");
+                alert.showAndWait();
+            }
         });
 
         // Close dialog if background is clicked
