@@ -10,10 +10,10 @@ import com.teamfour.monopolish.gui.controllers.MessagePopupController;
 import java.sql.SQLException;
 
 /**
- * This class contains static methods which can be used by the GameController to perform logical actions
- * and sequences in the game. This class was implemented to streamline and create a better overview of all
- * logical operations performed on the instances of 'Game.java', completely excluding such operations from
- * 'GameController.java'
+ * Contains static methods which can be used by the GameController to perform logical actions
+ * and sequences in the game. All actions are performed on the client player. This class was implemented
+ * to streamline and create a better overview of all logical operations performed on the instances of
+ * 'Game.java', completely excluding such operations from GameController.java'.
  *
  * @author      eirikhem
  * @version     1.3
