@@ -20,7 +20,7 @@ public class ShowTradeController {
     // Constants
     private final EntityManager entityManager = Handler.getCurrentGame().getEntities();
     private final String YOU = Handler.getCurrentGame().getEntities().getYou().getUsername();
-    private final String TRADE_USERNAME = Handler.getTradeUsername();
+    private final String TRADE_USERNAME = Handler.getSendUsername();
 
     PlayerDAO playerDAO = new PlayerDAO();
 
@@ -135,7 +135,7 @@ public class ShowTradeController {
             entityManager.removeTrade(entityManager.getYou().getUsername());
 
             // Close dialog
-            Handler.getTradeContainer().setVisible(false);
+            Handler.getSendContainer().setVisible(false);
         });
 
         refuseTradeBtn.setOnAction(e -> {
@@ -144,7 +144,7 @@ public class ShowTradeController {
             entityManager.removeTrade(entityManager.getYou().getUsername());
 
             // Close dialog
-            Handler.getTradeContainer().setVisible(false);
+            Handler.getSendContainer().setVisible(false);
         });
     }
 

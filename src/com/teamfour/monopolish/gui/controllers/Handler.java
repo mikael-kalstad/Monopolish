@@ -35,9 +35,9 @@ public class Handler {
 
     // Variables used in game
     private static ArrayList<String[]> colorList = new ArrayList<>();
-    private static String tradeUsername;
+    private static String sendUsername;
     private static Property buyHouseProperty;
-    private static @FXML Pane tradeContainer;
+    private static @FXML Pane sendContainer;
     private static @FXML Pane buyHouseContainer;
     private static @FXML Pane forfeitContainer;
     private static int currentGameId;
@@ -107,12 +107,12 @@ public class Handler {
     public static GameDAO getGameDAO() { return gameDAO; }
 
     // Setter and getter for Game variables
-    public static String getTradeUsername() { return tradeUsername; }
-    public static void setTradeUsername(String tradeUsername) { Handler.tradeUsername = tradeUsername; }
+    public static String getSendUsername() { return sendUsername; }
+    public static void setSendUsername(String sendUsername) { Handler.sendUsername = sendUsername; }
     public static Property getBuyHouseProperty() { return buyHouseProperty; }
     public static void setBuyHouseProperty(Property buyHouseProperty) { Handler.buyHouseProperty = buyHouseProperty; }
-    public static Pane getTradeContainer() { return tradeContainer; }
-    public static void setTradeContainer(Pane tradeContainer) { Handler.tradeContainer = tradeContainer; }
+    public static Pane getSendContainer() { return sendContainer; }
+    public static void setSendContainer(Pane sendContainer) { Handler.sendContainer = sendContainer; }
     public static Pane getBuyHouseContainer() { return buyHouseContainer; }
     public static void setBuyHouseContainer(Pane buyHouseContainer) { Handler.buyHouseContainer = buyHouseContainer; }
     public static Pane getForfeitContainer() { return forfeitContainer; }

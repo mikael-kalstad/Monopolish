@@ -20,7 +20,7 @@ public class TradeController {
     @FXML private TextField offeredmoney, requestedmoney;
 
     // Username of the opponent you want to trade with
-    private final String TRADE_USERNAME = Handler.getTradeUsername();
+    private final String TRADE_USERNAME = Handler.getSendUsername();
     private final String YOU = Handler.getCurrentGame().getEntities().getYou().getUsername();
     private final EntityManager entity = Handler.getCurrentGame().getEntities();
 
@@ -205,7 +205,7 @@ public class TradeController {
         });
 
         canceltrade.setOnAction(event -> {
-            Pane container = Handler.getTradeContainer();
+            Pane container = Handler.getSendContainer();
             if (container != null) container.setVisible(false);
         });
     }
