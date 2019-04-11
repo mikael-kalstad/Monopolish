@@ -126,10 +126,6 @@ begin
 
   update player set active = 2 where p_id = player_id and active = 1;
 
-  IF ((SELECT COUNT(*) FROM player WHERE game_id=gameid AND active <> 2) = 0) THEN
-    UPDATE game SET endtime=NOW() WHERE game_id=gameid;
-  END IF;
-
   -- calculates and sets score
   update player set score = (select (money + sum)
     from (select money, ifnull(sum(price),0) sum from player left join gameproperty on player.user_id = gameproperty.user_id and player.game_id = gameproperty.game_id
@@ -137,6 +133,12 @@ begin
         where player.player_id = p_id and gameid = player.game_id
           group by player_id) as inner_query)
             where player.player_id = p_id;
+
+
+  IF ((SELECT COUNT(*) FROM player WHERE game_id=gameid AND active <> 2) = 0) THEN
+    UPDATE game SET endtime=NOW() WHERE game_id=gameid;
+    DELETE FROM gameproperty WHERE gameproperty.game_id=gameid;
+  END IF;
 end $$
 
 /*
