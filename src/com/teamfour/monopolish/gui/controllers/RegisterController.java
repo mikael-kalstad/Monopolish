@@ -49,6 +49,9 @@ public class RegisterController {
     private final int MIN_PASSWORD_LENGTH = 6;
 
 
+    /**
+     * Is run only once on mount/render.
+     */
     @FXML public void initialize()  {
         // Add focus listener and show password requirement,
         // if password length is lower than required
@@ -78,10 +81,6 @@ public class RegisterController {
         element.setStyle("-fx-border-color: " + color);
     }
 
-    private void setTextColor(Text element, String color) {
-        element.setFill(Paint.valueOf(color));
-    }
-
     /**
      * Check if any inputs are empty
      *
@@ -106,21 +105,21 @@ public class RegisterController {
     private void checkField(TextField input, Text msg, String msgWarning, boolean warning) {
         // Required styling
         if (input.getText().trim().isEmpty()) {
-            setBorderStyle(input, COLOR_REQUIRED);
+            FxUtils.setBorderColor(input, COLOR_REQUIRED);
             msg.setVisible(true);
             msg.setText(MSG_REQUIRED);
-            setTextColor(msg, COLOR_REQUIRED);
+            FxUtils.setTextColor(msg, COLOR_REQUIRED);
         }
         // Warning styling
         else if (warning) {
-            setBorderStyle(input, COLOR_WARNING);
+            FxUtils.setBorderColor(input, COLOR_WARNING);
             msg.setVisible(true);
             msg.setText(msgWarning);
-            setTextColor(msg, COLOR_WARNING);
+            FxUtils.setTextColor(msg, COLOR_WARNING);
         }
         // Normal styling
         else {
-            setBorderStyle(input, COLOR_NORMAL);
+            FxUtils.setBorderColor(input, COLOR_NORMAL);
             msg.setVisible(false);
         }
     }
