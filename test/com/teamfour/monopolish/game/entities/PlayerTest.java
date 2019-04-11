@@ -1,4 +1,4 @@
-package com.teamfour.monopolish.game.entities.player;
+package com.teamfour.monopolish.game.entities;
 
 import com.teamfour.monopolish.game.entities.Player;
 import org.junit.jupiter.api.BeforeAll;
