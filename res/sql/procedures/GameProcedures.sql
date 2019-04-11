@@ -19,29 +19,28 @@ DROP PROCEDURE IF EXISTS set_forfeit;
 /**
 Procedure to generate a new game
   in lobby: lobbyId
-  in user_name: username
   out gameid: gameId of the new game
 
 issued by: GameDAO.insertGame()
  */
-CREATE PROCEDURE game_insert(IN lobby int, OUT gameid INT)
+CREATE PROCEDURE game_insert(IN lobby_in int, OUT gameid INT)
   proc_label:BEGIN
     DECLARE session INT DEFAULT 0;
     START TRANSACTION;
       -- If this game session already has been created, get that game ID
       SET gameid=(SELECT g.game_id FROM game g
                   LEFT JOIN lobbyname ln ON g.session_code=ln.session_code
-                  WHERE ln.lobby_id=lobby LIMIT 1);
+                  WHERE ln.lobby_id=lobby_in LIMIT 1);
 
       -- If not, be the one who creates the game session!
       IF (gameid IS NULL) THEN
         -- To ensure that a user is not active in two games at the same time, we make sure
         -- to set their status in any other game to LEFT as a fail-safe
         UPDATE player SET player.active=2
-        WHERE user_id IN (SELECT user_id FROM lobby WHERE lobby.room_id=lobby);
+        WHERE user_id IN (SELECT user_id FROM lobby WHERE room_id=lobby_in);
 
         -- Create a new game
-        SET session = (SELECT session_code FROM lobbyname ln WHERE ln.lobby_id=lobby LIMIT 1);
+        SET session = (SELECT session_code FROM lobbyname ln WHERE ln.lobby_id=lobby_in LIMIT 1);
         INSERT INTO game (starttime, session_code)
         VALUES (NOW(), session);
         -- Get the new Game ID
@@ -49,7 +48,7 @@ CREATE PROCEDURE game_insert(IN lobby int, OUT gameid INT)
 
         -- Get all players waiting in the lobby and put them in the player table
         INSERT INTO player (game_id, user_id)
-        SELECT gameid, l.user_id FROM lobby l WHERE l.room_id=lobby;
+        SELECT gameid, l.user_id FROM lobby l WHERE l.room_id=lobby_in;
       end if;
     COMMIT;
   END;
@@ -114,8 +113,6 @@ CREATE PROCEDURE game_set_current_player(IN gameid INT, IN current_username VARC
       UPDATE game
       SET currentplayer=current_player_id
       WHERE game_id=gameid;
-    ELSE
-
     END IF;
   END;
 
