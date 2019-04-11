@@ -22,7 +22,7 @@ public class SendController {
     @FXML private Label invalidinput, sendToUsername, moneytosend;
     @FXML private TextField money;
 
-    private final String SEND_USERNAME = Handler.getTradeUsername();
+    private final String SEND_USERNAME = Handler.getSendUsername();
     private final String YOU = Handler.getCurrentGame().getEntities().getYou().getUsername();
     private final EntityManager entity = Handler.getCurrentGame().getEntities();
 
@@ -118,13 +118,13 @@ public class SendController {
             alert.showAndWait();
 
             //close/hide window when
-            Pane container = Handler.getTradeContainer();
+            Pane container = Handler.getSendContainer();
             if (container != null) container.setVisible(false);
         });
 
         //setting cancel button to close/hide the window
         cancelSendBtn.setOnAction(event -> {
-            Pane container = Handler.getTradeContainer();
+            Pane container = Handler.getSendContainer();
             if (container != null) container.setVisible(false);
         });
     }
