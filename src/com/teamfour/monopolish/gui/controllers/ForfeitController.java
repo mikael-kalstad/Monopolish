@@ -172,15 +172,4 @@ public class ForfeitController {
             Handler.getPlayerDAO().setForfeitCheck(GAME_ID, USERNAME, true);
         }
     }
-
-    /**
-     * End the game and switch to Dashboard
-     */
-//    private void endGame() {
-//        GameController.stopTimers();
-//        GameLogic.stopGame();
-//
-//        // Switch to dashboard!
-//        Platform.runLater(() -> Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue()));
-//    }
 }
