@@ -29,9 +29,9 @@ public class EntityManagerTest {
         accountDAO.insertAccount(dewey, "brorNr2");
         accountDAO.insertAccount(louie, "brorNr3");
         GameDAO game = new GameDAO();
-        game.insertGame(1,"huey");
-        game.insertGame(1,"dewey");
-        int gameId =  game.insertGame(1,"louie");
+        game.insertGame(1);
+        game.insertGame(1);
+        int gameId =  game.insertGame(1);
         instance = new EntityManager(gameId);
         instance.updateFromDatabase();
     }

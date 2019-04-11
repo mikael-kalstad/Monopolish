@@ -31,7 +31,7 @@ public class GameDAO extends DataAccessObject {
             cStmt.registerOutParameter(2, Types.INTEGER);
 
             cStmt.executeUpdate();
-            gameId = cStmt.getInt(3);
+            gameId = cStmt.getInt(2);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
