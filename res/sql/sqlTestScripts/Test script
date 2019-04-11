@@ -1,0 +1,5 @@
+insert into game(game_id, starttime, endtime, currentplayer, forfeit, session_code)
+  VALUES (1, now(), null, 1, false, 1);
+
+call property_get_all(1);
+

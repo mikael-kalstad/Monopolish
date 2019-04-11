@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class EntityManagerTest {
     private static EntityManager instance = null;
-
+/*
     @BeforeAll
     public static void setInstance(){
         // Open connection to database
