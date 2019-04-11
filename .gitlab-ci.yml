@@ -1,12 +1,11 @@
 pages:
   stage: deploy
   script:
-    - cd wiki_resources
-    - mkdir .javadoc
-    - cp -r * .javadoc
-    - mv .javadoc javadoc
+  - mkdir .public
+  - cp -r * .public
+  - mv .public public
   artifacts:
     paths:
-      - wiki_resources/javadoc
+    - public
   only:
-    - master
+  - master
