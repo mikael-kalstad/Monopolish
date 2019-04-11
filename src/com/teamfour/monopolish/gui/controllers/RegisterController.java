@@ -199,6 +199,9 @@ public class RegisterController {
                 // Set local account object
                 Handler.setAccount(user);
 
+                // Set user active
+                Handler.getAccountDAO().getAccountByCredentials(usernameInput.getText(), passwordInput.getText());
+
                 // Switch to dashboard view
                 Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
             }

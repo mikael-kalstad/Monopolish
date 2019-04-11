@@ -131,17 +131,16 @@ public class LobbyController {
                     refreshTimer.cancel();
                     refreshTimer.purge();
 
-                    // Close connection
-                    try { ConnectionPool.getMainConnectionPool().shutdown(); }
-                    catch (SQLException ex) { ex.printStackTrace(); }
+                    // Logout user
+                    Handler.getAccountDAO().setInactive(USERNAME);
 
                     // Close the window
                     Handler.getSceneManager().getWindow().close();
                 }
+            } else {
+                Handler.getAccountDAO().setInactive(USERNAME);
+                Handler.getSceneManager().getWindow().close();
             }
-
-            // Logout user
-            Handler.getAccountDAO().setInactive(USERNAME);
         });
     }
 

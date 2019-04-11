@@ -90,7 +90,7 @@
                               <Font size="24.0" />
                            </font>
                         </Text>
-                        <Text fx:id="highscoreU2" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tafsemannen69" textAlignment="CENTER" wrappingWidth="175.9999985024333">
+                        <Text fx:id="highscoreU2" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pål" textAlignment="CENTER" wrappingWidth="175.9999985024333">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -113,7 +113,7 @@
                   </Pane>
                   <Pane layoutX="368.0" layoutY="225.0" prefHeight="93.0" prefWidth="187.0">
                      <children>
-                        <Text fx:id="highscoreU3" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tafsemannen69" textAlignment="CENTER" wrappingWidth="187.0000046705827">
+                        <Text fx:id="highscoreU3" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Per" textAlignment="CENTER" wrappingWidth="187.0000046705827">
                            <font>
                               <Font size="14.0" />
                            </font>
