@@ -48,10 +48,5 @@ public class Launcher extends Application {
 
         primaryStage.widthProperty().addListener(stageSizeListener);
         primaryStage.heightProperty().addListener(stageSizeListener);
-
-//        System.out.println("visualbounds width: " + screen.getWidth()); // screens usable width (no task bars etc.)
-//        System.out.println("visualbounds height: " + screen.getHeight()); // screens usable height
-//        System.out.println("Actual res width: " + primaryStage.getWidth());
-//        System.out.println("Actual res height: " + primaryStage.getHeight());
     }
 }

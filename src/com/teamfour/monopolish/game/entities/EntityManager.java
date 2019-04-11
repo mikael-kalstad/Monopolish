@@ -90,31 +90,6 @@ public class EntityManager {
     }
 
     /**
-     * Grabs a house from the bank to specified property
-     * @param owner Owner of the property
-     * @param id Id of the property
-     * @return 1 if successful,
-     *         -1 if not enough money,
-     *         -2 if property was not found
-     */
-    public int transferHouseToProperty(String owner, int id) {
-        Player ownerPlayer = getPlayer(owner);
-        for (Property p : ownerPlayer.getProperties()) {
-            if (p.getId() == id && p instanceof Street) {
-                if (ownerPlayer.getMoney() >= ((Street) p).getHousePrice()) {
-                    ((Street)p).addHouse();
-                    bank.getHouses(1);
-                    return 1;
-                } else {
-                    return -1;
-                }
-            }
-        }
-
-        return -2;
-    }
-
-    /**
      * Distributes money from the bank at the start of the game
      * @param amount Amount each player should get
      */
@@ -185,7 +160,7 @@ public class EntityManager {
      * Retrieves all player data from the database, to update the current game
      * after an opponent's round
      */
-    public void updateFromDatabase() throws SQLException {
+    public void updateFromDatabase() {
         int moneyInGame = 0;
         players.clear();
         players = playerDAO.getPlayersInGame(gameId);
@@ -202,7 +177,7 @@ public class EntityManager {
     /**
      * Writes all player updates to the database
      */
-    public void updateToDatabase() throws SQLException {
+    public void updateToDatabase() {
         for (Player p : players) {
             playerDAO.updatePlayer(p, gameId);
             p.updatePropertiesToDatabase(gameId);
@@ -281,7 +256,7 @@ public class EntityManager {
         return (players);
     }
 
-    public int[] getPlayerPositions() throws SQLException {
+    public int[] getPlayerPositions() {
         updateFromDatabase();
         int[] positions = new int[players.size()];
         for (int i = 0; i < positions.length; i++) {
@@ -378,13 +353,7 @@ public class EntityManager {
             seller.getProperties().remove(p);
         }
 
-        try {
-            updateToDatabase();
-            System.out.println("Update to db..............");
-        } catch (SQLException sql) {
-            sql.printStackTrace();
-        }
-
+        updateToDatabase();
     }
 
     /**

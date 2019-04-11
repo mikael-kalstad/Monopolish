@@ -714,29 +714,24 @@ public class GameController {
         int[] positions = null;
 
         // Get player positions and update GUI on the board
-        try {
-            positions = game.getEntities().getPlayerPositions();
+        positions = game.getEntities().getPlayerPositions();
 
-            // Set player colors
-            for (int i = 0; i < turns.length; i++) {
-                colors[i] = Handler.getPlayerColor(turns[i]);
-            }
+        // Set player colors
+        for (int i = 0; i < turns.length; i++) {
+            colors[i] = Handler.getPlayerColor(turns[i]);
+        }
 
-            // Draw player pieces on the board
-            GameControllerDrawFx.createPlayerPieces(gamegrid, positions, colors);
+        // Draw player pieces on the board
+        GameControllerDrawFx.createPlayerPieces(gamegrid, positions, colors);
 
-            for (String player : turns) {
-                if (game.getEntities().getPlayer(player) == null) continue;
+        for (String player : turns){
+            if (game.getEntities().getPlayer(player) == null) continue;
 
-                for (Property property : game.getEntities().getPlayer(player).getProperties()) {
-                    if (property instanceof Street) {
-                        GameControllerDrawFx.drawHouse(housegrid, (Street) property);
-                    }
+            for (Property property : game.getEntities().getPlayer(player).getProperties()){
+                if (property instanceof Street) {
+                    GameControllerDrawFx.drawHouse(housegrid, (Street) property);
                 }
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
         // Update round- and status-value
@@ -937,6 +932,10 @@ public class GameController {
         }
     }
 
+    /**
+     * Called to check whether the dice and 'end turn' buttons should be activated after performing
+     * a certain action
+     */
     private void checkDiceThrow() {
         propertyBtn.setDisable(true);
         int[] currentDice = game.getDice().getLastThrow();

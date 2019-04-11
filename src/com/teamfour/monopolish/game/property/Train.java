@@ -1,5 +1,11 @@
 package com.teamfour.monopolish.game.property;
 
+/**
+ * This class represents a property of type boat. A boat's rent level is adjusted by what the player got on the dice
+ *
+ * @author      eirikhem
+ */
+
 public class Train extends Property {
     /**
      * Constructor
