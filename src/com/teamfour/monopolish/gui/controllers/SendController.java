@@ -16,7 +16,6 @@ import java.util.ArrayList;
  */
 
 public class SendController {
-
     @FXML private Button sendBtn, moneyokBtn, clearBtn, cancelSendBtn;
     @FXML private FlowPane yourproperties, propertiestosend;
     @FXML private Label invalidinput, sendToUsername, moneytosend;
@@ -26,9 +25,7 @@ public class SendController {
     private final String YOU = Handler.getCurrentGame().getEntities().getYou().getUsername();
     private final EntityManager entity = Handler.getCurrentGame().getEntities();
 
-    @FXML
-    public void initialize() {
-
+    @FXML public void initialize() {
         ArrayList<Pane> yourCards = new ArrayList<>();
         ArrayList<Pane> cardsToSend = new ArrayList<>();
 

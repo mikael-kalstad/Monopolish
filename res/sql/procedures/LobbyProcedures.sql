@@ -1,8 +1,38 @@
 /**
-Procedure to create a new lobby
+  LobbyProcedures contain procedures to create, join, leave and delete lobbies
  */
-DROP PROCEDURE if exists new_lobby;
 
+/**
+  Drops
+ */
+DROP PROCEDURE IF EXISTS new_lobby;
+DROP PROCEDURE IF EXISTS join_lobby;
+DROP PROCEDURE IF EXISTS lobby_insert;
+DROP PROCEDURE IF EXISTS lobby_set_player_ready;
+DROP PROCEDURE IF EXISTS lobby_delete;
+DROP PROCEDURE IF EXISTS lobby_delete_user;
+DROP PROCEDURE IF EXISTS lobby_get_users_in_lobby;
+DROP PROCEDURE IF EXISTS getAllLobbies;
+DROP PROCEDURE IF EXISTS getALlReadyInLobby;
+DROP PROCEDURE IF EXISTS lobby_removeEmptyLobbies;
+DROP PROCEDURE IF EXISTS lobby_get_id;
+
+
+
+
+/**
+Procedure to create a new lobby and return its lobby_id
+
+ in username: username
+ in lobby_name
+ out lobby_id : true if it is a success
+
+ out(columnIndex/columnLabel):
+  1/lobby_id
+
+issued by: LobbyDAO.newLobby()
+
+ */
 CREATE PROCEDURE new_lobby(IN username VARCHAR(30), IN lobby_name varchar(30), OUT lobby_id INT)
   BEGIN
     DECLARE lobby_id INT;
@@ -22,10 +52,20 @@ CREATE PROCEDURE new_lobby(IN username VARCHAR(30), IN lobby_name varchar(30), O
     VALUES (lobby_id, account_id);
   END;
 
+-- ------------------------------------
+
 /**
 Procedure to add user to a lobby
+
+ in username: username
+ in lobby_id
+ out ok : true if it is a success
+
+ out(columnIndex/columnLabel):
+  1/ok
+
+issued by: LobbyDAO.addPlayer()
  */
-DROP PROCEDURE if exists join_lobby;
 
 CREATE PROCEDURE join_lobby(IN username VARCHAR(30), IN lobby_id INT, OUT ok BIT)
   BEGIN
@@ -43,14 +83,20 @@ CREATE PROCEDURE join_lobby(IN username VARCHAR(30), IN lobby_id INT, OUT ok BIT
     END IF;
   END;
 
+-- ------------------------------------
+
 
 /**
-Procedure to join or create lobby
+Procedure to insert a lobby
+
+  in username: username
+  out lobby_id
+
+   out(columnIndex/columnLabel):
+    1/lobby_id
+
+issued by: LobbyDAO.insertLobby()
  */
-
--- DELIMITER $$
-DROP PROCEDURE if exists lobby_insert;
-
 CREATE PROCEDURE lobby_insert(IN username VARCHAR(30), OUT lobby_id INT)
   BEGIN
     declare account_id int;
@@ -77,61 +123,72 @@ CREATE PROCEDURE lobby_insert(IN username VARCHAR(30), OUT lobby_id INT)
     INSERT INTO lobby(room_id, user_id)
     VALUES(lobby_id, account_id);
   END;
--- END$$
+
+-- -------------------------------------------
 
 /**
 Procedure to set ready status
+
+  in roomid:  lobby_id
+  in user_name: username
+  in ready_in: new ready value
+
+issued by: LobbyDAO.setReady()
  */
-
--- DELIMITER $$
-DROP PROCEDURE if exists lobby_set_player_ready;
-
-CREATE PROCEDURE lobby_set_player_ready(IN room_id INT, IN username VARCHAR(30), IN ready BIT)
+CREATE PROCEDURE lobby_set_player_ready(IN roomid INT, IN user_name VARCHAR(30), IN ready_in BIT)
   BEGIN
-    declare user_id int;
-    SET user_id = (SELECT a.user_id FROM account a WHERE a.username LIKE username LIMIT 1);
+    declare userid int;
+    SET userid = (SELECT a.user_id FROM account a WHERE a.username LIKE user_name LIMIT 1);
     UPDATE lobby l
-    SET l.ready=ready
-    WHERE l.room_id=room_id AND l.user_id=user_id;
+    SET l.ready=ready_in
+    WHERE l.room_id=roomid AND l.user_id=userid;
   END;
--- END$$
+
+-- -------------------------------------------------
 
 /**
-Procedure to delete lobby
+Procedure to delete a lobby
+
+  in room_id:  lobby_id
+
+issued by: LobbyDAO.deleteLobby()
  */
-
--- DELIMITER $$
-DROP PROCEDURE lobby_delete;
-
 CREATE PROCEDURE lobby_delete(IN room_id INT)
   BEGIN
     DELETE FROM lobby WHERE lobby.room_id = room_id;
     DELETE FROM lobbyname WHERE lobby_id = room_id;
   END;
--- END$$
+
+-- -------------------------------------------------------
 
 /**
 Procedure to delete user from lobby
+
+  in room_id:  lobby_id
+  in username: username
+
+issued by: LobbyDAO.removePlayer()
  */
-
--- DELIMITER $$
-DROP PROCEDURE lobby_delete_user;
-
 CREATE PROCEDURE lobby_delete_user(IN room_id INT, IN username VARCHAR(30))
   BEGIN
     DECLARE user_id INT;
     SET user_id = (SELECT a.user_id FROM account a WHERE a.username LIKE username LIMIT 1);
     DELETE FROM lobby WHERE lobby.room_id=room_id AND lobby.user_id=user_id;
   END;
--- END$$
 
-/**
+-- ---------------------------------------
+
+
+/*
 Procedure to get all users from a lobby
+
+  in room_id:  lobby_id
+
+  out(columnIndex/columnLabel):
+    1/username
+
+issued by: LobbyDAO.getUsersInLobby()
  */
-
--- DELIMITER $$
-DROP PROCEDURE lobby_get_users_in_lobby;
-
 CREATE PROCEDURE lobby_get_users_in_lobby(IN room_id INT)
   BEGIN
     SELECT a.username
@@ -139,21 +196,40 @@ CREATE PROCEDURE lobby_get_users_in_lobby(IN room_id INT)
     JOIN account a ON a.user_id=l.user_id
     WHERE l.room_id=room_id;
   END;
--- END$$
 
--- DELIMITER $$
-DROP PROCEDURE getAllLobbies;
+-- ------------------------------------------
 
+/*
+procedure to get all the lobbies
+
+  out(columnIndex/columnLabel):
+    1/room_id : lobby_id
+    2/username
+    3/ready : true if the player is ready
+    4/lobbyname : name of the lobby
+
+issued by: LobbyDAO.getAllLobbies()
+ */
 CREATE PROCEDURE getAllLobbies()
   BEGIN
     SELECT l.room_id, a.username, l.ready, lobbyname FROM lobby l
-    JOIN account a ON l.user_id = a.user_id join lobbyname l2 on l.room_id = l2.lobby_id
+    JOIN account a ON l.user_id = a.user_id JOIN lobbyname l2 ON l.room_id = l2.lobby_id
     WHERE a.user_id = l.user_id;
   END;
--- END$$
 
-DROP PROCEDURE getALlReadyInLobby;
+-- ---------------------------------------------------------------
 
+
+/*
+procedure to get the number of players who are ready in a lobby
+
+  in lobby_in:  lobby_id
+
+  out(columnIndex):
+    1 : number of ready players
+
+issued by: LobbyDAO.getAllReadyInLobby()
+ */
 CREATE PROCEDURE getALlReadyInLobby(IN lobby_id INT)
   BEGIN
     SELECT COUNT(*) FROM lobby
@@ -161,15 +237,32 @@ CREATE PROCEDURE getALlReadyInLobby(IN lobby_id INT)
     AND ready = 1;
   END;
 
-DROP PROCEDURE IF EXISTS lobby_removeEmptyLobbies;
+-- -------------------------------------------------
 
+/*
+procedure to delete empty lobbies
+
+issued by: LobbyDAO.removeEmptyLobbies()
+ */
 CREATE PROCEDURE lobby_removeEmptyLobbies()
   BEGIN
     DELETE FROM lobbyname where lobby_id not in (select room_id from lobby);
   end;
 
+-- ------------------------------------------------------
 
-DROP PROCEDURE IF EXISTS lobby_get_id;
+
+
+/*
+returns the lobby_id of the lobby the user is in
+
+  in user_name:  username
+
+  out(columnIndex/columnLabel):
+    1/room_id
+
+issued by: LobbyDAO.getLobbyId()
+ */
 CREATE PROCEDURE lobby_get_id(
   in user_name varchar(30)
   )

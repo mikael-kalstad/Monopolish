@@ -132,7 +132,7 @@ begin
 
   -- calculates and sets score
   update player set score = (select (money + sum)
-    from (select money, ifnull(sum(price*(rent_level+1)),0) sum from player left join gameproperty on player.user_id = gameproperty.user_id and player.game_id = gameproperty.game_id
+    from (select money, ifnull(sum(price),0) sum from player left join gameproperty on player.user_id = gameproperty.user_id and player.game_id = gameproperty.game_id
       left join property on property.property_id = gameproperty.property_id
         where player.player_id = p_id and gameid = player.game_id
           group by player_id) as inner_query)
@@ -256,12 +256,10 @@ issued by: PlayerDAO.getForfeitCheck()
 CREATE PROCEDURE get_forfeit_check(IN gameid INT)
 BEGIN
   select if(players > checked, 0, 1) check_bit from
-    (select count(user_id) players from
-        game join player on game.game_id = player.game_id
-            where gameid = game.game_id AND player.forfeit <> 0) sub1 join
+    (select count(player_id) players from
+        player where gameid = game_id and active = 1) sub1 join
     (select count(player_id) checked from
-        player
-            where gameid = player.game_id and forfeit_check = 1) sub2;
+        player where gameid = player.game_id and forfeit_check = 1 and active = 1) sub2;
 END;
 
 
@@ -277,6 +275,7 @@ issued by: PlayerDAO.setForfeitCheck()
 CREATE PROCEDURE set_forfeit_check(IN gameid INT, in user_name varchar(30), in check_in bit)
 BEGIN
   declare p_id int;
+
   select player_id into p_id from
     player join account
       on player.user_id = account.user_id

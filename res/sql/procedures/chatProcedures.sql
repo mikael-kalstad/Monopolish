@@ -67,5 +67,5 @@ create view message_view as(
   select username, account.user_id, game_id, player_id
   from account
     join player
-      on account.user_id = p.user_id
+      on account.user_id = player.user_id
 );

@@ -87,6 +87,9 @@ public class LobbyController {
     // Countdown constants
     private final int COUNTDOWN_TIME = 5;
 
+    /**
+     * Will run once on mount/render
+     */
     @FXML public void initialize() {
         // Update lobbies periodically to display changes in the database
         TimerTask task = new TimerTask() {
@@ -285,6 +288,13 @@ public class LobbyController {
         }
         return null;
     }
+
+    /**
+     * Get image element for a given lobby container and id
+     * @param lobby actual lobby
+     * @param id Id of the target image
+     * @return ImageView instance of the target img
+     */
     private ImageView getImageById(Pane lobby, String id) {
         Object[] elements = lobby.getChildren().toArray();
         for (Object elem : elements) {
@@ -351,7 +361,7 @@ public class LobbyController {
     /**
      * Add player to a lobby
      *
-     * @param username
+     * @param username Of the target player
      * @param container Node target, which lobby to join
      */
     private void drawPlayer(String username, Pane container) {
@@ -546,7 +556,7 @@ public class LobbyController {
                         refreshTimer.cancel();
 
                         // Make a new game in database
-                        int gameId = Handler.getGameDAO().insertGame(current_lobby_id, Handler.getAccount().getUsername());
+                        int gameId = Handler.getGameDAO().insertGame(current_lobby_id);
                         Handler.setCurrentGameId(gameId);
 
                         // Set colorlist in Handler

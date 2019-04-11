@@ -11,6 +11,9 @@ import javafx.scene.layout.Pane;
 
 import static com.teamfour.monopolish.game.GameLogic.game;
 
+/**
+ * Controller class for dialog to property. Will handle all logic when buying houses, hotels and pawning proerpties.
+ */
 public class buyHouseController {
     private final Property PROPERTY = Handler.getBuyHouseProperty();
 

@@ -152,6 +152,7 @@ CREATE PROCEDURE account_set_inactive(IN u_name VARCHAR(30))
   END;
 
 -- ----------------------------------------
+
 -- ?!
 /*
   Gets the user's active state
@@ -208,5 +209,3 @@ BEGIN
   SELECT max(score) highscore
   FROM player JOIN account ON player.user_id = account.user_id WHERE username = u_name;
 END;
-
-
