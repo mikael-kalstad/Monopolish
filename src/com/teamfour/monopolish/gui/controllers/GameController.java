@@ -711,7 +711,7 @@ public class GameController {
     private void updateBoard() {
         String[] turns = game.getPlayers();
         String[] colors = new String[turns.length];
-        int[] positions = null;
+        int[] positions;
 
         // Get player positions and update GUI on the board
         positions = game.getEntities().getPlayerPositions();
@@ -743,7 +743,7 @@ public class GameController {
             statusValue.setText("Waiting for " + game.getPlayers()[game.getCurrentTurn()] + " to finish");
 
         // Update info for all players
-        if (positions != null) updatePlayersInfo();
+        updatePlayersInfo();
     }
 
     /**
