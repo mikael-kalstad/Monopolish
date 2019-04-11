@@ -132,11 +132,7 @@ public class TradeController {
         opponentsproperties.getChildren().addAll(opponentsCards);
 
         proposeTradeBtn.setOnAction(event -> {
-            try {
-                Handler.getCurrentGame().getEntities().updateFromDatabase();
-            } catch (SQLException sql) {
-                sql.printStackTrace();
-            }
+            Handler.getCurrentGame().getEntities().updateFromDatabase();
             ArrayList<String> offeredPropertiesNameList = new ArrayList<>();
             ArrayList<String> requestedPropertiesNameList = new ArrayList<>();
 
@@ -192,12 +188,8 @@ public class TradeController {
             entity.tradeFromTo(entity.getYou(), entity.getPlayer(TRADE_USERNAME),
                     offeredmoney, requestedmoney, offeredPropertiesNew, requestedPropertiesNew);
 
-            try {
-                entity.updateToDatabase();
-                entity.updateFromDatabase();
-            } catch (SQLException sql) {
-                sql.printStackTrace();
-            }
+            entity.updateToDatabase();
+            entity.updateFromDatabase();
             if (entity.isTrade(YOU)) {
                 System.out.println("Found trades for you!");
             }

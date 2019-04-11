@@ -27,31 +27,26 @@ public class GameLogic {
      * Initalizes the current game. Creates all objects, and prepares the database for a game
      */
     public static void startGame() {
-        try {
-            // Get the current game from the handler class
-            int gameId = game.getGameId();
-            System.out.println("Game id: " + gameId);
+        // Get the current game from the handler class
+        int gameId = game.getGameId();
+        System.out.println("Game id: " + gameId);
 
-            // Initialize board and get players from database
-            game.setBoard(new Board());
-            EntityManager entities = new EntityManager(gameId);
-            entities.updateFromDatabase();
-            game.setEntities(entities);
+        // Initialize board and get players from database
+        game.setBoard(new Board());
+        EntityManager entities = new EntityManager(gameId);
+        entities.updateFromDatabase();
+        game.setEntities(entities);
 
-            // Transfer money from bank to players
-            entities.distributeStartMoney(GameConstants.START_MONEY);
+        // Transfer money from bank to players
+        entities.distributeStartMoney(GameConstants.START_MONEY);
 
-            // Get a list of players and their turn order
-            String[] players = entities.getUsernames();
-            game.setPlayers(players);
+        // Get a list of players and their turn order
+        String[] players = entities.getUsernames();
+        game.setPlayers(players);
 
-            // Write current player and money amounts to database
-            Handler.getGameDAO().setCurrentPlayer(gameId, players[0]);
-            updateToDatabase();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        // Write current player and money amounts to database
+        Handler.getGameDAO().setCurrentPlayer(gameId, players[0]);
+        updateToDatabase();
     }
 
     /**
@@ -298,17 +293,13 @@ public class GameLogic {
      * Update all game elements to the database
      */
     public static void updateToDatabase() {
-        try {
-            // Always check bankruptcy before updating to database, so we can catch this as soon as possible
-            checkBankruptcy();
-            // Updates all entities
-            game.getEntities().updateToDatabase();
+        // Always check bankruptcy before updating to database, so we can catch this as soon as possible
+        checkBankruptcy();
+        // Updates all entities
+        game.getEntities().updateToDatabase();
 
-            // Updates the current player
-            Handler.getGameDAO().setCurrentPlayer(game.getGameId(), game.getPlayers()[game.getCurrentTurn()]);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        // Updates the current player
+        Handler.getGameDAO().setCurrentPlayer(game.getGameId(), game.getPlayers()[game.getCurrentTurn()]);
     }
 
     /**
@@ -412,23 +403,19 @@ public class GameLogic {
      * done gets shown in your own client
      */
     public static void updateFromDatabase() {
-        try {
-            // Update entities
-            game.getEntities().updateFromDatabase();
+        // Update entities
+        game.getEntities().updateFromDatabase();
 
-            // Load player list again, in case anyone has left
-            game.setPlayers(game.getEntities().getUsernames());
+        // Load player list again, in case anyone has left
+        game.setPlayers(game.getEntities().getUsernames());
 
-            // Update turn number
-            String currentPlayer = Handler.getGameDAO().getCurrentPlayer(game.getGameId());
-            String[] players = game.getPlayers();
-            for (int i = 0; i < players.length; i++) {
-                if (players[i].equals(currentPlayer)) {
-                    game.setCurrentTurn(i);
-                }
+        // Update turn number
+        String currentPlayer = Handler.getGameDAO().getCurrentPlayer(game.getGameId());
+        String[] players = game.getPlayers();
+        for (int i = 0; i < players.length; i++) {
+            if (players[i].equals(currentPlayer)) {
+                game.setCurrentTurn(i);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 
