@@ -919,12 +919,7 @@
       <Pane fx:id="tradeContainer" layoutX="210.0" layoutY="53.0" prefHeight="950.0" prefWidth="1500.0" visible="false" />
       <Pane fx:id="helpOverlay" onMouseClicked="#toggleHelpOverlay" prefHeight="1055.0" prefWidth="1925.0" style="-fx-background-color: rgba(160,160,160,0.7);" visible="false">
          <children>
-            <Text fill="WHITE" layoutX="28.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hover over with the mouse to see settings" wrappingWidth="289.3332862193565">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Text>
-            <Text fill="WHITE" layoutX="159.0" layoutY="203.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Forfeit will start a vote to quit the game with all players" wrappingWidth="150.18750838935375">
+            <Text fill="WHITE" layoutX="8.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hover over with the mouse to see menu or settings" wrappingWidth="329.9999827146531">
                <font>
                   <Font size="14.0" />
                </font>
@@ -979,11 +974,6 @@
                   <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <Text fill="WHITE" layoutX="14.0" layoutY="203.0" strokeType="OUTSIDE" strokeWidth="0.0" text="If you quit you will leave the game. You can not rejoin later." wrappingWidth="144.71925124526024">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Text>
             <Text fill="WHITE" layoutX="14.0" layoutY="572.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Notifications will dynamically be shown here, this can be turned off in the settings" wrappingWidth="316.9999873081176">
                <font>
                   <Font size="20.0" />
