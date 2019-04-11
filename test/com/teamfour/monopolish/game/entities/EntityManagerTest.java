@@ -33,11 +33,7 @@ public class EntityManagerTest {
         game.insertGame(1,"dewey");
         int gameId =  game.insertGame(1,"louie");
         instance = new EntityManager(gameId);
-        try {
-            instance.updateFromDatabase();
-        }catch(SQLException sql){
-            sql.printStackTrace();
-        }
+        instance.updateFromDatabase();
     }
 
     @Test

@@ -13,11 +13,12 @@ import com.teamfour.monopolish.gui.controllers.Handler;
 
 public class Bank extends Entity {
     // Attributes
-    int availableHouses;
-    int availableHotels;
+    private int availableHouses;
+    private int availableHotels;
 
     /**
      * Constructor
+     * @param gameId Id of the game this bank belongs to
      */
     public Bank(int gameId) {
         super();
@@ -25,7 +26,6 @@ public class Bank extends Entity {
         availableHotels = GameConstants.MAX_HOTELS;
         money = GameConstants.MAX_GAME_MONEY;
         // Get all properties from database
-        // TODO: Fix this
         try {
             properties = Handler.getPropertyDAO().getAllProperties(gameId);
         } catch (Exception e) {
@@ -39,9 +39,12 @@ public class Bank extends Entity {
      * @return Houses
      */
     public int getHouses(int amount) {
-        if (availableHouses < amount)
+        if (availableHouses < amount) {
+            availableHouses = 0;
             return availableHouses;
+        }
 
+        availableHouses -= amount;
         return amount;
     }
 
@@ -51,9 +54,12 @@ public class Bank extends Entity {
      * @return Hotels
      */
     public int getHotels(int amount) {
-        if (availableHotels < amount)
+        if (availableHotels < amount) {
+            availableHotels = 0;
             return availableHotels;
+        }
 
+        availableHotels -= amount;
         return amount;
     }
 

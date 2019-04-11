@@ -1,7 +1,7 @@
 package com.teamfour.monopolish.gui.views;
 
 /**
- * view constants that contain filenames for .fxml files.
+ * View constants that contain filenames for .fxml files.
  * References to .fxml files should use an enum from this class,
  * to prevent inconsistency in filenames within the application
  *
@@ -24,8 +24,6 @@ public enum ViewConstants {
     GAME("game.fxml"),
     CHAT("chat.fxml"),
     FORFEIT("forfeit.fxml"),
-    TRADING("trading.fxml"),
-    SHOW_TRADE("showtrade.fxml"),
     MESSAGE_POPUP("messagePopup.fxml"),
     CHANCE_CARD("chanceCard.fxml"),
     SPECIAL_CARD("specialCard.fxml"),

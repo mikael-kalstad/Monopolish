@@ -14,6 +14,9 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * Controller class for chat GUI. It will handle all logic related to chat communication with the database, refreshing, notifications and updating the chat.
+ */
 public class ChatController {
     // Chat elements
     private @FXML Pane chatContainer;
@@ -31,6 +34,9 @@ public class ChatController {
     // Timer that will periodically update the chat
     private static Timer chatTimer = new Timer();
 
+    /**
+     * Will run once on mount/render
+     */
      @FXML public void initialize() {
         // "Close" chat / move it down
         chatContainer.setTranslateY(275);
@@ -134,6 +140,10 @@ public class ChatController {
         }
     }
 
+    /**
+     * Get chat timer to be able to stop timer if needed.
+     * @return
+     */
     public static Timer getChatTimer() {
         return chatTimer;
     }

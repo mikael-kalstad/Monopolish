@@ -3,10 +3,12 @@ package com.teamfour.monopolish.gui.controllers;
 import com.teamfour.monopolish.database.DataSource;
 import com.teamfour.monopolish.game.Game;
 import com.teamfour.monopolish.game.GameLogic;
-import com.teamfour.monopolish.game.chancecards.*;
+import com.teamfour.monopolish.game.chancecards.ChanceCard;
+import com.teamfour.monopolish.game.chancecards.ChanceCardData;
 import com.teamfour.monopolish.game.entities.Player;
 import com.teamfour.monopolish.game.gamecomponents.Board;
-import com.teamfour.monopolish.game.property.*;
+import com.teamfour.monopolish.game.property.Property;
+import com.teamfour.monopolish.game.property.Street;
 import com.teamfour.monopolish.gui.views.ViewConstants;
 import javafx.animation.ParallelTransition;
 import javafx.animation.RotateTransition;
@@ -15,7 +17,10 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -25,7 +30,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-import javax.swing.text.View;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -42,55 +46,49 @@ import java.util.TimerTask;
  */
 
 public class GameController {
+    public static boolean forfeit = false;
+    static public boolean gameFinished = false;
     // Timer for checking database updates and requests
     private static Timer databaseTimer = new Timer();
     private static Timer requestTimer = new Timer();
-
-    // GameLogic for handling more intricate game operations
-    private Game game;
+    private static boolean playSounds = true;
     private final int GAME_ID = Handler.getCurrentGameId();
     private final String USERNAME = Handler.getAccount().getUsername();
+    @FXML public Pane forfeitContainer;
+    // Container for trade
+    @FXML public Pane tradeContainer;
+    @FXML
+    ImageView dice1_img, dice2_img;
+    // GameLogic for handling more intricate game operations
+    private Game game;
     private int current_money = 0;
     private boolean firstTurn = true;
-
     // Background overlays
     @FXML private Pane backgroundOverlay;
     @FXML private Pane helpOverlay;
     @FXML private Pane propertiesDialogOverlay;
-
     // Elements in board
     @FXML private AnchorPane cardContainer;
     @FXML private GridPane gamegrid;
     @FXML private Button propertyBtn;
     @FXML private Text propertyOwnerMsg;
     @FXML private Text propertyMsg;
-    @FXML ImageView dice1_img, dice2_img;
-
     // Elements in sidebar
     @FXML private Button rolldiceBtn, endturnBtn;
     @FXML private Label roundValue, statusValue;
     @FXML private Label username, userMoney;
     @FXML private Pane userColor, userPropertiesIcon;
     @FXML private Pane opponentsContainer;
-
     // Container for chat element
     @FXML private Pane chatContainer;
-    @FXML public Pane forfeitContainer;
-    public static boolean forfeit = false;
-
     // Properties dialog
     @FXML private Pane propertiesContainer, buyHouseContainer;
     @FXML private FlowPane propertiesContentContainer;
     @FXML private Text propertiesUsername;
-    @FXML private Button tradeBtn;
-    @FXML private Text tradeMsg;
-
-    // Container for trade
-    @FXML public Pane tradeContainer;
-
+    @FXML private Button sendBtn;
+    @FXML private Text sendMsg;
     // Message popup
     @FXML private Pane messagePopupContainer;
-
     // Menu and settings
     @FXML private Pane menuContent, settingsContent;
     @FXML private ImageView notificationToggle;
@@ -98,27 +96,58 @@ public class GameController {
     private boolean showMenu = false;
     private boolean showSettings = false;
     private boolean showNotifications = true;
-    private static boolean playSounds = true;
-
     // Container for houses
     @FXML private GridPane housegrid;
-
     // Free parking card container
     @FXML private Pane freeParkingCard;
-
     // Winner elements
     @FXML private Pane winnerContainer;
     @FXML private Text winnerMsg;
     @FXML private Button winnerBtn;
-    static public boolean gameFinished = false;
+
+    /**
+     * Stop all timers in class
+     */
+    private static void stopTimers() {
+        databaseTimer.cancel();
+        databaseTimer.purge();
+        ChatController.getChatTimer().cancel();
+        ChatController.getChatTimer().purge();
+        requestTimer.cancel();
+        requestTimer.purge();
+    }
+
+    /**
+     * Load element from .fxml file and add to container
+     *
+     * @param filename  Target .fxml file
+     * @param container Target container
+     */
+    private static void addElementToContainer(String filename, Pane container) {
+        try {
+            Node element = FXMLLoader.load(GameController.class.getResource(ViewConstants.FILE_PATH.getValue() + filename));
+            container.getChildren().clear(); // Reset container
+            container.getChildren().add(element);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Re render the buyHouseDialog element inside its container. Can be called from a different controller.
+     */
+    static void refreshBuyHouseDialog() {
+        addElementToContainer(ViewConstants.BUY_HOUSE.getValue(), Handler.getBuyHouseContainer());
+    }
 
     /**
      * Launches when the scene is loaded.
      */
-    @FXML public void initialize() {
+    @FXML
+    public void initialize() {
         // Reference that is used in other controllers
         Handler.setForfeitContainer(forfeitContainer);
-        Handler.setTradeContainer(tradeContainer);
+        Handler.setSendContainer(tradeContainer);
         Handler.setBuyHouseContainer(buyHouseContainer);
 
         // Set gamelogic object in handler
@@ -197,18 +226,6 @@ public class GameController {
     }
 
     /**
-     * Stop all timers in class
-     */
-    private static void stopTimers() {
-        databaseTimer.cancel();
-        databaseTimer.purge();
-        ChatController.getChatTimer().cancel();
-        ChatController.getChatTimer().purge();
-        requestTimer.cancel();
-        requestTimer.purge();
-    }
-
-    /**
      * Will run when the forfeit button is clicked.
      * A forfeit dialog will appear on the screen
      */
@@ -223,7 +240,8 @@ public class GameController {
         backgroundOverlay.setVisible(true);
 
         // User should not be able to close dialog onclick background
-        backgroundOverlay.setOnMouseClicked(e -> {});
+        backgroundOverlay.setOnMouseClicked(e -> {
+        });
 
         // Hide properties dialog and show forfeit dialog
         propertiesContainer.setVisible(false);
@@ -241,9 +259,9 @@ public class GameController {
      * Start a timer that will check for different request. <br/>
      * <b>What the timer checks</b>
      * <ul>
-     *     <li>1. Forfeit request in database</li>
-     *     <li>2. Trade request in database</li>
-     *     <li>3. Winner of the game if game is finished</li>
+     * <li>1. Forfeit request in database</li>
+     * <li>2. Trade request in database</li>
+     * <li>3. Winner of the game if game is finished</li>
      * </ul>
      */
     private void startRequestTimer() {
@@ -271,10 +289,12 @@ public class GameController {
                 }
 
                 // 2. Check for trade request
+                /*
                 if (Handler.getPlayerDAO().isTrade(USERNAME)) {
                     addElementToContainer(ViewConstants.SHOW_TRADE.getValue(), tradeContainer);
                     //Platform.runLater(() -> addElementToContainer(ViewConstants.SHOW_TRADE.getValue(), tradeContainer));
                 }
+                */
 
                 // 3. Check if there is any winner
                 String winner = game.getEntities().findWinner();
@@ -296,6 +316,7 @@ public class GameController {
     /**
      * Will open a winner dialog displaying the name of the winner,
      * and includes a button that will go back to the dashboard.
+     *
      * @param winner Name of the player that won the game
      */
     private void announceWinner(String winner) {
@@ -303,7 +324,8 @@ public class GameController {
 
         // Set fixed background overlay
         backgroundOverlay.setVisible(true);
-        backgroundOverlay.setOnMouseClicked(e -> {});
+        backgroundOverlay.setOnMouseClicked(e -> {
+        });
 
         // Show winner container and set msg
         winnerMsg.setText(winner + " has won the game");
@@ -314,22 +336,6 @@ public class GameController {
             GameLogic.onPlayerLeave();
             Handler.getSceneManager().setScene(ViewConstants.DASHBOARD.getValue());
         });
-    }
-
-    /**
-     * Load element from .fxml file and add to container
-     *
-     * @param filename  Target .fxml file
-     * @param container Target container
-     */
-    private static void addElementToContainer(String filename, Pane container) {
-        try {
-            Node element = FXMLLoader.load(GameController.class.getResource(ViewConstants.FILE_PATH.getValue() + filename));
-            container.getChildren().clear(); // Reset container
-            container.getChildren().add(element);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -381,8 +387,7 @@ public class GameController {
         if (playSounds) {
             playSounds = false;
             soundToggle.setImage(new Image("file:res/gui/Game/toggleOff.png"));
-        }
-        else {
+        } else {
             playSounds = true;
             soundToggle.setImage(new Image("file:res/gui/Game/toggleOn.png"));
         }
@@ -443,23 +448,27 @@ public class GameController {
             FxUtils.setScaleOnHover(card, 0.1);
         }
 
-        // Check if trade btn and msg should be shown
+        // Check if send btn and msg should be shown
         if (username.equals(USERNAME)) {
-            tradeBtn.setVisible(false);
-            tradeMsg.setVisible(false);
+            sendBtn.setVisible(false);
+            sendMsg.setVisible(false);
         } else {
-            tradeBtn.setVisible(true);
-            tradeMsg.setVisible(true);
+            sendBtn.setVisible(true);
+            sendMsg.setVisible(true);
         }
 
-        tradeBtn.setOnMouseClicked(e -> {
-            propertiesContainer.setVisible(false);
-            backgroundOverlay.setVisible(false);
-            tradeContainer.setVisible(true);
+        sendBtn.setOnMouseClicked(e -> {
+            if (Handler.getCurrentGame().getPlayers()[Handler.getCurrentGame().getCurrentTurn()].equals(USERNAME)) {
+                propertiesContainer.setVisible(false);
+                backgroundOverlay.setVisible(false);
+                tradeContainer.setVisible(true);
 
-            Handler.setTradeUsername(username);
-            //addElementToContainer(ViewConstants.TRADING.getValue(), tradeContainer);
-            addElementToContainer(ViewConstants.SEND.getValue(), tradeContainer);
+                Handler.setSendUsername(username);
+                addElementToContainer(ViewConstants.SEND.getValue(), tradeContainer);
+            } else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "You can only send stuff when \nit's your turn");
+                alert.showAndWait();
+            }
         });
 
         // Close dialog if background is clicked
@@ -477,13 +486,6 @@ public class GameController {
         backgroundOverlay.setVisible(false);
         updatePlayersInfo();
 
-    }
-
-    /**
-     * Re render the buyHouseDialog element inside its container. Can be called from a different controller.
-     */
-    static void refreshBuyHouseDialog() {
-        addElementToContainer(ViewConstants.BUY_HOUSE.getValue(), Handler.getBuyHouseContainer());
     }
 
     /**
@@ -619,7 +621,7 @@ public class GameController {
                 card = GameControllerDrawFx.createPropertyCard(currentProperty);
 
                 // Check if property has an owner
-                String propertyOwner = game.getEntities().getOwnerAtProperty(yourPosition);
+                String propertyOwner = currentProperty.getOwner();
 
                 // No owner, buying is optional
                 if (propertyOwner == null || propertyOwner.equals("")) {
@@ -628,9 +630,10 @@ public class GameController {
                 }
 
                 // Owned by user, no action
-                else if (propertyOwner.equals(USERNAME)) FxUtils.showAndChangeText(propertyOwnerMsg, "Property owned by you");
+                else if (propertyOwner.equals(USERNAME))
+                    FxUtils.showAndChangeText(propertyOwnerMsg, "Property owned by you");
 
-                // Owned by other player, rent required if not pawned
+                    // Owned by other player, rent required if not pawned
                 else if (!currentProperty.isPawned()) {
                     FxUtils.showAndChangeText(propertyOwnerMsg, "Property owned by " + propertyOwner);
                     FxUtils.showAndChangeText(propertyMsg, "You must pay rent before continuing");
@@ -649,7 +652,7 @@ public class GameController {
                 break;
 
             case Board.COMMUNITY_TAX:
-                card = GameControllerDrawFx.createSpecialCard("Income tax", "file:res/gui/SpecialCard/tax.png", "$4000",  "#cc6c6c");
+                card = GameControllerDrawFx.createSpecialCard("Income tax", "file:res/gui/SpecialCard/tax.png", "$4000", "#cc6c6c");
                 disableControls();
 
                 FxUtils.showAndChangeBtn(propertyBtn, "Pay tax", "#ef5350");
@@ -708,32 +711,27 @@ public class GameController {
     private void updateBoard() {
         String[] turns = game.getPlayers();
         String[] colors = new String[turns.length];
-        int[] positions = null;
+        int[] positions;
 
         // Get player positions and update GUI on the board
-        try {
-            positions = game.getEntities().getPlayerPositions();
+        positions = game.getEntities().getPlayerPositions();
 
-            // Set player colors
-            for (int i = 0; i < turns.length; i++) {
-                colors[i] = Handler.getPlayerColor(turns[i]);
-            }
+        // Set player colors
+        for (int i = 0; i < turns.length; i++) {
+            colors[i] = Handler.getPlayerColor(turns[i]);
+        }
 
-            // Draw player pieces on the board
-            GameControllerDrawFx.createPlayerPieces(gamegrid, positions, colors);
+        // Draw player pieces on the board
+        GameControllerDrawFx.createPlayerPieces(gamegrid, positions, colors);
 
-            for (String player : turns){
-                if (game.getEntities().getPlayer(player) == null) continue;
+        for (String player : turns){
+            if (game.getEntities().getPlayer(player) == null) continue;
 
-                for (Property property : game.getEntities().getPlayer(player).getProperties()){
-                    if (property instanceof Street) {
-                        GameControllerDrawFx.drawHouse(housegrid, (Street) property);
-                    }
+            for (Property property : game.getEntities().getPlayer(player).getProperties()){
+                if (property instanceof Street) {
+                    GameControllerDrawFx.drawHouse(housegrid, (Street) property);
                 }
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
         // Update round- and status-value
@@ -745,7 +743,7 @@ public class GameController {
             statusValue.setText("Waiting for " + game.getPlayers()[game.getCurrentTurn()] + " to finish");
 
         // Update info for all players
-        if (positions != null) updatePlayersInfo();
+        updatePlayersInfo();
     }
 
     /**
@@ -828,7 +826,7 @@ public class GameController {
                         MessagePopupController.show(msg, "dollarNegative.png", "Bank");
 
                     // Play a sound to indicate that it is your turn
-                   if (playSounds) Handler.playSound("res/sounds/coin.wav");
+                    if (playSounds) Handler.playSound("res/sounds/coin.wav");
                 }
                 // Update for next check
                 current_money = player.getMoney();
@@ -898,6 +896,7 @@ public class GameController {
     public void payBail() {
         if (GameLogic.payBail()) {
             propertyBtn.setDisable(true);
+            updateBoard();
         } else {
             Alert messageBox = new Alert(Alert.AlertType.INFORMATION,
                     "You do not have enough funds to pay bail.");
@@ -909,7 +908,11 @@ public class GameController {
      * Pay income tax
      */
     private void payTax() {
-        GameLogic.payTax();
+        if (!GameLogic.payTax()) {
+            Alert messageBox = new Alert(Alert.AlertType.INFORMATION,
+                    "You do not have enough funds to pay tax.");
+            messageBox.showAndWait();
+        }
         updateBoard();
         checkDiceThrow();
     }
@@ -918,9 +921,10 @@ public class GameController {
      * Attempts to pay the player with the current owned property with the proper rent
      */
     private void rentTransaction() {
-        if(!GameLogic.payRent()) {
+        if (!GameLogic.payRent()) {
             Alert messageBox = new Alert(Alert.AlertType.INFORMATION,
                     "You do not have enough funds to pay rent.");
+            messageBox.showAndWait();
         } else {
             updateBoard();
             checkDiceThrow();
@@ -928,6 +932,10 @@ public class GameController {
         }
     }
 
+    /**
+     * Called to check whether the dice and 'end turn' buttons should be activated after performing
+     * a certain action
+     */
     private void checkDiceThrow() {
         propertyBtn.setDisable(true);
         int[] currentDice = game.getDice().getLastThrow();

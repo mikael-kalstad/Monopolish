@@ -1,5 +1,11 @@
 package com.teamfour.monopolish.game.property;
 
+/**
+ * Boat class of type Property. Boats adjust their rent based on how many boats the owner has in their inventory
+ *
+ * @author      eirikhem
+ */
+
 public class Boat extends Property {
     // Attributes
     private int[] rent = new int[3];
@@ -20,10 +26,19 @@ public class Boat extends Property {
         calculateRent();
     }
 
+    /**
+     * Gets a specific level of rent
+     * @param rentLevel Rent level to get
+     * @return Rent amount
+     */
     public int getRent(int rentLevel) {
         return rent[rentLevel];
     }
 
+    /**
+     * Gets a string array of all the rent levels
+     * @return String array
+     */
     @Override
     public String[] getAllRent() {
         String[] rentString = new String[rent.length];
@@ -33,6 +48,9 @@ public class Boat extends Property {
         return rentString;
     }
 
+    /**
+     * Sets up all the rent levels
+     */
     private void calculateRent() {
         for (int i = 0; i < rent.length; i++) {
             rent[i] = (int)(price * (0.2 * (i + 1)));
