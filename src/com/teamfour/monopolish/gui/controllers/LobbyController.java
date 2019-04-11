@@ -556,7 +556,7 @@ public class LobbyController {
                         refreshTimer.cancel();
 
                         // Make a new game in database
-                        int gameId = Handler.getGameDAO().insertGame(current_lobby_id, Handler.getAccount().getUsername());
+                        int gameId = Handler.getGameDAO().insertGame(current_lobby_id);
                         Handler.setCurrentGameId(gameId);
 
                         // Set colorlist in Handler

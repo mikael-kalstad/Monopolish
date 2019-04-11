@@ -17,20 +17,18 @@ public class GameDAO extends DataAccessObject {
     /**
      * Generates a new game from the lobby Id
      * @param lobbyId Lobby Id to pick players from
-     * @param username the username of the player
      * @return The Id of the new game
      * @throws SQLException
      */
-    public int insertGame(int lobbyId, String username) {
+    public int insertGame(int lobbyId) {
         Connection connection = getConnection();
         CallableStatement cStmt = null;
         int gameId = -1;
         try {
-            cStmt = connection.prepareCall("{call game_insert(?, ?, ?)}");
+            cStmt = connection.prepareCall("{call game_insert(?, ?)}");
 
             cStmt.setInt(1, lobbyId);
-            cStmt.setString(2, username);
-            cStmt.registerOutParameter(3, Types.INTEGER);
+            cStmt.registerOutParameter(2, Types.INTEGER);
 
             cStmt.executeUpdate();
             gameId = cStmt.getInt(3);
@@ -232,7 +230,7 @@ public class GameDAO extends DataAccessObject {
         ResultSet rs = null;
         String winner = null;
         try {
-            cStmt = connection.prepareCall("{call get_winner(?, ?)}");
+            cStmt = connection.prepareCall("{call game_get_winner(?, ?)}");
             cStmt.setInt(1, gameId);
             cStmt.registerOutParameter(2, Types.VARCHAR);
             if (cStmt.execute()) {

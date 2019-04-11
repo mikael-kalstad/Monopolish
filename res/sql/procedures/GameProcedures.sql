@@ -24,7 +24,7 @@ Procedure to generate a new game
 
 issued by: GameDAO.insertGame()
  */
-CREATE PROCEDURE game_insert(IN lobby int, IN user_name VARCHAR(30), OUT gameid INT)
+CREATE PROCEDURE game_insert(IN lobby int, OUT gameid INT)
   proc_label:BEGIN
     DECLARE session INT DEFAULT 0;
     START TRANSACTION;
@@ -38,7 +38,7 @@ CREATE PROCEDURE game_insert(IN lobby int, IN user_name VARCHAR(30), OUT gameid 
         -- To ensure that a user is not active in two games at the same time, we make sure
         -- to set their status in any other game to LEFT as a fail-safe
         UPDATE player SET player.active=2
-        WHERE user_id IN (SELECT user_id FROM lobby WHERE room_id=lobby);
+        WHERE user_id IN (SELECT user_id FROM lobby WHERE lobby.room_id=lobby);
 
         -- Create a new game
         SET session = (SELECT session_code FROM lobbyname ln WHERE ln.lobby_id=lobby LIMIT 1);
@@ -67,7 +67,7 @@ issued by: GameDAO.getCurrentPlayer()
  */
 CREATE PROCEDURE game_get_current_player(IN gameid int)
   BEGIN
-    SELECT IFNULL(a.username, "") FROM game g
+    SELECT IFNULL(a.username, '') FROM game g
     JOIN player p on g.currentplayer = p.player_id
     JOIN account a on p.user_id = a.user_id
     WHERE g.game_id=gameid;

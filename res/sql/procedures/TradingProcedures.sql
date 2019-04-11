@@ -6,11 +6,18 @@ DROP PROCEDURE IF EXISTS trading_add_trade;
 DROP PROCEDURE IF EXISTS trading_is_trade;
 DROP PROCEDURE IF EXISTS trading_accept_trade;
 DROP PROCEDURE IF EXISTS trading_get_trade;
+DROP PROCEDURE IF EXISTS trading_get_trade2;
+DROP PROCEDURE IF EXISTS trading_get_trade3;
+DROP PROCEDURE IF EXISTS trading_remove_trade;
+
+drop view if exists seller;
+drop view if exists buyer;
+drop view if exists trading_view;
 
 /**
   Procedure to add new trade
  */
-
+/*
 CREATE PROCEDURE trading_add_trade(
   -- IN s_id INT,
   IN seller VARCHAR(30),
@@ -34,7 +41,7 @@ DROP PROCEDURE trading_add_trade;
 
 
 
-DROP PROCEDURE IF EXISTS trading_get_trade;
+
 
 
 CREATE PROCEDURE trading_get_trade(
@@ -143,16 +150,14 @@ CREATE PROCEDURE trading_remove_trade(IN uname VARCHAR(30))
     DELETE FROM trading WHERE trading.buyer_id = s_id OR trading.seller_id = s_id;
   end;
 
-DROP PROCEDURE IF EXISTS trading_remove_trade;
+
 
 CREATE PROCEDURE trading_get_trade_status(IN uname VARCHAR(30)) -- returns trade status. 0 = default, 1= accepted, 2= refused;
   SELECT t.accepted FROM trading t WHERE uname = username;
 
 
 
-drop view if exists seller;
-drop view if exists buyer;
-drop view if exists trading_view;
+
 
 
 create view seller as
@@ -169,4 +174,4 @@ create view trading_view as
            on trading.seller_id = seller.seller_id and trading.buyer_id = buyer.buyer_id and tp.trade_id = trading.trade_id;
 
 DROP VIEW IF EXISTS trading_view;
-
+*/
