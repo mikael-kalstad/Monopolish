@@ -19,7 +19,6 @@ DROP PROCEDURE IF EXISTS set_forfeit;
 /**
 Procedure to generate a new game
   in lobby: lobbyId
-  in user_name: username
   out gameid: gameId of the new game
 
 issued by: GameDAO.insertGame()
@@ -114,8 +113,6 @@ CREATE PROCEDURE game_set_current_player(IN gameid INT, IN current_username VARC
       UPDATE game
       SET currentplayer=current_player_id
       WHERE game_id=gameid;
-    ELSE
-
     END IF;
   END;
 
