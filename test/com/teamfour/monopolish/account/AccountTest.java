@@ -1,31 +1,31 @@
 package com.teamfour.monopolish.account;
 
-import com.teamfour.monopolish.account.Account;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDate;
 import java.time.Month;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class AccountTest {
-    private Account instance = null;
+    private static Account instance = null;
 
     @BeforeAll
-    public void setInstance() {
+    public static void setInstance() {
         LocalDate date = LocalDate.of(2019, Month.DECEMBER, 24);
         instance = new Account("johhnyBoi23", "johhny@gmail.com", date, 10500, false);
     }
 
     @AfterAll
-    public void tearDownAll() {
+    public static void tearDownAll() {
         instance = null;
     }
 
     @Test
-    //@DisplayName("Username")
+    @DisplayName("Username")
     public void getUsername() {
         String result = instance.getUsername();
         String expected = "johhnyBoi23";

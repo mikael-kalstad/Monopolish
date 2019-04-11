@@ -1,0 +1,15 @@
+insert into game(game_id, starttime, endtime, currentplayer, forfeit, session_code)
+  VALUES (1, now(), null, null, false, 1);
+insert into account (user_id, username, email, hashed_password, salt, regdate, active)
+  values (1, 'grethe', 'grethe@mail.no', 'xxxxxxxxxxxxxxxxx', '2222324', now(), true);
+insert into account (user_id, username, email, hashed_password, salt, regdate, active)
+  values (2, 'nils', 'nils@mail.no', 'xxxxxxxxxxxxxxxxx', '2222324', now(), true);
+
+insert into player(player_id, user_id, game_id, money, currentpos, injail, bankrupt, active, score, forfeit, free_parking, forfeit_check)
+  VALUES (1, 1, 1, 0,0,false, false, 0, 0, false, false, false);
+insert into player(player_id, user_id, game_id, money, currentpos, injail, bankrupt, active, score, forfeit, free_parking, forfeit_check)
+VALUES (2, 2, 1, 0,0,false, false, 0, 0, false, false, false);
+
+call property_get_all(1);
+
+update gameproperty set user_id = 1 where property_id<20 and game_id = 1;

@@ -527,7 +527,6 @@ public class LobbyController {
      * This method will start the countdown, and then start the game after countdown is finished.
      * It will also update some GUI elements when game is starting: <br/>
      * - Ready button will be disabled
-     *
      */
     private void startGame(int lobby_id) {
         System.out.println("STARTING GAME!");
