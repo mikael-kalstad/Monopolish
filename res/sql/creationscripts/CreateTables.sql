@@ -114,7 +114,7 @@ create table chatmessage(
   message varchar(40),
   primary key (message_id)
 ); # represents chatmessages from a players
-
+/*
 CREATE TABLE trading(
   trade_id INT NOT NULL AUTO_INCREMENT,
   seller_id INT NOT NULL, -- sellers player_id
@@ -130,10 +130,12 @@ CREATE TABLE tradeProperty(
   prop_id INT NOT NULL,
   PRIMARY KEY (trade_id, prop_id)
 );
-
+*/
 /*
 ADD FOREIGN KEYS
 */
+
+
 
 ALTER TABLE trading
   ADD FOREIGN KEY (seller_id) REFERENCES player(player_id);
