@@ -7,6 +7,6 @@ pages:
     - mv .javadoc javadoc
   artifacts:
     paths:
-      - javadoc
+      - wiki_resources/javadoc
   only:
     - master
