@@ -97,9 +97,8 @@ public abstract class Entity {
     /**
      * Writes all properties on this entity to the database
      * @param gameId GameId to write to
-     * @throws SQLException
      */
-    public void updatePropertiesToDatabase(int gameId) throws SQLException {
+    public void updatePropertiesToDatabase(int gameId) {
         for (Property prop : properties) {
             Handler.getPropertyDAO().updateProperty(prop, gameId);
         }
@@ -107,8 +106,9 @@ public abstract class Entity {
 
     /**
      * Gets all of this entity's properties from the database
+     * @param gameId Game Id this entity belongs to
      */
-    public void updatePropertiesFromDatabase(int gameId) throws SQLException {
+    public void updatePropertiesFromDatabase(int gameId) {
         properties.clear();
         properties = Handler.getPropertyDAO().getPropertiesByOwner(gameId, null);
     }

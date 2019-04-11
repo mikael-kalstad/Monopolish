@@ -65,6 +65,17 @@ public class FxUtils {
         element.setFill(Paint.valueOf(color));
     }
 
+    /**
+     * Change the border color of a node element. <br/>
+     * <b>Note: all other styles set to node will be reset!</b>
+     *
+     * @param element Target node
+     * @param color of the border
+     */
+    public static void setBorderColor(Node element, String color) {
+        element.setStyle("-fx-border-color: " + color);
+    }
+
     public static void setScaleOnHover(Pane elem, double scale) {
         elem.setOnMouseEntered(e -> {
             ScaleTransition st = new ScaleTransition(Duration.millis(200), elem);

@@ -20,13 +20,11 @@ public class Player extends Entity {
     private boolean bankrupt = false;
     private int active = 0;
     private int score = 0;
-
-    // Client-side only attributes
     private boolean freeParking = false;
 
     /**
      * Constructor
-     * @param USERNAME
+     * @param USERNAME username of this player
      */
     public Player(String USERNAME) {
         super();
@@ -34,14 +32,14 @@ public class Player extends Entity {
     }
 
     /**
-     * Constructor
-     * @param username
-     * @param money
-     * @param position
-     * @param inJail
-     * @param bankrupt
-     * @param active
-     * @param money
+     * Constructor for existing player
+     * @param username Username of this player
+     * @param money Current money
+     * @param position Current position
+     * @param inJail Current jail status
+     * @param bankrupt Current bankrupt status
+     * @param active Current active status
+     * @param freeParking Current status of free parking
      */
     public Player(String username, int money, int position, boolean inJail,
                   boolean bankrupt, int active, boolean freeParking) {
@@ -55,41 +53,43 @@ public class Player extends Entity {
         this.freeParking = freeParking;
     }
 
+    /**
+     * Checks if this player is bankrupt
+     * @return True if bankrupt
+     */
     public boolean checkBankrupt() {
+        // If user has money, then they're definitely not bankrupt
         if (money > 0) {
             return false;
         }
 
+        // If user has no money, and all their properties already are pawned, bankrupt is true
+        return (money == 0 && getNumberOfUnpawnedProperties() == 0);
+    }
+
+    /**
+     * Gets the number of unpawned properties this player currently has
+     * @return Number of unpawned properties
+     */
+    public int getNumberOfUnpawnedProperties() {
         int numberOfValidProperties = 0;
         for (int i = 0; i < properties.size(); i++) {
             if (!properties.get(i).isPawned())
                 numberOfValidProperties++;
         }
 
-        return (money == 0 && numberOfValidProperties == 0);
-    }
-
-    /**
-     * Calculates this player's score based on their money and property values
-     */
-    public int calculateScore() {
-        score = money;
-
-        for (int i = 0; i < properties.size(); i++) {
-            score += properties.get(i).getPrice() / 2;
-        }
-
-        return score;
+        return numberOfValidProperties;
     }
 
     /**
      * Moves a specified amount
-     * @param steps
+     * @param steps Steps to move
      */
     public void move(int steps) {
         while (true) {
             position++;
             steps--;
+            // If you pass the length of board, reset to start
             if (position == GameConstants.BOARD_LENGTH) {
                 position = 0;
             }
@@ -99,8 +99,12 @@ public class Player extends Entity {
         }
     }
 
+    /**
+     * Gets all your properties from the database
+     * @param gameId Game Id this entity belongs to
+     */
     @Override
-    public void updatePropertiesFromDatabase(int gameId) throws SQLException {
+    public void updatePropertiesFromDatabase(int gameId) {
         properties.clear();
         properties = Handler.getPropertyDAO().getPropertiesByOwner(gameId, USERNAME);
     }
@@ -115,6 +119,8 @@ public class Player extends Entity {
 
         this.position = position;
     }
+
+    // GETTERS & SETTERS
 
     public String getUsername() {
         return USERNAME;
@@ -150,10 +156,6 @@ public class Player extends Entity {
 
     public int getActive() {
         return active;
-    }
-
-    public int getMoney() {
-        return money;
     }
 
     public boolean hasFreeParking() { return freeParking; }

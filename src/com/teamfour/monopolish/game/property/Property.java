@@ -12,6 +12,7 @@ import java.util.ArrayList;
  */
 
 public abstract class Property {
+    // Property type constants
     public static final int STREET = 0;
     public static final int BOAT = 1;
     public static final int TRAIN = 2;

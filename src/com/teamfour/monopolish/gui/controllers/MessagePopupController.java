@@ -18,6 +18,11 @@ import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * Controller class for message popup GUI element. Will handle all timing logic for the popups, and display an animation on enter and leave.
+ * It is important to setup controller before using this class, the methods will not work before the setup.
+ * The class and its methods is designed to be used from anywhere in the application.
+ */
 public class MessagePopupController {
     private static @FXML Pane container;
     private static final int TRANSLATE_Y = 120;
@@ -53,7 +58,7 @@ public class MessagePopupController {
         }
         catch (IOException e) { e.printStackTrace(); }
 
-        if (messagePopup == null) return;
+        if (messagePopup == null || container == null) return;
 
         // Find and set text element
         Text textElement = (Text) messagePopup.getChildren().get(0);
@@ -71,6 +76,7 @@ public class MessagePopupController {
             titleValue.setText(title);
         }
 
+        // Each popup gets an id with a timestamp which can be checked to see when the popup has passed the timeout interval.
         messagePopup.setId(String.valueOf(time));
 
         // Check if timer should start
@@ -80,7 +86,6 @@ public class MessagePopupController {
 
         // Move messagePopup and add to container
         container.getChildren().add(messagePopup);
-        //messagePopup.setTranslateY(TRANSLATE_Y);
 
         // Hide container on click
         Pane finalMessagePopup = messagePopup;
@@ -111,6 +116,11 @@ public class MessagePopupController {
      */
     public static void show (String msg, String logoName) { MessagePopupController.show(msg, logoName, null); }
 
+
+    /**
+     * Helper method to handle all timing logic for popups. The interval for the popups is set in the setup method.
+     * After the interval ends, the popup will leave the target container. This method will only be run if there is not any popups currently in the container.
+     */
     private static void startTimerCheck() {
         // Start timer
         timer = new Timer();
@@ -139,6 +149,11 @@ public class MessagePopupController {
         timer.scheduleAtFixedRate(countdown, 0L, 1000L);
     }
 
+    /**
+     * Helper method to handle the animation of a popup.
+     * @param show Should the animation display the popup leaving or entering?
+     * @param messagePopup Target node popup.
+     */
     private static void animateMovement(boolean show, Pane messagePopup) {
         int numOfMessages = container.getChildren().size() + 1;
 

@@ -92,7 +92,6 @@ public class PlayerDAO extends DataAccessObject {
                     boolean bankrupt = rs.getBoolean(5);
                     int active = rs.getInt(6);
                     boolean freeParking = rs.getBoolean(7);
-//                int score = rs.getInt(7);
 
                     players.add(new Player(username, money, position, inJail, bankrupt, active, freeParking));
                 }
@@ -139,7 +138,6 @@ public class PlayerDAO extends DataAccessObject {
      *
      * @return list 2d String array with players(username) and scores
      */
-
     public String[][] getHighscoreList() {
         Connection connection = getConnection();
         CallableStatement cStmt = null;
