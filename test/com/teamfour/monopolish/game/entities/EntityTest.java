@@ -1,17 +1,19 @@
 package com.teamfour.monopolish.game.entities;
 
+import com.teamfour.monopolish.database.DataSource;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
-@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class EntityTest {
     static Bank instance;
 
     @BeforeAll
     public static void setInstance() {
+        DataSource.initialize();
         instance = new Bank(1);
     }
 
@@ -37,5 +39,11 @@ public class EntityTest {
         Bank otherBank = new Bank(1);
 
         assertFalse(instance.transferProperty(otherBank, 0));
+    }
+
+    @AfterAll
+    public static void tearDown() {
+        DataSource.getInstance().shutdown();
+        instance = new Bank(1);
     }
 }

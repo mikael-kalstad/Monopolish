@@ -1,17 +1,12 @@
-package test.com.teamfour.monopolish.game.entities.Player;
+package com.teamfour.monopolish.game.entities;
 
-
-import com.teamfour.monopolish.game.entities.Player;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class PlayerTest {
-
     private static Player instance = null;
 
     @BeforeAll

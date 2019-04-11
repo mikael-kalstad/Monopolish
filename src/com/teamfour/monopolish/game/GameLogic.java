@@ -3,11 +3,12 @@ package com.teamfour.monopolish.game;
 import com.teamfour.monopolish.game.entities.EntityManager;
 import com.teamfour.monopolish.game.entities.Player;
 import com.teamfour.monopolish.game.gamecomponents.Board;
-import com.teamfour.monopolish.game.property.*;
+import com.teamfour.monopolish.game.property.Boat;
+import com.teamfour.monopolish.game.property.Property;
+import com.teamfour.monopolish.game.property.Street;
+import com.teamfour.monopolish.game.property.Train;
 import com.teamfour.monopolish.gui.controllers.Handler;
 import com.teamfour.monopolish.gui.controllers.MessagePopupController;
-
-import java.sql.SQLException;
 
 /**
  * Contains static methods which can be used by the GameController to perform logical actions
