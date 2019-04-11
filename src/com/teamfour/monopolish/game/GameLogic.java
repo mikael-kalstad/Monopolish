@@ -24,7 +24,7 @@ public class GameLogic {
     public static Game game = Handler.getCurrentGame();
 
     /**
-     * Initalizes the current game
+     * Initalizes the current game. Creates all objects, and prepares the database for a game
      */
     public static void startGame() {
         try {
@@ -128,7 +128,7 @@ public class GameLogic {
                     getOutOfJail();
                 yourPlayer.move(steps);
             }
-            MessagePopupController.show("The dices are equal, throw again!", "again.png", "Game");
+            MessagePopupController.show("The dice are equal, throw again!", "again.png", "Game");
         } else {
             // If normal dice and not in jail, move
             if (!isInJail)

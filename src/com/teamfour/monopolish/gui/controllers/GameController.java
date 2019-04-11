@@ -942,6 +942,10 @@ public class GameController {
         }
     }
 
+    /**
+     * Called to check whether the dice and 'end turn' buttons should be activated after performing
+     * a certain action
+     */
     private void checkDiceThrow() {
         propertyBtn.setDisable(true);
         int[] currentDice = game.getDice().getLastThrow();
