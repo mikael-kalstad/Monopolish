@@ -1,6 +1,6 @@
 package com.teamfour.monopolish.game.chancecards;
 
-import com.teamfour.monopolish.gui.controllers.Handler;
+import com.teamfour.monopolish.gui.Handler;
 
 /**
  * Class for chance cards with transfers between the bank and the pfwrlayer

@@ -7,8 +7,8 @@ import com.teamfour.monopolish.game.property.Boat;
 import com.teamfour.monopolish.game.property.Property;
 import com.teamfour.monopolish.game.property.Street;
 import com.teamfour.monopolish.game.property.Train;
-import com.teamfour.monopolish.gui.controllers.Handler;
-import com.teamfour.monopolish.gui.controllers.MessagePopupController;
+import com.teamfour.monopolish.gui.Handler;
+import com.teamfour.monopolish.gui.components.messagePopup.MessagePopupController;
 
 /**
  * Contains static methods which can be used by the GameController to perform logical actions
@@ -30,7 +30,6 @@ public class GameLogic {
     public static void startGame() {
         // Get the current game from the handler class
         int gameId = game.getGameId();
-        System.out.println("Game id: " + gameId);
 
         // Initialize board and get players from database
         game.setBoard(new Board());

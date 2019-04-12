@@ -1,8 +1,5 @@
 package com.teamfour.monopolish.account;
 
-import com.mysql.cj.jdbc.exceptions.CommunicationsException;
-import com.mysql.cj.protocol.Resultset;
-import com.teamfour.monopolish.database.ConnectionPool;
 import com.teamfour.monopolish.database.DataAccessObject;
 
 import java.sql.*;

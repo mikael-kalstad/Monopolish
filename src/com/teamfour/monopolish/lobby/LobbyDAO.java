@@ -2,7 +2,6 @@ package com.teamfour.monopolish.lobby;
 
 import com.teamfour.monopolish.database.DataAccessObject;
 
-import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -137,7 +136,6 @@ public class LobbyDAO extends DataAccessObject {
         CallableStatement cStmt = null;
         int count = 0;
         try {
-            System.out.println("Setting ready in procedure.. " + ready);
             cStmt = connection.prepareCall("{call lobby_set_player_ready(?, ?, ?)}");
 
             cStmt.setInt(1, roomId);

@@ -1,9 +1,7 @@
 package com.teamfour.monopolish.game.entities;
 
 import com.teamfour.monopolish.game.GameConstants;
-import com.teamfour.monopolish.gui.controllers.Handler;
-
-import java.sql.SQLException;
+import com.teamfour.monopolish.gui.Handler;
 
 /**
  * Represents the players in a game

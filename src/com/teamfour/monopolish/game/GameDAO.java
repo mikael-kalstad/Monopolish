@@ -1,7 +1,6 @@
 package com.teamfour.monopolish.game;
 
 import com.teamfour.monopolish.database.DataAccessObject;
-import com.teamfour.monopolish.game.property.Street;
 
 import java.sql.*;
 import java.util.ArrayList;

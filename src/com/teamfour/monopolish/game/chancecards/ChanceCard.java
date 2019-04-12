@@ -1,6 +1,6 @@
 package com.teamfour.monopolish.game.chancecards;
 
-import com.teamfour.monopolish.gui.controllers.Handler;
+import com.teamfour.monopolish.gui.Handler;
 
 /**
  * Super class for chance cards, contains general data about chance cards.
