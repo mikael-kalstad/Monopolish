@@ -29,6 +29,14 @@ public class PlayerTest {
     }
 
     @Test
+    @DisplayName("Test move around board")
+    public void movePastStart() {
+        instance.moveTo(0);
+        instance.move(38);
+        assertEquals(2, instance.getPosition());
+    }
+
+    @Test
     @DisplayName("moveTo test")
     public void moveToTest() {
         instance.move(0);
@@ -47,5 +55,4 @@ public class PlayerTest {
 
         assertEquals(instance.getPosition(), startPos);
     }
-
 }

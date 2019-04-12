@@ -1,6 +1,7 @@
 package com.teamfour.monopolish.game.entities;
 
 import com.teamfour.monopolish.game.GameConstants;
+import com.teamfour.monopolish.game.property.Property;
 import com.teamfour.monopolish.gui.Handler;
 
 /**
@@ -31,6 +32,15 @@ public class Bank extends Entity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Constructor for database-independent use
+     */
+    public Bank() {
+        availableHouses = GameConstants.MAX_HOUSES;
+        availableHotels = GameConstants.MAX_HOTELS;
+        money = GameConstants.MAX_GAME_MONEY;
     }
 
     /**
@@ -69,4 +79,9 @@ public class Bank extends Entity {
     public int getAvailableHotels() { return availableHotels; }
 
     public void setMoney(int value) { money = value; }
+
+    public void addProperty(Property property) {
+        property.setOwner("");
+        this.properties.add(property);
+    }
 }
