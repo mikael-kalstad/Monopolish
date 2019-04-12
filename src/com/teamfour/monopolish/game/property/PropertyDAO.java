@@ -2,7 +2,10 @@ package com.teamfour.monopolish.game.property;
 
 import com.teamfour.monopolish.database.DataAccessObject;
 
-import java.sql.*;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**

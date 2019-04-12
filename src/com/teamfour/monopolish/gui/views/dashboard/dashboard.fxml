@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.*?>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1040.0" prefWidth="1920.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.monopolish.gui.views.dashboard.DashboardController">
+   <children>
+      <Pane layoutY="-2.0" prefHeight="1047.0" prefWidth="510.0" style="-fx-background-color: #212121;">
+         <children>
+            <Button focusTraversable="false" layoutX="99.0" layoutY="845.0" mnemonicParsing="false" onAction="#logout" prefHeight="64.0" prefWidth="293.0" style="-fx-background-color: #FF9800; -fx-background-radius: 0;" text="Log out" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font size="21.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Text fill="WHITE" layoutX="167.0" layoutY="114.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile" wrappingWidth="216.00002050399786">
+               <font>
+                  <Font name="System Bold" size="49.0" />
+               </font>
+            </Text>
+            <Text fill="#dad9d9" layoutX="53.0" layoutY="241.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" wrappingWidth="108.66666173934942">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Text>
+            <Text fx:id="username" fill="WHITE" layoutX="212.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Baard" wrappingWidth="255.99997472763067">
+               <font>
+                  <Font size="28.0" />
+               </font>
+            </Text>
+            <Text fill="#dad9d9" layoutX="49.0" layoutY="503.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Personal Highscore" wrappingWidth="236.00002050399786">
+               <font>
+                  <Font size="27.0" />
+               </font>
+            </Text>
+            <Text fx:id="personalHighscore" fill="#f75050" layoutX="49.0" layoutY="591.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10.000" wrappingWidth="196.00002050399786">
+               <font>
+                  <Font name="System Bold" size="53.0" />
+               </font>
+            </Text>
+            <Text fill="#dad9d9" layoutX="53.0" layoutY="329.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Games played" wrappingWidth="124.66667175292974">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Text>
+            <Text fx:id="gamesPlayed" fill="WHITE" layoutX="215.0" layoutY="332.0" strokeType="OUTSIDE" strokeWidth="0.0" text="6" wrappingWidth="124.66666173934942">
+               <font>
+                  <Font size="29.0" />
+               </font>
+            </Text>
+            <Line endX="304.0000305175781" layoutX="153.0" layoutY="169.0" startX="-100.0" stroke="WHITE" />
+            <Line endX="304.0000305175781" layoutX="153.0" layoutY="418.0" startX="-100.0" stroke="WHITE" />
+            <Line endX="304.0000305175781" layoutX="152.0" layoutY="663.0" startX="-100.0" stroke="WHITE" />
+            <Text fill="WHITE" layoutX="153.0" layoutY="750.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Want to leave?" wrappingWidth="203.66667938232428">
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+      <Button layoutX="1051.0" layoutY="902.0" mnemonicParsing="false" onAction="#play" prefHeight="70.0" prefWidth="330.0" style="-fx-background-color: #FF9800; -fx-background-radius: 0;" text="Play" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font size="30.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Pane layoutX="510.0" prefHeight="720.0" prefWidth="1411.0" style="-fx-background-color: e5e5e8;">
+         <children>
+            <Text layoutX="244.0" layoutY="135.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Leaderboard" wrappingWidth="305.000114440918">
+               <font>
+                  <Font name="System Bold" size="47.0" />
+               </font>
+            </Text>
+            <Pane layoutX="116.0" layoutY="249.0" prefHeight="344.0" prefWidth="562.0" style="-fx-background-color: fcfcff; -fx-background-radius: 10;">
+               <children>
+                  <Pane layoutX="16.0" layoutY="225.0" prefHeight="93.0" prefWidth="176.0">
+                     <children>
+                        <Text fx:id="highscoreS2" fill="#cecece" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10.000" textAlignment="CENTER" wrappingWidth="175.9999985024333">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="highscoreU2" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pål" textAlignment="CENTER" wrappingWidth="175.9999985024333">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </Pane>
+                  <Pane layoutX="192.0" layoutY="225.0" prefHeight="93.0" prefWidth="176.0">
+                     <children>
+                        <Text fx:id="highscoreS1" fill="#ffbf00" layoutX="7.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="13.400" textAlignment="CENTER" wrappingWidth="175.9999958188273">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="highscoreU1" layoutX="7.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Båard" textAlignment="CENTER" wrappingWidth="175.9999985024333">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </Pane>
+                  <Pane layoutX="368.0" layoutY="225.0" prefHeight="93.0" prefWidth="187.0">
+                     <children>
+                        <Text fx:id="highscoreU3" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Per" textAlignment="CENTER" wrappingWidth="187.0000046705827">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="highscoreS3" fill="#cd7f32" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="9.942" textAlignment="CENTER" wrappingWidth="187.0000046705827">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </Pane>
+                  <Pane layoutX="233.0" layoutY="67.0" prefHeight="158.0" prefWidth="97.0" style="-fx-background-color: #ffbf00;">
+                     <children>
+                        <Text fill="WHITE" layoutX="38.0" layoutY="97.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1.">
+                           <font>
+                              <Font size="27.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </Pane>
+                  <Pane layoutX="56.0" layoutY="106.0" prefHeight="119.0" prefWidth="96.0" style="-fx-background-color: #CECECE;">
+                     <children>
+                        <Text fill="WHITE" layoutX="37.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2.">
+                           <font>
+                              <Font size="27.0" />
+                           </font>
+                        </Text>
+                        <ImageView fitHeight="53.0" fitWidth="57.0" layoutX="19.0" layoutY="-1.0">
+                           <image>
+                              <Image url="file:res/gui/Dashboard/silverMedal.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </Pane>
+                  <Pane layoutX="414.0" layoutY="132.0" prefHeight="93.0" prefWidth="96.0" style="-fx-background-color: #cd7f32;">
+                     <children>
+                        <Text fill="WHITE" layoutX="38.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3.">
+                           <font>
+                              <Font size="27.0" />
+                           </font>
+                        </Text>
+                        <ImageView fitHeight="53.0" fitWidth="57.0" layoutX="20.0" layoutY="-5.0">
+                           <image>
+                              <Image url="file:res/gui/Dashboard/bronzeMedal.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </Pane>
+                  <ImageView fitHeight="65.0" fitWidth="57.0" layoutX="253.0" layoutY="14.0">
+                     <image>
+                        <Image url="file:res/gui/Dashboard/trophy.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+            <Pane layoutX="845.0" layoutY="31.0" prefHeight="70.0" prefWidth="421.0" style="-fx-background-radius: 10 10 0 0; -fx-background-color: white;">
+               <children>
+                  <Text layoutX="307.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Score">
+                     <font>
+                        <Font name="System Bold" size="29.0" />
+                     </font>
+                  </Text>
+               </children></Pane>
+            <Text layoutX="856.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player">
+               <font>
+                  <Font name="System Bold" size="29.0" />
+               </font>
+            </Text>
+            <Line endX="608.6666259765625" endY="-7.62939453125E-6" layoutX="657.0" layoutY="100.0" startX="189.0" startY="-1.52587890625E-5" stroke="#0c0c0c" />
+            <Pane fx:id="highscoreContainer" layoutX="846.0" layoutY="99.0" prefHeight="500.0" prefWidth="420.0" />
+         </children>
+      </Pane>
+      <Text layoutX="969.0" layoutY="811.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Click here to find a lobby and start playing!">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Text>
+   </children>
+</Pane>

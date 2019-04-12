@@ -2,10 +2,8 @@ package com.teamfour.monopolish.game.entities;
 
 import com.teamfour.monopolish.game.GameConstants;
 import com.teamfour.monopolish.game.property.Property;
-import com.teamfour.monopolish.game.property.Street;
-import com.teamfour.monopolish.gui.controllers.Handler;
+import com.teamfour.monopolish.gui.Handler;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
@@ -266,104 +264,94 @@ public class EntityManager {
 
         return positions;
     }
-
-    /**
-     * Add trades to DB
-     * @param seller
-     * @param buyer
-     * @param sellerPrice
-     * @param buyerPrice
-     * @param offeredProps
-     * @param requestedProps
-     */
-    public void tradeFromTo(Player seller, Player buyer, int sellerPrice, int buyerPrice,
-                            ArrayList<Property> offeredProps, ArrayList<Property> requestedProps) {
-
-        for (Property p : offeredProps) {
-            System.out.println("adding trades for seller: "+seller.getUsername());
-            playerDAO.addTrade(seller.getUsername(), buyer.getUsername(), sellerPrice, buyerPrice, p.getId());
-        }
-        for (Property p : requestedProps) {
-            System.out.println("adding trades for seller: "+seller.getUsername());
-            playerDAO.addTrade(buyer.getUsername(), seller.getUsername(), buyerPrice, sellerPrice, p.getId());
-        }
-    }
-
-    /**
-     * Gets all trades to or from user
-     * @param user
-     * @return
-     */
-    public ArrayList<String[]> getTrade(Player user) {
-        System.out.println("getTrade username: "+user.getUsername());
-        ArrayList<String[]> props = new ArrayList<>();
-
-        //check if user is buyer or seller
-
-        props.addAll(playerDAO.getTrade(user.getUsername()));
-        props.trimToSize();
-
-        if (props.isEmpty()) {
-            System.out.println("props is empty");
-
-        } else {
-            for (int i = 0; i < props.size(); i++) {
-                String seller = props.get(i)[0];
-                String  buyer = props.get(i)[1];
-                String sellerPrice = props.get(i)[2];
-                String buyerPrice = props.get(i)[3];
-                String propId = props.get(i)[4];
-
-                if (getPlayer(seller).getUsername().equalsIgnoreCase(user.getUsername())) {
-                    System.out.println("seller..");
-                } else if (getPlayer(buyer).getUsername().equalsIgnoreCase(user.getUsername())) {
-                    System.out.println("buyer");
-                }
-            }
-        }
-
-        return props;
-    }
-
-    /**
-     * Accepts trade in DB
-     * @param seller
-     * @param buyer
-     */
-
-    public void acceptTrade(Player seller, Player buyer) {
-        System.out.println("accept trade seller user: "+seller.getUsername());
-        playerDAO.acceptTrade(seller.getUsername(), buyer.getUsername());
-    }
-
-    /**
-     * Does the trade
-     * @param seller
-     * @param buyer
-     * @param price
-     * @param property ArrayList of properties to be transfered form seller to buyer
-     */
-    public void doTrade(Player seller, Player buyer, int price, ArrayList<Property> property) {
-        System.out.println("trading between : "+seller.getUsername()+" and: "+buyer.getUsername());
-        transferMoneyFromTo(seller.getUsername(), buyer.getUsername(), price);
-
-        for (Property p : property) {
-            p.setOwner(buyer.getUsername());
-            buyer.getProperties().add(p);
-            seller.getProperties().remove(p);
-        }
-
-        updateToDatabase();
-    }
-
-    /**
-     * Checks for trades
-     * @param username
-     * @return True if there are any trades for the specified username
-     */
-    public boolean isTrade(String username) { return playerDAO.isTrade(username); }
-
-    public void removeTrade(String username) { playerDAO.removeTrade(username); }
+//
+//    /**
+//     * Add trades to DB
+//     * @param seller
+//     * @param buyer
+//     * @param sellerPrice
+//     * @param buyerPrice
+//     * @param offeredProps
+//     * @param requestedProps
+//     */
+//    public void tradeFromTo(Player seller, Player buyer, int sellerPrice, int buyerPrice,
+//                            ArrayList<Property> offeredProps, ArrayList<Property> requestedProps) {
+//
+//        for (Property p : offeredProps) {
+//            playerDAO.addTrade(seller.getUsername(), buyer.getUsername(), sellerPrice, buyerPrice, p.getId());
+//        }
+//        for (Property p : requestedProps) {
+//            playerDAO.addTrade(buyer.getUsername(), seller.getUsername(), buyerPrice, sellerPrice, p.getId());
+//        }
+//    }
+//
+//    /**
+//     * Gets all trades to or from user
+//     * @param user
+//     * @return
+//     */
+//    @Deprecated
+//    public ArrayList<String[]> getTrade(Player user) {
+//        ArrayList<String[]> props = new ArrayList<>();
+//
+//        //check if user is buyer or seller
+//
+//        props.addAll(playerDAO.getTrade(user.getUsername()));
+//        props.trimToSize();
+//
+//        if (props.isEmpty()) {
+//            System.out.println("props is empty");
+//
+//        } else {
+//            for (int i = 0; i < props.size(); i++) {
+//                String seller = props.get(i)[0];
+//                String  buyer = props.get(i)[1];
+//                String sellerPrice = props.get(i)[2];
+//                String buyerPrice = props.get(i)[3];
+//                String propId = props.get(i)[4];
+//            }
+//        }
+//
+//        return props;
+//    }
+//
+//    /**
+//     * Accepts trade in DB
+//     * @param seller
+//     * @param buyer
+//     */
+//
+//    public void acceptTrade(Player seller, Player buyer) {
+//        playerDAO.acceptTrade(seller.getUsername(), buyer.getUsername());
+//    }
+//
+//    /**
+//     * Does the trade
+//     * @param seller
+//     * @param buyer
+//     * @param price
+//     * @param property ArrayList of properties to be transfered form seller to buyer
+//     */
+//    public void doTrade(Player seller, Player buyer, int price, ArrayList<Property> property) {
+//        transferMoneyFromTo(seller.getUsername(), buyer.getUsername(), price);
+//
+//        for (Property p : property) {
+//            p.setOwner(buyer.getUsername());
+//            buyer.getProperties().add(p);
+//            seller.getProperties().remove(p);
+//        }
+//
+//        updateToDatabase();
+//    }
+//
+//    /**
+//     * Checks for trades
+//     * @param username
+//     * @return True if there are any trades for the specified username
+//     */
+//    public boolean isTrade(String username) { return playerDAO.isTrade(username); }
+//
+//    public void removeTrade(String username) { playerDAO.removeTrade(username); }
 
     public Bank getBank() {
         return bank;

@@ -2,7 +2,10 @@ package com.teamfour.monopolish.game.entities;
 
 import com.teamfour.monopolish.database.DataAccessObject;
 
-import java.sql.*;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 /**
  * Handles Player-DB connection and methods
@@ -251,7 +254,6 @@ public class PlayerDAO extends DataAccessObject {
             cStmt.setInt(5, propertyId);
 
             cStmt.executeUpdate();
-            System.out.println("adding trade.....");
 
         } catch (SQLException sql) {
             sql.printStackTrace();

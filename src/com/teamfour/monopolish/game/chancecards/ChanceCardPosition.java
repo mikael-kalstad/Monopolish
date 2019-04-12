@@ -1,6 +1,6 @@
 package com.teamfour.monopolish.game.chancecards;
 
-import com.teamfour.monopolish.gui.controllers.Handler;
+import com.teamfour.monopolish.gui.Handler;
 
 public class ChanceCardPosition extends ChanceCard {
     private int position;

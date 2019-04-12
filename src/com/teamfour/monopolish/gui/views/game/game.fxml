@@ -1,0 +1,1009 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<AnchorPane prefHeight="1040.0" prefWidth="1920.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.monopolish.gui.views.game.GameController">
+   <children>
+      <Rectangle arcHeight="30.0" arcWidth="30.0" blendMode="OVERLAY" height="975.0" layoutX="292.0" layoutY="43.0" stroke="BLACK" strokeType="INSIDE" width="975.0" />
+      <AnchorPane layoutX="299.0" layoutY="50.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="960.0" prefWidth="960.0" AnchorPane.bottomAnchor="39.59999999999991" AnchorPane.leftAnchor="299.0" AnchorPane.topAnchor="50.0">
+         <children>
+            <GridPane gridLinesVisible="true" style="-fx-background-radius: 70;">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="120.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="90.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="90.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="90.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="90.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="90.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="90.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="90.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="90.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="120.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints percentHeight="0.0" prefHeight="120.0" vgrow="SOMETIMES" />
+                  <RowConstraints percentHeight="0.0" prefHeight="90.0" vgrow="SOMETIMES" />
+                  <RowConstraints percentHeight="0.0" prefHeight="90.0" vgrow="SOMETIMES" />
+                  <RowConstraints percentHeight="0.0" prefHeight="90.0" vgrow="SOMETIMES" />
+                  <RowConstraints percentHeight="0.0" prefHeight="90.0" vgrow="SOMETIMES" />
+                  <RowConstraints percentHeight="0.0" prefHeight="90.0" vgrow="SOMETIMES" />
+                  <RowConstraints percentHeight="0.0" prefHeight="90.0" vgrow="SOMETIMES" />
+                  <RowConstraints percentHeight="0.0" prefHeight="90.0" vgrow="SOMETIMES" />
+                  <RowConstraints percentHeight="0.0" prefHeight="90.0" vgrow="SOMETIMES" />
+                  <RowConstraints percentHeight="0.0" prefHeight="120.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="2" GridPane.rowIndex="9">
+                     <children>
+                        <HBox layoutY="-1.0" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #64b5f6;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <Label layoutX="7.0" layoutY="30.0" text="Lille London" textAlignment="CENTER" AnchorPane.topAnchor="30.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="30.0" layoutY="102.0" text="2000" textAlignment="CENTER">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                     <children>
+                        <HBox layoutY="-1.0" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #64b5f6;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <Label layoutX="10.0" layoutY="30.0" text="Work Work" textAlignment="CENTER" AnchorPane.topAnchor="30.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="30.0" layoutY="102.0" text="2400" textAlignment="CENTER">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="3" GridPane.rowIndex="9">
+                     <children>
+                        <Label layoutX="31.0" layoutY="17.0" text="?" textAlignment="CENTER" AnchorPane.topAnchor="17.0">
+                           <font>
+                              <Font size="59.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="4" GridPane.rowIndex="9">
+                     <children>
+                        <HBox layoutY="-1.0" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #64b5f6;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <Label layoutX="15.0" layoutY="30.0" text="Bar Circus" textAlignment="CENTER" AnchorPane.topAnchor="30.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="31.0" layoutY="96.0" text="2000" textAlignment="CENTER">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="5" GridPane.rowIndex="9">
+                     <children>
+                        <Label layoutX="29.0" layoutY="14.0" text="KNM" textAlignment="CENTER" AnchorPane.topAnchor="14.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="2.0" layoutY="34.0" text="Helge Ingstad" textAlignment="CENTER">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <ImageView fitHeight="50.0" fitWidth="52.0" layoutX="20.0" layoutY="60.0" opacity="0.7" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="file:res/gui/Game/boat.png" />
+                           </image></ImageView>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="6" GridPane.rowIndex="9">
+                     <children>
+                        <HBox layoutY="-1.0" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #8D6E63;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <Label layoutX="7.0" layoutY="30.0" text="Svartlamoen" textAlignment="CENTER" AnchorPane.topAnchor="30.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="30.0" layoutY="98.0" text="1200" textAlignment="CENTER">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="7" GridPane.rowIndex="9">
+                     <children>
+                        <Label layoutX="11.0" layoutY="14.0" text="Income tax" textAlignment="CENTER" AnchorPane.topAnchor="14.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <ImageView fitHeight="50.0" fitWidth="52.0" layoutX="20.0" layoutY="60.0" opacity="0.7" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="file:res/gui/Game/tax.png" />
+                           </image></ImageView>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="8" GridPane.rowIndex="9">
+                     <children>
+                        <HBox layoutY="-1.0" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #8D6E63;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <Label layoutX="8.0" layoutY="30.0" text="Gløshaugen" textAlignment="CENTER" AnchorPane.topAnchor="30.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="30.0" layoutY="98.0" text="1200" textAlignment="CENTER">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="1">
+                     <children>
+                        <HBox layoutY="90.0" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #EF5350;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                        <Label layoutX="24.0" layoutY="70.0" text="Heidi's" textAlignment="CENTER" AnchorPane.bottomAnchor="30.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="30.0" layoutY="4.0" text="4400" textAlignment="CENTER">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="2">
+                     <children>
+                        <Label layoutX="32.0" layoutY="17.0" text="?" textAlignment="CENTER" AnchorPane.bottomAnchor="16.599999999999994">
+                           <font>
+                              <Font size="59.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="3">
+                     <children>
+                        <HBox layoutY="91.0" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #EF5350;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                        <Label layoutX="7.0" layoutY="71.0" text="Sukkerhuset" textAlignment="CENTER" AnchorPane.bottomAnchor="30.599999999999994">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="30.0" layoutY="4.0" text="4400" textAlignment="CENTER">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="7">
+                     <children>
+                        <Label layoutX="14.0" layoutY="14.0" text="Viking sky" textAlignment="CENTER" AnchorPane.bottomAnchor="86.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <ImageView fitHeight="50.0" fitWidth="52.0" layoutX="20.0" layoutY="56.0" opacity="0.7" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="file:res/gui/Game/boat.png" />
+                           </image></ImageView>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="6">
+                     <children>
+                        <HBox layoutX="1.0" layoutY="90.0" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #fff176;" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="-1.0" />
+                        <Label layoutX="20.0" layoutY="70.0" text="Solsiden" textAlignment="CENTER" AnchorPane.bottomAnchor="30.799999999999997">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="31.0" layoutY="4.0" text="5200" textAlignment="CENTER">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="5">
+                     <children>
+                        <HBox layoutX="1.0" layoutY="91.0" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #fff176;" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="-1.0" />
+                        <Label layoutX="25.0" layoutY="71.0" text="Torvet" textAlignment="CENTER" AnchorPane.bottomAnchor="30.599999999999994">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="30.0" layoutY="4.0" text="5200" textAlignment="CENTER">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="4">
+                     <children>
+                        <HBox layoutY="92.0" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #EF5350;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                        <Label layoutX="11.0" layoutY="72.0" text="Samfundet" textAlignment="CENTER" AnchorPane.bottomAnchor="30.400000000000006">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="30.0" layoutY="4.0" text="4800" textAlignment="CENTER">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="8">
+                     <children>
+                        <HBox layoutY="90.0" prefHeight="30.0" prefWidth="65.0" style="-fx-background-color: #fff176;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                        <Label layoutX="30.0" layoutY="70.0" text="Lade" textAlignment="CENTER" AnchorPane.bottomAnchor="30.799999999999997">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="30.0" layoutY="4.0" text="5600" textAlignment="CENTER">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane style="-fx-background-color: #DCEDC8;">
+                     <children>
+                        <Label layoutX="5.0" layoutY="40.0" prefHeight="37.0" prefWidth="113.0" rotate="-38.1" text="FREE PARKING" textAlignment="CENTER">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="9">
+                     <children>
+                        <Label layoutX="5.0" layoutY="44.0" prefHeight="37.0" prefWidth="113.0" rotate="41.6" text="GO TO JAIL" textAlignment="RIGHT">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.rowIndex="9">
+                     <children>
+                        <Label layoutX="25.0" layoutY="36.0" rotate="45.0" text="JAIL">
+                           <font>
+                              <Font name="System Bold" size="34.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="9" GridPane.rowIndex="9">
+                     <children>
+                        <Label layoutX="25.0" layoutY="25.0" rotate="-45.0" text="GO">
+                           <font>
+                              <Font name="System Bold" size="34.0" />
+                           </font>
+                        </Label>
+                        <Text layoutX="60.0" layoutY="80.0" rotate="-45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4000">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.rowIndex="1">
+                     <children>
+                        <VBox layoutX="70.0" layoutY="-3.0" prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #FFA726;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <Label layoutX="56.0" layoutY="35.0" rotate="90.0" text="Nidelva" AnchorPane.rightAnchor="16.799999999999997">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="-1.0" layoutY="35.0" rotate="90.0" text="4000">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.rowIndex="2">
+                     <children>
+                        <VBox layoutX="70.0" layoutY="-3.0" prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #FFA726;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <Label layoutX="46.0" layoutY="35.0" rotate="90.0" text="Bakklandet" AnchorPane.rightAnchor="6.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="-1.0" layoutY="35.0" rotate="90.0" text="3600">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.rowIndex="3">
+                     <children>
+                        <Label layoutX="47.0" layoutY="3.0" rotate="90.0" text="?">
+                           <font>
+                              <Font size="59.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.rowIndex="8">
+                     <children>
+                        <VBox layoutX="70.0" layoutY="-3.0" prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #F06292;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <Label layoutX="46.0" layoutY="35.0" rotate="90.0" text="Café Løkka" AnchorPane.rightAnchor="6.799999999999997">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="-1.0" layoutY="35.0" rotate="90.0" text="2800">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.rowIndex="7">
+                     <children>
+                        <Label layoutX="87.0" layoutY="35.0" rotate="90.0" text="VY" AnchorPane.rightAnchor="15.0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <ImageView fitHeight="50.0" fitWidth="52.0" layoutX="14.0" layoutY="20.0" opacity="0.7" pickOnBounds="true" preserveRatio="true" rotate="90.0">
+                           <image>
+                              <Image url="file:res/gui/Game/train.png" />
+                           </image></ImageView>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.rowIndex="6">
+                     <children>
+                        <VBox layoutX="70.0" layoutY="-3.0" prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #F06292;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <Label layoutX="48.0" layoutY="35.0" rotate="90.0" text="Bodegaen" AnchorPane.rightAnchor="8.799999999999997">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="-1.0" layoutY="35.0" rotate="90.0" text="2800">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.rowIndex="5">
+                     <children>
+                        <VBox layoutX="70.0" layoutY="-3.0" prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #F06292;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <Label layoutX="40.0" layoutY="35.0" rotate="90.0" text="SQLExeption" AnchorPane.rightAnchor="1.5999999999999943">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="-1.0" layoutY="35.0" rotate="90.0" text="3200">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.rowIndex="4">
+                     <children>
+                        <VBox layoutX="70.0" layoutY="-3.0" prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #FFA726;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <Label layoutX="38.0" layoutY="35.0" rotate="90.0" text="Munkholmen" AnchorPane.rightAnchor="-0.4000000000000057">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="-1.0" layoutY="35.0" rotate="90.0" text="3600">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane prefWidth="120.0" style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="9" GridPane.rowIndex="8">
+                     <children>
+                        <VBox layoutX="-1.0" prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #1565C0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <Label layoutX="6.0" layoutY="35.0" rotate="-90.0" text="Kalvskinnet" AnchorPane.leftAnchor="6.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="90.0" layoutY="35.0" rotate="-90.0" text="8000">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="9" GridPane.rowIndex="7">
+                     <children>
+                        <Label layoutX="13.0" layoutY="35.0" rotate="-90.0" text="AtB" AnchorPane.leftAnchor="13.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <ImageView fitHeight="50.0" fitWidth="52.0" layoutX="60.0" layoutY="20.0" opacity="0.7" pickOnBounds="true" preserveRatio="true" rotate="-90.0">
+                           <image>
+                              <Image url="file:res/gui/Game/train.png" />
+                           </image></ImageView>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="9" GridPane.rowIndex="6">
+                     <children>
+                        <VBox prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #1565C0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <Label layoutX="10.0" layoutY="35.0" rotate="-90.0" text="E.C. Dahls" AnchorPane.leftAnchor="10.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="90.0" layoutY="35.0" rotate="-90.0" text="7000">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="9" GridPane.rowIndex="5">
+                     <children>
+                        <Label layoutX="46.0" layoutY="2.0" rotate="-90.0" text="?" AnchorPane.leftAnchor="46.0">
+                           <font>
+                              <Font size="59.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="9" GridPane.rowIndex="4">
+                     <children>
+                        <VBox layoutX="-1.0" prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #81c784;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <Label layoutX="-3.0" layoutY="36.0" rotate="-90.0" text="Nidarosdomen" AnchorPane.leftAnchor="-3.0">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="90.0" layoutY="35.0" rotate="-90.0" text="6400">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="9" GridPane.rowIndex="3">
+                     <children>
+                        <Label layoutX="2.0" layoutY="35.0" rotate="-90.0" text="TS Sola" AnchorPane.leftAnchor="2.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <ImageView fitHeight="50.0" fitWidth="52.0" layoutX="60.0" layoutY="20.0" opacity="0.7" pickOnBounds="true" preserveRatio="true" rotate="-90.0">
+                           <image>
+                              <Image url="file:res/gui/Game/boat.png" />
+                           </image></ImageView>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="9" GridPane.rowIndex="2">
+                     <children>
+                        <VBox layoutX="-1.0" prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #81c784;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <Label layoutX="3.0" layoutY="36.0" rotate="-90.0" text="Tyholttårnet" AnchorPane.leftAnchor="3.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="90.0" layoutY="35.0" rotate="-90.0" text="6000">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane style="-fx-background-color: #DCEDC8;" GridPane.columnIndex="9" GridPane.rowIndex="1">
+                     <children>
+                        <VBox layoutX="-2.0" prefHeight="65.0" prefWidth="30.0" style="-fx-background-color: #81c784;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <Label layoutX="10.0" layoutY="35.0" rotate="-90.0" text="Rockheim" AnchorPane.leftAnchor="10.0">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="90.0" layoutY="35.0" rotate="-90.0" text="6000">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+               </children>
+            </GridPane>
+            <GridPane fx:id="housegrid">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="120.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="90.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="90.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="90.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="90.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="90.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="90.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="90.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="90.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="120.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints percentHeight="0.0" prefHeight="120.0" vgrow="SOMETIMES" />
+                  <RowConstraints percentHeight="0.0" prefHeight="90.0" vgrow="SOMETIMES" />
+                  <RowConstraints percentHeight="0.0" prefHeight="90.0" vgrow="SOMETIMES" />
+                  <RowConstraints percentHeight="0.0" prefHeight="90.0" vgrow="SOMETIMES" />
+                  <RowConstraints percentHeight="0.0" prefHeight="90.0" vgrow="SOMETIMES" />
+                  <RowConstraints percentHeight="0.0" prefHeight="90.0" vgrow="SOMETIMES" />
+                  <RowConstraints percentHeight="0.0" prefHeight="90.0" vgrow="SOMETIMES" />
+                  <RowConstraints percentHeight="0.0" prefHeight="90.0" vgrow="SOMETIMES" />
+                  <RowConstraints percentHeight="0.0" prefHeight="90.0" vgrow="SOMETIMES" />
+                  <RowConstraints percentHeight="0.0" prefHeight="120.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+            </GridPane>
+            <GridPane fx:id="gamegrid">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="120.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="90.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="90.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="90.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="90.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="90.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="90.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="90.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="90.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" percentWidth="0.0" prefWidth="120.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints percentHeight="0.0" prefHeight="120.0" vgrow="SOMETIMES" />
+                  <RowConstraints percentHeight="0.0" prefHeight="90.0" vgrow="SOMETIMES" />
+                  <RowConstraints percentHeight="0.0" prefHeight="90.0" vgrow="SOMETIMES" />
+                  <RowConstraints percentHeight="0.0" prefHeight="90.0" vgrow="SOMETIMES" />
+                  <RowConstraints percentHeight="0.0" prefHeight="90.0" vgrow="SOMETIMES" />
+                  <RowConstraints percentHeight="0.0" prefHeight="90.0" vgrow="SOMETIMES" />
+                  <RowConstraints percentHeight="0.0" prefHeight="90.0" vgrow="SOMETIMES" />
+                  <RowConstraints percentHeight="0.0" prefHeight="90.0" vgrow="SOMETIMES" />
+                  <RowConstraints percentHeight="0.0" prefHeight="90.0" vgrow="SOMETIMES" />
+                  <RowConstraints percentHeight="0.0" prefHeight="120.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+            </GridPane>
+         </children>
+      </AnchorPane>
+      <Pane layoutX="1312.0" prefHeight="1055.0" prefWidth="608.0" style="-fx-background-color: #424242;">
+         <children>
+            <Label layoutX="79.0" layoutY="34.0" text="Your stats" textFill="#fafafa">
+               <font>
+                  <Font name="System Bold" size="32.0" />
+               </font>
+            </Label>
+            <Label fx:id="userMoney" layoutX="435.0" layoutY="120.0" text="10.000" textFill="#009e0f">
+               <font>
+                  <Font size="40.0" />
+               </font>
+            </Label>
+            <Label layoutX="393.0" layoutY="119.0" text="\$" textFill="#009e0f">
+               <font>
+                  <Font size="40.0" />
+               </font>
+            </Label>
+            <Pane fx:id="userPropertiesIcon" layoutX="262.0" layoutY="111.0" prefHeight="75.0" prefWidth="75.0" style="-fx-border-color: white; -fx-border-radius: 15;">
+               <children>
+                  <ImageView fitHeight="65.0" fitWidth="65.0" layoutX="7.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="file:res/gui/Game/house.png" />
+                     </image>
+                  </ImageView>
+               </children>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Pane>
+            <Label layoutX="68.0" layoutY="355.0" text="Status" textFill="#fafafa">
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </Label>
+            <Label fx:id="statusValue" layoutX="203.0" layoutY="340.0" prefHeight="71.0" prefWidth="367.0" text="Waiting for giskeeribyendam to finish" textFill="#e3e2e2" wrapText="true">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Button fx:id="rolldiceBtn" disable="true" layoutX="56.0" layoutY="453.0" mnemonicParsing="false" onAction="#rollDice" prefHeight="50.0" prefWidth="160.0" style="-fx-background-color: #03A9F4;" text="Roll dice" textFill="#fafafa">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Pane fx:id="opponentsContainer" layoutX="47.0" layoutY="631.0" prefHeight="405.0" prefWidth="536.0" />
+            <Line endX="415.6666259765625" endY="1.52587890625E-5" layoutX="151.0" layoutY="240.0" startX="-84.333251953125" startY="1.52587890625E-5" stroke="WHITE" />
+            <Button fx:id="endturnBtn" disable="true" layoutX="404.0" layoutY="453.0" mnemonicParsing="false" onAction="#endTurn" prefHeight="50.0" prefWidth="160.0" style="-fx-background-color: orange;" text="End turn" textFill="#fafafa">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Label layoutX="227.0" layoutY="573.0" text="Opponents" textFill="#fafafa">
+               <font>
+                  <Font name="System Bold" size="32.0" />
+               </font>
+            </Label>
+            <Line endX="406.0" endY="1.52587890625E-5" layoutX="157.0" layoutY="551.0" startX="-100.0" stroke="WHITE" />
+            <Label layoutX="68.0" layoutY="274.0" text="Round" textFill="#fafafa">
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </Label>
+            <Label fx:id="roundValue" layoutX="203.0" layoutY="271.0" text="6" textFill="#e3e2e2">
+               <font>
+                  <Font size="31.0" />
+               </font>
+            </Label>
+            <Label fx:id="username" layoutX="256.0" layoutY="24.0" prefHeight="68.0" prefWidth="317.0" text="username" textFill="#b4b4b4" wrapText="true">
+               <font>
+                  <Font size="28.0" />
+               </font>
+            </Label>
+            <Pane fx:id="userColor" layoutX="90.0" layoutY="112.0" prefHeight="75.0" prefWidth="75.0" style="-fx-background-color: lightblue;" />
+            <Button fx:id="payBailBtn" disable="true" layoutX="254.0" layoutY="453.0" mnemonicParsing="false" onAction="#payBail" prefHeight="50.0" prefWidth="160.0" style="-fx-background-color: #81c784;" text="Pay bail" textFill="WHITE" visible="false">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+         </children>
+      </Pane>
+      <AnchorPane layoutX="419.0" layoutY="171.0" prefHeight="719.0" prefWidth="720.0" style="-fx-background-color: #DCEDC8;">
+         <children>
+            <Label layoutX="173.0" layoutY="372.0" text="Monopolish" textFill="#ef5350">
+               <font>
+                  <Font name="Tahoma" size="75.0" />
+               </font>
+            </Label>
+            <AnchorPane fx:id="cardContainer" layoutX="266.0" layoutY="23.0" prefHeight="240.0" prefWidth="190.0" />
+            <AnchorPane fx:id="diceContainer" layoutX="210.0" layoutY="453.0" prefHeight="200.0" prefWidth="301.0">
+               <children>
+                  <ImageView fx:id="dice1_img" fitHeight="50.0" fitWidth="52.0" layoutX="76.0" layoutY="100.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="file:res/gui/Dices/dice4_placeholder.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="dice2_img" fitHeight="50.0" fitWidth="50.0" layoutX="157.0" layoutY="101.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="file:res/gui/Dices/dice5_placeholder.png" />
+                     </image>
+                  </ImageView>
+                  <Text fill="#5d5b5b" layoutX="124.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dice">
+                     <font>
+                        <Font name="System Bold" size="19.0" />
+                     </font>
+                  </Text>
+               </children>
+            </AnchorPane>
+            <Button fx:id="propertyBtn" layoutX="294.0" layoutY="302.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="129.0" style="-fx-background-color: ef5350;" text="Pay rent" textFill="#fafafa" visible="false">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Text fx:id="propertyMsg" fill="#858585" layoutX="195.0" layoutY="370.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You must pay rent before ending turn" textAlignment="CENTER" visible="false" wrappingWidth="350.2958973867478" />
+            <Text fx:id="propertyOwnerMsg" fill="#4d4d4d" layoutX="150.0" layoutY="284.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PropertyOwner" textAlignment="CENTER" visible="false" wrappingWidth="418.29592651022176">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+         </children>
+      </AnchorPane>
+      <Pane fx:id="freeParkingCard" layoutX="40.0" layoutY="237.0" prefHeight="77.0" prefWidth="235.0" style="-fx-background-color: ededed; -fx-border-radius: 10;" visible="false">
+         <children>
+            <Text fill="#616161" layoutX="67.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You have free parking">
+               <font>
+                  <Font size="15.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Text>
+            <ImageView fitHeight="45.0" fitWidth="45.0" layoutX="14.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="file:res/gui/MessagePopup/parking.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Label layoutX="1754.0" layoutY="-50.0" text="Total" textFill="#fafafa">
+         <font>
+            <Font name="System Bold" size="32.0" />
+         </font>
+      </Label>
+      <Pane fx:id="messagePopupContainer" layoutX="12.0" layoutY="1000.0" prefHeight="46.0" prefWidth="330.0" />
+      <Pane fx:id="settingsContent" layoutX="40.0" layoutY="177.0" onMouseEntered="#toggleSettings" onMouseExited="#toggleSettings" prefHeight="113.0" prefWidth="235.0" style="-fx-background-color: ededed; -fx-border-width: 1 0 0 0; -fx-border-color: #999;" visible="false">
+         <children>
+            <Text fill="#616161" layoutX="108.0" layoutY="86.0" onMouseClicked="#toggleSounds" strokeType="OUTSIDE" strokeWidth="0.0" text="Sounds">
+               <font>
+                  <Font size="17.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Text>
+            <Text fill="#616161" layoutX="108.0" layoutY="41.0" onMouseClicked="#toggleNotification" strokeType="OUTSIDE" strokeWidth="0.0" text="Notifications">
+               <font>
+                  <Font size="17.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Text>
+            <ImageView fx:id="notificationToggle" fitHeight="25.0" fitWidth="45.0" layoutX="31.0" layoutY="21.0" onMouseClicked="#toggleNotification" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="file:res/gui/Game/toggleOn.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <ImageView fx:id="soundToggle" fitHeight="25.0" fitWidth="45.0" layoutX="31.0" layoutY="66.0" onMouseClicked="#toggleSounds" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="file:res/gui/Game/toggleOn.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+         </children>
+      </Pane>
+      <Pane layoutX="40.0" layoutY="119.0" onMouseEntered="#toggleSettings" onMouseExited="#toggleSettings" prefHeight="58.0" prefWidth="235.0" style="-fx-background-color: ededed;">
+         <children>
+            <Text fill="#403f3f" layoutX="79.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Settings">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Text>
+            <ImageView fitHeight="40.0" fitWidth="32.0" layoutX="26.0" layoutY="10.0" preserveRatio="true">
+               <image>
+                  <Image url="file:res/gui/Game/settings.png" />
+               </image>
+            </ImageView>
+            <Text fill="#6f6e6e" layoutX="79.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hover to open">
+               <font>
+                  <Font size="9.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+      <Pane layoutX="40.0" layoutY="43.0" onMouseEntered="#toggleMenu" onMouseExited="#toggleMenu" prefHeight="58.0" prefWidth="235.0" style="-fx-background-color: ededed;">
+         <children>
+            <Text fill="#403f3f" layoutX="79.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Menu">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Text>
+            <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="23.0" layoutY="12.0" preserveRatio="true">
+               <image>
+                  <Image url="file:res/gui/Game/menu.png" />
+               </image>
+            </ImageView>
+            <Text fill="#6f6e6e" layoutX="79.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hover to open">
+               <font>
+                  <Font size="9.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+      <Pane fx:id="menuContent" layoutX="40.0" layoutY="101.0" onMouseEntered="#toggleMenu" onMouseExited="#toggleMenu" prefHeight="309.0" prefWidth="235.0" style="-fx-background-color: ededed; -fx-border-width: 1 0 0 0; -fx-border-color: #999;" visible="false">
+         <children>
+            <Button fx:id="giveUpBtn" layoutX="64.0" layoutY="121.0" mnemonicParsing="false" onAction="#giveUp" prefHeight="40.0" prefWidth="95.0" style="-fx-background-color: #666;" text="Give up" textFill="#fafafa">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button layoutX="65.0" layoutY="21.0" mnemonicParsing="false" onAction="#leave" prefHeight="40.0" prefWidth="95.0" style="-fx-background-color: ef5350;" text="Leave" textFill="#fafafa">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button layoutX="64.0" layoutY="221.0" mnemonicParsing="false" onAction="#forfeit" prefHeight="40.0" prefWidth="95.0" style="-fx-background-color: #FF9800;" text="Forfeit" textFill="#fafafa">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Text fill="#6a6a6a" layoutX="20.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Leave the game, you cannot rejoin" />
+            <Text fill="#6a6a6a" layoutX="26.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Go bankrupt and spectate game" />
+            <Text fill="#6a6a6a" layoutX="32.0" layoutY="291.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start a vote to finish the game" />
+            <Line endX="100.0" layoutX="112.0" layoutY="102.0" startX="-100.0" stroke="#616161" />
+            <Line endX="100.0" layoutX="117.0" layoutY="202.0" startX="-100.0" stroke="#616161" />
+         </children>
+      </Pane>
+      <Pane fx:id="chatContainer" layoutX="21.0" layoutY="680.0" prefHeight="315.0" prefWidth="235.0" />
+      <Pane fx:id="backgroundOverlay" prefHeight="1055.0" prefWidth="1920.0" style="-fx-background-color: rgba(160,160,160,0.4);" visible="false" />
+      <Pane fx:id="propertiesContainer" layoutX="257.0" layoutY="105.0" prefHeight="855.0" prefWidth="1477.0" style="-fx-background-color: ededed; -fx-background-radius: 20;" visible="false">
+         <children>
+            <Text layoutX="609.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Properties">
+               <font>
+                  <Font size="58.0" />
+               </font>
+            </Text>
+            <ImageView fitHeight="50.0" fitWidth="52.0" layoutX="1387.0" layoutY="44.0" onMouseClicked="#closePropertiesDialog" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="file:res/gui/close.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <Line endX="473.0" endY="1.52587890625E-5" layoutX="552.0" layoutY="138.0" startX="-100.0" />
+            <ScrollPane layoutX="72.0" layoutY="186.0" prefHeight="639.0" prefWidth="1333.0" style="-fx-hbar-policy: NEVER; -fx-background-color: ededed;">
+               <content>
+                  <FlowPane fx:id="propertiesContentContainer" prefHeight="636.0" prefWidth="1331.0" style="-fx-padding: 20; -fx-vgap: 40; -fx-hgap: 60; -fx-background-color: ededed;" />
+               </content>
+            </ScrollPane>
+            <Text fx:id="propertiesUsername" fill="#6f6f6f" layoutX="1148.0" layoutY="102.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" wrappingWidth="307.33334478177136">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Text>
+            <Text fill="#6f6f6f" layoutX="1035.0" layoutY="102.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Owner:" textAlignment="CENTER" wrappingWidth="119.99997326731682">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Text>
+            <Button fx:id="sendBtn" layoutX="123.0" layoutY="54.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="141.0" style="-fx-background-color: #5996ba;" text="Transfer" textFill="#fafafa">
+               <font>
+                  <Font size="21.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Text fx:id="sendMsg" fill="#6f6d6d" layoutX="53.0" layoutY="133.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Send money or properties to this player">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </Text>
+            <Text fx:id="tradeMsg1" fill="#6f6d6d" layoutX="555.0" layoutY="169.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Click on a property to buy houses or pawn the property">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+      <Pane fx:id="propertiesDialogOverlay" layoutX="10.0" layoutY="10.0" prefHeight="1055.0" prefWidth="1920.0" style="-fx-background-color: rgba(160,160,160,0.4);" visible="false">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Pane>
+      <Pane fx:id="tradeContainer" layoutX="210.0" layoutY="53.0" prefHeight="950.0" prefWidth="1500.0" visible="false" />
+      <Pane fx:id="helpOverlay" onMouseClicked="#toggleHelpOverlay" prefHeight="1055.0" prefWidth="1925.0" style="-fx-background-color: rgba(160,160,160,0.7);" visible="false">
+         <children>
+            <Text fill="WHITE" layoutX="8.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hover over with the mouse to see menu or settings" wrappingWidth="329.9999827146531">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="1197.0" layoutY="149.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your info" wrappingWidth="116.48438270699648">
+               <font>
+                  <Font name="System Bold" size="23.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="14.0" layoutY="968.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Chat with your opponents, click the blue area to open or close" wrappingWidth="418.29590189763076">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="667.0" layoutY="767.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The dices you throw" wrappingWidth="223.629214885912">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="603.0" layoutY="489.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Properties you land on will appear here" wrappingWidth="350.29590189763076">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="14.0" layoutY="316.0" strokeType="OUTSIDE" strokeWidth="0.0" text="If you have free parking token it will be shown here" wrappingWidth="316.9999873081176">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="1013.0" layoutY="750.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Info about your opponents" wrappingWidth="301.33334383431793">
+               <font>
+                  <Font name="System Bold" size="23.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="1560.0" layoutY="535.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You need to end your turn each round" wrappingWidth="350.29590189763076">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Text>
+            <Label layoutX="1560.0" layoutY="205.0" text="Your properties" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <Label layoutX="1402.0" layoutY="205.0" text="Your color" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <Label layoutX="1749.0" layoutY="205.0" text="Your money" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <Text fill="WHITE" layoutX="14.0" layoutY="572.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Notifications will dynamically be shown here, this can be turned off in the settings" wrappingWidth="316.9999873081176">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+      <Pane fx:id="forfeitContainer" layoutX="556.0" layoutY="300.0" prefHeight="315.0" prefWidth="600.0" style="-fx-background-color: ededed; -fx-background-radius: 20;" visible="false" />
+      <ImageView fx:id="helpBtn" fitHeight="40.0" fitWidth="40.0" layoutX="1850.0" layoutY="14.0" onMouseClicked="#toggleHelpOverlay">
+         <image>
+            <Image url="file:res/gui/Game/help.png" />
+         </image>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </ImageView>
+      <Pane fx:id="buyHouseContainer" layoutX="763.0" layoutY="220.0" prefHeight="530.0" prefWidth="400.0" visible="false" />
+      <Pane fx:id="winnerContainer" layoutX="559.0" layoutY="400.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="277.0" prefWidth="593.0" style="-fx-background-color: #444; -fx-background-radius: 15;" visible="false">
+         <children>
+            <ImageView fitHeight="116.0" fitWidth="122.0" layoutX="32.0" layoutY="49.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="file:res/gui/Dashboard/trophy.png" />
+               </image>
+            </ImageView>
+            <Text fill="WHITE" layoutX="167.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Congratulations">
+               <font>
+                  <Font name="System Bold" size="34.0" />
+               </font>
+            </Text>
+            <Text fx:id="winnerMsg" fill="WHITE" layoutX="167.0" layoutY="146.0" strokeType="OUTSIDE" strokeWidth="0.0" text="giskeeribyendam is won the game">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Text>
+            <Button fx:id="winnerBtn" layoutX="230.0" layoutY="206.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="134.0" style="-fx-background-color: #FF9800;" text="Dashboard" textFill="#fafafa">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

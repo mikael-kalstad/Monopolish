@@ -1,7 +1,7 @@
 package com.teamfour.monopolish.game.entities;
 
 import com.teamfour.monopolish.game.GameConstants;
-import com.teamfour.monopolish.gui.controllers.Handler;
+import com.teamfour.monopolish.gui.Handler;
 
 /**
  * Represents the bank in the game. The bank has its own money and properties, along with a number of houses that can be

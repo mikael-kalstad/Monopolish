@@ -1,8 +1,8 @@
 package com.teamfour.monopolish;
 
-import com.teamfour.monopolish.gui.controllers.Handler;
-import com.teamfour.monopolish.gui.views.SceneManager;
-import com.teamfour.monopolish.gui.views.ViewConstants;
+import com.teamfour.monopolish.gui.Handler;
+import com.teamfour.monopolish.gui.SceneManager;
+import com.teamfour.monopolish.gui.ViewConstants;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Rectangle2D;
@@ -10,6 +10,9 @@ import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+/**
+ * This class is the launcher for the application. Running this class will open up the application.
+ */
 public class Launcher extends Application {
     // Constants for Application
     private final String APPLICATION_TITLE = "Monopolish";

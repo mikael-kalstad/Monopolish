@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.*?>
+<Pane prefHeight="366.0" prefWidth="600.0" style="-fx-background-color: ededed; -fx-background-radius: 20;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teamfour.monopolish.gui.components.forfeit.ForfeitController">
+   <children>
+      <Text layoutX="39.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A player wants to forfeit">
+         <font>
+            <Font name="System Bold" size="27.0" />
+         </font>
+      </Text>
+      <Pane fx:id="voteQuit" layoutY="186.0" prefHeight="180.0" prefWidth="300.0" style="-fx-background-color: ef5350; -fx-background-radius: 0 0 0 15;">
+         <children>
+            <Text fx:id="voteCountQuit" fill="WHITE" layoutX="88.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1">
+               <font>
+                  <Font name="System Bold" size="37.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="133.0" layoutY="128.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Votes">
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="89.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="I want to quit">
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+      <Pane fx:id="voteContinue" layoutX="300.0" layoutY="186.0" prefHeight="180.0" prefWidth="300.0" style="-fx-background-color: #52d35e; -fx-background-radius: 0 0 15 0;">
+         <children>
+            <Text fill="WHITE" layoutX="63.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="I want to play more">
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font>
+            </Text>
+            <Text fx:id="voteCountContinue" fill="WHITE" layoutX="90.0" layoutY="130.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
+               <font>
+                  <Font name="System Bold" size="37.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="136.0" layoutY="128.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Votes">
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+      <Text fill="#5f5e5e" layoutX="39.0" layoutY="111.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select a box to give your vote. The majority of votes decides the outcome." />
+      <Text fill="#5f5e5e" layoutX="39.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="If the majority votes to forfeit, the game will end and a winner will be declared" />
+      <Circle centerY="-10.0" fill="#5b5b5b" layoutX="535.0" layoutY="75.0" radius="37.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+      <Text fx:id="timeValue" fill="WHITE" layoutX="505.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="60" textAlignment="CENTER" wrappingWidth="60.71337890625">
+         <font>
+            <Font size="39.0" />
+         </font>
+      </Text>
+      <Text fill="#5f5e5e" layoutX="492.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time left to vote" />
+      <Text fx:id="yourVoteText" fill="#525252" layoutX="219.0" layoutY="167.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You have not voted yet">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Text>
+   </children>
+</Pane>
