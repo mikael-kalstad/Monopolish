@@ -1,6 +1,6 @@
 # Monopolish by Team 4
 
-**A turn based game writen i Java, using a MySQL database for back-end, and JavaFX for the front-end. Inspired from the board game Monopoly, but with our own rules and streets. Properties are inspired from the town we study in; Trondheim.**
+**A multiplayer turn based game written in Java, using a MySQL database for back-end, and JavaFX for the front-end. Inspired from the board game Monopoly, but with our own rules and streets. Properties are inspired from Trondheim.**
 
 # What I learned
 ### Soft skills
