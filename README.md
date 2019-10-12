@@ -42,7 +42,7 @@ This project was a school assigment that I worked on with my team. The project l
 - Modelling: use case-, sequence-, ER-, class diagrams and domain model. 
 - Documentation: Vision document, Installation- and user manual, meeting agenda and report, final report.
 
-_Note, the database used for this project has been removed or changed, therefore it is not possible to log in or register a user, but the launcher can be run. Screenshots of the application can be find in the user manual in the WIKI._
+_Note, the database used for this project has been removed or changed, therefore it is not possible to log in or register a user, but the launcher can be run.
 
 ### Screenshots
 <br/>
