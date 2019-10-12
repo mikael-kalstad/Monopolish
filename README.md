@@ -1,6 +1,9 @@
 # Monopolish by Team 4
 
-**A multiplayer turn based game written in Java, using a MySQL database for back-end, and JavaFX for the front-end. Inspired from the board game Monopoly, but with our own rules and streets. Properties are inspired from Trondheim.**
+**A multiplayer turn based game written in Java, using a MySQL database for back-end, and JavaFX for the front-end. Inspired from the board game Monopoly, but with our own rules and streets. Properties are inspired from Trondheim.**<br/>
+
+<img src="https://github.com/mikael-kalstad/Monopolish/raw/master/wiki_resources/system/manual/game_1.png" width="100%">
+A screenshot from the board view in the game.<br/><br/>
 
 This project was a school assigment that I worked on with my team. The project lasted for about one month, where we went through all the stages of developing an application. Thorough documentation can be found on the WIKI (located on gitlab repo). 
 
@@ -38,12 +41,17 @@ This project was a school assigment that I worked on with my team. The project l
 - Modelling: use case-, sequence-, ER-, class diagrams and domain model. 
 - Documentation: Vision document, Installation- and user manual, meeting agenda and report, final report.
 
-
-
 _Note, the database used for this project has been removed or changed, therefore it is not possible to log in or register a user, but the launcher can be run. Screenshots of the application can be find in the user manual in the WIKI._
 
-#### [Link to user manual](https://gitlab.stud.iie.ntnu.no/team04/monopolish/wikis/System/User-manual)
+### Screenshots
+<br/>
+<img src="https://github.com/mikael-kalstad/Monopolish/raw/master/wiki_resources/system/manual/register.png" width="100%">
+The register view for new users. <br/><br/>
 
-## [Link to wiki](https://gitlab.stud.iie.ntnu.no/team04/monopolish/wikis/home)
+<img src="https://github.com/mikael-kalstad/Monopolish/raw/master/wiki_resources/system/manual/dashboard.png" width="100%"> 
+The dashboard view to give users an overview over personal and global highscores.<br/><br/>
+
+<img src="https://github.com/mikael-kalstad/Monopolish/raw/master/wiki_resources/system/manual/lobby_3.png" width="100%"> 
+A screenshot from the lobby with a join/leave and ready/not ready system.<br/><br/>
 
 ## [Link to JavaDocs](http://team04.pages.stud.idi.ntnu.no/monopolish/)
