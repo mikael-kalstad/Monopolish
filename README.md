@@ -5,7 +5,7 @@
 <img src="https://github.com/mikael-kalstad/Monopolish/raw/master/wiki_resources/system/manual/game_1.png" width="100%">
 A screenshot from the board view in the game.<br/><br/>
 
-This project was a school assigment that I worked on with my team. The project lasted for about one month, where we went through all the stages of developing an application. Thorough documentation can be found on the WIKI (located on gitlab repo). 
+This project was a school assigment that I worked on with my team. The project lasted for about one month, where we went through all the stages of developing an application. An extensive report  
 
 **Team members:**
 
