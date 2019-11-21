@@ -10,7 +10,7 @@ This project was a school assigment that I worked on with my team. The project l
 
 **Team members:**
 
-* Bård Hestmark
+* Bård Hestmark (Baard's contributions does not appear on GitHub, see <a href="https://gitlab.stud.iie.ntnu.no/users/baardshe/contributed">link</a> to gitlab for his contributions)
 * Eirik Hemstad
 * Mikael Kalstad
 * Torbjørn Bøe Lauvvik
